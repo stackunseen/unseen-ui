@@ -1,0 +1,28 @@
+.text {
+  color: var(--ai-text, #0f172a);
+}
+.comment {
+  color: var(--ai-muted, #475569);
+}
+.keyword {
+  color: var(--ai-primary-text, #1d4ed8);
+}
+.string {
+  color: var(--ai-secondary-text, #6d28d9);
+}
+.constant {
+  color: var(--ai-text, #0f172a);
+  font-weight: 650;
+}
+.italic {
+  font-style: italic;
+}
+@media (forced-colors: active) {
+  .text,
+  .comment,
+  .keyword,
+  .string,
+  .constant {
+    color: CanvasText;
+  }
+}

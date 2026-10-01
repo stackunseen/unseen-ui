@@ -1,0 +1,74 @@
+.codeBlock[data-variant='minimal'] {
+  border-color: transparent;
+  background: transparent;
+}
+.codeLine {
+  white-space: pre;
+}
+.lineNumber {
+  display: inline-block;
+  width: 4ch;
+  margin-inline-end: 12px;
+  text-align: end;
+  color: var(--ai-muted);
+  user-select: none;
+}
+.codeBlock {
+  min-width: 0;
+  margin-block: var(--ai-gap, 12px);
+  overflow: hidden;
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #dbe2ea);
+  border-radius: var(--ai-radius, 10px);
+  background: var(--ai-surface-subtle, #f1f5f9);
+}
+.codeHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 4px var(--ai-gap, 12px);
+  border-block-end: var(--ai-border-width, 1px) solid var(--ai-border, #dbe2ea);
+  color: var(--ai-muted, #475569);
+  font-size: 12px;
+}
+.codeHeader > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+:global([data-part='markdown']) .codeBlock,
+:global([data-part='markdown']) .codeHeader {
+  border: 0;
+}
+.codeHeader button {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+.code {
+  margin: 0;
+  padding: var(--ai-panel-padding, 16px);
+  max-height: 420px;
+  overflow: auto;
+  white-space: pre;
+  line-height: 1.6;
+  tab-size: 2;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: calc(var(--ai-font-size, 14px) * 0.9);
+  color: var(--ai-text, #0f172a);
+}
+.code > code {
+  font-size: inherit;
+}
+.code:focus-visible {
+  outline: 2px solid var(--ai-focus, #2563eb);
+  outline-offset: -2px;
+}
+.codeFeedback {
+  display: block;
+  padding: 4px var(--ai-gap, 12px) 8px;
+  color: var(--ai-muted, #475569);
+  font-size: 12px;
+}
+.codeFeedback:empty {
+  display: none;
+}

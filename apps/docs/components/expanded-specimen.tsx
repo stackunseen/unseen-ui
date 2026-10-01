@@ -1,0 +1,931 @@
+'use client';
+import { lazy, Suspense, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { VoiceSpecimen } from './voice-specimen';
+import type { NavigationAvailability, NavigationOperation } from '@ai-interaction/core';
+import {
+  Button,
+  SlashCommandMenu,
+  MentionPicker,
+  ReasoningControl,
+  AccessModeSelector,
+  CodeDiff,
+  TestResults,
+  ThreadList,
+  BranchSwitcher,
+  MessageQueue,
+  ReviewChanges,
+  DataTable,
+  MemoryControls,
+  ArtifactDiff,
+  AuditTrail,
+  RunInspector,
+  resolveVariant,
+} from '@ai-interaction/react';
+import type { QueuedMessage, ThreadSummary, TableColumn, TableRow } from '@ai-interaction/react';
+import { MarkdownCodeBlock } from '@ai-interaction/react/code';
+import { HandoffSpecimen } from './scoped-decision-specimen';
+import { FormSpecimen } from './form-specimen';
+import { GeneratedSpecimen } from './generated-specimen';
+import { ChartSpecimen } from './chart-specimen';
+import { FileSpecimen } from './file-specimen';
+import { WorkflowSpecimen } from './workflow-specimen';
+import { ExampleLoading } from './example-loading';
+import {
+  commands,
+  references,
+  efforts,
+  accessModes,
+  before,
+  after,
+  diagrams,
+  richMarkdown,
+} from '../lib/coding-fixtures';
+
+const HighlightedCodeBlock = lazy(() =>
+  import('@ai-interaction/react/highlight').then((m) => ({ default: m.HighlightedCodeBlock })),
+);
+const HighlightedCodeDiff = lazy(() =>
+  import('@ai-interaction/react/highlight').then((m) => ({ default: m.HighlightedCodeDiff })),
+);
+const RichMarkdownResponse = lazy(() =>
+  import('@ai-interaction/react/rich-markdown').then((m) => ({ default: m.RichMarkdownResponse })),
+);
+const MathFormula = lazy(() =>
+  import('@ai-interaction/react/math').then((m) => ({ default: m.MathFormula })),
+);
+const MermaidDiagram = lazy(() =>
+  import('@ai-interaction/react/mermaid').then((m) => ({ default: m.MermaidDiagram })),
+);
+const MarkdownSpecimen = dynamic(
+  () => import('./markdown-specimen').then((m) => m.MarkdownSpecimen),
+  { loading: ExampleLoading },
+);
+const TerminalSpecimen = dynamic(
+  () => import('./terminal-specimen').then((m) => m.TerminalSpecimen),
+  { loading: ExampleLoading },
+);
+
+function DiffLifecycleSpecimen({ presentation }: { presentation?: string }) {
+  const [revision, setRevision] = useState(1);
+  const [denied, setDenied] = useState(false);
+  return (
+    <div data-part="diff-lifecycle-fixture">
+      <p>Synthetic host snapshot · revision {revision}</p>
+      <div className="specimen-controls">
+        <Button variant="outline" onClick={() => setRevision((value) => value + 1)}>
+          Next version
+        </Button>
+        <Button variant="outline" onClick={() => setDenied((value) => !value)}>
+          {denied ? 'Restore comparison access' : 'Revoke comparison access'}
+        </Button>
+      </div>
+      <HighlightedCodeDiff
+        variant={resolveVariant('CodeDiff', presentation)}
+        path={revision === 1 ? 'src/a.ts' : 'src/b.ts'}
+        baseVersion="base-1"
+        nextVersion={`next-${revision}`}
+        before={'const value = "base";\n'}
+        after={`const value = "revision ${revision}";\n`}
+        language="ts"
+        status={denied ? 'denied' : 'ready'}
+      />
+    </div>
+  );
+}
+
+export function ExpandedSpecimen({
+  name,
+  state = 'Default',
+  presentation,
+}: {
+  name: string;
+  state?: string;
+  presentation?: string;
+}) {
+  const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState('');
+  const [effort, setEffort] = useState('medium');
+  const [mode, setMode] = useState('read');
+  const [selection, setSelection] = useState<string[]>(['search']);
+  const [feedback, setFeedback] = useState('');
+  const navContext = {
+    workspaceId: 'gallery-conversation',
+    snapshotId: 'snapshot-1',
+    version: '1',
+    threadId: '1',
+    branchId: 'revision',
+  };
+  const navState = {
+    context: navContext,
+    status:
+      (
+        {
+          Denied: 'denied',
+          Loading: 'loading',
+          Unavailable: 'unavailable',
+          Unknown: 'unknown',
+          Stale: 'stale',
+        } as Record<string, NavigationAvailability>
+      )[state] ?? 'ready',
+    connection: state === 'Disconnected' ? ('disconnected' as const) : ('connected' as const),
+    operation: ['Outcome unknown', 'Obsolete request'].includes(state)
+      ? ({
+          context:
+            state === 'Obsolete request'
+              ? { ...navContext, snapshotId: 'old-snapshot' }
+              : navContext,
+          requestId: 'fixture-request',
+          state: 'outcome-unknown',
+        } as NavigationOperation)
+      : undefined,
+    onReconcile: () => setFeedback('Original fixture request checked; no transport invoked.'),
+  };
+  const [pageIndex, setPageIndex] = useState(0);
+  const [stage, setStage] = useState('');
+  const [versions, setVersions] = useState({
+    beforeId: 'v1',
+    afterId: state === 'No changes' ? 'v1' : 'v2',
+  });
+  const [threads, setThreads] = useState<ThreadSummary[]>([
+    {
+      id: '1',
+      title:
+        state === 'Long titles'
+          ? 'Review search accessibility and keyboard interactions across the customer administration workspace'
+          : 'Review the search change',
+      version: '1',
+      detail: 'Updated just now',
+      pending: state === 'Pending',
+    },
+    {
+      id: '2',
+      title:
+        state === 'Long titles'
+          ? 'PlanTheCustomerAdministrationSettingsAndPermissionManagementScreenWithCompleteRequirements'
+          : 'Plan the settings screen',
+      version: '1',
+      detail:
+        state === 'Long titles'
+          ? 'A longer secondary description with workspace and ownership details'
+          : 'Yesterday',
+    },
+  ]);
+  const [queue, setQueue] = useState<QueuedMessage[]>([
+    {
+      id: 'q1',
+      version: '1',
+      text:
+        state === 'Long drafts'
+          ? 'Review search accessibility, keyboard interactions, and the placement of actions within the customer administration workspace.\n\nCustomerAdministrationSearchAndPermissionManagementWithoutBreakingLongIdentifiers'.repeat(
+              3,
+            )
+          : 'Add tests for empty search queries.',
+      state:
+        state === 'Sending'
+          ? 'sending'
+          : state === 'Failed'
+            ? 'failed'
+            : state === 'Cancelled'
+              ? 'cancelled'
+              : 'queued',
+      pending: state === 'Pending',
+      error: state === 'Failed' ? 'The host did not accept this draft.' : undefined,
+    },
+    {
+      id: 'q2',
+      version: '1',
+      text: 'Review the accessibility of the search field.',
+      state: 'queued',
+    },
+  ]);
+  const [sort, setSort] = useState<{ columnId: string; direction: 'asc' | 'desc' }>({
+    columnId: 'name',
+    direction: 'asc',
+  });
+  const empty = state === 'Empty',
+    loading = state === 'Loading',
+    failed = state === 'Error';
+  const status = loading ? 'loading' : failed ? 'error' : 'ready';
+  const emit = (message: string) => setFeedback(`Synthetic host: ${message}`);
+  let content;
+  switch (name) {
+    case 'SlashCommandMenu':
+      content = (
+        <SlashCommandMenu
+          variant={resolveVariant('SlashCommandMenu', presentation)}
+          items={
+            empty
+              ? []
+              : state === 'Unavailable'
+                ? commands.map((item) => ({
+                    ...item,
+                    disabledReason: 'Unavailable in this workspace.',
+                  }))
+                : commands
+          }
+          query={query}
+          onQueryChange={setQuery}
+          onSelect={(item) => emit(`/${item.label} selected`)}
+          status={status}
+        />
+      );
+      break;
+    case 'MentionPicker':
+      content = (
+        <MentionPicker
+          variant={resolveVariant('MentionPicker', presentation)}
+          items={
+            empty
+              ? []
+              : state === 'Unavailable'
+                ? references.map((item) => ({
+                    ...item,
+                    disabledReason: 'Reference access revoked.',
+                  }))
+                : references
+          }
+          query={query}
+          onQueryChange={setQuery}
+          onSelect={(item) => emit(`@${item.label} · version ${item.version} selected`)}
+          status={status}
+        />
+      );
+      break;
+    case 'ReasoningControl':
+      content = (
+        <ReasoningControl
+          variant={resolveVariant('ReasoningControl', presentation)}
+          options={state === 'Unsupported' ? [] : efforts}
+          value={effort}
+          onValueChange={setEffort}
+          disabled={state === 'Disabled'}
+        />
+      );
+      break;
+    case 'AccessModeSelector':
+      content = (
+        <AccessModeSelector
+          variant={resolveVariant('AccessModeSelector', presentation)}
+          modes={accessModes}
+          value={mode}
+          scope="ai-components workspace"
+          version="policy-4"
+          status={
+            state === 'Pending'
+              ? 'pending'
+              : state === 'Stale'
+                ? 'stale'
+                : failed
+                  ? 'error'
+                  : 'ready'
+          }
+          onRequest={(request) => {
+            setMode(request.modeId);
+            emit(`access request acknowledged for ${request.scope}`);
+          }}
+        />
+      );
+      break;
+    case 'VoiceControl':
+      content = (
+        <VoiceSpecimen key={state} state={state} presentation={presentation} onEvent={emit} />
+      );
+      break;
+    case 'FileExplorer':
+      content = <FileSpecimen state={state} presentation={presentation} onEvent={emit} />;
+      break;
+    case 'CodeDiff': {
+      if (state === 'Live versions') {
+        content = <DiffLifecycleSpecimen presentation={presentation} />;
+        break;
+      }
+      const View = state === 'Default' ? CodeDiff : HighlightedCodeDiff;
+      content = (
+        <View
+          variant={resolveVariant('CodeDiff', presentation)}
+          path="src/search.ts"
+          before={
+            state === 'Multiline'
+              ? '/* old comment\nshared comment line\n*/\nconst value = 1;\n'
+              : state === 'Replacements'
+                ? 'same\nold one\nold two\nend\n'
+                : state === 'CRLF source'
+                  ? 'const value = "old";\r\n'
+                  : state === 'Untrusted HTML'
+                    ? '<img src="https://example.invalid/diff-image" onerror="alert(1)">'
+                    : before
+          }
+          after={
+            state === 'No changes'
+              ? before
+              : state === 'Large diff'
+                ? 'Large source\n'.repeat(6000)
+                : state === 'Multiline'
+                  ? '/* new comment\nshared comment line\n*/\nconst value = 2;\n'
+                  : state === 'Replacements'
+                    ? 'same\nnew one\nnew two\nnew three\nend\n'
+                    : state === 'CRLF source'
+                      ? 'const value = "new";\r\n'
+                      : state === 'Highlight limit'
+                        ? 'const value = 1;\n'.repeat(310)
+                        : state === 'Untrusted HTML'
+                          ? '<script>alert("inert")</script>'
+                          : after
+          }
+          baseVersion="a1"
+          nextVersion={state === 'Invalid version' ? 'a1' : 'b2'}
+          status={
+            state === 'Conflict'
+              ? 'conflict'
+              : state === 'Denied'
+                ? 'denied'
+                : state === 'Error'
+                  ? 'error'
+                  : state === 'Unavailable'
+                    ? 'unavailable'
+                    : loading
+                      ? 'loading'
+                      : 'ready'
+          }
+          {...(state === 'Default'
+            ? {}
+            : {
+                language:
+                  state === 'Unsupported language'
+                    ? 'unknown'
+                    : state === 'Untrusted HTML'
+                      ? 'html'
+                      : 'typescript',
+              })}
+        />
+      );
+      break;
+    }
+    case 'TerminalOutput':
+      content = (
+        <TerminalSpecimen key={state} state={state} presentation={presentation} onEvent={emit} />
+      );
+      break;
+    case 'TestResults':
+      content = (
+        <TestResults
+          variant={resolveVariant('TestResults', presentation)}
+          loading={loading}
+          results={
+            empty
+              ? []
+              : [
+                  {
+                    id: 'one',
+                    name: 'normalizes whitespace',
+                    state: 'passed',
+                    durationMs: 4,
+                    file: 'tests/search.test.ts',
+                  },
+                  {
+                    id: 'two',
+                    name: 'handles empty queries',
+                    state:
+                      state === 'Failed' ? 'failed' : state === 'Running' ? 'running' : 'passed',
+                    durationMs: state === 'Running' ? undefined : 7,
+                    detail:
+                      state === 'Failed'
+                        ? 'Expected an empty string. Received undefined.\n  at tests/search.test.ts:18'
+                        : undefined,
+                    file: 'tests/search.test.ts',
+                  },
+                ]
+          }
+          onOpenFile={(file) => emit(`opened ${file}`)}
+        />
+      );
+      break;
+    case 'ThreadList':
+      content = (
+        <ThreadList
+          {...navState}
+          variant={resolveVariant('ThreadList', presentation)}
+          threads={
+            empty
+              ? []
+              : state === 'Invalid window'
+                ? [threads[0]!, threads[0]!]
+                : threads.filter((thread) =>
+                    thread.title.toLowerCase().includes(query.toLowerCase()),
+                  )
+          }
+          selectedId={selected || '1'}
+          query={query}
+          onQueryChange={setQuery}
+          onSelect={(thread) => setSelected(thread.id)}
+          onRename={
+            state === 'Read-only'
+              ? undefined
+              : (thread, title) => {
+                  setThreads(
+                    threads.map((item) =>
+                      item.id === thread.id
+                        ? { ...item, title, version: String(Number(item.version) + 1) }
+                        : item,
+                    ),
+                  );
+                  emit('rename acknowledged');
+                }
+          }
+          onArchive={
+            state === 'Read-only'
+              ? undefined
+              : (thread) => {
+                  setThreads(threads.filter((item) => item.id !== thread.id));
+                  emit('archive acknowledged');
+                }
+          }
+          loading={loading}
+          error={failed ? 'Conversation history could not be loaded.' : undefined}
+          pagination={
+            ['Paged', 'Unknown total'].includes(state)
+              ? {
+                  pageIndex: 0,
+                  pageSize: threads.length,
+                  totalItems: state === 'Paged' ? threads.length * 2 : undefined,
+                  hasNextPage: true,
+                }
+              : undefined
+          }
+          onPageChange={() => emit('host page requested; fixture window retained')}
+        />
+      );
+      break;
+    case 'BranchSwitcher':
+      content = (
+        <BranchSwitcher
+          {...navState}
+          variant={resolveVariant('BranchSwitcher', presentation)}
+          branches={
+            empty
+              ? []
+              : state === 'Invalid window'
+                ? [
+                    { id: 'duplicate', label: 'Invalid branch', version: '1' },
+                    { id: 'duplicate', label: 'Duplicate', version: '1' },
+                  ]
+                : [
+                    { id: 'original', label: 'Original', version: '1' },
+                    { id: 'revision', label: 'Revision', version: '2', parentId: 'original' },
+                    { id: 'alternative', label: 'Alternative', version: '3', parentId: 'original' },
+                  ]
+          }
+          value={state === 'Missing' ? 'missing' : selected || 'revision'}
+          onValueChange={(branch) => setSelected(branch.id)}
+          disabled={state === 'Disabled'}
+          changeGuard={
+            state === 'Draft guard'
+              ? {
+                  version: 'draft-1',
+                  message: 'The host will save the draft to its original branch before switching.',
+                }
+              : undefined
+          }
+        />
+      );
+      break;
+    case 'MessageQueue':
+      content = (
+        <MessageQueue
+          {...navState}
+          variant={resolveVariant('MessageQueue', presentation)}
+          items={
+            empty
+              ? []
+              : state === 'Invalid window'
+                ? [queue[0]!, queue[0]!]
+                : queue.map((item) =>
+                    state === 'Sent'
+                      ? { ...item, state: 'sent' as const }
+                      : state === 'Send unknown'
+                        ? { ...item, state: 'outcome-unknown' as const }
+                        : item,
+                  )
+          }
+          pagination={
+            ['Paged', 'Unknown total'].includes(state)
+              ? {
+                  pageIndex: 1,
+                  pageSize: queue.length,
+                  totalItems: state === 'Paged' ? queue.length * 3 : undefined,
+                  hasNextPage: true,
+                }
+              : undefined
+          }
+          onPageChange={() => emit('host page requested; fixture window retained')}
+          onEdit={(item, text) => {
+            setQueue(
+              queue.map((entry) =>
+                entry.id === item.id
+                  ? { ...entry, text, version: String(Number(entry.version) + 1) }
+                  : entry,
+              ),
+            );
+            emit('draft update acknowledged');
+          }}
+          onCancel={(item) => {
+            setQueue(queue.filter((entry) => entry.id !== item.id));
+            emit('removal acknowledged');
+          }}
+          onMove={
+            state === 'No reorder'
+              ? undefined
+              : (item, direction) => {
+                  const next = [...queue],
+                    index = next.findIndex((entry) => entry.id === item.id),
+                    target = index + (direction === 'up' ? -1 : 1);
+                  if (next[target]) {
+                    [next[index], next[target]] = [next[target]!, next[index]!];
+                    setQueue(next);
+                    emit('reorder acknowledged');
+                  }
+                }
+          }
+        />
+      );
+      break;
+    case 'AgentHandoff':
+      content = <HandoffSpecimen key={state} state={state} presentation={presentation} />;
+      break;
+    case 'ReviewChanges':
+      content = (
+        <ReviewChanges
+          variant={resolveVariant('ReviewChanges', presentation)}
+          changes={
+            empty
+              ? []
+              : [
+                  {
+                    id: 'search',
+                    path: 'src/search.ts',
+                    before,
+                    after,
+                    conflict: state === 'Conflict',
+                  },
+                ]
+          }
+          baseVersion="a1"
+          proposalVersion="b2"
+          selectedIds={selection}
+          onSelectionChange={setSelection}
+          state={
+            stage === 'accepted'
+              ? 'accepted'
+              : stage === 'rejected'
+                ? 'rejected'
+                : state === 'Pending'
+                  ? 'pending'
+                  : state === 'Stale'
+                    ? 'stale'
+                    : state === 'Accepted'
+                      ? 'accepted'
+                      : 'ready'
+          }
+          onDecision={(request) => {
+            setStage(request.decision === 'accept' ? 'accepted' : 'rejected');
+            emit('review decision acknowledged');
+          }}
+        />
+      );
+      break;
+    case 'AIForm':
+      content = <FormSpecimen state={state} presentation={presentation} onEvent={emit} />;
+      break;
+    case 'GeneratedUI':
+      content = <GeneratedSpecimen state={state} presentation={presentation} onEvent={emit} />;
+      break;
+    case 'DataTable': {
+      const formatted = state === 'Currency and dates';
+      const paged =
+        state === 'Paged' || state === 'Unknown total' || state === 'Invalid pagination';
+      const columns: TableColumn[] = formatted
+        ? [
+            { id: 'name', label: 'Check', sortable: true },
+            {
+              id: 'cost',
+              label: 'Cost (EUR)',
+              sortable: true,
+              format: { kind: 'number', options: { style: 'currency', currency: 'EUR' } },
+            },
+            {
+              id: 'date',
+              label: 'Completed (UTC)',
+              format: { kind: 'date', options: { dateStyle: 'medium' } },
+            },
+          ]
+        : [
+            { id: 'name', label: 'Check', sortable: true },
+            { id: 'duration', label: 'Seconds', sortable: true },
+            { id: 'state', label: 'State' },
+          ];
+      const rows: TableRow[] = [
+        {
+          id: '1',
+          cells: {
+            name:
+              state === 'Long cells'
+                ? 'Enterprise search regression suite for workspace-specific reference permissions'
+                : 'Search tests',
+            duration: 41,
+            state: 'Passed',
+            cost: 1234.5,
+            date: '2026-09-30T10:15:00Z',
+          },
+        },
+        {
+          id: '2',
+          cells: { name: 'Typecheck', duration: 18, state: 'Passed', cost: 89, date: '2026-09-29' },
+        },
+        {
+          id: '3',
+          cells: { name: 'Build', duration: 67, state: 'Running', cost: null, date: null },
+        },
+      ];
+      rows.sort(
+        (a, b) =>
+          String(a.cells[sort.columnId]).localeCompare(String(b.cells[sort.columnId]), 'en-US', {
+            numeric: true,
+          }) * (sort.direction === 'asc' ? 1 : -1),
+      );
+      content = (
+        <DataTable
+          variant={resolveVariant('DataTable', presentation)}
+          caption="Synthetic build checks"
+          columns={state === 'Invalid identities' ? [columns[0]!, columns[0]!] : columns}
+          rows={empty ? [] : paged ? rows.slice(pageIndex * 2, pageIndex * 2 + 2) : rows}
+          locale={formatted ? 'de-DE' : 'en-US'}
+          sort={columns.some((column) => column.id === sort.columnId) ? sort : undefined}
+          onSort={(next) => {
+            setSort(next);
+            setPageIndex(0);
+          }}
+          pagination={
+            paged
+              ? {
+                  pageIndex,
+                  pageSize: 2,
+                  totalRows:
+                    state === 'Unknown total'
+                      ? undefined
+                      : state === 'Invalid pagination'
+                        ? 1
+                        : rows.length,
+                  hasNextPage: state === 'Unknown total' ? pageIndex === 0 : undefined,
+                }
+              : undefined
+          }
+          onPageChange={paged ? setPageIndex : undefined}
+          loading={loading}
+          error={failed ? 'Unable to load additional rows.' : undefined}
+        />
+      );
+      break;
+    }
+    case 'Chart':
+      content = <ChartSpecimen state={state} presentation={presentation} onEvent={emit} />;
+      break;
+    case 'MemoryControls':
+      content = (
+        <MemoryControls
+          variant={resolveVariant('MemoryControls', presentation)}
+          items={
+            empty
+              ? []
+              : [
+                  {
+                    id: 'memory-1',
+                    version: '3',
+                    label: 'Testing preference',
+                    value: 'Use Vitest for component tests.',
+                    scope: 'This workspace',
+                    state:
+                      stage === 'pending' || state === 'Pending'
+                        ? 'pending'
+                        : state === 'Revoked'
+                          ? 'revoked'
+                          : failed
+                            ? 'error'
+                            : 'available',
+                    error: failed ? 'The deletion request could not be confirmed.' : undefined,
+                  },
+                ]
+          }
+          onRequest={(_, action) => {
+            setStage('pending');
+            emit(`${action} request awaiting confirmation`);
+          }}
+        />
+      );
+      break;
+    case 'ArtifactDiff':
+      content = (
+        <ArtifactDiff
+          variant={resolveVariant('ArtifactDiff', presentation)}
+          path="review.md"
+          versions={[
+            {
+              id: 'v1',
+              label: 'Version 1',
+              text: '# Review\n\nInspect the search input.\n',
+              author: 'Research agent',
+              access: 'available',
+            },
+            {
+              id: 'v2',
+              label: 'Version 2',
+              text: '# Review\n\nInspect the search input and keyboard interactions.\n',
+              author: 'Review agent',
+              access: state === 'Revoked' ? 'revoked' : 'available',
+            },
+          ]}
+          beforeId={versions.beforeId}
+          afterId={state === 'Missing version' ? 'v9' : versions.afterId}
+          onVersionsChange={setVersions}
+        />
+      );
+      break;
+    case 'WorkflowGraph':
+      content = <WorkflowSpecimen state={state} presentation={presentation} onEvent={emit} />;
+      break;
+    case 'AuditTrail':
+      content = (
+        <AuditTrail
+          variant={resolveVariant('AuditTrail', presentation)}
+          records={
+            empty
+              ? []
+              : [
+                  {
+                    id: 'event-1',
+                    time: '2026-09-30 09:41 UTC',
+                    actor: 'Workspace owner',
+                    action: 'Approved file changes',
+                    scope: 'src/search.ts',
+                    correlationId: 'run-42',
+                    outcome: 'Acknowledged',
+                    redacted: state === 'Redacted',
+                    detail: 'Proposal b2 against base a1.',
+                  },
+                  {
+                    id: 'event-2',
+                    time: '2026-09-30 09:40 UTC',
+                    actor: 'Review agent',
+                    action: 'Requested change review',
+                    scope: 'Current workspace',
+                    correlationId: 'run-42',
+                    outcome: 'Recorded',
+                  },
+                ].filter((record) => record.action.toLowerCase().includes(query.toLowerCase()))
+          }
+          query={query}
+          onQueryChange={setQuery}
+          loading={loading}
+        />
+      );
+      break;
+    case 'RunInspector':
+      content = (
+        <RunInspector
+          variant={resolveVariant('RunInspector', presentation)}
+          runId="run-42"
+          usage={
+            state === 'Unknown usage'
+              ? undefined
+              : { tokens: 2840, source: 'Synthetic adapter fixture' }
+          }
+          spans={
+            empty
+              ? []
+              : [
+                  {
+                    id: 's1',
+                    name: 'Plan update',
+                    kind: 'model',
+                    state: 'complete',
+                    durationMs: 810,
+                    summary: 'Identified the search normalization change.',
+                  },
+                  {
+                    id: 's2',
+                    parentId: 's1',
+                    name: 'Run tests',
+                    kind: 'tool',
+                    state:
+                      state === 'Failed' ? 'failed' : state === 'Running' ? 'running' : 'complete',
+                    durationMs: state === 'Running' ? undefined : 940,
+                    summary: 'Ran the synthetic search test suite.',
+                  },
+                ]
+          }
+          onSelect={(span) => emit(`inspecting span ${span.id}`)}
+        />
+      );
+      break;
+    case 'MarkdownResponse':
+      content = (
+        <MarkdownSpecimen name="StreamingResponse" state={state} presentation={presentation} />
+      );
+      break;
+    case 'MarkdownCodeBlock': {
+      const View = ['Default', 'Long code', 'Empty'].includes(state)
+        ? MarkdownCodeBlock
+        : HighlightedCodeBlock;
+      content = (
+        <View
+          variant={resolveVariant('MarkdownCodeBlock', presentation)}
+          code={
+            empty
+              ? ''
+              : state === 'Long code'
+                ? 'const description = "A long explanation of how to preserve keyboard focus and input state during streaming updates across complex workspaces";'
+                : state === 'Highlight limit'
+                  ? 'const value = 1;\n'.repeat(310)
+                  : state === 'Untrusted HTML'
+                    ? '<img src="https://example.invalid/blocked.png" onerror="alert(1)">\n<script>alert("inert")</script>'
+                    : state === 'CRLF source'
+                      ? 'const value = "original";\r\n// preserve the original line endings\r\n'
+                      : state === 'Python'
+                        ? 'def greet(name):\n    # Show a public message\n    return f"Hello {name}"'
+                        : state === 'JSX'
+                          ? 'export const Message = () => <div title="Safe">Hello</div>;'
+                          : after
+          }
+          language={
+            state === 'Unsupported language'
+              ? 'not-a-language'
+              : state === 'Untrusted HTML'
+                ? 'html'
+                : state === 'Python'
+                  ? 'python'
+                  : state === 'JSX'
+                    ? 'jsx'
+                    : 'typescript'
+          }
+          streaming={state === 'Streaming'}
+        />
+      );
+      break;
+    }
+    case 'MathFormula':
+      content = (
+        <MathFormula
+          variant={resolveVariant('MathFormula', presentation)}
+          formula={
+            state === 'Matrix'
+              ? '\\begin{bmatrix}1 & 0\\\\0 & 1\\end{bmatrix}'
+              : state === 'Integral'
+                ? '\\int_0^\\infty e^{-x^2}\\,dx = \\frac{\\sqrt{\\pi}}{2}'
+                : state === 'Invalid'
+                  ? '\\frac{'
+                  : state === 'Oversized'
+                    ? 'x+'.repeat(6000)
+                    : 'x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}'
+          }
+        />
+      );
+      break;
+    case 'MermaidDiagram':
+      content = (
+        <MermaidDiagram
+          variant={resolveVariant('MermaidDiagram', presentation)}
+          code={diagrams[state] ?? diagrams.Default!}
+          title={state === 'Default' ? 'Agent workflow' : `${state} diagram`}
+          state={state === 'Streaming' ? 'streaming' : 'complete'}
+        />
+      );
+      break;
+    case 'RichMarkdownResponse':
+      content = (
+        <RichMarkdownResponse
+          variant={resolveVariant('RichMarkdownResponse', presentation)}
+          text={
+            state === 'Invalid formula'
+              ? 'An invalid formula: $\\notacommand{x}$'
+              : state === 'Unsafe diagram'
+                ? '```mermaid\n' + diagrams.Restricted + '\n```'
+                : richMarkdown
+          }
+          state={state === 'Streaming' ? 'streaming' : 'complete'}
+        />
+      );
+      break;
+    default:
+      content = <p>Example unavailable.</p>;
+  }
+  return (
+    <div className="specimen-content">
+      <Suspense fallback={<ExampleLoading />}>{content}</Suspense>
+      {feedback && (
+        <p role="status" className="specimen-feedback">
+          {feedback}
+        </p>
+      )}
+    </div>
+  );
+}

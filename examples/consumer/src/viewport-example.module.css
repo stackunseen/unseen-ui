@@ -1,0 +1,55 @@
+.example {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+}
+.header {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: var(--ai-gap, 12px);
+}
+.header h3 {
+  margin: 0;
+}
+.header p {
+  margin: 4px 0 0;
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.settings {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: var(--ai-field-gap, 8px);
+  margin-inline-start: auto;
+}
+.settings > * {
+  flex: 1 1 9rem;
+  min-inline-size: 0;
+}
+.settings label {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+}
+.scenarios {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+}
+.scenarios p {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-field-gap, 8px);
+}
+@media (any-pointer: coarse) {
+  .settings,
+  .actions {
+    gap: max(8px, var(--ai-field-gap, 8px));
+  }
+}

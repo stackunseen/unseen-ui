@@ -1,0 +1,90 @@
+# Getting started with Unseen UI
+
+[Back to the gallery](/)
+
+React components by **Stack Unseen** for AI interfaces and ordinary application controls. This is a private experimental alpha. Packages are unpublished and marked `UNLICENSED`; the `@ai-interaction/*` names are workspace imports, not registry packages.
+
+## Run locally
+
+Use Node **24.13.0** and pnpm **11.5.0**. With access to the private repository:
+
+```sh
+git clone https://github.com/stackunseen/unseen-ui.git
+cd unseen-ui
+pnpm install --frozen-lockfile
+pnpm build:packages
+pnpm dev
+```
+
+Open `http://127.0.0.1:3000`. For a production preview, run `pnpm build`, then `pnpm preview`, and open `http://127.0.0.1:4173`.
+
+The library uses React/ReactDOM `^19.3.0`. The gallery uses Next.js 16.3.6 and MDX; the plain React examples use Vite 8.3.1. Components do not require Next.js, Tailwind or a CSS Modules build setup. Build the workspace packages before using them. For an isolated local app, `pnpm check:packages` demonstrates packing and installing both packages without a registry release.
+
+## Find an example
+
+- **UI Components:** 44 entries for forms, overlays, menus, feedback, navigation and content.
+- **AI Components:** 49 entries for conversations, tools, approvals and host-state display.
+- **Patterns:** the [Agent workbench](/?view=workbench), [Coding studio](/?view=coding) and [Relay template](/?view=templates).
+- **Customize:** [Theme Studio](/?view=theme) and [design foundations](/?view=design).
+
+Search across both catalogs. Dialog and Sheet find [Modal](/?component=Modal); Drawer also finds [Sidecar](/?component=Sidecar). Use Style and State for the component's supported presentations and examples.
+
+## Render a controlled component
+
+Import the shared stylesheet once. Keep values in your application and handle callbacks explicitly. In Next.js, put interactive composition in a Client Component.
+
+```tsx
+'use client';
+import { useState } from 'react';
+import { AITheme, PromptInput } from '@ai-interaction/react';
+import '@ai-interaction/react/styles.css';
+
+export function PromptExample({ onSend }: { onSend: (text: string) => void }) {
+  const [draft, setDraft] = useState('');
+  return (
+    <AITheme appearance="system" config={{ primary: '#2563eb' }}>
+      <PromptInput value={draft} onValueChange={setDraft} onSubmit={onSend} />
+    </AITheme>
+  );
+}
+```
+
+The callback requests work; your host authorizes and executes it. Keep pending, failed and confirmed outcomes distinct. Approval and handoff components require their matching version/scope and host receipts. Rendering a component does not connect a model or execute a tool.
+
+<h2 id="theme">Customize themes and icons</h2>
+
+Use `AITheme` for colours, appearance, density, corners and borders. Theme Studio exports CSS, TypeScript or versioned JSON. Fonts use application-wide `--ai-font-family` and `--ai-font-size` variables. Resolved theme settings follow portals; arbitrary wrapper styles do not.
+
+<span id="customize" />
+
+Use `IconsProvider icons={{ send: YourSvg }}` to replace semantic icons. Nested providers allow local overrides. Forward SVG props, use `currentColor` and keep accessible control labels. For styling, use documented variants, content slots and exposed `className`/`style` props.
+
+The [customization guide](https://github.com/stackunseen/unseen-ui/blob/main/docs/CUSTOMIZATION.md) includes a complete icon example and the current styling limits.
+
+<h2 id="optional-renderers">Optional entries</h2>
+
+Use named root imports for ordinary controls. There are no `/button` or `/icons` subpaths. Heavy renderers have separate entries and optional peers:
+
+- `/code`: no additional peers.
+- `/markdown`: react-markdown, remark-gfm and remend.
+- `/math`: katex and its CSS/fonts.
+- `/mermaid`: mermaid and dompurify; KaTeX CSS/fonts for math labels.
+- `/rich-markdown`: Markdown peers, remark-math, katex, mermaid and dompurify.
+- `/highlight`: shiki.
+- `/terminal`: @xterm/xterm and @xterm/addon-fit; import terminal.css.
+- `/viewport`: @tanstack/react-virtual.
+- `/layout`: react-resizable-panels.
+
+Import `@ai-interaction/react/styles.css` once. The workspace installs peers for its examples; other apps should use the [entry requirements](https://github.com/stackunseen/unseen-ui/blob/main/docs/GETTING-STARTED.md#choose-the-right-entry). Model output is untrusted data, never executable HTML/MDX.
+
+## Run Relay
+
+After building packages, run `pnpm template:dev` and open `http://127.0.0.1:4184/relay.html`.
+
+Relay has mock login, editable sample accounts and a deterministic assistant. Reloading discards its in-memory state. The [template guide](https://github.com/stackunseen/unseen-ui/blob/main/examples/consumer/src/relay/README.md) covers built preview, reuse and customization.
+
+## Before integrating
+
+The API is experimental. Test your actual host, accessibility requirements, browser support and custom styles. Reconcile unknown command outcomes before retrying mutations. Active rich responses still reparse on updates, so check performance with your own content.
+
+See the private repository [README](https://github.com/stackunseen/unseen-ui/blob/main/README.md) for checks and [website component APIs](https://github.com/stackunseen/unseen-ui/blob/main/docs/WEBSITE-COMPONENTS.md) for controls and composition. Repository links require access.

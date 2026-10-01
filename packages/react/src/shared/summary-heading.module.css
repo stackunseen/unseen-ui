@@ -1,0 +1,13 @@
+.heading {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-gap, 12px);
+  flex: 1 1 160px;
+  min-width: 0;
+}
+.title {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}

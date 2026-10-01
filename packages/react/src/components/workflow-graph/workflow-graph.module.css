@@ -1,0 +1,152 @@
+.root:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.root [data-part='status'] {
+  font-size: 12px;
+}
+.canvas {
+  position: relative;
+  width: 960px;
+  background: var(--ai-surface-subtle);
+  border-radius: var(--ai-control-radius, 8px);
+}
+.canvas > svg {
+  position: absolute;
+  inset: 0;
+  width: 960px;
+  height: 100%;
+}
+.edge {
+  stroke: var(--ai-muted);
+  stroke-width: 1.5;
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.edge[data-loop='true'] {
+  stroke-dasharray: 6 4;
+}
+.edge[data-selected='true'] {
+  stroke: var(--ai-primary-text);
+  stroke-width: 2.5;
+}
+.edgeNumber rect {
+  fill: var(--ai-surface);
+  stroke: var(--ai-border);
+}
+.edgeNumber text {
+  fill: var(--ai-muted);
+  font: 12px system-ui;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+.node {
+  box-sizing: border-box;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 148px;
+  height: 80px;
+  padding: 8px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 4px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface);
+  color: var(--ai-text);
+  cursor: pointer;
+}
+.node[aria-pressed='true'] {
+  border-color: var(--ai-primary-text);
+  background: var(--ai-primary-soft);
+}
+.node:disabled {
+  cursor: default;
+}
+.nodeLabel {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  max-width: 100%;
+}
+.row,
+.heading {
+  display: flex;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.row > button,
+.heading > button {
+  white-space: normal;
+  text-align: start;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.row > button[aria-pressed='true'],
+.heading > button[aria-pressed='true'] {
+  background: var(--ai-primary-soft);
+  color: var(--ai-primary-text);
+}
+.inspector > [data-part='status'] {
+  justify-self: start;
+}
+.heading,
+.detailHeading {
+  margin: 0;
+  font-size: inherit;
+}
+.heading > button {
+  flex: 1 1 160px;
+  justify-content: start;
+}
+.nodeList,
+.outline,
+.connections {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: var(--ai-gap, 12px);
+}
+.nodeList > li,
+.inspector {
+  min-width: 0;
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  padding: var(--ai-panel-padding, 16px);
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+}
+.outline {
+  gap: 8px;
+}
+.outline > li {
+  min-width: 0;
+  padding: 8px;
+  border-inline-start: 2px solid var(--ai-border);
+}
+.outline > li[data-reference] {
+  border-inline-start-style: dashed;
+  color: var(--ai-muted);
+}
+.summary {
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+.description {
+  white-space: pre-wrap;
+}
+.connections > li {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  padding-block: 8px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+}

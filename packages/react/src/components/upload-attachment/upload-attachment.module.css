@@ -1,0 +1,43 @@
+.wrapper {
+  min-inline-size: 0;
+  border-radius: var(--ai-radius, 12px);
+}
+.wrapper:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 3px;
+}
+.root {
+  min-inline-size: 0;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-inline-start: auto;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.root[data-variant='tile'] > .actions {
+  grid-column: 1 / -1;
+}
+.status {
+  flex: 1 0 100%;
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 4px;
+  min-inline-size: 0;
+  color: var(--ai-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.status p {
+  margin: 0;
+}
+.status [role='alert'] {
+  color: var(--ai-danger);
+}
+.status [data-unknown='true'] {
+  color: var(--ai-warning);
+}

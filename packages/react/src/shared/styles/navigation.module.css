@@ -1,0 +1,265 @@
+.root {
+  container-type: inline-size;
+}
+.search {
+  position: relative;
+  min-width: 0;
+}
+.search > [data-ai-icon] {
+  position: absolute;
+  inset-inline-start: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ai-muted);
+  pointer-events: none;
+}
+.search input {
+  padding-inline-start: 36px;
+}
+.threadWindow {
+  min-width: 0;
+  max-height: var(--ai-navigation-height, 360px);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+.threadWindow:focus-visible,
+.queueText:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.threadSelect:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 12px;
+}
+.pagination > div {
+  margin-inline-start: auto;
+}
+.operation {
+  display: grid;
+  gap: 8px;
+}
+.operation > button {
+  justify-self: end;
+}
+.changeGuard {
+  display: grid;
+  gap: var(--ai-field-gap, 8px);
+  padding: min(16px, var(--ai-panel-padding, 16px));
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface-subtle);
+}
+.threads,
+.queue {
+  display: grid;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.thread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  border: var(--ai-border-width, 1px) solid transparent;
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface);
+  min-width: 0;
+}
+.thread:hover,
+.thread:focus-within {
+  background: var(--ai-surface-subtle);
+}
+.thread[data-selected='true'] {
+  background: var(--ai-primary-soft);
+  border-color: var(--ai-primary);
+}
+.threadSelect {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: inherit;
+  padding: 10px 12px;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.threadSelect > span {
+  min-width: 0;
+}
+.threadSelect strong,
+.threadSelect small {
+  display: block;
+}
+.threadSelect strong {
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.5;
+}
+.threadSelect[aria-current='true'] strong {
+  color: var(--ai-primary-text);
+  font-weight: 650;
+}
+.root .threadSelect:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: -2px;
+}
+.thread > .actions {
+  padding: 8px 8px 8px 0;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  min-width: 0;
+}
+.queueItem {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border-block-end: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.queueHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.queueContent {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+.queueHeader .actions {
+  margin-inline-start: auto;
+}
+.queueText {
+  white-space: pre-wrap;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  max-height: 240px;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+.state {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.queueItem[data-state='failed'] .state {
+  color: var(--ai-danger);
+  background: var(--ai-danger-soft);
+}
+.queueItem[data-pending='true'] .state {
+  color: var(--ai-warning);
+  background: var(--ai-warning-soft);
+}
+.queueItem[data-state='outcome-unknown'] .state {
+  color: var(--ai-warning);
+  background: var(--ai-warning-soft);
+}
+.queueItem[data-state='sent'] .state {
+  color: var(--ai-success);
+  background: var(--ai-success-soft);
+}
+.editor {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-block-start: var(--ai-border-width, 1px) solid var(--ai-border);
+  background: var(--ai-surface-subtle);
+}
+.editor label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 550;
+}
+.editor textarea {
+  resize: vertical;
+  min-height: 88px;
+}
+.editorActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.loadMore {
+  justify-self: center;
+}
+.branchSegments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface-subtle);
+}
+.branchSegments > button[aria-pressed='true'] {
+  background: var(--ai-primary-soft);
+  color: var(--ai-primary-text);
+  border-color: var(--ai-primary);
+}
+.root[data-variant='cards'] .threads,
+.root[data-variant='cards'] .queue {
+  gap: 8px;
+}
+.root[data-variant='cards'] .thread,
+.root[data-variant='cards'] .queueItem {
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  box-shadow: var(--ai-shadow-panel, none);
+}
+.root[data-variant='cards'] .thread[data-selected='true'] {
+  border-color: var(--ai-primary);
+}
+.root[data-variant='compact'] .threadSelect {
+  padding: 6px 8px;
+}
+.root[data-variant='compact'] .thread > .actions {
+  padding: 4px 4px 4px 0;
+}
+.root[data-variant='compact'] .queueItem {
+  padding: 8px;
+  gap: 6px;
+}
+@media (any-pointer: coarse) {
+  .actions,
+  .branchSegments {
+    gap: 8px;
+  }
+}
+@container (max-width: 250px) {
+  .thread {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .thread > .actions {
+    padding: 0 8px 8px;
+  }
+}

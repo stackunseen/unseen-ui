@@ -1,0 +1,30 @@
+.root .tools,
+.root .temperature,
+.root[data-variant='compact'] .fields {
+  gap: var(--ai-gap, 12px);
+}
+
+.root .tools legend {
+  margin-block-end: var(--ai-field-gap, 8px);
+}
+
+.root .choice {
+  gap: var(--ai-field-gap, 8px);
+  min-inline-size: 0;
+}
+
+.choice > span {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.root .choice small {
+  margin-block-start: 4px;
+  font-size: var(--ai-font-size-meta, 12px);
+  line-height: 1.5;
+}
+
+.availability {
+  grid-column: 1 / -1;
+  margin: 0;
+}

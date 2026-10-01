@@ -1,0 +1,9 @@
+.preview:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+@media (forced-colors: active) {
+  .preview:focus-visible {
+    outline-color: Highlight;
+  }
+}

@@ -1,0 +1,125 @@
+.example {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+  margin-block: 24px;
+}
+.header,
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+}
+.heading {
+  flex: 1 1 12rem;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.heading :where(h3, h4, p) {
+  margin: 0;
+}
+.heading p,
+.muted,
+.run > span,
+.setting {
+  color: var(--ai-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.heading p {
+  margin-block-start: 4px;
+}
+.setting {
+  display: grid;
+  gap: 4px;
+  min-inline-size: 0;
+  flex: 0 1 180px;
+}
+.connection {
+  min-inline-size: 0;
+  border-radius: var(--ai-radius, 12px);
+}
+.connection:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 3px;
+}
+.grid {
+  display: grid;
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ai-gap, 12px);
+  padding: var(--ai-panel-padding, 16px);
+  min-inline-size: 0;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface);
+}
+.rail,
+.run,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-inline-size: 0;
+}
+.rail {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+}
+.run {
+  justify-content: space-between;
+  gap: 8px;
+}
+.actions {
+  justify-content: flex-end;
+  gap: 8px;
+}
+.actions .rail {
+  margin-inline-start: 0;
+}
+.actions [data-armed='true'] {
+  color: var(--ai-primary-text);
+  background: var(--ai-primary-soft);
+}
+.receipt {
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  padding: var(--ai-gap, 12px);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface-subtle);
+  overflow-wrap: anywhere;
+}
+.receipt p,
+.panel > p,
+.example > p {
+  margin: 0;
+}
+.receipt p {
+  font-size: 12px;
+}
+.messages {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+}
+.error {
+  color: var(--ai-danger);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+@container (max-width: 700px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

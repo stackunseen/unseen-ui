@@ -1,0 +1,242 @@
+.root {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-width: 0;
+  font-size: var(--ai-font-size, 14px);
+  color: var(--ai-text);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.root p {
+  margin: 0;
+}
+.fields {
+  display: grid;
+  align-items: start;
+  gap: var(--ai-gap, 16px);
+  min-width: 0;
+}
+.root[data-variant='grid'] .fields {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+.root[data-variant='compact'] {
+  font-size: 12px;
+  gap: 8px;
+}
+.root[data-variant='compact'] .fields {
+  gap: 8px;
+}
+.field {
+  display: grid;
+  gap: var(--ai-field-gap, 8px);
+  min-width: 0;
+}
+.checkbox {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  min-height: var(--ai-control-height, 40px);
+}
+.checkbox input {
+  flex-shrink: 0;
+  margin: 5px 0 0;
+  accent-color: var(--ai-primary);
+}
+.checkbox > label {
+  flex: 1;
+  align-self: stretch;
+}
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  padding-block-end: var(--ai-gap, 12px);
+}
+.steps li {
+  min-width: 0;
+}
+.steps button {
+  white-space: normal;
+  text-align: start;
+}
+.stepHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+.stepHeader strong {
+  flex: 1 1 140px;
+}
+.stepHeader p {
+  flex-basis: 100%;
+}
+.array,
+.arrayRow {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  margin: 0;
+  min-width: 0;
+}
+.array {
+  padding: 0;
+  border: 0;
+}
+.array > button {
+  white-space: normal;
+  text-align: start;
+  max-width: 100%;
+}
+.array > legend,
+.arrayRow > legend {
+  padding: 0 6px;
+  font-weight: 600;
+  max-width: 100%;
+}
+.arrayRow {
+  padding: var(--ai-panel-padding, 16px);
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  background: var(--ai-surface-subtle);
+  border-radius: var(--ai-control-radius, 8px);
+}
+.rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-width: 0;
+}
+.rows li {
+  min-width: 0;
+}
+.formActions,
+.arrayActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+.arrayActions {
+  justify-content: end;
+}
+.root[data-variant='compact'] .arrayRow {
+  padding: 12px;
+  gap: 8px;
+}
+.error {
+  color: var(--ai-danger);
+  font-size: 12px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: start;
+}
+.table caption {
+  text-align: start;
+  padding: 10px 0;
+  color: var(--ai-muted);
+}
+.table :where(th, td) {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ai-border);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.table th {
+  min-width: 120px;
+  background: var(--ai-surface-subtle);
+  font-weight: 600;
+  text-align: start;
+  vertical-align: middle;
+}
+.table :where(th, td)[data-format='number'] {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+.sortControl {
+  gap: 4px;
+  padding: 6px 0;
+}
+.sortIndicator {
+  flex-shrink: 0;
+}
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ai-gap, 12px);
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--ai-border);
+}
+.pageSummary {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.root[data-variant='compact'] .table :where(th, td) {
+  padding: 6px 8px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+.card {
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  padding: var(--ai-panel-padding, 16px);
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.metric {
+  font-size: 26px;
+  font-weight: 650;
+}
+.generatedText {
+  white-space: pre-wrap;
+}
+.generatedSection {
+  display: grid;
+  min-width: 0;
+  gap: var(--ai-gap, 12px);
+  padding-inline-start: var(--ai-gap, 12px);
+  border-inline-start: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.card > .generatedSection {
+  padding: 0;
+  border: 0;
+}
+.root[data-variant='compact'] .generatedSection {
+  gap: 8px;
+  padding-inline-start: 8px;
+}
+.root[data-part='generated-ui'] button {
+  white-space: normal;
+  text-align: start;
+  max-width: 100%;
+}
+.root[data-part='generated-ui'] [data-node-id] {
+  min-width: 0;
+}
+.root[data-part='generated-ui'] .cards {
+  gap: var(--ai-gap, 12px);
+}
+.root :where(button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+@media (any-pointer: coarse) {
+  .checkbox {
+    min-height: 44px;
+  }
+}

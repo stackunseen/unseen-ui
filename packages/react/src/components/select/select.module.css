@@ -1,0 +1,19 @@
+.trigger {
+  gap: var(--ai-field-gap, 8px);
+}
+.option {
+  padding-block: var(--ai-field-gap, 8px);
+  line-height: 1.5;
+}
+.option > span:first-child {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.indicator {
+  inset-inline-end: 12px;
+}
+@media (any-pointer: coarse) {
+  .option {
+    min-block-size: 44px;
+  }
+}

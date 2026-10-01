@@ -1,0 +1,146 @@
+.formula {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px;
+  color: var(--ai-text);
+}
+.formula[data-variant='inline'] {
+  padding: 0;
+  vertical-align: -0.15em;
+}
+.formula[data-variant='block'] {
+  padding: max(8px, var(--ai-panel-padding, 16px));
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface);
+}
+.formula[data-variant='scroll'] {
+  padding: max(8px, var(--ai-gap, 12px));
+  background: var(--ai-surface-subtle);
+  border-radius: var(--ai-control-radius, 8px);
+}
+.diagram {
+  min-width: 0;
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  padding: var(--ai-panel-padding, 16px);
+  background: var(--ai-surface);
+  color: var(--ai-text);
+}
+.formulaError {
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.formulaSource {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 180px;
+  overflow: auto;
+  padding: 8px;
+  margin-block: 8px;
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface-subtle);
+  color: var(--ai-text);
+  font:
+    12px/1.7 ui-monospace,
+    monospace;
+}
+.diagram[data-variant='minimal'] {
+  padding: 8px;
+  border-color: transparent;
+}
+:global([data-part='markdown']) .formula[data-variant='block'],
+:global([data-part='markdown']) .diagram {
+  margin-block: 1.2em;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+.header strong {
+  flex: 1 1 150px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.zoomRail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-inline-size: 0;
+}
+.zoomRail > button {
+  min-inline-size: 32px;
+  max-inline-size: 100%;
+}
+.zoomValue {
+  min-inline-size: 4ch;
+  text-align: center;
+}
+.zoomReset {
+  margin-inline-start: 8px;
+}
+.canvas {
+  overflow: auto;
+  max-height: 600px;
+  min-height: 80px;
+  padding: max(8px, var(--ai-gap, 12px));
+  background: var(--ai-surface);
+  color: var(--ai-text);
+  border-radius: 8px;
+}
+.canvas svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+.source {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 280px;
+  overflow: auto;
+  padding: max(8px, var(--ai-gap, 12px));
+  margin: 0;
+  background: var(--ai-surface-subtle);
+  color: var(--ai-text);
+  font:
+    12px/1.8 ui-monospace,
+    monospace;
+}
+.muted {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.error {
+  color: var(--ai-danger);
+  margin: 0;
+}
+.diagram :where(button, [tabindex]):focus-visible,
+.formula:focus-visible,
+.formulaSource:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+@media (any-pointer: coarse) {
+  .zoomRail {
+    gap: 8px;
+  }
+  .zoomRail > button {
+    min-inline-size: 44px;
+  }
+}

@@ -1,0 +1,91 @@
+.card {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: var(--ai-panel-padding, 16px);
+  border: 1px solid var(--ai-border, #e2e8f0);
+  border-radius: var(--ai-radius, 10px);
+  background: var(--ai-surface, #fff);
+  color: var(--ai-text, #0f172a);
+  overflow-wrap: anywhere;
+}
+.header {
+  display: grid;
+  gap: var(--ai-field-gap, 8px);
+}
+.title {
+  margin: 0;
+  font-size: var(--ai-font-size-heading, 16px);
+  line-height: 1.4;
+  font-weight: 600;
+}
+.description {
+  margin: 0;
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size, 14px);
+  line-height: 1.6;
+}
+.content {
+  min-inline-size: 0;
+  margin-block-start: var(--ai-gap, 12px);
+}
+.content:first-child {
+  margin-block-start: 0;
+}
+.content > :first-child {
+  margin-block-start: 0;
+}
+.content > :last-child {
+  margin-block-end: 0;
+}
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: max(8px, var(--ai-field-gap, 8px));
+  margin-block-start: var(--ai-gap, 12px);
+}
+.tableScroll {
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow: auto;
+  border: 1px solid var(--ai-border, #e2e8f0);
+  border-radius: var(--ai-control-radius, 8px);
+}
+.tableScroll:focus-visible {
+  outline: 2px solid var(--ai-focus, #2563eb);
+  outline-offset: 3px;
+}
+.table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  text-align: start;
+  font-size: var(--ai-font-size, 14px);
+  line-height: 1.6;
+  background: var(--ai-surface, #fff);
+  color: var(--ai-text, #0f172a);
+}
+.table th,
+.table td {
+  padding: max(8px, var(--ai-field-gap, 8px)) var(--ai-gap, 12px);
+  border-block-end: 1px solid var(--ai-border, #e2e8f0);
+  text-align: start;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.table th {
+  font-weight: 600;
+}
+.table thead,
+.table tfoot {
+  background: var(--ai-surface-subtle, #f1f5f9);
+}
+.table tbody:last-child tr:last-child > * {
+  border-block-end: 0;
+}
+.caption {
+  padding: var(--ai-gap, 12px);
+  color: var(--ai-muted, #475569);
+  text-align: start;
+  font-size: var(--ai-font-size-meta, 12px);
+}

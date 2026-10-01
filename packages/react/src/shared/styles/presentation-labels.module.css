@@ -1,0 +1,12 @@
+.loading {
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.loading > span:last-child {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.loading > span:first-child {
+  flex-shrink: 0;
+}

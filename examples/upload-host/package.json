@@ -1,0 +1,8 @@
+{
+  "name": "@ai-interaction/upload-host-example",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ai-interaction/core": "workspace:*"
+  }
+}

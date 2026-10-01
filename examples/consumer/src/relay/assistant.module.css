@@ -1,0 +1,127 @@
+.root {
+  min-inline-size: 0;
+  align-self: start;
+  color: var(--ai-text);
+  background: var(--ai-surface);
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-radius);
+  overflow: hidden;
+}
+.header,
+.title,
+.context {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-inline-size: 0;
+}
+.header {
+  padding: 20px 20px 16px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.title h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.badge {
+  border: 1px solid var(--ai-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  color: var(--ai-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+.context {
+  padding: 12px 20px;
+  background: var(--ai-surface-subtle);
+  border-block: 1px solid var(--ai-border);
+  font-size: 12px;
+  color: var(--ai-muted);
+  overflow-wrap: anywhere;
+}
+.context svg,
+.title svg {
+  flex-shrink: 0;
+}
+.context {
+  flex-wrap: wrap;
+}
+.context > button {
+  margin-left: auto;
+}
+.intro {
+  padding: 24px 20px;
+}
+.intro h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+.intro p,
+.note {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.intro p {
+  font-size: 14px;
+}
+.choices {
+  display: grid;
+  gap: 8px;
+  margin-block-start: 20px;
+}
+.choices button {
+  justify-content: space-between;
+  text-align: start;
+  font-size: 13px;
+}
+.history {
+  display: grid;
+  gap: 20px;
+  max-block-size: 28rem;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  overscroll-behavior: contain;
+  padding: 0 20px 20px;
+  scrollbar-gutter: stable;
+}
+.history:focus-visible {
+  outline: 2px solid var(--ai-primary);
+  outline-offset: -3px;
+}
+.history > button {
+  justify-self: start;
+}
+.message {
+  padding: 0;
+  font-size: 14px;
+  min-inline-size: 0;
+}
+.composer {
+  display: grid;
+  gap: 12px;
+  padding: 16px 20px 20px;
+  border-block-start: 1px solid var(--ai-border);
+}
+.jump {
+  display: flex;
+  justify-content: center;
+  padding: 4px 20px 12px;
+}
+@media (max-width: 400px) {
+  .header,
+  .context,
+  .intro,
+  .history,
+  .composer {
+    padding-inline: 16px;
+  }
+}

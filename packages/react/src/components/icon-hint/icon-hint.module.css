@@ -1,0 +1,27 @@
+.hint {
+  position: fixed;
+  visibility: hidden;
+  z-index: 120;
+  width: max-content;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  border: 1px solid var(--ai-control-border, #64748b);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface, #fff);
+  color: var(--ai-text, #0f172a);
+  box-shadow: var(--ai-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.1));
+  font-size: var(--ai-font-size-meta, 12px);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  overflow: auto;
+  pointer-events: auto;
+}
+@media (forced-colors: active) {
+  .hint {
+    border-color: CanvasText;
+    color: CanvasText;
+    background: Canvas;
+  }
+}

@@ -1,0 +1,43 @@
+name: Verify
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:packages
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - name: Install smoke browser
+        run: pnpm exec playwright-cli install-browser chromium --with-deps
+        timeout-minutes: 5
+      - name: Browser accessibility and recovery smoke
+        run: pnpm test:browser
+        timeout-minutes: 4
+      - name: Retain browser smoke evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: browser-smoke
+          path: output/playwright/ci-smoke/
+          if-no-files-found: ignore
+          retention-days: 7
+      - run: pnpm check:packages
+      - run: pnpm check:size
+      - run: pnpm build:storybook

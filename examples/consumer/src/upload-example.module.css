@@ -1,0 +1,85 @@
+.example {
+  max-inline-size: 64rem;
+  container-type: inline-size;
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+  margin-block: 24px;
+  outline-offset: 4px;
+}
+.header,
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+}
+.heading {
+  flex: 1 1 15rem;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.heading :where(h3, p) {
+  margin: 0;
+}
+.heading p {
+  margin-block-start: 4px;
+}
+.heading p,
+.muted {
+  color: var(--ai-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.setting {
+  display: grid;
+  gap: 4px;
+  flex: 0 1 160px;
+  min-inline-size: 0;
+  font-size: 12px;
+}
+.panel {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  padding: var(--ai-panel-padding, 16px);
+  min-inline-size: 0;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface);
+}
+.rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: auto;
+}
+.status {
+  margin: 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.muted {
+  margin: 0;
+}
+.example a {
+  color: var(--ai-primary-text);
+  text-underline-offset: 3px;
+}
+@container (max-width: 420px) {
+  .setting {
+    flex-basis: 100%;
+  }
+  .panel {
+    padding: 12px;
+  }
+}
+
+.attachment {
+  min-inline-size: 0;
+  max-inline-size: 44rem;
+}
+.attachment[data-layout='tile'] {
+  max-inline-size: 24rem;
+}

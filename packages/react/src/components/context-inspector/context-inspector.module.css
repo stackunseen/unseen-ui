@@ -1,0 +1,19 @@
+.tableScroll {
+  container-type: inline-size;
+}
+
+.tableScroll .table,
+.tableScroll .table caption {
+  text-align: start;
+}
+
+.tableScroll .table th,
+.tableScroll .table td {
+  padding: var(--ai-field-gap, 8px);
+}
+
+.cellContent {
+  /* Retain column comparison, but keep each paragraph inside one scrollport. */
+  max-inline-size: min(42ch, calc(100cqi - 2 * var(--ai-field-gap, 8px)));
+  overflow-wrap: anywhere;
+}

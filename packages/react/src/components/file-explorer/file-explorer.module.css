@@ -1,0 +1,148 @@
+.root {
+  gap: 0;
+}
+.root > div:first-child {
+  border-bottom-width: var(--ai-border-width, 1px);
+}
+.body {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+}
+.root:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.files,
+.groups {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  min-width: 0;
+}
+.folder {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.folderTitle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+}
+.file {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ai-control-height, 40px);
+  text-align: start;
+  padding: 8px 10px;
+  border: var(--ai-border-width, 1px) solid transparent;
+  border-radius: var(--ai-control-radius, 8px);
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.file > [data-part='file-name'] {
+  flex: 1 1 100px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.file[aria-current='true'] {
+  border-color: var(--ai-primary-text);
+  color: var(--ai-primary-text);
+  background: var(--ai-primary-soft);
+}
+.file:not(:disabled):not([aria-current='true']):hover {
+  background: var(--ai-surface-subtle);
+}
+.file:disabled {
+  cursor: default;
+  color: var(--ai-muted);
+}
+.card,
+.inspector {
+  min-width: 0;
+  padding: 8px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  display: grid;
+  gap: 8px;
+}
+.card > p {
+  padding-inline: 10px;
+}
+.groups {
+  gap: 16px;
+}
+.directory {
+  font-size: 12px;
+  color: var(--ai-muted);
+  font-weight: 600;
+  padding-block: 4px;
+}
+.groups > li {
+  min-width: 0;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  padding-bottom: 8px;
+}
+.search {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+.search input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--ai-control-height, 40px);
+  border: var(--ai-border-width, 1px) solid var(--ai-control-border);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-field-background, var(--ai-surface));
+  color: var(--ai-text);
+  font: inherit;
+  padding: 8px 12px;
+}
+.search input:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.actions > button {
+  flex: 0 1 auto;
+  max-inline-size: 100%;
+}
+.root[data-variant='compact'] .file {
+  padding: 6px 8px;
+}
+.tree [role='group'] > div {
+  padding-inline: 0;
+  padding-block-end: 4px;
+}
+.tree > div {
+  border-bottom: 0;
+}
+.root [data-folder-depth='1'],
+.root [data-folder-depth='2'],
+.root [data-folder-depth='3'] {
+  padding-inline-start: 8px;
+}
+@media (any-pointer: coarse) {
+  .file,
+  .search input {
+    min-height: 44px;
+  }
+}

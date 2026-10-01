@@ -1,0 +1,19 @@
+/* Shared placement for host decisions and local editing actions. */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: max(8px, var(--ai-field-gap, 8px));
+  min-width: 0;
+}
+.footer > :where(button, a) {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+/* Local add/generated actions keep their content width inside grid parents. */
+.local,
+.local > button {
+  justify-self: start;
+  max-width: 100%;
+}

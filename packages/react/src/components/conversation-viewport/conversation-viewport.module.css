@@ -1,0 +1,104 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  block-size: 28rem;
+  color: var(--ai-text);
+  background: var(--ai-surface);
+  border: var(--ai-border-width) solid var(--ai-border);
+  border-radius: var(--ai-radius);
+  overflow: hidden;
+}
+.root:focus-visible,
+.scroll:focus-visible {
+  outline: 2px solid var(--ai-primary);
+  outline-offset: -3px;
+}
+.scroll {
+  flex: 1;
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 8px;
+}
+.scroll[data-mode='virtual'] {
+  overflow-anchor: none;
+}
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  box-sizing: border-box;
+  padding: var(--ai-gap, 12px) var(--ai-panel-padding, 16px);
+  overflow-wrap: anywhere;
+}
+.item + .item {
+  border-block-start: 1px solid var(--ai-border);
+}
+.root[data-variant='bubble'] .item {
+  border: 0;
+}
+.root[data-variant='compact'] .item {
+  padding: var(--ai-field-gap, 8px) var(--ai-gap, 12px);
+}
+.root[data-variant='compact'] .item article {
+  gap: var(--ai-field-gap, 8px);
+  padding-block: var(--ai-field-gap, 8px);
+}
+.edge,
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--ai-field-gap, 8px);
+  padding: var(--ai-field-gap, 8px) var(--ai-gap, 12px);
+  border-block-start: 1px solid var(--ai-border);
+  flex-shrink: 0;
+}
+.edge[data-edge='older'] {
+  border-block-start: 0;
+  border-block-end: 1px solid var(--ai-border);
+}
+.edge {
+  font-size: 12px;
+  background: var(--ai-surface-subtle);
+}
+.edge > span {
+  flex: 1 1 12rem;
+  overflow-wrap: anywhere;
+}
+.edge button,
+.footer button {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+.quiet {
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.notice,
+.empty {
+  padding: var(--ai-panel-padding, 16px);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.notice {
+  font-size: 12px;
+}
+@media (any-pointer: coarse) {
+  .edge,
+  .footer {
+    gap: max(8px, var(--ai-field-gap, 8px));
+  }
+}
+@media (forced-colors: active) {
+  .root,
+  .edge,
+  .footer,
+  .item {
+    border-color: CanvasText;
+  }
+}

@@ -1,0 +1,25 @@
+.root:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: max(8px, var(--ai-gap, 12px));
+  min-width: 0;
+  max-width: 100%;
+}
+.actionNode {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+.actionNode [role='status'] {
+  max-width: 32ch;
+}
+@media (forced-colors: active) {
+  .root:focus-visible {
+    outline-color: Highlight;
+  }
+}

@@ -1,0 +1,22 @@
+.root {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.status {
+  display: block;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.root > .status {
+  margin-block-start: var(--ai-field-gap, 8px);
+}
+.status:empty {
+  display: none;
+}
+.error {
+  overflow-wrap: anywhere;
+}
+.root > .error {
+  margin-block: var(--ai-field-gap, 8px) 0;
+}

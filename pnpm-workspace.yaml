@@ -1,0 +1,10 @@
+packages:
+  - packages/*
+  - apps/*
+  - examples/*
+minimumReleaseAge: 1440
+savePrefix: ''
+strictPeerDependencies: true
+allowBuilds:
+  esbuild: true
+  node-pty: true
