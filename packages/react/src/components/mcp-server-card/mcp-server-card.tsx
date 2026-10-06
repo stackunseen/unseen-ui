@@ -6,6 +6,13 @@ import { SummaryHeading } from '../../shared/summary-heading.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 
+const serverTone = {
+  connected: 'success',
+  'auth-required': 'warning',
+  disconnected: undefined,
+  unknown: undefined,
+} as const;
+
 export function MCPServerCard({
   variant = 'card',
   name,
@@ -34,7 +41,9 @@ export function MCPServerCard({
         >
           {name}
         </SummaryHeading>
-        <span className={s.muted}>{status}</span>
+        <span className={s.badge} data-tone={serverTone[status]}>
+          {status}
+        </span>
       </div>
       <p className={s.muted}>
         {typeof toolCount === 'number' && Number.isSafeInteger(toolCount) && toolCount >= 0

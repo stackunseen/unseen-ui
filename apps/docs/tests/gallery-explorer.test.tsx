@@ -139,7 +139,9 @@ describe('gallery scoped host examples', () => {
   it('historical permission lookup does not grant the replacement scope', async () => {
     render(<PermissionSpecimen state="Scope changed" />);
     await userEvent.click(screen.getByRole('button', { name: 'Check original decision' }));
-    expect(screen.getByText('Requested access: accounts:write')).toBeVisible();
+    const requestedAccess = screen.getByText('Requested access', { selector: 'dt' });
+    expect(requestedAccess.nextElementSibling).toHaveTextContent('accounts:write');
+    expect(requestedAccess.nextElementSibling).toBeVisible();
     expect(screen.getByText('Permission: requested')).toBeVisible();
     expect(screen.queryByText(/Host-confirmed grant/)).not.toBeInTheDocument();
   });
