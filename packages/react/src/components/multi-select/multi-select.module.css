@@ -1,0 +1,30 @@
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-field-gap, 8px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-inline-size: 100%;
+  padding-inline-start: 8px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #e2e8f0);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface-subtle, #f1f5f9);
+}
+.chip > span {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.chip > button {
+  flex-shrink: 0;
+}
+.chip small,
+.summary {
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size-meta, 12px);
+}

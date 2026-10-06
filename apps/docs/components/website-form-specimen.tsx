@@ -1,14 +1,6 @@
 'use client';
 import { useState } from 'react';
-import {
-  Field,
-  Input,
-  Textarea,
-  Checkbox,
-  Switch,
-  RadioGroup,
-  Slider,
-} from '@ai-interaction/react';
+import { Field, Input, Textarea, Checkbox, Switch, RadioGroup, Slider } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteFormSpecimen({ name, state }: WebsiteSpecimenProps) {

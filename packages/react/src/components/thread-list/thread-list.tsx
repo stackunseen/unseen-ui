@@ -5,7 +5,7 @@ import {
   inspectThreadWindow,
   inspectConversationPagination,
   inspectConversationScroll,
-} from '@ai-interaction/core/conversation';
+} from '@stackunseen/ui-core/conversation';
 import type {
   ConversationPagination,
   ConversationScroll,
@@ -14,7 +14,7 @@ import type {
   ThreadRenameRequest,
   ConversationPageRequest,
   ConversationSearchRequest,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
@@ -23,6 +23,7 @@ import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import n from '../../shared/styles/navigation.module.css';
 import actions from '../../shared/styles/action-layout.module.css';
+import { Input } from '../input/input.js';
 import type { NavigationStateProps } from '../../shared/conversation-navigation/conversation-navigation.js';
 import {
   navigationState,
@@ -169,7 +170,7 @@ export function ThreadList(props: ThreadListProps) {
         <>
           <div className={n.search}>
             <AIIcon name="search" fallbackIcon={MagnifyingGlassIcon} />
-            <input
+            <Input
               type="search"
               className={s.search}
               aria-label="Search conversations"
@@ -282,7 +283,7 @@ export function ThreadList(props: ThreadListProps) {
                     >
                       <label>
                         Conversation title
-                        <input
+                        <Input
                           ref={input}
                           className={s.search}
                           value={currentEdit.title}

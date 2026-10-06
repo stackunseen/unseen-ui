@@ -2,7 +2,7 @@
 import { lazy, Suspense, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { VoiceSpecimen } from './voice-specimen';
-import type { NavigationAvailability, NavigationOperation } from '@ai-interaction/core';
+import type { NavigationAvailability, NavigationOperation } from '@stackunseen/ui-core';
 import {
   Button,
   SlashCommandMenu,
@@ -21,9 +21,9 @@ import {
   AuditTrail,
   RunInspector,
   resolveVariant,
-} from '@ai-interaction/react';
-import type { QueuedMessage, ThreadSummary, TableColumn, TableRow } from '@ai-interaction/react';
-import { MarkdownCodeBlock } from '@ai-interaction/react/code';
+} from '@stackunseen/ui';
+import type { QueuedMessage, ThreadSummary, TableColumn, TableRow } from '@stackunseen/ui';
+import { MarkdownCodeBlock } from '@stackunseen/ui/code';
 import { HandoffSpecimen } from './scoped-decision-specimen';
 import { FormSpecimen } from './form-specimen';
 import { GeneratedSpecimen } from './generated-specimen';
@@ -43,19 +43,19 @@ import {
 } from '../lib/coding-fixtures';
 
 const HighlightedCodeBlock = lazy(() =>
-  import('@ai-interaction/react/highlight').then((m) => ({ default: m.HighlightedCodeBlock })),
+  import('@stackunseen/ui/highlight').then((m) => ({ default: m.HighlightedCodeBlock })),
 );
 const HighlightedCodeDiff = lazy(() =>
-  import('@ai-interaction/react/highlight').then((m) => ({ default: m.HighlightedCodeDiff })),
+  import('@stackunseen/ui/highlight').then((m) => ({ default: m.HighlightedCodeDiff })),
 );
 const RichMarkdownResponse = lazy(() =>
-  import('@ai-interaction/react/rich-markdown').then((m) => ({ default: m.RichMarkdownResponse })),
+  import('@stackunseen/ui/rich-markdown').then((m) => ({ default: m.RichMarkdownResponse })),
 );
 const MathFormula = lazy(() =>
-  import('@ai-interaction/react/math').then((m) => ({ default: m.MathFormula })),
+  import('@stackunseen/ui/math').then((m) => ({ default: m.MathFormula })),
 );
 const MermaidDiagram = lazy(() =>
-  import('@ai-interaction/react/mermaid').then((m) => ({ default: m.MermaidDiagram })),
+  import('@stackunseen/ui/mermaid').then((m) => ({ default: m.MermaidDiagram })),
 );
 const MarkdownSpecimen = dynamic(
   () => import('./markdown-specimen').then((m) => m.MarkdownSpecimen),

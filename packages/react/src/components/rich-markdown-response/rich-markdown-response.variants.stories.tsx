@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { componentVariants } from '@ai-interaction/react';
+import { componentVariants } from '@stackunseen/ui';
 import { VariantGallery } from '../../../../../.storybook/fixtures/variant-gallery';
 const meta = {
   title: 'Unseen UI/RichMarkdownResponse/Variants',

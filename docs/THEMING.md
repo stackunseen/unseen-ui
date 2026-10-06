@@ -9,9 +9,9 @@ Import AITheme from the root and pure theme helpers from `/theme`. Theme Studio 
 ```tsx
 'use client';
 import { useState } from 'react';
-import { AITheme, PromptInput } from '@ai-interaction/react';
-import { createTheme, updateTheme, exportTheme, importTheme } from '@ai-interaction/react/theme';
-import '@ai-interaction/react/styles.css';
+import { AITheme, PromptInput } from '@stackunseen/ui';
+import { createTheme, updateTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
+import '@stackunseen/ui/styles.css';
 
 const theme = createTheme({
   primary: '#2563eb', secondary: '#7c3aed', accent: '#0f766e',
@@ -46,7 +46,7 @@ export function ThemedPrompt({ onSubmit }: { onSubmit: (text: string) => void })
 
 CSS roles include `--ai-control-radius`, `--ai-composer-radius`, `--ai-border-width`, `--ai-field-background`, `--ai-shadow-popover`, `--ai-shadow-dialog`, `--ai-gap`, `--ai-field-gap`, `--ai-panel-padding`, and existing semantic colour variables. Icon selection remains an IconsProvider configuration, not a theme document field.
 
-The default uses the Strong contrast boundary (`#64748b` light / `#94a3b8` dark). Its token pairs meet 3:1 against both plain and tinted surfaces. Decorative separators retain their subtle border. Explicit Subtle/Balanced choices and imported resolved palettes remain available; diagnostics report shortfalls against both surface roles. A focus outline alone does not fix a low-contrast resting field. Token-pair diagnostics are not a full accessibility audit.
+The default uses the Strong contrast boundary (`#71717a` light / `#a1a1aa` dark). Its token pairs meet 3:1 against both plain and tinted surfaces. Decorative separators retain their subtle border. Explicit Subtle/Balanced choices and imported resolved palettes remain available; diagnostics report shortfalls against both surface roles. A focus outline alone does not fix a low-contrast resting field. Token-pair diagnostics are not a full accessibility audit.
 
 Default/compact geometry uses 40/36px control heights, 16/12px panel padding, 12/8px content gaps and 8/4px label gaps. Small buttons remain 32px; coarse-pointer controls and labelled choices use at least 44px. Imported colours stay unchanged; shared geometry follows these density rules.
 

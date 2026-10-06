@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { BranchSwitcher } from '@ai-interaction/react';
+import { BranchSwitcher } from '@stackunseen/ui';
 import { context, branches } from '../../../../../tests/fixtures/conversation-navigation.js';
 
 describe('controlled navigation and compact contextual actions', () => {

@@ -1,11 +1,14 @@
 import type { CatalogEntry } from './catalog';
 import { websiteCatalog } from './website-catalog';
+import { applicationCatalog, marketingCatalog } from './optional-catalog';
 
 export const genericCatalog: CatalogEntry[] = [
   ...websiteCatalog,
+  ...applicationCatalog,
+  ...marketingCatalog,
   {
     name: 'Button',
-    group: 'Foundations',
+    group: 'Actions',
     category: 'Actions',
     description: 'A labelled action with consistent emphasis, size and keyboard behavior.',
     aliases: ['Action', 'Submit button', 'Primary button'],
@@ -21,7 +24,7 @@ export const genericCatalog: CatalogEntry[] = [
   },
   {
     name: 'IconButton',
-    group: 'Foundations',
+    group: 'Actions',
     category: 'Actions',
     description:
       'A compact icon action with a required accessible label and keyboard-visible hint.',
@@ -44,13 +47,14 @@ export const genericCatalog: CatalogEntry[] = [
     aliases: ['Dialog', 'Drawer', 'Sheet', 'Fullscreen dialog'],
     presentations: ['dialog', 'sheet', 'fullscreen'],
     presentationProp: 'layout',
-    states: ['Default', 'Form', 'Long content'],
-    contract: 'open · onOpenChange · title · description · trigger · children · layout?',
+    states: ['Default', 'Form', 'Long content', 'Custom header and footer'],
+    contract:
+      'open · onOpenChange · title · description · trigger · children · layout? · header? · footer? · className? · style?',
     responsibility:
       'Keep visibility and draft values controlled. Sheet and fullscreen are Modal layouts, not separate exported components.',
     keyboard:
       'Opening moves focus into the dialog. Tab remains inside; Escape closes it and returns focus to the trigger. The title and description name the task.',
-    code: '<Modal open={open} onOpenChange={setOpen} title="Project details" description="Review the selected project." trigger={<Button>Open details</Button>}>{content}</Modal>',
+    code: '<Modal open={open} onOpenChange={setOpen} title="Project details" description="Review the selected project." trigger={<Button>Open details</Button>} footer={<Button onClick={() => setOpen(false)}>Done</Button>}>{content}</Modal>',
   },
   {
     name: 'Panel',

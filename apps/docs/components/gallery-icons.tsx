@@ -28,7 +28,7 @@ import {
   ThumbsDown,
   Mic,
 } from 'lucide-react';
-import type { IconOverrides } from '@ai-interaction/react';
+import type { IconOverrides } from '@stackunseen/ui';
 export const lucideIcons: IconOverrides = {
   expand: ChevronDown,
   collapse: ChevronUp,

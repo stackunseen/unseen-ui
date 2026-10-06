@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import { AIForm } from '@ai-interaction/react';
+import { AIForm } from '@stackunseen/ui';
 import type {
   AIArrayChange,
   AIArrayValues,
@@ -10,7 +10,7 @@ import type {
   AIFormReceipt,
   AIFormStep,
   FormValues,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 const identity: AIFormIdentity = { formId: 'consumer-request', schemaVersion: '1' };
 const fields: AIField[] = [{ id: 'project', label: 'Project name', type: 'text', required: true }];
 const arrays: AIFieldArray[] = [

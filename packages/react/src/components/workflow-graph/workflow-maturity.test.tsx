@@ -3,13 +3,8 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { WorkflowGraph } from '@ai-interaction/react';
-import type {
-  GraphNode,
-  GraphEdge,
-  GraphSelection,
-  WorkflowGraphProps,
-} from '@ai-interaction/react';
+import { WorkflowGraph } from '@stackunseen/ui';
+import type { GraphNode, GraphEdge, GraphSelection, WorkflowGraphProps } from '@stackunseen/ui';
 import { inspectWorkflow, workflowOutline } from './workflow-model.js';
 import { routeWorkflow } from './workflow-routing.js';
 

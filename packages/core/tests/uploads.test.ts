@@ -8,8 +8,8 @@ import {
   inspectUploadOperation,
   receiptMatchesUpload,
   uploadCommandKey,
-} from '@ai-interaction/core/uploads';
-import type { UploadCheckpoint, UploadCommand, UploadContext } from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
+import type { UploadCheckpoint, UploadCommand, UploadContext } from '@stackunseen/ui-core/uploads';
 const context: UploadContext = {
   workspaceId: 'w',
   threadId: 't',

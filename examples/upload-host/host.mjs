@@ -10,7 +10,7 @@ import {
   inspectUploadReceipt,
   uploadContextKey,
   uploadCommandKey,
-} from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
 
 export const uploadHostLimits = Object.freeze({
   fileBytes: 4 * 1024 * 1024,

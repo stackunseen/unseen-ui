@@ -85,7 +85,7 @@ function validPanel(panel: SplitPanePanel) {
   );
 }
 
-/** Optional resizable layout; import from @ai-interaction/react/layout. */
+/** Optional resizable layout; import from @stackunseen/ui/layout. */
 export function SplitPane({
   label,
   primary,

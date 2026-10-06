@@ -1,0 +1,377 @@
+/* Optional marketing stylesheet. Every selector belongs to a marketing block. */
+.uim-header,
+.uim-footer,
+.uim-hero,
+.uim-section {
+  box-sizing: border-box;
+  color: var(--ai-text);
+  font-family: var(--ai-font-family, inherit);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+:where(.uim-header, .uim-footer, .uim-hero, .uim-section) *,
+:where(.uim-header, .uim-footer, .uim-hero, .uim-section) *::before,
+:where(.uim-header, .uim-footer, .uim-hero, .uim-section) *::after {
+  box-sizing: border-box;
+}
+:where(.uim-header, .uim-footer, .uim-hero, .uim-section) :where(h1, h2, h3, p) {
+  margin: 0;
+}
+:where(.uim-header, .uim-footer, .uim-hero, .uim-section)
+  :where(a, button, input, textarea):focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 4px;
+}
+:where(.uim-header, .uim-footer, .uim-hero, .uim-section) a {
+  color: inherit;
+  text-underline-offset: 0.25em;
+}
+.uim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-block: 1.25rem;
+  border-block-end: 1px solid var(--ai-border);
+}
+.uim-brand {
+  font-size: 1.25rem;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+}
+.uim-brand a {
+  display: inline-flex;
+  gap: 0.75rem;
+  align-items: center;
+  min-block-size: 2.75rem;
+  text-decoration: none;
+}
+.uim-navigation {
+  display: none;
+  inline-size: 100%;
+}
+.uim-navigation[data-open='true'] {
+  display: grid;
+  gap: 1rem;
+}
+.uim-navigation nav,
+.uim-header-actions,
+.uim-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+.uim-navigation nav {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+.uim-navigation nav a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding-inline: 0.5rem;
+  color: var(--ai-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.uim-navigation nav a:hover,
+.uim-footer a:hover {
+  color: var(--ai-primary-text);
+  text-decoration: underline;
+}
+.uim-menu-trigger {
+  gap: 0.75rem;
+  min-block-size: 2.75rem;
+}
+.uim-hero {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+  padding-block: clamp(3rem, 7vw, 6rem);
+}
+.uim-hero-copy,
+.uim-section-heading {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 1.25rem;
+  min-inline-size: 0;
+}
+.uim-eyebrow {
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.uim-hero-copy > :is(h1, h2, h3) {
+  max-inline-size: 12ch;
+  font-size: clamp(2.25rem, 3.5vw, 3.5rem);
+  font-weight: 550;
+  letter-spacing: -0.055em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.uim-section h2 {
+  max-inline-size: 20ch;
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  font-weight: 550;
+  letter-spacing: -0.045em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.uim-description {
+  max-inline-size: 48ch;
+  color: var(--ai-muted);
+}
+.uim-description p + p {
+  margin-block-start: 1rem;
+}
+.uim-note {
+  color: var(--ai-muted);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.uim-hero-visual {
+  min-inline-size: 0;
+}
+.uim-section {
+  padding-block: clamp(3rem, 6vw, 5rem);
+  border-block-start: 1px solid var(--ai-border);
+  scroll-margin-block-start: 1.5rem;
+}
+.uim-features,
+.uim-faq,
+.uim-contact,
+.uim-article {
+  display: grid;
+  align-items: start;
+  gap: 2.5rem;
+}
+.uim-feature-list {
+  min-inline-size: 0;
+}
+.uim-feature {
+  display: flex;
+  align-items: start;
+  gap: 1.25rem;
+  padding-block: 1.5rem;
+  border-block-start: 1px solid var(--ai-border);
+}
+.uim-feature:first-child {
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+.uim-feature h3 {
+  margin-block-end: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.uim-feature-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  color: var(--ai-text);
+}
+.uim-plans {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 2.5rem;
+}
+.uim-plan {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  padding: 1.5rem;
+  border-color: var(--ai-border);
+  border-radius: var(--ai-radius, 10px);
+  box-shadow: none;
+  background: var(--ai-surface);
+}
+.uim-plan[data-featured='true'] {
+  border-color: var(--ai-control-border);
+  background: var(--ai-surface-subtle);
+}
+.uim-plan > :last-child {
+  margin-block-start: auto;
+  padding-block-start: 1.5rem;
+}
+.uim-plan-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.uim-plan-badge {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  color: var(--ai-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.uim-price {
+  margin-block-start: 0.5rem;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 550;
+  letter-spacing: -0.05em;
+}
+.uim-plan ul {
+  display: grid;
+  gap: 0.75rem;
+  padding-inline-start: 1.25rem;
+  margin-block: 1.5rem 0;
+  color: var(--ai-muted);
+  font-size: 0.875rem;
+}
+.uim-pricing-note {
+  margin-block-start: 1.5rem;
+}
+.uim-faq-items {
+  min-inline-size: 0;
+  inline-size: 100%;
+  font-size: 1rem;
+}
+.uim-faq-items button[aria-expanded] {
+  min-block-size: 2.75rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.uim-faq-items [role='group'] > div {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+.uim-contact-fields {
+  display: grid;
+  gap: 1.25rem;
+  min-inline-size: 0;
+}
+.uim-contact-aside {
+  margin-block-start: 0.5rem;
+}
+.uim-feedback {
+  padding: 1rem;
+  border-inline-start: 2px solid var(--ai-control-border);
+  background: var(--ai-surface-subtle);
+  font-size: 0.875rem;
+}
+.uim-feedback[data-tone='error'] {
+  color: var(--ai-danger);
+  border-color: var(--ai-danger);
+}
+.uim-article-content {
+  min-inline-size: 0;
+  max-inline-size: 64ch;
+}
+.uim-article-content :where(h3) {
+  margin-block: 1.5rem 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.uim-article-content :where(h3):first-child {
+  margin-block-start: 0;
+}
+.uim-article-content p + p {
+  margin-block-start: 1rem;
+}
+.uim-footer {
+  padding-block: 3rem 1.5rem;
+  border-block-start: 1px solid var(--ai-border);
+}
+.uim-footer-top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+.uim-footer-brand {
+  grid-column: 1 / -1;
+}
+.uim-footer-brand p {
+  max-inline-size: 32ch;
+  margin-block-start: 0.75rem;
+  color: var(--ai-muted);
+  font-size: 0.875rem;
+}
+.uim-footer nav h2 {
+  margin-block-end: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.uim-footer nav a {
+  display: flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+  color: var(--ai-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+.uim-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block-start: 3rem;
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--ai-border);
+  color: var(--ai-muted);
+  font-size: 0.8125rem;
+}
+@media (min-width: 48rem) {
+  .uim-menu-trigger {
+    display: none;
+  }
+  .uim-navigation,
+  .uim-navigation[data-open='true'] {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    inline-size: auto;
+  }
+  .uim-navigation nav {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+  .uim-plans {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .uim-footer-top {
+    grid-template-columns: 2fr repeat(2, minmax(0, 1fr));
+  }
+  .uim-footer-brand {
+    grid-column: auto;
+  }
+}
+@media (min-width: 64rem) {
+  .uim-hero {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  }
+  .uim-features,
+  .uim-faq,
+  .uim-contact,
+  .uim-article {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 5rem;
+  }
+}
+@media (forced-colors: active) {
+  .uim-plan[data-featured='true'],
+  .uim-feedback,
+  .uim-feature-icon {
+    border-color: CanvasText;
+  }
+}

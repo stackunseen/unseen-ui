@@ -1,6 +1,6 @@
 # Upload checkpoints and original receipts
 
-`@ai-interaction/core/uploads` and `@ai-interaction/react/upload` provide upload contracts and a controlled [attachment](ATTACHMENTS.md) composition. They do not start networking, authorize a file or select a provider. The browser example and a separate local disk/HTTP host exercise the contract with actual bytes.
+`@stackunseen/ui-core/uploads` and `@stackunseen/ui/upload` provide upload contracts and a controlled [attachment](ATTACHMENTS.md) composition. They do not start networking, authorize a file or select a provider. The browser example and a separate local disk/HTTP host exercise the contract with actual bytes.
 
 ## Ownership and identity
 

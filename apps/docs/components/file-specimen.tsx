@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Button, FileExplorer, IconsProvider, resolveVariant } from '@ai-interaction/react';
-import type { WorkspaceFile, FileOpenRequest, FileExplorerProps } from '@ai-interaction/react';
+import { Button, FileExplorer, IconsProvider, resolveVariant } from '@stackunseen/ui';
+import type { WorkspaceFile, FileOpenRequest, FileExplorerProps } from '@stackunseen/ui';
 import { files as fixtureFiles, before } from '../lib/coding-fixtures';
 import styles from './form-specimen.module.css';
 

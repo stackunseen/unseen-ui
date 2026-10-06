@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { PromptInput, componentVariants } from '@ai-interaction/react';
+import { PromptInput, componentVariants } from '@stackunseen/ui';
 
 describe('design audit interaction corrections', () => {
   it.each(componentVariants.PromptInput)(

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import type { AdapterScope } from '@ai-interaction/core/adapter';
-import type { SubmissionState } from '@ai-interaction/core';
+import type { AdapterScope } from '@stackunseen/ui-core/adapter';
+import type { SubmissionState } from '@stackunseen/ui-core';
 import { boundedData } from './bounded-data.js';
 
 /** Presentation contracts only. The host authenticates, authorizes and durably deduplicates. */

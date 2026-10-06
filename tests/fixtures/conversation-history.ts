@@ -1,5 +1,5 @@
-import type { ConversationHistory } from '@ai-interaction/core/history';
-import type { MessageData } from '@ai-interaction/core';
+import type { ConversationHistory } from '@stackunseen/ui-core/history';
+import type { MessageData } from '@stackunseen/ui-core';
 
 export const context = { workspaceId: 'w', threadId: 't', snapshotId: 's', version: '1' };
 

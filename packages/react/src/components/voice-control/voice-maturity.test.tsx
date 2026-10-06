@@ -1,8 +1,8 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { VoiceControl } from '@ai-interaction/react';
-import type { VoiceCaptureSnapshot, VoiceTranscription } from '@ai-interaction/react';
+import { VoiceControl } from '@stackunseen/ui';
+import type { VoiceCaptureSnapshot, VoiceTranscription } from '@stackunseen/ui';
 import { inspectVoiceCapture, inspectVoiceDevices, inspectVoiceText } from './voice-model.js';
 
 const context = { sessionId: 'session', captureId: 'capture', version: '1' };

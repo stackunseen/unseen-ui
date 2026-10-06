@@ -1,5 +1,5 @@
 'use client';
-import type { ToolCallData } from '@ai-interaction/core';
+import type { ToolCallData } from '@stackunseen/ui-core';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';

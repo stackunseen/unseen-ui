@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import type { ApprovalProposal, SubmissionState } from '@ai-interaction/core';
+import type { ApprovalProposal, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -48,6 +48,18 @@ export function ApprovalCard({
     stale ||
     hasExpired ||
     ['submitting', 'acknowledged', 'outcome-unknown'].includes(submission);
+  const status = stale
+    ? 'superseded'
+    : hasExpired && proposal.status === 'pending'
+      ? 'expired'
+      : proposal.status;
+  const heading = {
+    pending: 'Review required',
+    approved: 'Action approved',
+    rejected: 'Action rejected',
+    expired: 'Proposal expired',
+    superseded: 'Proposal changed',
+  }[status];
   return (
     <Panel data-part="approval" data-variant={variant} className={s.approval}>
       <div className={s.row}>
@@ -58,17 +70,9 @@ export function ApprovalCard({
             </span>
           }
         >
-          Review required
+          {heading}
         </SummaryHeading>
-        <StatusBadge
-          state={
-            stale
-              ? 'superseded'
-              : hasExpired && proposal.status === 'pending'
-                ? 'expired'
-                : proposal.status
-          }
-        />
+        <StatusBadge state={status} />
       </div>
       <h3 className={s.title}>{proposal.title}</h3>
       <dl className={s.definition}>

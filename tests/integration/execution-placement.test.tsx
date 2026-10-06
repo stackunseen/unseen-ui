@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AuditTrail, DataTable } from '@ai-interaction/react';
+import { AuditTrail, DataTable } from '@stackunseen/ui';
 
 describe('execution content and contextual actions', () => {
   it('load-more rows and records remain explicit requests and lock during loading', async () => {

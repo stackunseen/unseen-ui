@@ -11,9 +11,9 @@ Use the composed **Saved conversation workspace** in Design Foundations to revie
 ## Ownership and imports
 
 ```tsx
-import { ThreadList, BranchSwitcher, MessageQueue } from '@ai-interaction/react';
-import type { ConversationContext, ConversationWorkspace } from '@ai-interaction/core';
-import { inspectConversationWorkspace } from '@ai-interaction/core/conversation';
+import { ThreadList, BranchSwitcher, MessageQueue } from '@stackunseen/ui';
+import type { ConversationContext, ConversationWorkspace } from '@stackunseen/ui-core';
+import { inspectConversationWorkspace } from '@stackunseen/ui-core/conversation';
 ```
 
 Core root exports the types and pure identity helpers. Schema inspectors have a separate `/conversation` entry so unrelated renderer imports do not inherit their Zod initialization. React uses that entry for navigation validation. Core contains no browser, storage or transport access.

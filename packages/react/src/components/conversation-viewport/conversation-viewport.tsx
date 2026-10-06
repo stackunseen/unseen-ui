@@ -3,14 +3,14 @@ import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useStat
 import type { CSSProperties, ReactNode } from 'react';
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
 import type { Range } from '@tanstack/react-virtual';
-import { conversationContextKey, sameConversationContext } from '@ai-interaction/core';
-import type { MessageData, NavigationAvailability } from '@ai-interaction/core';
+import { conversationContextKey, sameConversationContext } from '@stackunseen/ui-core';
+import type { MessageData, NavigationAvailability } from '@stackunseen/ui-core';
 import {
   historyLimits,
   historyScopeKey,
   inspectConversationHistory,
   inspectHistoryRestore,
-} from '@ai-interaction/core/history';
+} from '@stackunseen/ui-core/history';
 import type {
   ConversationHistory,
   HistoryEdge,
@@ -18,7 +18,7 @@ import type {
   HistoryPosition,
   HistoryRestore,
   HistoryRestoreResult,
-} from '@ai-interaction/core/history';
+} from '@stackunseen/ui-core/history';
 import { Message } from '../message/message.js';
 import type { MessageProps } from '../message/message.js';
 import { Button } from '../button/button.js';

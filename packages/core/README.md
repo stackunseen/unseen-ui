@@ -1,12 +1,19 @@
-# @ai-interaction/core
+# @stackunseen/ui-core
 
-Framework-independent contracts and state projection for **Unseen UI by Stack Unseen**. Experimental, private, unpublished and marked `UNLICENSED`.
+Framework-independent contracts and state projection for **Unseen UI by Stack Unseen**. Experimental alpha; registry publication and license selection are pending. The package is currently unpublished and `UNLICENSED`.
 
-Follow [Getting Started](../../docs/GETTING-STARTED.md) for workspace setup. These are local package imports, not an npm registry installation.
+Once the first alpha is published, install it with `npm install @stackunseen/ui-core@alpha`. It also installs automatically with `@stackunseen/ui`.
+
+```ts
+import { canTransition } from '@stackunseen/ui-core';
+
+canTransition('queued', 'running'); // true
+canTransition('succeeded', 'running'); // false
+```
 
 | Entry                  | Purpose                                                                          |
 | ---------------------- | -------------------------------------------------------------------------------- |
-| `@ai-interaction/core` | Runtime projection, transitions, approval validation, safe URLs and domain types |
+| `@stackunseen/ui-core` | Runtime projection, transitions, approval validation, safe URLs and domain types |
 | `/schema`              | Canonical event and snapshot validators                                          |
 | `/conversation`        | Scoped conversation windows and commands                                         |
 | `/history`             | Bounded chronological history and page/restore contracts                         |
@@ -17,4 +24,4 @@ Core imports no React, browser APIs, provider SDKs, networking or persistence. S
 
 Validation helpers do not authorize actions. Hosts authenticate actors, enforce access, deduplicate commands and retain durable receipts. Unknown outcomes must be reconciled before retrying mutations.
 
-Read [message parts](../../docs/MESSAGE-PARTS.md), [conversations](../../docs/CONVERSATIONS.md), [history](../../docs/HISTORY-VIEWPORT.md), [adapters](../../docs/ADAPTERS.md) and [uploads](../../docs/UPLOADS.md) for exact types, bounds and examples.
+Each entry includes TypeScript declarations. Import from the package root or an exported subpath; internal source paths are not a supported API.

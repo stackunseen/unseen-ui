@@ -6,7 +6,7 @@ import {
   inspectConversationContext,
   inspectConversationPagination,
   inspectConversationWorkspace,
-} from '@ai-interaction/core/conversation';
+} from '@stackunseen/ui-core/conversation';
 import {
   context,
   thread,

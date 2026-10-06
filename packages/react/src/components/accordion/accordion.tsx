@@ -10,6 +10,15 @@ export interface AccordionItem {
   title: ReactNode;
   content: ReactNode;
   disabled?: boolean;
+  /** Preserve local drafts while collapsed. Closed content stays hidden and unfocusable. */
+  keepMounted?: boolean;
+}
+
+function AccordionContent({
+  'data-state': state,
+  ...props
+}: ComponentProps<'div'> & { 'data-state'?: 'open' | 'closed' }) {
+  return <div {...props} data-state={state} hidden={state === 'closed'} />;
 }
 
 type RootProps = ComponentProps<typeof AccordionPrimitive.Root>;
@@ -56,10 +65,14 @@ export function Accordion({
             </Heading>
           </AccordionPrimitive.Header>
           <AccordionPrimitive.Content
+            asChild
+            forceMount={item.keepMounted ? true : undefined}
             role={region ? 'region' : 'group'}
             className={s.accordionContent}
           >
-            <div className={s.accordionBody}>{item.content}</div>
+            <AccordionContent>
+              <div className={s.accordionBody}>{item.content}</div>
+            </AccordionContent>
           </AccordionPrimitive.Content>
         </AccordionPrimitive.Item>
       ))}

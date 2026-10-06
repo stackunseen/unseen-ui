@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { ThreadList, BranchSwitcher, MessageQueue } from '@ai-interaction/react';
-import type { NavigationAvailability } from '@ai-interaction/core';
+import { ThreadList, BranchSwitcher, MessageQueue } from '@stackunseen/ui';
+import type { NavigationAvailability } from '@stackunseen/ui-core';
 import { context, thread, branches, item } from '../fixtures/conversation-navigation.js';
 
 describe('controlled navigation and compact contextual actions', () => {

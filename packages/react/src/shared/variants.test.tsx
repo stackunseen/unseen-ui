@@ -15,7 +15,7 @@ import {
   ToolCall,
   ToolGroup,
   componentVariants,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import { artifact, proposal, source, tool } from '../../../../apps/docs/lib/fixtures';
 
 describe('presentation variants preserve meaning and actions', () => {

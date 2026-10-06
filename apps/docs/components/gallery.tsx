@@ -9,32 +9,32 @@ import {
   BookOpen,
   Code2,
   Menu,
-  Moon,
   Palette,
   Search,
-  Sun,
   X,
 } from 'lucide-react';
-import { AITheme, IconsProvider, Accordion } from '@ai-interaction/react';
-import { createTheme } from '@ai-interaction/react/theme';
-import type { Appearance } from '@ai-interaction/react/theme';
+import { Accordion } from '@stackunseen/ui';
+import '@stackunseen/ui/terminal.css';
+import 'katex/dist/katex.min.css';
 import { catalog } from '../lib/catalog';
+import { isReleaseComponent, releaseSections } from '../lib/first-release';
 import type { CatalogEntry } from '../lib/catalog';
 import {
-  aiGroups,
   componentSection,
   gallerySection,
   navigationGroup,
   searchCatalog,
   sectionCatalog,
   sectionLabels,
-  uiGroups,
+  sectionGroups,
+  componentSections,
 } from '../lib/gallery-navigation';
 import type { GallerySection } from '../lib/gallery-navigation';
-import { changeGalleryLocation, galleryHref, readGalleryLocation } from '../lib/gallery-location';
+import { changeGalleryLocation, readGalleryLocation } from '../lib/gallery-location';
 import type { GalleryLocation, GalleryView } from '../lib/gallery-location';
 import { ComponentDetail } from './component-detail';
-import { lucideIcons } from './gallery-icons';
+import { siteGalleryHref } from '../lib/site-paths';
+import { useSiteTheme } from './site-shell';
 import { ExampleLoading } from './example-loading';
 
 const ThemeEditor = dynamic(() => import('./theme-editor').then((m) => m.ThemeEditor), {
@@ -63,7 +63,6 @@ function subscribe(listener: () => void) {
   };
 }
 const browserSearch = () => window.location.search;
-const serverSearch = () => '';
 const workspaces: { view: GalleryView; label: string; icon: typeof Blocks }[] = [
   { view: 'components', label: 'Components', icon: Blocks },
   { view: 'workbench', label: 'Agent workbench', icon: Code2 },
@@ -98,28 +97,34 @@ function LocalLink({
     onNavigate(location);
   }
   return (
-    <a href={galleryHref(location)} onClick={click} {...props}>
+    <a href={siteGalleryHref(location)} onClick={click} {...props}>
       {children}
     </a>
   );
 }
 
-export function Gallery({ initialView = 'components' }: { initialView?: GalleryView }) {
-  const search = useSyncExternalStore(subscribe, browserSearch, serverSearch);
-  const location = readGalleryLocation(search, initialView);
+export function Gallery({
+  initialView = 'components',
+  initialComponent = 'PromptInput',
+}: {
+  initialView?: GalleryView;
+  initialComponent?: string;
+}) {
+  const initialSearch = `?view=${initialView}&component=${initialComponent}`;
+  const search = useSyncExternalStore(subscribe, browserSearch, () => initialSearch);
+  const params = new URLSearchParams(search);
+  params.set('component', initialComponent);
+  params.set('view', initialView);
+  const location = readGalleryLocation(`?${params}`, initialView);
   const { view } = location;
   const entry = catalog.find((item) => item.name === location.component)!;
   const [query, setQuery] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [workbenchVisited, setWorkbenchVisited] = useState(false);
-  const [theme, setTheme] = useState(createTheme);
-  const [appearance, setAppearance] = useState<Appearance>('light');
-  const [iconSet, setIconSet] = useState<'default' | 'lucide'>('default');
+  const { theme, setTheme, appearance, setAppearance, iconSet, setIconSet } = useSiteTheme();
   const searchInput = useRef<HTMLInputElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
 
-  const title =
-    view === 'components' ? entry.name : workspaces.find((item) => item.view === view)!.label;
   useEffect(() => {
     if (view === 'workbench') setWorkbenchVisited(true);
   }, [view]);
@@ -162,8 +167,12 @@ export function Gallery({ initialView = 'components' }: { initialView?: GalleryV
   }, [menuOpen]);
 
   function navigate(next: GalleryLocation) {
-    const destination = galleryHref(next);
-    if (destination !== window.location.search) {
+    const destination = siteGalleryHref(next);
+    if (destination.split('?')[0] !== window.location.pathname) {
+      window.location.assign(destination);
+      return;
+    }
+    if (destination !== window.location.pathname + window.location.search) {
       window.history.pushState(null, '', destination);
       window.dispatchEvent(new Event(navigationEvent));
     }
@@ -176,8 +185,12 @@ export function Gallery({ initialView = 'components' }: { initialView?: GalleryV
     navigate(changeGalleryLocation(location, patch));
   const section = gallerySection(view, entry);
   const searching = query.trim().length > 0;
-  const filtered = searching ? searchCatalog(query) : sectionCatalog(section);
-  const groupNames = section === 'ui' ? uiGroups : aiGroups;
+  const filtered = searching
+    ? searchCatalog(query)
+    : view === 'components' && !isReleaseComponent(entry)
+      ? [entry]
+      : sectionCatalog(section);
+  const groupNames = sectionGroups(section);
   const destinations: {
     section: GallerySection;
     icon: typeof Blocks;
@@ -197,13 +210,6 @@ export function Gallery({ initialView = 'components' }: { initialView?: GalleryV
       location: changeGalleryLocation(location, {
         view: 'components',
         component: componentSection(entry) === 'ai' ? entry.name : 'PromptInput',
-      }),
-    },
-    {
-      section: 'patterns',
-      icon: BookOpen,
-      location: changeGalleryLocation(location, {
-        view: view === 'coding' || view === 'templates' ? view : 'workbench',
       }),
     },
     {
@@ -235,282 +241,241 @@ export function Gallery({ initialView = 'components' }: { initialView?: GalleryV
   );
 
   return (
-    <IconsProvider icons={iconSet === 'lucide' ? lucideIcons : {}}>
-      <title>{`${title} · Unseen UI`}</title>
-      <AITheme theme={theme} appearance={appearance} className="site explorer-site">
-        <a href="#main-content" className="skip-link">
-          Skip to content
+    <div className="site explorer-site">
+      <nav className="explorer-mobile-bar" aria-label="Explorer navigation">
+        <button
+          ref={menuButton}
+          type="button"
+          className="mobile-menu"
+          aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+          aria-expanded={menuOpen}
+          aria-controls="library-navigation"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+        </button>
+        <span>Browse {view === 'components' ? 'components' : 'the library'}</span>
+        <a href="/components/">
+          Component index <ArrowRight size={14} aria-hidden="true" />
         </a>
-        <header className="site-header">
-          <button
-            ref={menuButton}
-            type="button"
-            className="mobile-menu"
-            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
-            aria-expanded={menuOpen}
-            aria-controls="library-navigation"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
-          </button>
-          <LocalLink
-            className="brand"
-            location={entryLocation('PromptInput')}
-            onNavigate={navigate}
-            aria-label="Unseen UI home"
-          >
-            <span className="brand-mark">
-              <Blocks size={21} aria-hidden="true" />
-            </span>
-            <span>Unseen UI</span>
-          </LocalLink>
-          <span className="header-divider" />
-          <span className="header-label">Component explorer</span>
-          <div className="header-links">
-            <a href="/getting-started/">
-              Getting started <ArrowRight size={14} aria-hidden="true" />
+      </nav>
+      <div className="site-body">
+        <aside
+          id="library-navigation"
+          className={`sidebar explorer-sidebar ${menuOpen ? 'is-open' : ''}`}
+          aria-label="Library navigation"
+        >
+          <nav className="workspace-nav" aria-label="Library sections">
+            {destinations.map(({ section: item, icon: Icon, location: destination }) => (
+              <LocalLink
+                key={item}
+                className={`nav-main ${section === item ? 'active' : ''}`}
+                aria-current={section === item ? 'page' : undefined}
+                location={destination}
+                onNavigate={(next) => {
+                  setQuery('');
+                  navigate(next);
+                }}
+              >
+                <Icon size={16} aria-hidden="true" />
+                <span>{sectionLabels[item]}</span>
+                {componentSections.some((collection) => collection === item) && (
+                  <small aria-hidden="true">{sectionCatalog(item).length}</small>
+                )}
+              </LocalLink>
+            ))}
+            <a className="nav-main getting-started-link" href="/getting-started/">
+              <BookOpen size={16} aria-hidden="true" />
+              <span>Getting Started</span>
             </a>
-            <button
-              type="button"
-              className="appearance-toggle"
-              aria-label={appearance === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              onClick={() => setAppearance(appearance === 'dark' ? 'light' : 'dark')}
-            >
-              {appearance === 'dark' ? (
-                <Sun size={18} aria-hidden="true" />
-              ) : (
-                <Moon size={18} aria-hidden="true" />
-              )}
-            </button>
-            <span className="version-label">v0.1 alpha</span>
-          </div>
-        </header>
-        <div className="site-body">
-          <aside
-            id="library-navigation"
-            className={`sidebar explorer-sidebar ${menuOpen ? 'is-open' : ''}`}
-            aria-label="Library navigation"
-          >
-            <nav className="workspace-nav" aria-label="Library sections">
-              {destinations.map(({ section: item, icon: Icon, location: destination }) => (
-                <LocalLink
-                  key={item}
-                  className={`nav-main ${section === item ? 'active' : ''}`}
-                  aria-current={section === item ? 'page' : undefined}
-                  location={destination}
-                  onNavigate={(next) => {
-                    setQuery('');
-                    navigate(next);
-                  }}
-                >
-                  <Icon size={16} aria-hidden="true" />
-                  <span>{sectionLabels[item]}</span>
-                  {(item === 'ui' || item === 'ai') && (
-                    <small aria-hidden="true">{sectionCatalog(item).length}</small>
-                  )}
-                </LocalLink>
-              ))}
-              <a className="nav-main getting-started-link" href="/getting-started/">
-                <BookOpen size={16} aria-hidden="true" />
-                <span>Getting started</span>
-              </a>
-            </nav>
-            <div className="library-search">
-              <label className="search-field">
-                <Search size={16} aria-hidden="true" />
-                <input
-                  ref={searchInput}
-                  type="search"
-                  aria-label="Search components"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Find a component…"
-                />
-                <kbd aria-hidden="true">/</kbd>
-              </label>
-              <p className="library-count" role="status">
-                {searching
-                  ? `${filtered.length} ${filtered.length === 1 ? 'result' : 'results'} across all components`
-                  : section === 'ui' || section === 'ai'
-                    ? `${filtered.length} ${section === 'ui' ? 'UI' : 'AI'} components`
-                    : section === 'patterns'
-                      ? 'Components working together'
-                      : 'Theme, icons and design guidance'}
-              </p>
-            </div>
-            <nav
-              className="explorer-library"
-              aria-label={
-                searching || section === 'ui' || section === 'ai'
-                  ? 'Components'
-                  : sectionLabels[section]
-              }
-            >
-              {searching ? (
-                (['ui', 'ai'] as const).map((resultSection) => {
-                  const items = filtered.filter((item) => componentSection(item) === resultSection);
-                  return items.length ? (
-                    <section className="component-group" key={resultSection}>
-                      <h2>{sectionLabels[resultSection]}</h2>
-                      {items.map((item) => componentLink(item, true))}
-                    </section>
-                  ) : null;
-                })
-              ) : section === 'ui' || section === 'ai' ? (
-                <Accordion
-                  key={`${section}:${entry.name}`}
-                  type="single"
-                  collapsible
-                  region={false}
-                  headingLevel={2}
-                  className="catalog-groups"
-                  defaultValue={navigationGroup(entry)}
-                  items={groupNames
-                    .map((group) => ({
-                      value: group,
-                      title: (
-                        <span className="catalog-group-label">
-                          {group}
-                          <small aria-hidden="true">
-                            {filtered.filter((item) => navigationGroup(item) === group).length}
-                          </small>
-                        </span>
-                      ),
-                      content: (
-                        <div className="component-group-links">
-                          {filtered
-                            .filter((item) => navigationGroup(item) === group)
-                            .map((item) => componentLink(item))}
-                        </div>
-                      ),
-                    }))
-                    .filter((item) =>
-                      filtered.some((entry) => navigationGroup(entry) === item.value),
-                    )}
-                />
-              ) : (
-                <div className="section-links">
-                  {(section === 'patterns'
-                    ? ['workbench', 'coding', 'templates']
-                    : ['theme', 'design']
-                  ).map((item) => {
-                    const workspace = workspaces.find((workspace) => workspace.view === item)!;
-                    return (
-                      <LocalLink
-                        key={item}
-                        className={`component-link ${view === item ? 'active' : ''}`}
-                        aria-current={view === item ? 'page' : undefined}
-                        location={changeGalleryLocation(location, { view: workspace.view })}
-                        onNavigate={navigate}
-                      >
-                        {workspace.label}
-                      </LocalLink>
-                    );
-                  })}
-                  {section === 'customize' && (
-                    <a className="component-link" href="/getting-started/#customize">
-                      Customization and icons
-                    </a>
-                  )}
-                  <p className="section-description">
-                    {section === 'patterns'
-                      ? 'Try component combinations with a simulated host.'
-                      : 'Customize the theme, icons and component styles.'}
-                  </p>
-                </div>
-              )}
-              {searching && !filtered.length && (
-                <div className="empty-library">
-                  <p>No matching components.</p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setQuery('');
-                      searchInput.current?.focus();
-                    }}
-                  >
-                    Clear filters
-                  </button>
-                </div>
-              )}
-            </nav>
-          </aside>
-          <main id="main-content" className="main-content explorer-main" tabIndex={-1}>
-            <div className="explorer-context">
-              <span>
-                {view === 'components'
-                  ? `${sectionLabels[section]} / ${navigationGroup(entry)}`
-                  : `${sectionLabels[section]} / ${workspaces.find((item) => item.view === view)?.label}`}
-              </span>
-              {view === 'components' && (
-                <nav className="component-pagination" aria-label="Browse components">
-                  {previous && (
-                    <LocalLink
-                      location={entryLocation(previous.name)}
-                      onNavigate={navigate}
-                      aria-label={`Previous component: ${previous.name}`}
-                    >
-                      <ArrowLeft size={15} aria-hidden="true" />
-                      <span>Previous</span>
-                    </LocalLink>
-                  )}
-                  {next && (
-                    <LocalLink
-                      location={entryLocation(next.name)}
-                      onNavigate={navigate}
-                      aria-label={`Next component: ${next.name}`}
-                    >
-                      <span>Next</span>
-                      <ArrowRight size={15} aria-hidden="true" />
-                    </LocalLink>
-                  )}
-                </nav>
-              )}
-            </div>
-            {view === 'components' ? (
-              <ComponentDetail
-                key={entry.name}
-                entry={entry}
-                location={location}
-                onChange={change}
+          </nav>
+          <div className="library-search">
+            <label className="search-field">
+              <Search size={16} aria-hidden="true" />
+              <input
+                ref={searchInput}
+                type="search"
+                aria-label="Search components"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Find a component…"
               />
-            ) : view === 'coding' ? (
-              <CodingStudio />
-            ) : view === 'templates' ? (
-              <Templates />
-            ) : view === 'design' ? (
-              <DesignGuide theme={theme} onCustomize={() => change({ view: 'theme' })} />
-            ) : view === 'theme' ? (
-              <ThemeEditor
-                theme={theme}
-                onChange={setTheme}
-                appearance={appearance}
-                onAppearanceChange={setAppearance}
-                iconSet={iconSet}
-                onIconSetChange={setIconSet}
+              <kbd aria-hidden="true">/</kbd>
+            </label>
+            <p className="library-count" role="status">
+              {searching
+                ? `${filtered.length} ${filtered.length === 1 ? 'result' : 'results'} across all components`
+                : componentSections.some((item) => item === section)
+                  ? `${filtered.length} entries in ${sectionLabels[section]}`
+                  : section === 'templates'
+                    ? 'Components working together'
+                    : 'Theme, icons and design guidance'}
+            </p>
+          </div>
+          <nav
+            className="explorer-library"
+            aria-label={
+              searching || componentSections.some((item) => item === section)
+                ? 'Components'
+                : sectionLabels[section]
+            }
+          >
+            {searching ? (
+              releaseSections.map((resultSection) => {
+                const items = filtered.filter((item) => componentSection(item) === resultSection);
+                return items.length ? (
+                  <section className="component-group" key={resultSection}>
+                    <h2>{sectionLabels[resultSection]}</h2>
+                    {items.map((item) => componentLink(item, true))}
+                  </section>
+                ) : null;
+              })
+            ) : componentSections.some((item) => item === section) ? (
+              <Accordion
+                key={`${section}:${entry.name}`}
+                type="single"
+                collapsible
+                region={false}
+                headingLevel={2}
+                className="catalog-groups"
+                defaultValue={navigationGroup(entry)}
+                items={groupNames
+                  .map((group) => ({
+                    value: group,
+                    title: (
+                      <span className="catalog-group-label">
+                        {group}
+                        <small aria-hidden="true">
+                          {filtered.filter((item) => navigationGroup(item) === group).length}
+                        </small>
+                      </span>
+                    ),
+                    content: (
+                      <div className="component-group-links">
+                        {filtered
+                          .filter((item) => navigationGroup(item) === group)
+                          .map((item) => componentLink(item))}
+                      </div>
+                    ),
+                  }))
+                  .filter((item) =>
+                    filtered.some((entry) => navigationGroup(entry) === item.value),
+                  )}
               />
             ) : (
-              <div className="page-heading">
-                <span className="eyebrow">WORKING TOGETHER</span>
-                <h1>From request to resolution.</h1>
-                <p>
-                  Follow the steps, review an action and inspect the result in this locally
-                  simulated workflow.
+              <div className="section-links">
+                {(section === 'templates'
+                  ? ['workbench', 'coding', 'templates']
+                  : ['theme', 'design']
+                ).map((item) => {
+                  const workspace = workspaces.find((workspace) => workspace.view === item)!;
+                  return (
+                    <LocalLink
+                      key={item}
+                      className={`component-link ${view === item ? 'active' : ''}`}
+                      aria-current={view === item ? 'page' : undefined}
+                      location={changeGalleryLocation(location, { view: workspace.view })}
+                      onNavigate={navigate}
+                    >
+                      {workspace.label}
+                    </LocalLink>
+                  );
+                })}
+                {section === 'customize' && (
+                  <a className="component-link" href="/getting-started/#customize">
+                    Customization and icons
+                  </a>
+                )}
+                <p className="section-description">
+                  {section === 'templates'
+                    ? 'Try component combinations with a simulated host.'
+                    : 'Customize the theme, icons and component styles.'}
                 </p>
               </div>
             )}
-            {(view === 'workbench' || workbenchVisited) && (
-              <div hidden={view !== 'workbench'}>
-                <Workbench />
+            {searching && !filtered.length && (
+              <div className="empty-library">
+                <p>No matching components.</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('');
+                    searchInput.current?.focus();
+                  }}
+                >
+                  Clear filters
+                </button>
               </div>
             )}
-            <footer className="page-footer">
-              <span>Unseen UI by Stack Unseen</span>
-              <span>Experimental components · Local sample data</span>
-            </footer>
-          </main>
-        </div>
-      </AITheme>
-    </IconsProvider>
+          </nav>
+        </aside>
+        <main id="main-content" className="main-content explorer-main" tabIndex={-1}>
+          <div className="explorer-context">
+            <span>
+              <a href="/components/">Components</a>
+              {' / '}
+              {view === 'components'
+                ? `${sectionLabels[section]} / ${navigationGroup(entry)}`
+                : `${sectionLabels[section]} / ${workspaces.find((item) => item.view === view)?.label}`}
+            </span>
+            {view === 'components' && (
+              <nav className="component-pagination" aria-label="Browse components">
+                {previous && (
+                  <LocalLink
+                    location={entryLocation(previous.name)}
+                    onNavigate={navigate}
+                    aria-label={`Previous component: ${previous.name}`}
+                  >
+                    <ArrowLeft size={15} aria-hidden="true" />
+                    <span>Previous</span>
+                  </LocalLink>
+                )}
+                {next && (
+                  <LocalLink
+                    location={entryLocation(next.name)}
+                    onNavigate={navigate}
+                    aria-label={`Next component: ${next.name}`}
+                  >
+                    <span>Next</span>
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </LocalLink>
+                )}
+              </nav>
+            )}
+          </div>
+          {view === 'components' ? (
+            <ComponentDetail key={entry.name} entry={entry} location={location} onChange={change} />
+          ) : view === 'coding' ? (
+            <CodingStudio />
+          ) : view === 'templates' ? (
+            <Templates />
+          ) : view === 'design' ? (
+            <DesignGuide theme={theme} onCustomize={() => change({ view: 'theme' })} />
+          ) : view === 'theme' ? (
+            <ThemeEditor
+              theme={theme}
+              onChange={setTheme}
+              appearance={appearance}
+              onAppearanceChange={setAppearance}
+              iconSet={iconSet}
+              onIconSetChange={setIconSet}
+            />
+          ) : (
+            <div className="page-heading">
+              <h1>Agent Workbench</h1>
+              <p>
+                Review sample accounts and decide on actions in a local customer-operations
+                workspace.
+              </p>
+            </div>
+          )}
+          {(view === 'workbench' || workbenchVisited) && (
+            <div hidden={view !== 'workbench'}>
+              <Workbench />
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
   );
 }

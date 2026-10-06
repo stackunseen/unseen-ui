@@ -1,6 +1,6 @@
 # Minimal customization
 
-Start with Unseen UI's theme defaults, then use the component's supported variants, content slots and root styling. Follow [Getting Started](GETTING-STARTED.md) to build the private workspace packages and import the shared stylesheet first. The options below use the existing `@ai-interaction/react` API and require no new configuration package.
+Start with Unseen UI's theme defaults, then use the component's supported variants, content slots and root styling. Follow [Getting Started](GETTING-STARTED.md) to build the private workspace packages and import the shared stylesheet first. The options below use the existing `@stackunseen/ui` API and require no new configuration package.
 
 ## Theme defaults
 
@@ -32,7 +32,7 @@ import {
   Button,
   IconsProvider,
   type IconComponent,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 
 const SendIcon: IconComponent = (props) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} {...props}>
@@ -64,4 +64,4 @@ Menu check/radio indicators and navigation/submenu chevrons currently use intern
 
 Native-prop primitives and website component parts accept `className` and `style` on the element represented by that part. AITheme, Button, StatusBadge and WorkspaceShell also expose native root props. Older domain cards are not uniform: the scoped PermissionRequest and AgentHandoff APIs currently lack these root styling fields. Use their documented presentations and surrounding layout; do not rely on private generated CSS class names.
 
-Use named public imports from `@ai-interaction/react`; there are no `/icons` or `/button` subpaths. ESM tree-shaking can remove unused exports, but runtime provider overrides do not erase the built-in icon registry from the bundle. Optional heavy renderers stay behind their [documented entries](GETTING-STARTED.md#choose-the-right-entry). CSS is an explicit shared import rather than a per-component stylesheet.
+Use named public imports from `@stackunseen/ui`; there are no `/icons` or `/button` subpaths. ESM tree-shaking can remove unused exports, but runtime provider overrides do not erase the built-in icon registry from the bundle. Optional heavy renderers stay behind their [documented entries](GETTING-STARTED.md#choose-the-right-entry). CSS is an explicit shared import rather than a per-component stylesheet.

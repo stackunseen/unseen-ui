@@ -2,7 +2,7 @@ import { createRef, useState } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AITheme, Button, IconButton, IconsProvider, Modal } from '@ai-interaction/react';
+import { AITheme, Button, IconButton, IconsProvider, Modal } from '@stackunseen/ui';
 
 const hint = () => document.querySelector('[data-part="icon-hint"]');
 

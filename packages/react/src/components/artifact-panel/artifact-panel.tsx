@@ -1,6 +1,6 @@
 'use client';
 import type { ReactNode } from 'react';
-import type { Artifact } from '@ai-interaction/core';
+import type { Artifact } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Modal } from '../modal/modal.js';
 import { Skeleton } from '../skeleton/skeleton.js';
@@ -15,6 +15,10 @@ export interface ArtifactPanelProps extends VariantProps<'ArtifactPanel'> {
   error?: string;
   /** Trusted host control: one element that forwards Radix props/ref, with an accessible name. */
   trigger?: ReactNode;
+  /** Trusted host content, shown only when the selected artifact is available. */
+  body?: ReactNode;
+  /** Trusted host actions, kept outside the scrolling body and hidden on loading/error. */
+  actions?: ReactNode;
 }
 
 export function ArtifactPanel({
@@ -25,6 +29,8 @@ export function ArtifactPanel({
   loading = false,
   error,
   trigger,
+  body,
+  actions,
 }: ArtifactPanelProps) {
   return (
     <Modal
@@ -42,6 +48,7 @@ export function ArtifactPanel({
           <Button variant="outline">{artifact ? `Open ${artifact.title}` : 'Open artifact'}</Button>
         )
       }
+      footer={!loading && !error && artifact ? actions : undefined}
     >
       {loading ? (
         <Skeleton shape="card" label="Loading artifact" lines={5} />
@@ -50,7 +57,11 @@ export function ArtifactPanel({
           {error}
         </p>
       ) : artifact ? (
-        <ArtifactPreview artifact={artifact} />
+        body === undefined ? (
+          <ArtifactPreview artifact={artifact} />
+        ) : (
+          body
+        )
       ) : (
         <p>No artifact selected.</p>
       )}

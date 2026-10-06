@@ -4,8 +4,8 @@ import {
   createRuntime,
   safeUrl,
   validateApprovalDecision,
-} from '@ai-interaction/core';
-import type { Event, MessageData, RuntimeSnapshot } from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
+import type { Event, MessageData, RuntimeSnapshot } from '@stackunseen/ui-core';
 import { initialSnapshot, proposal } from '../../../apps/docs/lib/fixtures';
 
 afterEach(() => vi.useRealTimers());

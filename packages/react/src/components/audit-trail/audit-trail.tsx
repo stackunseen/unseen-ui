@@ -6,6 +6,7 @@ import s from '../../shared/styles/agent-controls.module.css';
 import c from '../../shared/styles/coding.module.css';
 import g from '../../shared/styles/structured.module.css';
 import a from '../../shared/styles/action-layout.module.css';
+import { Input } from '../input/input.js';
 
 export interface AuditRecord {
   id: string;
@@ -39,7 +40,7 @@ export function AuditTrail({
   return (
     <div className={s.root} data-part="audit-trail" data-variant={variant}>
       <strong>Audit trail</strong>
-      <input
+      <Input
         className={s.search}
         aria-label="Search audit records"
         placeholder="Search audit records…"

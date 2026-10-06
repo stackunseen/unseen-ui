@@ -1,6 +1,6 @@
 'use client';
 import { useLayoutEffect, useRef } from 'react';
-import type { ContextItem, ContextUsage } from '@ai-interaction/core';
+import type { ContextItem, ContextUsage } from '@stackunseen/ui-core';
 import { IconButton } from '../icon-button/icon-button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';

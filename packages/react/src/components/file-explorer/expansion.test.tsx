@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { FileExplorer } from '@ai-interaction/react';
+import { FileExplorer } from '@stackunseen/ui';
 import { files } from '../../../../../apps/docs/lib/coding-fixtures';
 
 vi.stubGlobal(

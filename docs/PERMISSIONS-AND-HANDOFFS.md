@@ -26,7 +26,7 @@ import {
   type HandoffDecisionCommand,
   type HandoffReceipt,
   type HandoffSubmission,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 ```
 
 The root is a React client entry. Its inspection helpers validate presentation data and compare exact command identity. Server authorization belongs to the host. Core remains independent of React; use its pure adapter on a server where appropriate and enforce domain invariants at the authoritative host boundary. Neither component implements provider connections, networking or persistence.

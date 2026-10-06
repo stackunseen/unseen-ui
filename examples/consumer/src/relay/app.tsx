@@ -13,7 +13,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import { DemoLogin } from './login';
 import { AccountTable } from './account-table';
 import { Overview } from './overview';

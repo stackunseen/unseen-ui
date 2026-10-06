@@ -5,8 +5,8 @@ import { join, resolve, sep } from 'node:path';
 import { Buffer } from 'node:buffer';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FileExplorer } from '@ai-interaction/react';
-import type { FileOpenRequest, WorkspaceFile } from '@ai-interaction/react';
+import { FileExplorer } from '@stackunseen/ui';
+import type { FileOpenRequest, WorkspaceFile } from '@stackunseen/ui';
 import { createFileHost } from './host.mjs';
 import type { ReadOnlyFileHost } from './host.mjs';
 

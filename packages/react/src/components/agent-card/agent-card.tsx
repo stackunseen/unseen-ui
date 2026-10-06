@@ -1,5 +1,5 @@
 'use client';
-import type { RunLifecycle } from '@ai-interaction/core';
+import type { RunLifecycle } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
 import { Button } from '../button/button.js';
 import { StatusBadge } from '../status-badge/status-badge.js';

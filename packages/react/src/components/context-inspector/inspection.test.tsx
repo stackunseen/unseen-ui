@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { ContextInspector, componentVariants } from '@ai-interaction/react';
+import { ContextInspector, componentVariants } from '@stackunseen/ui';
 
 import { contextInspection } from '../../../../../apps/docs/lib/inspection-fixtures';
 

@@ -1,4 +1,4 @@
-import type { MessageData, MessagePart, RuntimeSnapshot } from '@ai-interaction/core';
+import type { MessageData, MessagePart, RuntimeSnapshot } from '@stackunseen/ui-core';
 import { initialSnapshot, source, tool } from './fixtures';
 
 export const partStates = [

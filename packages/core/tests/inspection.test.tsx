@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { modelSettingsIssues, policyAssessment, supportsTemperature } from '@ai-interaction/core';
+import { modelSettingsIssues, policyAssessment, supportsTemperature } from '@stackunseen/ui-core';
 import {
   modelCapabilitiesSchema,
   modelSettingsSchema,
@@ -8,7 +8,7 @@ import {
   contextInspectionSchema,
   connectionInfoSchema,
   policyChecksSchema,
-} from '@ai-interaction/core/schema';
+} from '@stackunseen/ui-core/schema';
 import {
   connectionInfo,
   contextInspection,

@@ -1,5 +1,5 @@
 'use client';
-import type { Artifact } from '@ai-interaction/core';
+import type { Artifact } from '@stackunseen/ui-core';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 

@@ -7,14 +7,14 @@ import {
   receiptMatchesUpload,
   sameUploadContext,
   uploadCommandKey,
-} from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
 import type {
   UploadCapabilities,
   UploadCheckpoint,
   UploadCommand,
   UploadOperation,
   UploadReceipt,
-} from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
 
 export interface UploadClientSnapshot {
   connected: boolean;

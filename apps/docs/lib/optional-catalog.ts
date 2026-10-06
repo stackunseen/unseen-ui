@@ -1,0 +1,238 @@
+import type { CatalogEntry } from './catalog';
+
+type Entry = Omit<CatalogEntry, 'presentations' | 'presentationProp' | 'importPath'>;
+const application = (entry: Entry): CatalogEntry => ({
+  ...entry,
+  presentations: ['default'],
+  presentationProp: null,
+  importPath: '/application',
+});
+const marketing = (entry: Entry): CatalogEntry => ({
+  ...entry,
+  group: 'Marketing blocks',
+  presentations: ['default'],
+  presentationProp: null,
+  importPath: '/marketing',
+});
+
+export const applicationCatalog: CatalogEntry[] = [
+  application({
+    name: 'DataGrid',
+    group: 'Data Display',
+    category: 'Application data',
+    description: 'A native table with controlled sorting, paging, selection and column visibility.',
+    aliases: ['Data grid', 'Customer table'],
+    states: ['Default', 'Loading', 'Empty', 'Error'],
+    contract: 'caption · columns · rows · getRowId · sort? · pagination? · selectedRowIds?',
+    responsibility:
+      'Filter, sort and page rows in your host before passing the current window. Selection never grants permission to act on a record.',
+    keyboard:
+      'Tab reaches sort buttons, selection, column controls and paging. Wide tables scroll within their labelled region.',
+    code: '<DataGrid caption="Customers" columns={columns} rows={pageRows} getRowId={row => row.id}\n  sort={sort} onSortChange={setSort} pagination={pagination} onPageChange={setPage}\n  selectedRowIds={selectedIds} onSelectionChange={setSelectedIds} />',
+  }),
+  application({
+    name: 'Combobox',
+    group: 'Forms',
+    category: 'Searchable choices',
+    description: 'Search a list and choose one value, with labelled loading and error states.',
+    states: ['Default', 'Disabled', 'Loading', 'Error', 'Empty'],
+    contract: 'label · options · value · onValueChange · query · onQueryChange',
+    responsibility:
+      'Keep the selected value and search query in your app. Use filterOption={false} for options already filtered by your server.',
+    keyboard:
+      'Arrow keys move through options. Enter selects, Escape closes, and Tab leaves the field. Focus stays in the input.',
+    code: '<Combobox label="Owner" options={owners} value={owner} onValueChange={setOwner}\n  query={query} onQueryChange={setQuery} />',
+  }),
+  application({
+    name: 'MultiSelect',
+    group: 'Forms',
+    category: 'Searchable choices',
+    description:
+      'Search and select several values without losing choices outside the current results.',
+    states: ['Default', 'Disabled', 'Loading', 'Error', 'Empty'],
+    contract: 'label · options · value: readonly string[] · onValueChange · query · onQueryChange',
+    responsibility:
+      'Store selected IDs in your app. Validate them against current access and available choices before submission.',
+    keyboard:
+      'Arrow keys browse options and Enter toggles a choice. Selected chips have labelled remove buttons.',
+    code: '<MultiSelect label="Teams" options={teams} value={selectedTeams} onValueChange={setSelectedTeams}\n  query={query} onQueryChange={setQuery} />',
+  }),
+  application({
+    name: 'Calendar',
+    group: 'Forms',
+    category: 'Date selection',
+    description: 'Choose a date or range with explicit month, locale and availability rules.',
+    states: ['Default', 'Range', 'Disabled', 'Loading', 'Error'],
+    contract: 'value · onValueChange? · month · onMonthChange · locale · mode?',
+    responsibility:
+      'Supply YYYY-MM-DD dates, the displayed month and today from your app. Locale formats dates; labels translate interface text.',
+    keyboard:
+      'Arrow keys move by day or week, Home/End by week and Page Up/Down by month. Enter or Space selects an available day.',
+    code: '<Calendar value={date} onValueChange={setDate} month={month} onMonthChange={setMonth}\n  locale="en-GB" min="2026-10-01" max="2026-12-31" />',
+  }),
+  application({
+    name: 'DateRangePicker',
+    group: 'Forms',
+    category: 'Date selection',
+    description: 'A controlled date range field with a keyboard-accessible calendar popup.',
+    states: ['Default', 'Disabled', 'Loading', 'Error'],
+    contract: 'value · onValueChange? · month · onMonthChange · open · onOpenChange · locale',
+    responsibility:
+      'Own the range and popup state. A range cannot include disabled dates; validate date rules again on submission.',
+    keyboard:
+      'Opening focuses the calendar. Escape closes and returns to the trigger; Clear and Done are labelled actions.',
+    code: '<DateRangePicker label="Report period" value={range} onValueChange={setRange}\n  month={month} onMonthChange={setMonth} open={open} onOpenChange={setOpen} locale="en-GB" />',
+  }),
+  application({
+    name: 'PageHeader',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description: 'A page title with breadcrumbs, supporting text and adjacent actions.',
+    states: ['Default'],
+    contract: 'title · description? · headingLevel? · breadcrumb? · actions?',
+    responsibility:
+      'Choose headingLevel to fit the page outline. Supply actual links and actions as React content.',
+    code: '<PageHeader title="Customers" description="Manage your customer records."\n  headingLevel={2} actions={<Button onClick={openCreate}>Add customer</Button>} />',
+    relatedImports: ['Button'],
+  }),
+  application({
+    name: 'OrgSwitcher',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description: 'A labelled organization selector that requests a change of scope.',
+    states: ['Default', 'Disabled'],
+    contract: 'value · organizations · onValueChange · label? · disabled?',
+    responsibility:
+      'Check access and unsaved drafts before changing the organization. The callback is a request to your app.',
+    code: '<OrgSwitcher value={organizationId} organizations={organizations} onValueChange={requestOrganization} />',
+  }),
+  application({
+    name: 'ListToolbar',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description: 'Search, filters and list actions with a readable result summary.',
+    states: ['Default', 'Disabled'],
+    contract: 'searchLabel · search · onSearchChange · filters? · actions? · summary?',
+    responsibility: 'Apply search and filters in your app, then supply an accurate result summary.',
+    code: '<ListToolbar searchLabel="Find customers" search={query} onSearchChange={setQuery}\n  filters={filters} actions={actions} summary={`${total} customers`} />',
+  }),
+  application({
+    name: 'MasterDetail',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description: 'A list and detail layout that shows one selected pane on narrow screens.',
+    states: ['Default'],
+    contract: 'list · listLabel · detail · detailLabel · activePane',
+    responsibility:
+      'Control activePane and provide a Back action in the detail. Move focus when navigation changes the visible pane.',
+    code: '<MasterDetail list={list} listLabel="Customers" detail={detail}\n  detailLabel="Customer details" activePane={activePane} />',
+  }),
+  application({
+    name: 'SettingsSaveCancel',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description: 'Save and cancel actions that distinguish pending, rejected and unknown outcomes.',
+    states: ['Default', 'Pending', 'Rejected', 'Unknown'],
+    contract: 'dirty · state · onCancel · onSave? · form? · onReconcile?',
+    responsibility:
+      'Supply the host result. After an unknown outcome, look up the original receipt instead of sending the mutation again.',
+    code: '<SettingsSaveCancel dirty={dirty} state={saveState} form="settings-form"\n  onCancel={discardDraft} onReconcile={checkOriginalReceipt} />',
+  }),
+  application({
+    name: 'UnsavedGuard',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description: 'A confirmation dialog for leaving a local draft.',
+    states: ['Default'],
+    contract: 'open · onOpenChange · onKeepEditing · onDiscard · destination?',
+    responsibility:
+      'Control navigation and restore focus after the decision. Discard applies only to the local draft.',
+    code: '<UnsavedGuard open={guardOpen} onOpenChange={setGuardOpen}\n  onKeepEditing={keepEditing} onDiscard={discardAndNavigate} destination="Billing" />',
+  }),
+];
+
+export const marketingCatalog: CatalogEntry[] = [
+  marketing({
+    name: 'MarketingHeader',
+    category: 'Site navigation',
+    description: 'Brand, links and actions in a responsive website header.',
+    states: ['Default'],
+    contract: 'brand · links · actions? · navigationLabel? · menuLabel?',
+    responsibility:
+      'Supply real destinations. The mobile disclosure keeps the same navigation links available.',
+    code: '<MarketingHeader brand={brand} links={navigation} actions={headerActions} />',
+  }),
+  marketing({
+    name: 'MarketingFooter',
+    category: 'Site navigation',
+    description: 'A website footer with grouped links and supplied copyright text.',
+    states: ['Default'],
+    contract: 'brand · groups · copyright · description?',
+    responsibility:
+      'Supply your own link groups and copyright. The component does not assume your company, year or legal terms.',
+    code: '<MarketingFooter brand={brand} groups={footerGroups} copyright="Your copyright text" />',
+  }),
+  marketing({
+    name: 'MarketingHero',
+    category: 'Website sections',
+    description: 'A clear page introduction with actions and space for a real product preview.',
+    states: ['Default'],
+    contract: 'title · description? · eyebrow? · actions? · note? · children?',
+    responsibility:
+      'The title defaults to h1; set headingLevel for embedded sections. Provide a preview that reflects the actual product.',
+    code: '<MarketingHero title="A shared home for your work" description={description} actions={actions}>\n  {productPreview}\n</MarketingHero>',
+  }),
+  marketing({
+    name: 'MarketingFeatures',
+    category: 'Website sections',
+    description: 'A concise feature list with optional icons and supporting content.',
+    states: ['Default'],
+    contract: 'title · items · description? · children?',
+    responsibility:
+      'Describe features you actually provide. Items have stable IDs and headings; icons are optional.',
+    code: '<MarketingFeatures title="The workspace" items={features} />',
+  }),
+  marketing({
+    name: 'MarketingPricing',
+    category: 'Website sections',
+    description: 'Plan cards with supplied prices, features and action slots.',
+    states: ['Default'],
+    contract: 'title · plans · description? · note?',
+    responsibility:
+      'Supply accurate terms and payment actions. The block displays prices; it performs no billing or subscriptions.',
+    code: '<MarketingPricing title="Plans" plans={plans} note="Your plan terms" />',
+  }),
+  marketing({
+    name: 'MarketingFAQ',
+    category: 'Website sections',
+    description: 'Questions and answers built on the shared Accordion.',
+    states: ['Default'],
+    contract: 'title · items · value? · onValueChange?',
+    responsibility:
+      'Supply useful answers. Any structured data must reflect visible, truthful content and your own SEO policy.',
+    code: '<MarketingFAQ title="Questions" items={questions} value={openQuestion} onValueChange={setOpenQuestion} />',
+  }),
+  marketing({
+    name: 'MarketingContact',
+    category: 'Website sections',
+    description: 'A contact form layout with fields, actions and explicit submission feedback.',
+    states: ['Default'],
+    contract: 'title · children · actions? · feedback? · onSubmit?',
+    responsibility:
+      'Your app owns fields, validation, submission and the receipt. Use success feedback only after a confirmed result.',
+    code: '<MarketingContact title="Contact us" onSubmit={submitContact} actions={submitButton} feedback={feedback}>\n  {contactFields}\n</MarketingContact>',
+  }),
+  marketing({
+    name: 'MarketingArticle',
+    category: 'Website sections',
+    description: 'An article introduction, body and action area with supplied metadata.',
+    states: ['Default'],
+    contract: 'title · children · description? · meta? · actions?',
+    responsibility:
+      'Supply author, date and article content. Use safe React content rather than evaluating generated HTML or MDX.',
+    code: '<MarketingArticle title="Working together" meta={articleMeta}>\n  {articleBody}\n</MarketingArticle>',
+  }),
+];
+
+export const applicationNames = new Set<string>(applicationCatalog.map((entry) => entry.name));
+export const marketingNames = new Set<string>(marketingCatalog.map((entry) => entry.name));

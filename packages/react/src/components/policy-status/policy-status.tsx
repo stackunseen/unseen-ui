@@ -1,6 +1,6 @@
 'use client';
-import type { PolicyCheck } from '@ai-interaction/core';
-import { policyAssessment } from '@ai-interaction/core';
+import type { PolicyCheck } from '@stackunseen/ui-core';
+import { policyAssessment } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
 import { Panel } from '../panel/panel.js';
 import { IconButton } from '../icon-button/icon-button.js';

@@ -3,8 +3,8 @@
 `Chart` supports **bar**, **line** and **area** presentations, with grouped bars, patterned fills, dashed lines and four marker shapes. It reuses scoped theme tokens, the canonical DataTable and accessible Accordion; no additional chart dependency is required.
 
 ```tsx
-import { Chart } from '@ai-interaction/react';
-import type { ChartSeries } from '@ai-interaction/react';
+import { Chart } from '@stackunseen/ui';
+import type { ChartSeries } from '@stackunseen/ui';
 
 const series: ChartSeries[] = [
   { id: 'main', label: 'Main', points: [

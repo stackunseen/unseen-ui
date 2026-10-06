@@ -1,9 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { AITheme, Citation, SourceCard, StatusBadge, ToolResult } from '@ai-interaction/react';
+import { AITheme, Citation, SourceCard, StatusBadge, ToolResult } from '@stackunseen/ui';
 
-import { createTheme } from '@ai-interaction/react/theme';
+import { createTheme } from '@stackunseen/ui/theme';
 import { source } from '../../apps/docs/lib/fixtures';
 
 describe('controlled interactions', () => {

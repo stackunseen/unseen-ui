@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { AgentHandoff } from '@ai-interaction/react';
+import { AgentHandoff } from '@stackunseen/ui';
 import type { HandoffSubmission, HandoffSnapshot, HandoffReceipt } from './handoff-model.js';
 import {
   handoffFixture,

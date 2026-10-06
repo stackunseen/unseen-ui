@@ -1,14 +1,14 @@
 'use client';
 import { useRef, useState } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
-import type { MessageData } from '@ai-interaction/core';
+import type { MessageData } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { ThickArrowUpIcon, ThickArrowDownIcon } from '@radix-ui/react-icons';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { MessageContent } from '../message-content/message-content.js';
 import type { MessageContentProps } from '../message-content/message-content.js';
-import { validTimestamp } from '@ai-interaction/core';
+import { validTimestamp } from '@stackunseen/ui-core';
 import m from '../message-content/message-content.module.css';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
@@ -81,11 +81,18 @@ export function MessageActions({
   onRetry,
   onEdit,
   onFeedback,
+  editAvailability,
+  retryAvailability,
+  retryLabel = 'Retry',
 }: VariantProps<'MessageActions'> & {
   text: string;
   onRetry?: () => void;
   onEdit?: () => void;
   onFeedback?: (helpful: boolean) => void;
+  /** Host-owned action availability; callbacks remain intents. */
+  editAvailability?: { available: boolean; reason?: string };
+  retryAvailability?: { available: boolean; reason?: string };
+  retryLabel?: string;
 }) {
   const [feedback, setFeedback] = useState<{ text: string; message: string }>();
   const currentText = useRef(text),
@@ -103,6 +110,12 @@ export function MessageActions({
     }
   }
   const iconActions = variant !== 'vertical';
+  const edit = () => {
+    if (editAvailability?.available !== false) onEdit?.();
+  };
+  const retry = () => {
+    if (retryAvailability?.available !== false) onRetry?.();
+  };
   return (
     <div
       role="group"
@@ -133,18 +146,38 @@ export function MessageActions({
       )}
       {onRetry &&
         (iconActions ? (
-          <IconButton icon="retry" label="Retry" onClick={onRetry} />
+          <IconButton
+            icon="retry"
+            label={retryLabel}
+            onClick={retry}
+            disabled={retryAvailability?.available === false}
+          />
         ) : (
-          <Button size="sm" variant="ghost" onClick={onRetry}>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={retry}
+            disabled={retryAvailability?.available === false}
+          >
             <AIIcon name="retry" />
-            Retry
+            {retryLabel}
           </Button>
         ))}
       {onEdit &&
         (iconActions ? (
-          <IconButton icon="edit" label="Edit" onClick={onEdit} />
+          <IconButton
+            icon="edit"
+            label="Edit"
+            onClick={edit}
+            disabled={editAvailability?.available === false}
+          />
         ) : (
-          <Button size="sm" variant="ghost" onClick={onEdit}>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={edit}
+            disabled={editAvailability?.available === false}
+          >
             <AIIcon name="edit" />
             Edit
           </Button>
@@ -200,6 +233,12 @@ export function MessageActions({
       <span role="status" className={s.muted}>
         {feedback?.text === text ? feedback.message : ''}
       </span>
+      {onEdit && editAvailability?.available === false && (
+        <span className={s.muted}>{editAvailability.reason || 'Editing is unavailable.'}</span>
+      )}
+      {onRetry && retryAvailability?.available === false && (
+        <span className={s.muted}>{retryAvailability.reason || 'Retry is unavailable.'}</span>
+      )}
     </div>
   );
 }

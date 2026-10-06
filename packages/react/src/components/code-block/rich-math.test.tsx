@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { MarkdownCodeBlock } from '@ai-interaction/react/markdown';
+import { MarkdownCodeBlock } from '@stackunseen/ui/markdown';
 
 vi.stubGlobal(
   'matchMedia',

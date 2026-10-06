@@ -1,6 +1,8 @@
 'use client';
-import { useId, useRef } from 'react';
-import type { ComponentProps, ReactNode } from 'react';
+import { useEffect, useId, useRef } from 'react';
+import type { ComponentProps, ReactNode, Ref } from 'react';
+import type { TextRange } from '@stackunseen/ui-core/editing';
+import { validTextRange } from '@stackunseen/ui-core/editing';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
@@ -25,6 +27,11 @@ export interface PromptInputProps
   submitDisabledReason?: string;
   /** Opt in for a host-validated attachment-only message. */
   allowEmptySubmit?: boolean;
+  /** The host can focus/measure the textarea without querying the DOM. */
+  textareaRef?: Ref<HTMLTextAreaElement>;
+  /** UTF-16 selection against value, with an exclusive end. Invalid ranges are ignored. */
+  selection?: TextRange;
+  onSelectionChange?: (selection: TextRange) => void;
 }
 
 export function PromptInput({
@@ -42,11 +49,19 @@ export function PromptInput({
   submitDisabled = false,
   submitDisabledReason,
   allowEmptySubmit = false,
+  textareaRef,
+  selection,
+  onSelectionChange,
   className = '',
   ...props
 }: PromptInputProps) {
   const id = useId();
   const composing = useRef(false);
+  const input = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (selection && validTextRange(selection, value))
+      input.current?.setSelectionRange(selection.from, selection.to);
+  }, [selection, value]);
   const unavailableReason = disabled
     ? disabledReason || 'Messaging is unavailable.'
     : submitDisabled
@@ -80,6 +95,11 @@ export function PromptInput({
         Message
       </label>
       <textarea
+        ref={(element) => {
+          input.current = element;
+          if (typeof textareaRef === 'function') return textareaRef(element);
+          if (textareaRef) textareaRef.current = element;
+        }}
         id={id}
         value={value}
         disabled={disabled}
@@ -87,7 +107,16 @@ export function PromptInput({
         placeholder={placeholder}
         rows={variant === 'inline' ? 1 : variant === 'compact' ? 2 : 3}
         aria-describedby={`${id}-help`}
-        onChange={(e) => onValueChange(e.target.value)}
+        onChange={(e) => {
+          const next = e.currentTarget.value;
+          const range = { from: e.currentTarget.selectionStart, to: e.currentTarget.selectionEnd };
+          onValueChange(next);
+          if (validTextRange(range, next)) onSelectionChange?.(range);
+        }}
+        onSelect={(e) => {
+          const range = { from: e.currentTarget.selectionStart, to: e.currentTarget.selectionEnd };
+          if (validTextRange(range, value)) onSelectionChange?.(range);
+        }}
         onCompositionStart={() => {
           composing.current = true;
         }}

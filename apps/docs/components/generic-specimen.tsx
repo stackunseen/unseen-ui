@@ -1,10 +1,20 @@
 'use client';
 import { useId, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Button, IconButton, LoadingIndicator, Modal, Panel } from '@ai-interaction/react';
-import type { ButtonProps } from '@ai-interaction/react';
+import { Button, IconButton, LoadingIndicator, Modal, Panel } from '@stackunseen/ui';
+import type { ButtonProps } from '@stackunseen/ui';
 import { ExampleLoading } from './example-loading';
 import { websiteNames } from '../lib/website-catalog';
+import { applicationNames, marketingNames } from '../lib/optional-catalog';
+
+const ApplicationSpecimen = dynamic(
+  () => import('./application-specimen').then((m) => m.ApplicationSpecimen),
+  { loading: ExampleLoading },
+);
+const MarketingSpecimen = dynamic(
+  () => import('./marketing-specimen').then((m) => m.MarketingSpecimen),
+  { loading: ExampleLoading },
+);
 
 const WebsiteSpecimen = dynamic(() => import('./website-specimen').then((m) => m.WebsiteSpecimen), {
   loading: ExampleLoading,
@@ -44,6 +54,8 @@ export function GenericSpecimen({
     buttonVariants.find((item) => item === presentation) ??
     (name === 'IconButton' ? 'ghost' : 'primary');
   if (websiteNames.has(name)) return <WebsiteSpecimen name={name} state={state} />;
+  if (applicationNames.has(name)) return <ApplicationSpecimen name={name} state={state} />;
+  if (marketingNames.has(name)) return <MarketingSpecimen name={name} />;
   if (name === 'SplitPane') return <SplitPaneSpecimen state={state} presentation={presentation} />;
   if (['PanelHeader', 'Sidecar', 'WorkspaceShell'].includes(name))
     return <LayoutSpecimen name={name} state={state} presentation={presentation} />;
@@ -123,9 +135,44 @@ export function GenericSpecimen({
           title="Project details"
           description="Review the local sample project. Changes stay in this example."
           trigger={<Button variant="outline">Open project details</Button>}
+          header={
+            state === 'Custom header and footer' ? (
+              <div className="custom-modal-heading">
+                <strong>Project details</strong>
+                <span>Local draft</span>
+              </div>
+            ) : undefined
+          }
+          footer={
+            state === 'Form' ? (
+              <>
+                <Button variant="outline" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit" form={`${id}-project-form`}>
+                  Save example
+                </Button>
+              </>
+            ) : (
+              <>
+                {state === 'Custom header and footer' && (
+                  <span className="custom-modal-footer-note">Changes stay in this preview.</span>
+                )}
+                <Button
+                  onClick={() => {
+                    setNotice('Project details reviewed.');
+                    setOpen(false);
+                  }}
+                >
+                  Done
+                </Button>
+              </>
+            )
+          }
         >
           {state === 'Form' ? (
             <form
+              id={`${id}-project-form`}
               className="generic-demo-form"
               onSubmit={(event) => {
                 event.preventDefault();
@@ -141,30 +188,16 @@ export function GenericSpecimen({
                 onChange={(event) => setDraft(event.target.value)}
                 required
               />
-              <div className="generic-demo-actions">
-                <Button variant="ghost" onClick={() => setOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit">Save example</Button>
-              </div>
             </form>
           ) : (
             <>
-              <div
-                className="generic-modal-reading"
-                tabIndex={state === 'Long content' ? 0 : undefined}
-                role="group"
-                aria-label="Project information"
-              >
+              <div className="generic-modal-content" role="group" aria-label="Project information">
                 {(state === 'Long content' ? Array.from({ length: 14 }) : [0]).map((_, index) => (
                   <p key={index}>
                     This sample project brings reusable controls, clear documentation and accessible
                     interactions together. Review each section before continuing.
                   </p>
                 ))}
-              </div>
-              <div className="generic-demo-actions">
-                <Button onClick={() => setOpen(false)}>Done</Button>
               </div>
             </>
           )}

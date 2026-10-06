@@ -1,10 +1,10 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
-import { HighlightedCodeBlock } from '@ai-interaction/react/highlight';
-import { MarkdownCodeBlock } from '@ai-interaction/react/code';
-import { MarkdownCodeBlock as LegacyCode, MarkdownResponse } from '@ai-interaction/react/markdown';
+import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
+import { MarkdownCodeBlock } from '@stackunseen/ui/code';
+import { MarkdownCodeBlock as LegacyCode, MarkdownResponse } from '@stackunseen/ui/markdown';
 
-import { RichMarkdownResponse } from '@ai-interaction/react/rich-markdown';
+import { RichMarkdownResponse } from '@stackunseen/ui/rich-markdown';
 
 afterEach(() => vi.unstubAllGlobals());
 

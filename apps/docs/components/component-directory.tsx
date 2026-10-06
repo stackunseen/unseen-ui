@@ -1,0 +1,180 @@
+'use client';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
+import { ArrowUpRight, Search } from 'lucide-react';
+import Link from 'next/link';
+import {
+  componentSections,
+  sectionLabels,
+  collectionDescriptions,
+  sectionGroups,
+  isReleaseSection,
+  releaseSections,
+} from '../lib/component-collections';
+import type { ComponentSection } from '../lib/component-collections';
+import { directorySearch, readDirectoryLocation } from '../lib/directory-location';
+export interface DirectoryEntry {
+  name: string;
+  href: string;
+  description: string;
+  section: ComponentSection;
+  group: string;
+  terms: string;
+}
+export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
+  const search = useSyncExternalStore(
+    subscribe,
+    () => window.location.search,
+    () => '',
+  );
+  const { query, collection: section } = readDirectoryLocation(search);
+  const compositionView = section !== 'all' && !isReleaseSection(section);
+  const releaseEntries = entries.filter((entry) => isReleaseSection(entry.section));
+  const visibleEntries = compositionView ? entries : releaseEntries;
+  function update(patch: Parameters<typeof directorySearch>[1], replace = false) {
+    const href =
+      window.location.pathname +
+      directorySearch(window.location.search, patch) +
+      window.location.hash;
+    window.history[replace ? 'replaceState' : 'pushState'](null, '', href);
+    window.dispatchEvent(new Event('directory:navigate'));
+  }
+  const input = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (window.location.hash === '#component-search') input.current?.focus();
+    const collection = window.location.hash.slice(1);
+    if (
+      (collection === 'application' || collection === 'marketing') &&
+      readDirectoryLocation(window.location.search).collection === 'all'
+    )
+      update({ collection }, true);
+  }, []);
+  const filtered = visibleEntries.filter(
+    (entry) =>
+      (section === 'all' || entry.section === section) &&
+      query
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .every((term) => entry.terms.includes(term)),
+  );
+  return (
+    <>
+      {compositionView && (
+        <p className="collection-note">
+          Additional composition examples, kept at their existing URLs.{' '}
+          <button
+            className="web-text-link"
+            type="button"
+            onClick={() => update({ collection: 'all', query: '' })}
+          >
+            Browse the component catalog
+          </button>
+        </p>
+      )}
+      <div className="directory-tools">
+        <label id="component-search" className="directory-search">
+          <Search size={18} aria-hidden="true" />
+          <span className="sr-only">Search the component catalog</span>
+          <input
+            ref={input}
+            type="search"
+            placeholder={compositionView ? 'Search these examples' : 'Search all components'}
+            value={query}
+            onChange={(event) =>
+              update(
+                { query: event.target.value, collection: compositionView ? section : 'all' },
+                true,
+              )
+            }
+          />
+        </label>
+        <div className="directory-filters" role="group" aria-label="Component collection">
+          {(['all', ...releaseSections] as const).map((value) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={section === value}
+              onClick={() => update({ collection: value })}
+            >
+              {value === 'all' ? 'All components' : sectionLabels[value]}{' '}
+              <span className="directory-filter-count">
+                {
+                  releaseEntries.filter((entry) => value === 'all' || entry.section === value)
+                    .length
+                }
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+      <p className="directory-count" role="status">
+        {filtered.length}{' '}
+        {compositionView
+          ? filtered.length === 1
+            ? 'example'
+            : 'examples'
+          : filtered.length === 1
+            ? 'component'
+            : 'components'}
+        {query && ` matching “${query}”`}
+      </p>
+      {componentSections.map((collection) => {
+        const items = filtered.filter((entry) => entry.section === collection);
+        if (!items.length) return null;
+        const groups = sectionGroups(collection).filter((group) =>
+          items.some((entry) => entry.group === group),
+        );
+        return (
+          <section className="directory-collection" id={collection} key={collection}>
+            <h2>{sectionLabels[collection]}</h2>
+            <p className="directory-collection-description">{collectionDescriptions[collection]}</p>
+            {groups.map((group) => (
+              <div className="directory-group" key={group}>
+                <h3>{group}</h3>
+                <ul>
+                  {items
+                    .filter((entry) => entry.group === group)
+                    .sort((first, second) => first.name.localeCompare(second.name, 'en'))
+                    .map((entry) => (
+                      <li key={entry.name}>
+                        <Link prefetch={false} href={entry.href}>
+                          <strong>
+                            {entry.name}
+                            <ArrowUpRight size={16} aria-hidden="true" />
+                          </strong>
+                          <span>{entry.description}</span>
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            ))}
+          </section>
+        );
+      })}
+      {!filtered.length && (
+        <div className="directory-empty">
+          <h2>No matching components</h2>
+          <p>Try a shorter name or search for a category, such as forms.</p>
+          <button
+            className="web-button secondary"
+            onClick={() => {
+              update({ query: '', collection: 'all' });
+              input.current?.focus();
+            }}
+          >
+            Clear search
+          </button>
+        </div>
+      )}
+    </>
+  );
+}
+function subscribe(listener: () => void) {
+  window.addEventListener('popstate', listener);
+  window.addEventListener('directory:navigate', listener);
+  return () => {
+    window.removeEventListener('popstate', listener);
+    window.removeEventListener('directory:navigate', listener);
+  };
+}

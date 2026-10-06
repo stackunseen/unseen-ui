@@ -1,5 +1,5 @@
 'use client';
-import type { Step } from '@ai-interaction/core';
+import type { Step } from '@stackunseen/ui-core';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';
 import { AIIcon } from '../../providers/icons/icons.js';

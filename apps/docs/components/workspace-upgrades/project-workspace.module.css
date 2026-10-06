@@ -1,0 +1,71 @@
+.root,
+.section {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+  color: var(--ai-text);
+}
+.root p,
+.section p {
+  margin: 0;
+}
+.note,
+.results small {
+  color: var(--ai-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.root [role='tablist'] {
+  flex-wrap: wrap;
+}
+.results {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.results li {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-control-radius);
+}
+.results button {
+  justify-self: start;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.results pre {
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    12px/1.7 ui-monospace,
+    Consolas,
+    monospace;
+}
+.actions,
+.scenarios {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.scenarios {
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-control-radius);
+  padding: 12px;
+}
+.scenarios label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+.scenarios legend {
+  color: var(--ai-muted);
+  font-size: 12px;
+}

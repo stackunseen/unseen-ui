@@ -1,6 +1,6 @@
 'use client';
-import { Accordion, Select } from '@ai-interaction/react';
-import type { ResolvedTheme, ThemeInput } from '@ai-interaction/react/theme';
+import { Accordion, Select } from '@stackunseen/ui';
+import type { ResolvedTheme, ThemeInput } from '@stackunseen/ui/theme';
 
 function Choice<T extends string>({
   label,

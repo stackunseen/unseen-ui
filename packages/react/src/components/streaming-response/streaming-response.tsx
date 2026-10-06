@@ -1,6 +1,6 @@
 'use client';
 import type { ComponentProps, ReactNode } from 'react';
-import type { MessageData } from '@ai-interaction/core';
+import type { MessageData } from '@stackunseen/ui-core';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
 import { Skeleton } from '../skeleton/skeleton.js';
 import type { VariantProps } from '../../shared/variants.js';

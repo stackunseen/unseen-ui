@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { MessageQueue } from '@ai-interaction/react';
+import { MessageQueue } from '@stackunseen/ui';
 
 const queued = { id: 'draft', text: 'Add keyboard tests.', version: '1', state: 'queued' as const };
 

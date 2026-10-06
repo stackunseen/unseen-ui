@@ -1,0 +1,53 @@
+.root {
+  display: grid;
+  gap: var(--ai-field-gap, 8px);
+  min-inline-size: 0;
+  color: var(--ai-text, #0f172a);
+  font-family: var(--ai-font-family, ui-sans-serif, system-ui, sans-serif);
+  font-size: var(--ai-font-size, 14px);
+  line-height: 1.5;
+}
+.label {
+  font-weight: 600;
+}
+.trigger {
+  justify-content: flex-start;
+  inline-size: 100%;
+  text-align: start;
+}
+.trigger:focus-visible {
+  outline: 2px solid var(--ai-focus, #2563eb);
+  outline-offset: 3px;
+}
+.trigger[aria-invalid='true'] {
+  border-color: var(--ai-danger, #991b1b);
+}
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.content {
+  inline-size: 24rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-block-start: 12px;
+}
+.description,
+.error {
+  margin: 0;
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size-meta, 12px);
+  overflow-wrap: anywhere;
+}
+.error {
+  color: var(--ai-danger, #991b1b);
+}
+@media (pointer: coarse) {
+  .trigger {
+    min-block-size: 44px;
+  }
+}

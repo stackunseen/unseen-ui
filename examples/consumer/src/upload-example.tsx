@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { AttachmentPicker, Button, IconButton, Select } from '@ai-interaction/react';
-import { UploadAttachment } from '@ai-interaction/react/upload';
+import { AttachmentPicker, Button, IconButton, Select } from '@stackunseen/ui';
+import { UploadAttachment } from '@stackunseen/ui/upload';
 import { createUploadClient } from './upload-host/client';
 import type { UploadClientSnapshot } from './upload-host/client';
 import s from './upload-example.module.css';

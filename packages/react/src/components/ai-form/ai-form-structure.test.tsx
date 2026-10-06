@@ -1,8 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AIForm } from '@ai-interaction/react';
-import type { AIField, AIFieldArray, AIFormProps } from '@ai-interaction/react';
+import { AIForm } from '@stackunseen/ui';
+import type { AIField, AIFieldArray, AIFormProps } from '@stackunseen/ui';
 
 const identity = { formId: 'review', schemaVersion: '1' };
 const fields: AIField[] = [

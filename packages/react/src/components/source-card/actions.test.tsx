@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import type { Source } from '@ai-interaction/core';
+import type { Source } from '@stackunseen/ui-core';
 import { SourceCard } from './source-card.js';
 
 const first: Source = {

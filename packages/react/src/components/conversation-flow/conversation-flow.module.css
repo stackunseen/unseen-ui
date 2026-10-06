@@ -1,0 +1,22 @@
+.editor {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-width: 0;
+  color: var(--ai-text);
+}
+.editor textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.status {
+  margin: 0;
+  color: var(--ai-muted);
+  overflow-wrap: anywhere;
+}

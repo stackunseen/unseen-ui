@@ -8,16 +8,16 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
-import { AIIcon, Button, IconButton, PromptInput, Select, Tabs } from '@ai-interaction/react';
-import { Sidecar, SplitPane, WorkspaceShell, PanelHeader } from '@ai-interaction/react/layout';
+import { AIIcon, Button, IconButton, PromptInput, Select, Tabs } from '@stackunseen/ui';
+import { Sidecar, SplitPane, WorkspaceShell, PanelHeader } from '@stackunseen/ui/layout';
 import type {
   SidecarPresentation,
   SplitPaneSizes,
   WorkspaceShellProps,
-} from '@ai-interaction/react/layout';
-import { ConversationViewport } from '@ai-interaction/react/viewport';
-import type { ConversationHistory } from '@ai-interaction/core/history';
-import type { MessageData } from '@ai-interaction/core';
+} from '@stackunseen/ui/layout';
+import { ConversationViewport } from '@stackunseen/ui/viewport';
+import type { ConversationHistory } from '@stackunseen/ui-core/history';
+import type { MessageData } from '@stackunseen/ui-core';
 import s from './workspace-example.module.css';
 
 const narrowQuery = '(max-width: 767px)';

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { RunInspector } from '@ai-interaction/react';
+import { RunInspector } from '@stackunseen/ui';
 
 vi.stubGlobal(
   'ResizeObserver',

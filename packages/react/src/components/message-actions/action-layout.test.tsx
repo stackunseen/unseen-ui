@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { MessageActions } from '@ai-interaction/react';
+import { MessageActions } from '@stackunseen/ui';
 
 describe('compact contextual actions', () => {
   it('preserves keyboard callbacks and does not label feedback as acknowledged', async () => {

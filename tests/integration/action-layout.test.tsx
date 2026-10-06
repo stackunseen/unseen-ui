@@ -2,14 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, it, expect, vi } from 'vitest';
-import {
-  IconButton,
-  IconsProvider,
-  ContextBar,
-  Modal,
-  Button,
-  AITheme,
-} from '@ai-interaction/react';
+import { IconButton, IconsProvider, ContextBar, Modal, Button, AITheme } from '@stackunseen/ui';
 
 describe('compact contextual actions', () => {
   it('keeps context removal host-controlled when its decorative icon is hidden', async () => {

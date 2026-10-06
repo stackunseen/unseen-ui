@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Button, GeneratedUI, resolveVariant } from '@ai-interaction/react';
+import { Button, GeneratedUI, resolveVariant } from '@stackunseen/ui';
 import type {
   GeneratedSurface,
   GeneratedActionRequest,
@@ -8,7 +8,7 @@ import type {
   GeneratedFormSnapshot,
   GeneratedFormRequest,
   GeneratedActionPresentation,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import styles from './form-specimen.module.css';
 
 export function GeneratedSpecimen({

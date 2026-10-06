@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AIIcon, Button, Field, Input, Modal, Select, Textarea } from '@ai-interaction/react';
+import { AIIcon, Button, Field, Input, Modal, Select, Textarea } from '@stackunseen/ui';
 import type { Account, Health } from './data';
 import { dateLabel, healthOptions, money, ownerOptions } from './data';
 import s from './relay.module.css';

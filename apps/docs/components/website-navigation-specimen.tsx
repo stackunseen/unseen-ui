@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Breadcrumb, Pagination, Sidebar } from '@ai-interaction/react';
+import { Breadcrumb, Pagination, Sidebar } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteNavigationSpecimen({ name, state }: WebsiteSpecimenProps) {
@@ -37,7 +37,7 @@ export function WebsiteNavigationSpecimen({ name, state }: WebsiteSpecimenProps)
     return (
       <Sidebar label="Example sidebar">
         <Sidebar.Group label="Component library">
-          <Sidebar.Link href="/?component=Button">Foundations</Sidebar.Link>
+          <Sidebar.Link href="/?component=Button">Actions</Sidebar.Link>
           <Sidebar.Link href="/?component=Input" disabled={state === 'Disabled link'}>
             Forms
           </Sidebar.Link>

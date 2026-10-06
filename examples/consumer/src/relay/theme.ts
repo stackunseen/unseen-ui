@@ -1,4 +1,4 @@
-import { createTheme } from '@ai-interaction/react/theme';
+import { createTheme } from '@stackunseen/ui/theme';
 
 export const relayTheme = createTheme({
   primary: '#28594c',

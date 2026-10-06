@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { ToolCall } from '@ai-interaction/react';
+import { ToolCall } from '@stackunseen/ui';
 
 describe('execution content and contextual actions', () => {
   it('multiple tool previews carry their tool identity and retain input disclosure', async () => {

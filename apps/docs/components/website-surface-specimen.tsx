@@ -1,6 +1,6 @@
 'use client';
 import { useId, useState } from 'react';
-import { Button, Card, Table } from '@ai-interaction/react';
+import { Button, Card, Table } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteSurfaceSpecimen({ name, state }: WebsiteSpecimenProps) {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { RichMarkdownResponse } from '@ai-interaction/react/rich-markdown';
+import { RichMarkdownResponse } from '@stackunseen/ui/rich-markdown';
 
 vi.stubGlobal(
   'matchMedia',

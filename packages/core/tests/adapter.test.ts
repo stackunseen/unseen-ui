@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createAdapterSession, adapterLimits } from '@ai-interaction/core/adapter';
+import { createAdapterSession, adapterLimits } from '@stackunseen/ui-core/adapter';
 import type {
   AdapterCommand,
   AdapterObserver,
   AdapterPort,
   AdapterScope,
-} from '@ai-interaction/core/adapter';
-import type { RuntimeSnapshot, Event } from '@ai-interaction/core';
-import type { ConversationHistory } from '@ai-interaction/core/history';
+} from '@stackunseen/ui-core/adapter';
+import type { RuntimeSnapshot, Event } from '@stackunseen/ui-core';
+import type { ConversationHistory } from '@stackunseen/ui-core/history';
 
 const scope: AdapterScope = {
   workspaceId: 'workspace',

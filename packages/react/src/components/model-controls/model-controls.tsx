@@ -1,12 +1,12 @@
 'use client';
 import { useId } from 'react';
-import type { ModelCapabilities, ModelSettings, ModelUsage } from '@ai-interaction/core';
+import type { ModelCapabilities, ModelSettings, ModelUsage } from '@stackunseen/ui-core';
 import {
   modelSettingsIssues,
   supportsTemperature,
   validCount,
   validTimestamp,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 import { Select } from '../select/select.js';
 import { Accordion } from '../accordion/accordion.js';
 import { Button } from '../button/button.js';

@@ -198,9 +198,9 @@
 }
 .composer:has(textarea:focus-visible) {
   outline: 2px solid var(--ai-focus, #2563eb);
-  outline-offset: 3px;
+  outline-offset: -1px;
 }
-.composer:has(textarea:focus-visible) textarea:focus-visible {
+.composer textarea:focus-visible {
   outline: none;
 }
 .composer textarea {
@@ -208,7 +208,7 @@
   width: 100%;
   min-height: 58px;
   max-height: 240px;
-  resize: vertical;
+  resize: none;
   color: var(--ai-text, #0f172a);
   background: transparent;
   border: 0;

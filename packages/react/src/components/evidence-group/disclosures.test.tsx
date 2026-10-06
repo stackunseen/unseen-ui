@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import type { Source } from '@ai-interaction/core';
+import type { Source } from '@stackunseen/ui-core';
 import { EvidenceGroup } from './evidence-group.js';
 
 const first: Source = {

@@ -1,6 +1,6 @@
 'use client';
-import type { Source } from '@ai-interaction/core';
-import { safeUrl } from '@ai-interaction/core';
+import type { Source } from '@stackunseen/ui-core';
+import { safeUrl } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
 import { AIIcon } from '../../providers/icons/icons.js';

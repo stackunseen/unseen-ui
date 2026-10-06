@@ -1,9 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { Artifact } from '@ai-interaction/core';
+import type { Artifact } from '@stackunseen/ui-core';
 
-import { ArtifactPreview } from '@ai-interaction/react';
+import { ArtifactPreview } from '@stackunseen/ui';
 
 afterEach(() => vi.restoreAllMocks());
 

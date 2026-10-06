@@ -18,7 +18,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteFeedbackSpecimen({ name, state }: WebsiteSpecimenProps) {

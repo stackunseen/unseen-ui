@@ -1,8 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Attachment } from '@ai-interaction/react';
-import type { MessageAttachment } from '@ai-interaction/react';
+import { Attachment } from '@stackunseen/ui';
+import type { MessageAttachment } from '@stackunseen/ui';
 
 vi.stubGlobal(
   'ResizeObserver',
