@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { ThreadList } from '@ai-interaction/react';
+import { ThreadList } from '@stackunseen/ui';
 
 const thread = {
   id: 'thread',

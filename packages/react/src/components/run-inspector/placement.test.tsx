@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { IconsProvider, RunInspector } from '@ai-interaction/react';
-import type { RunSpan } from '@ai-interaction/react';
+import { IconsProvider, RunInspector } from '@stackunseen/ui';
+import type { RunSpan } from '@stackunseen/ui';
 
 describe('execution content and contextual actions', () => {
   it.each(['accordion', 'cards', 'compact'] as const)(

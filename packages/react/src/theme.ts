@@ -85,24 +85,24 @@ function readable(seed: string, background: string, dark: boolean, minimum = 4.5
   return foreground(background);
 }
 function palette(seeds: Required<ThemeInput>, dark: boolean): ThemeTokens {
-  const surface = dark ? '#111827' : '#ffffff';
-  const subtle = dark ? '#1e293b' : '#f1f5f9';
+  const surface = dark ? '#18181b' : '#ffffff';
+  const subtle = dark ? '#27272a' : '#f4f4f5';
   const primary = seeds.primary;
   const secondary = seeds.secondary;
   const accent = seeds.accent;
   const p = toOklch(primary)!;
   const s = toOklch(secondary)!;
   return {
-    canvas: dark ? '#0b1220' : '#f8fafc',
+    canvas: dark ? '#09090b' : '#fafafa',
     surface,
-    'surface-subtle': dark ? '#1e293b' : '#f1f5f9',
-    text: dark ? '#f1f5f9' : '#0f172a',
-    muted: dark ? '#cbd5e1' : '#475569',
-    border: dark ? '#334155' : '#e2e8f0',
+    'surface-subtle': subtle,
+    text: dark ? '#fafafa' : '#18181b',
+    muted: dark ? '#d4d4d8' : '#52525b',
+    border: dark ? '#3f3f46' : '#e4e4e7',
     'control-border': {
-      subtle: dark ? '#3f4a5c' : '#d3d9e1',
-      balanced: dark ? '#65748a' : '#9aa5b5',
-      strong: dark ? '#94a3b8' : '#64748b',
+      subtle: dark ? '#52525b' : '#d4d4d8',
+      balanced: dark ? '#71717a' : '#a1a1aa',
+      strong: dark ? '#a1a1aa' : '#71717a',
     }[seeds.borderStrength],
     primary,
     'primary-hover': shade(

@@ -1,10 +1,29 @@
 'use client';
+import { useRef } from 'react';
 import { Button } from '../button/button.js';
 import { Accordion } from '../accordion/accordion.js';
 import { CodeDiff } from '../code-diff/code-diff.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import a from '../../shared/styles/action-layout.module.css';
+import { ScopedReviewChanges } from './scoped-review-changes.js';
+import type {
+  ReviewChangesContract,
+  ReviewFileOperation,
+  ProposedHunk,
+} from './review-contract.js';
+export type {
+  ReviewChangesContract,
+  ReviewFileOperation,
+  ProposedHunk,
+  ReviewHunkSelection,
+  ReviewFileSelection,
+  ReviewCommand,
+  ReviewFileOutcome,
+  ReviewReceipt,
+  ReviewSubmissionState,
+  ReviewPolicy,
+} from './review-contract.js';
 
 export interface ProposedChange {
   id: string;
@@ -12,6 +31,9 @@ export interface ProposedChange {
   before: string;
   after: string;
   conflict?: boolean;
+  operation?: ReviewFileOperation;
+  target?: import('@stackunseen/ui-core/editing').VersionedTextTarget;
+  hunks?: readonly ProposedHunk[];
 }
 
 export interface ReviewChangesProps extends VariantProps<'ReviewChanges'> {
@@ -22,6 +44,8 @@ export interface ReviewChangesProps extends VariantProps<'ReviewChanges'> {
   onSelectionChange: (ids: string[]) => void;
   state: 'ready' | 'pending' | 'accepted' | 'rejected' | 'stale' | 'error';
   error?: string;
+  /** Opt-in exact scopes and host acknowledgements; legacy callbacks remain compatible. */
+  review?: ReviewChangesContract;
   onDecision: (request: {
     baseVersion: string;
     proposalVersion: string;
@@ -30,7 +54,15 @@ export interface ReviewChangesProps extends VariantProps<'ReviewChanges'> {
   }) => void;
 }
 
-export function ReviewChanges({
+export function ReviewChanges(props: ReviewChangesProps) {
+  return props.review ? (
+    <ScopedReviewChanges {...props} review={props.review} />
+  ) : (
+    <LegacyReviewChanges {...props} />
+  );
+}
+
+function LegacyReviewChanges({
   changes,
   baseVersion,
   proposalVersion,
@@ -41,12 +73,39 @@ export function ReviewChanges({
   onDecision,
   variant = 'accordion',
 }: ReviewChangesProps) {
+  const submitted = useRef(new Set<string>());
   const oversized = changes.length > 50;
   const preview = changes.slice(0, 50);
   const unique = preview.length === new Set(preview.map((change) => change.id)).size;
+  const selectionValid =
+    selectedIds.length === new Set(selectedIds).size &&
+    selectedIds.every((id) => preview.some((change) => change.id === id));
   const locked =
-    !['ready', 'error'].includes(state) || !baseVersion || !proposalVersion || !unique || oversized;
+    !['ready', 'error'].includes(state) ||
+    !baseVersion.trim() ||
+    !proposalVersion.trim() ||
+    !unique ||
+    oversized ||
+    !selectionValid ||
+    preview.some((change) => !change.id.trim());
   const selected = preview.filter((change) => selectedIds.includes(change.id));
+  function decide(decision: 'accept' | 'reject') {
+    const key = JSON.stringify([baseVersion, proposalVersion]);
+    if (
+      locked ||
+      submitted.current.has(key) ||
+      submitted.current.size >= 100 ||
+      (decision === 'accept' && (!selected.length || selected.some((change) => change.conflict)))
+    )
+      return;
+    submitted.current.add(key);
+    onDecision({
+      baseVersion,
+      proposalVersion,
+      ids: (decision === 'accept' ? selected : changes).map((change) => change.id),
+      decision,
+    });
+  }
   function content(change: ProposedChange) {
     return (
       <div className={s.root}>
@@ -128,27 +187,13 @@ export function ReviewChanges({
         <Button
           variant="outline"
           disabled={locked || !changes.length}
-          onClick={() =>
-            onDecision({
-              baseVersion,
-              proposalVersion,
-              ids: changes.map((change) => change.id),
-              decision: 'reject',
-            })
-          }
+          onClick={() => decide('reject')}
         >
           Reject proposal
         </Button>
         <Button
           disabled={locked || !selected.length || selected.some((change) => change.conflict)}
-          onClick={() =>
-            onDecision({
-              baseVersion,
-              proposalVersion,
-              ids: selected.map((change) => change.id),
-              decision: 'accept',
-            })
-          }
+          onClick={() => decide('accept')}
         >
           Accept selected changes
         </Button>

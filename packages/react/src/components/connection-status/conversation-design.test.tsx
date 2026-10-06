@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { ConnectionStatus } from '@ai-interaction/react';
+import { ConnectionStatus } from '@stackunseen/ui';
 import { connectionInfo } from '../../../../../apps/docs/lib/inspection-fixtures';
 
 describe('conversation design refinements', () => {

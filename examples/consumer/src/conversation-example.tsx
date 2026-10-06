@@ -8,8 +8,8 @@ import {
   Button,
   Select,
   Accordion,
-} from '@ai-interaction/react';
-import type { ConversationDraft } from '@ai-interaction/core';
+} from '@stackunseen/ui';
+import type { ConversationDraft } from '@stackunseen/ui-core';
 import { ConversationHost } from './conversation-host/host';
 import { indexedDBConversationStore } from './conversation-host/store';
 import s from './conversation-example.module.css';

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { AgentHandoff, Button, PermissionRequest, resolveVariant } from '@ai-interaction/react';
+import { AgentHandoff, Button, PermissionRequest, resolveVariant } from '@stackunseen/ui';
 import {
   executeHandoff,
   executePermission,

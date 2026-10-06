@@ -41,7 +41,7 @@ The assistant uses deterministic text and local timers, not a model. It accepts 
 | `assistant.tsx`, `assistant-host.ts`              | Conversation UI and simulated response lifecycle                 |
 | CSS Modules                                       | Scoped application layout using public theme variables           |
 
-To reuse the template, render `RelayApp` in a React app and import `@ai-interaction/react/styles.css` before app styles. Use a bundler with CSS Modules support and a client boundary in frameworks with server components. Relay uses no optional heavy renderer. Package setup and license status are in [Getting Started](../../../../docs/GETTING-STARTED.md).
+To reuse the template, render `RelayApp` in a React app and import `@stackunseen/ui/styles.css` before app styles. Use a bundler with CSS Modules support and a client boundary in frameworks with server components. Relay uses no optional heavy renderer. Package setup and license status are in [Getting Started](../../../../docs/GETTING-STARTED.md).
 
 Replace the local gallery link in `app.tsx` when moving the template. The overview expects at least one account; add an empty portfolio state before supplying asynchronous data. `IconsProvider` replaces semantic library icons, while brand/sidebar SVGs are app content. See [customization](../../../../docs/CUSTOMIZATION.md) for supported theme and icon options.
 

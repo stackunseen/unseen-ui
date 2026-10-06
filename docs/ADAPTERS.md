@@ -1,6 +1,6 @@
 # Provider-neutral checkpoint adapter
 
-`@ai-interaction/core/adapter` connects an injected host port to the canonical Runtime and `/history`. It contains no React, browser API, provider SDK, network client or persistence. You supply the provider integration.
+`@stackunseen/ui-core/adapter` connects an injected host port to the canonical Runtime and `/history`. It contains no React, browser API, provider SDK, network client or persistence. You supply the provider integration.
 
 ## Ownership and opening
 

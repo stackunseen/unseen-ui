@@ -1,0 +1,80 @@
+.root {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ai-text, #0f172a);
+  background: var(--ai-surface, #fff);
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #cbd5e1);
+  border-radius: var(--ai-radius, 12px);
+  font-size: var(--ai-font-size, 14px);
+  line-height: 1.6;
+}
+.root :where(p, pre) {
+  margin: 0;
+}
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--ai-surface-subtle, #f1f5f9);
+}
+.header strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.header span,
+.notice {
+  color: var(--ai-muted, #475569);
+}
+.notice {
+  padding: 8px 12px;
+  overflow-wrap: anywhere;
+}
+.root :global(.cm-editor.cm-focused) {
+  outline: 2px solid var(--ai-focus, #1d4ed8);
+  outline-offset: -2px;
+}
+.root :global(.cm-content:focus-visible) {
+  outline: 2px solid var(--ai-focus, #1d4ed8);
+  outline-offset: -2px;
+}
+.diagnostics {
+  padding: 8px 12px 8px 32px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.proposal {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--ai-border, #cbd5e1);
+}
+.proposal .notice {
+  padding: 0;
+}
+.edit {
+  display: grid;
+  gap: 4px;
+}
+.edit pre {
+  max-height: 160px;
+  padding: 8px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--ai-surface-subtle, #f1f5f9);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.edit button {
+  justify-self: start;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 12px;
+}
+.proposal .actions {
+  padding: 0;
+}

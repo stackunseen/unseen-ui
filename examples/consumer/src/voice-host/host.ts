@@ -5,7 +5,7 @@ import type {
   VoiceDevice,
   VoiceDeviceRequest,
   VoiceTranscription,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 
 export interface AudioResource {
   stream: MediaStream;

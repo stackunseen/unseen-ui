@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
-import { PromptInput } from '@ai-interaction/react';
+import { PromptInput } from '@stackunseen/ui';
 
 describe('controlled interactions', () => {
   it('submits on Enter, preserves multiline/IME input and blocks whitespace', () => {

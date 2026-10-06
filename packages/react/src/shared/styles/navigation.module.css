@@ -197,7 +197,6 @@
   font-weight: 550;
 }
 .editor textarea {
-  resize: vertical;
   min-height: 88px;
 }
 .editorActions {

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it } from 'vitest';
 
-import { ContextInspector } from '@ai-interaction/react';
+import { ContextInspector } from '@stackunseen/ui';
 import { componentVariants } from '../../shared/variants.js';
 import { contextInspection } from '../../../../../apps/docs/lib/inspection-fixtures';
 

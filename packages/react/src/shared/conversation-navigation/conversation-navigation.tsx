@@ -5,14 +5,14 @@ import {
   sameConversationContext,
   inspectConversationContext,
   inspectNavigationOperation,
-} from '@ai-interaction/core/conversation';
+} from '@stackunseen/ui-core/conversation';
 import type {
   ConversationContext,
   NavigationAvailability,
   ConversationPagination,
   NavigationOperation,
   ConnectionState,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 import { Button } from '../../components/button/button.js';
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator.js';
 import s from '../styles/agent-controls.module.css';

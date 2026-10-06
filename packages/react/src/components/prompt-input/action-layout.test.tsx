@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { Button, PromptInput } from '@ai-interaction/react';
+import { Button, PromptInput } from '@stackunseen/ui';
 
 describe('compact contextual actions', () => {
   it.each(['standard', 'compact', 'inline'] as const)(

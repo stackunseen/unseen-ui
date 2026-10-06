@@ -1,10 +1,10 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Select } from '@ai-interaction/react';
-import type { SubmissionState } from '@ai-interaction/core';
-import type { TerminalContext, TerminalProcessState } from '@ai-interaction/react';
-import { TerminalEmulator } from '@ai-interaction/react/terminal';
-import '@ai-interaction/react/terminal.css';
+import { Button, Select } from '@stackunseen/ui';
+import type { SubmissionState } from '@stackunseen/ui-core';
+import type { TerminalContext, TerminalProcessState } from '@stackunseen/ui';
+import { TerminalEmulator } from '@stackunseen/ui/terminal';
+import '@stackunseen/ui/terminal.css';
 
 type Snapshot = {
   context: TerminalContext;

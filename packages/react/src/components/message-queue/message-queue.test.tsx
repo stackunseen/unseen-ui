@@ -1,7 +1,7 @@
 import { render, screen, within, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { MessageQueue } from '@ai-interaction/react';
+import { MessageQueue } from '@stackunseen/ui';
 import { context, item } from '../../../../../tests/fixtures/conversation-navigation.js';
 
 describe('controlled navigation and compact contextual actions', () => {

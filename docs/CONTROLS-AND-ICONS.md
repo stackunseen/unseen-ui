@@ -2,7 +2,7 @@
 
 Default fields use the Strong contrast boundary. Small buttons have 32px desktop targets; ordinary controls use 40px (36px compact), and coarse-pointer controls and labelled choices use at least 44px. Theme density sets shared spacing. Field errors use a danger boundary and associated text.
 
-Import these controls from `@ai-interaction/react`. See [website components](WEBSITE-COMPONENTS.md) for native form controls, overlays and menus, or [customization](CUSTOMIZATION.md) for themes and styling.
+Import these controls from `@stackunseen/ui`. See [website components](WEBSITE-COMPONENTS.md) for native form controls, overlays and menus, or [customization](CUSTOMIZATION.md) for themes and styling.
 
 ## Select
 
@@ -41,7 +41,7 @@ The popup uses the originating theme through `ThemeSurface`, including nested th
 
 Tool arguments, step details, integration notes, contrast details, theme import and recovery scenarios use accordions. Approval system, impact, scope and expiry remain visible metadata. Their description-list semantics are intentional: a description list is not a disclosure interaction, and decision-critical facts should not require expansion.
 
-Accordion disclosure is local UI state, separate from host execution state. Preserve editable drafts above content that unmounts on collapse. Changing a disclosure never authorizes or retries an action.
+Accordion disclosure is local UI state, separate from host execution state. Content unmounts on collapse by default. Set an item's `keepMounted: true` to preserve local form drafts; closed content remains hidden and outside keyboard navigation. Keep execution state in your app. Changing a disclosure never authorizes or retries an action.
 
 ## Button and IconButton
 
@@ -72,7 +72,7 @@ Import IconsProvider and AIIcon from the package root. An explicit AIIcon `icon`
 `IconsProvider` overrides semantic icon roles across a subtree. Nested providers merge only the supplied roles and inherit size. `null` hides a decorative icon. Defaults reuse `@radix-ui/react-icons`; consumers can supply Lucide, another SVG library or their own SVG component. SVG components must forward standard SVG props and use `currentColor` to follow theme/status colours. Icons stay decorative; keep the control's text or accessible name.
 
 ```tsx
-import { IconsProvider, PromptInput } from '@ai-interaction/react';
+import { IconsProvider, PromptInput } from '@stackunseen/ui';
 import { Send, ChevronDown, Check } from 'lucide-react';
 
 <IconsProvider icons={{ send: Send, expand: ChevronDown, check: Check }} size={18}>

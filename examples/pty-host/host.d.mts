@@ -1,4 +1,4 @@
-import type { TerminalContext, TerminalProcessState } from '@ai-interaction/react';
+import type { TerminalContext, TerminalProcessState } from '@stackunseen/ui';
 export interface PtySnapshot {
   context: TerminalContext;
   output: string;

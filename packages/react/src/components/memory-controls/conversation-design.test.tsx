@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Button, MemoryControls } from '@ai-interaction/react';
+import { Button, MemoryControls } from '@stackunseen/ui';
 
 const memory = {
   id: 'memory-1',

@@ -2,7 +2,7 @@
 
 AIForm is a host-controlled React form with **stacked**, **grid** and **compact** presentations. Reuse the same schema, values and availability state across styles. It renders bounded questions and emits requests; it does not persist drafts, authorize actions, execute generated code or call a server.
 
-Import `AIForm` and its types from `@ai-interaction/react`, plus `@ai-interaction/react/styles.css`. No additional renderer, form engine, Tailwind setup or peer is needed. Custom Select uses the existing Radix primitive; text, number, textarea and checkbox controls retain native input semantics. Scoped colours, borders, field surfaces, density and icons remain configurable.
+Import `AIForm` and its types from `@stackunseen/ui`, plus `@stackunseen/ui/styles.css`. No additional renderer, form engine, Tailwind setup or peer is needed. Custom Select uses the existing Radix primitive; text, number, textarea and checkbox controls retain native input semantics. Scoped colours, borders, field surfaces, density and icons remain configurable.
 
 ## Schema and values
 

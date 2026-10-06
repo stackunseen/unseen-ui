@@ -9,7 +9,7 @@ import {
   Pagination,
   Select,
   Table,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import type { Account } from './data';
 import { dateLabel, filterAccounts, healthOptions, money } from './data';
 import { AccountDetails } from './account-details';

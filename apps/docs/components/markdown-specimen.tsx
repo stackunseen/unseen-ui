@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import { Button, Message, resolveVariant } from '@ai-interaction/react';
-import { MarkdownResponse } from '@ai-interaction/react/markdown';
-import type { MessageData } from '@ai-interaction/core';
+import { Button, Message, resolveVariant } from '@stackunseen/ui';
+import { MarkdownResponse } from '@stackunseen/ui/markdown';
+import type { MessageData } from '@stackunseen/ui-core';
 
 import { markdownExamples } from '../lib/markdown-fixtures';
 const chunks = [

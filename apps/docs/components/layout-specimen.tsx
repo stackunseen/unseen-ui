@@ -1,8 +1,8 @@
 'use client';
 import { useId, useState } from 'react';
-import { Button, StatusBadge } from '@ai-interaction/react';
-import { PanelHeader, WorkspaceShell } from '@ai-interaction/react/workspace';
-import { Sidecar } from '@ai-interaction/react/sidecar';
+import { Button, StatusBadge } from '@stackunseen/ui';
+import { PanelHeader, WorkspaceShell } from '@stackunseen/ui/workspace';
+import { Sidecar } from '@stackunseen/ui/sidecar';
 
 export function LayoutSpecimen({
   name,

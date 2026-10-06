@@ -1,0 +1,68 @@
+# Connect components to your app
+
+Each component shows the values you pass in and calls a function when someone interacts with it. Your app decides what happens next.
+
+## Start with a value and a callback
+
+A controlled component gets its current value from your app. When the user edits it, the component calls your callback. Update the value in your app and pass it back.
+
+```tsx
+import { useState } from 'react';
+import { Input } from '@stackunseen/ui';
+
+export function ProjectName() {
+  const [name, setName] = useState('My project');
+  return (
+    <label>
+      Project name
+      <Input value={name} onChange={(event) => setName(event.target.value)} />
+    </label>
+  );
+}
+```
+
+Here, `value` is what the input displays. `onChange` receives the edit. This example changes local state; saving the project is a separate action in your app.
+
+## Read the component page in three steps
+
+1. **Try the example.** Change its state or style to see the behavior you need.
+2. **Read Usage and props.** It explains the values and callbacks used by the example.
+3. **Open Code.** Copy the imports and component usage, then connect its values to your own state.
+
+An optional prop is marked in its type. The example lists the main props; your editor can show the full TypeScript API.
+
+Use `@stackunseen/ui` for React components. Use `@stackunseen/ui-core` when you need the shared AI state types and validation. If you connect an AI provider, translate its events into those types before passing them to the UI.
+
+## Connect an action to your server
+
+A callback such as `onSubmit` or `onAction` tells you what the user requested. Send that request to your server. Keep the draft or selected values until the server confirms the result, and show any error it returns.
+
+For a composer, this means keeping `value` in your app, passing edits through `onValueChange`, and connecting `onSubmit` to your message request. Set `busy` while that request is pending. Clear the draft after the server accepts it.
+
+For ordinary UI state, such as an open dialog or a selected tab, local React state is enough. Tool execution, access changes and approval decisions need confirmation from your host.
+
+## Approve the exact action being shown
+
+An approval must identify the action, its current version and the records it affects. If any of those change, ask for a new decision. Show a decision as accepted only after your host confirms that exact request.
+
+For example, approval to archive two accounts does not cover a revised request to archive three. The [ApprovalCard](/components/approval-card/) displays the proposal and collects the decision; your server checks whether it can run.
+
+The optional [action and receipt example](/patterns/action-receipts/) shows a proposed change, its decision and the acknowledged result using a simulated host.
+
+## Handle a lost connection carefully
+
+If a connection drops after you send a request, the action may already have run. Keep the original request ID and check its result before sending it again. Until you know, show an unconfirmed outcome rather than success or failure.
+
+[ConnectionStatus](/components/connection-status/) and [RunInspector](/components/run-inspector/) can show a disconnected connection, stale data and an unconfirmed request separately.
+
+The optional [recoverable chat example](/patterns/recoverable-chat/) shows how to keep a draft and check the original receipt after an interruption.
+
+## Keep model output as content
+
+Render model text, tool results and source excerpts with the library's supported renderers. Do not execute generated code or raw MDX. Show measured progress and public results only when your host supplies them.
+
+The optional [research answer example](/patterns/research-answers/) puts claims beside their supporting sources and marks unsupported content.
+
+## Test your own integration
+
+Test denied requests, changed approvals, cancellation, failures and reconnection against your server. Check keyboard focus and narrow screens with your real content. The gallery and app examples use sample data; they do not verify your authentication, storage or AI provider.

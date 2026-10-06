@@ -3,8 +3,8 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { Chart, GeneratedUI } from '@ai-interaction/react';
-import type { ChartSeries, ChartProps, GeneratedSurface } from '@ai-interaction/react';
+import { Chart, GeneratedUI } from '@stackunseen/ui';
+import type { ChartSeries, ChartProps, GeneratedSurface } from '@stackunseen/ui';
 
 const series: ChartSeries[] = ['Main', 'Preview', 'Baseline', 'Canary'].map((label, index) => ({
   id: label.toLowerCase(),

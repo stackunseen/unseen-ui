@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { describe, it, expect } from 'vitest';
 import { ConversationHost } from './host';
 import type { ConversationStore } from './store';
-import type { ConversationWorkspace } from '@ai-interaction/core';
+import type { ConversationWorkspace } from '@stackunseen/ui-core';
 function memory(initial?: unknown) {
   let value = initial,
     tail = Promise.resolve();

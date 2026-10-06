@@ -1,4 +1,4 @@
-import { AIIcon, Button, Card } from '@ai-interaction/react';
+import { AIIcon, Button, Card } from '@stackunseen/ui';
 import type { Account } from './data';
 import { dateLabel, money } from './data';
 import s from './relay.module.css';

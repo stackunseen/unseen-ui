@@ -4,13 +4,13 @@ import { describe, expect, it } from 'vitest';
 import { changeGalleryLocation, galleryHref, readGalleryLocation } from '../lib/gallery-location';
 import { catalog, catalogGroup, catalogStyles, categories, filterCatalog } from '../lib/catalog';
 import {
-  aiGroups,
+  componentSections,
+  sectionGroups,
   componentSection,
   gallerySection,
   navigationGroup,
   searchCatalog,
   sectionCatalog,
-  uiGroups,
 } from '../lib/gallery-navigation';
 import { HandoffSpecimen, PermissionSpecimen } from '../components/scoped-decision-specimen';
 import {
@@ -24,20 +24,20 @@ import {
 
 describe('gallery links', () => {
   it('maps every component to one scoped navigation group without changing its identity', () => {
-    expect(sectionCatalog('ui')).toHaveLength(44);
-    expect(sectionCatalog('ai')).toHaveLength(49);
+    expect(sectionCatalog('ui')).toHaveLength(46);
+    expect(sectionCatalog('ai')).toHaveLength(52);
     expect(
-      new Set([...sectionCatalog('ui'), ...sectionCatalog('ai')].map((entry) => entry.name)).size,
+      new Set(
+        componentSections.flatMap((section) => sectionCatalog(section)).map((entry) => entry.name),
+      ).size,
     ).toBe(catalog.length);
     for (const entry of catalog) {
-      expect(componentSection(entry) === 'ui' ? [...uiGroups] : [...aiGroups]).toContain(
-        navigationGroup(entry),
-      );
+      expect(sectionGroups(componentSection(entry))).toContain(navigationGroup(entry));
       expect(gallerySection('components', entry)).toBe(componentSection(entry));
     }
     expect(sectionCatalog('patterns')).toEqual([]);
     expect(sectionCatalog('customize')).toEqual([]);
-    expect(gallerySection('workbench', catalog[0]!)).toBe('patterns');
+    expect(gallerySection('workbench', catalog[0]!)).toBe('templates');
     expect(gallerySection('theme', catalog[0]!)).toBe('customize');
   });
   it('keeps component search global across sections and familiar aliases', () => {
@@ -48,9 +48,15 @@ describe('gallery links', () => {
       expect.arrayContaining(['Modal', 'Sidecar']),
     );
     expect(searchCatalog('theme').length).toBeGreaterThan(0);
+    expect(searchCatalog('saving navigation')).toEqual([]);
+    expect(searchCatalog('site navigation').map((entry) => entry.name)).not.toEqual(
+      expect.arrayContaining(['MarketingHeader', 'MarketingFooter']),
+    );
+    expect(searchCatalog('OrgSwitcher')).toEqual([]);
+    expect(filterCatalog('OrgSwitcher').map((entry) => entry.name)).toContain('OrgSwitcher');
   });
-  it('places each public demo in one of the eight discovery groups', () => {
-    expect(categories).toHaveLength(9);
+  it('places each public demo in a named discovery group', () => {
+    expect(categories).toHaveLength(12);
     expect(new Set(filterCatalog('').map((entry) => entry.name)).size).toBe(catalog.length);
     expect(catalog.every((entry) => categories.includes(catalogGroup(entry)))).toBe(true);
     expect(filterCatalog('', 'Forms').map((entry) => entry.name)).toContain('Select');

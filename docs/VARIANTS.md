@@ -81,9 +81,9 @@ Button offers `primary`, `secondary`, `outline`, `ghost` and `danger`. The gener
 import {
   AITheme, LoadingIndicator, Skeleton, PromptInput, Accordion,
   componentVariants, resolveVariant,
-} from '@ai-interaction/react';
-import type { ComponentVariant } from '@ai-interaction/react';
-import '@ai-interaction/react/styles.css';
+} from '@stackunseen/ui';
+import type { ComponentVariant } from '@stackunseen/ui';
+import '@stackunseen/ui/styles.css';
 
 const loadingStyle: ComponentVariant<'LoadingIndicator'> = 'bars';
 

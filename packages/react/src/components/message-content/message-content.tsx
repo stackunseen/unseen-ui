@@ -7,7 +7,7 @@ import type {
   TextMessagePart,
   Source,
   ToolCallData,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 import { Attachment } from '../attachment/attachment.js';
 import type { AttachmentProps } from '../attachment/attachment.js';
 import { Citation } from '../citation/citation.js';

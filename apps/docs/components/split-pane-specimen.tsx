@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import { Button } from '@ai-interaction/react';
-import { SplitPane } from '@ai-interaction/react/layout';
-import type { SplitPaneSizes } from '@ai-interaction/react/layout';
+import { Button } from '@stackunseen/ui';
+import { SplitPane } from '@stackunseen/ui/layout';
+import type { SplitPaneSizes } from '@stackunseen/ui/layout';
 
 export function SplitPaneSpecimen({
   state,

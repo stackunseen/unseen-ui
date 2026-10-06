@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { Message } from '@ai-interaction/react';
-import { MarkdownResponse } from '@ai-interaction/react/markdown';
+import { Message } from '@stackunseen/ui';
+import { MarkdownResponse } from '@stackunseen/ui/markdown';
 
 describe('optional Markdown responses', () => {
   it('renders semantic GFM with scoped headings, static tasks and a keyboard-scrollable table', () => {
@@ -54,6 +54,18 @@ describe('optional Markdown responses', () => {
     expect(link).toHaveAttribute('href', 'https://example.com/docs?q=1#api');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAccessibleName('Docs (opens in a new tab)');
+  });
+  it.each([
+    'blob:https://example.com/image',
+    'data:image/svg+xml,unsafe',
+    'https://name:secret@example.com/image.png',
+  ])('keeps an unsupported image destination inactive: %s', (url) => {
+    const { container } = render(
+      <MarkdownResponse state="complete" text={`![Untrusted image](${url})`} />,
+    );
+    expect(container.querySelector('img')).toBeNull();
+    expect(screen.queryByRole('link')).toBeNull();
+    expect(container).toHaveTextContent('Untrusted image');
   });
   it('never makes an unfinished link actionable, then activates the completed destination', () => {
     const { rerender } = render(

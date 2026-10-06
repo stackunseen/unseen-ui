@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { MentionPicker } from '@ai-interaction/react';
+import { MentionPicker } from '@stackunseen/ui';
 import { references } from '../../../../../apps/docs/lib/coding-fixtures';
 
 vi.stubGlobal(

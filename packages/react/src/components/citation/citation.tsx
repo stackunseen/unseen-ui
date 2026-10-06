@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import type { Source, MessagePart } from '@ai-interaction/core';
+import type { Source, MessagePart } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Modal } from '../modal/modal.js';
 import type { VariantProps } from '../../shared/variants.js';

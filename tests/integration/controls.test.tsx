@@ -14,7 +14,7 @@ import {
   StatusBadge,
   Tabs,
   componentVariants,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 
 const items = [
   { value: 'input', title: 'Input', content: <p>Tool arguments</p> },

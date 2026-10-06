@@ -1,0 +1,5 @@
+.vite-evidence/
+browser*.log
+browser*.png
+checks.log
+artifact-hashes.json

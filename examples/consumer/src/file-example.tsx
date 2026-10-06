@@ -1,12 +1,12 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Button, FileExplorer } from '@ai-interaction/react';
+import { Button, FileExplorer } from '@stackunseen/ui';
 import type {
   FileOpenRequest,
   FilePage,
   WorkspaceFile,
   WorkspaceFileSnapshot,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 type Window = { files: WorkspaceFile[]; context: WorkspaceFileSnapshot; pagination: FilePage };
 export function FileExample() {
   const [window, setWindow] = useState<Window>(),

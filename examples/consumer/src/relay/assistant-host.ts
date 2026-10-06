@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { MessageData } from '@ai-interaction/core';
+import type { MessageData } from '@stackunseen/ui-core';
 import type { Account } from './data';
 import { money } from './data';
 

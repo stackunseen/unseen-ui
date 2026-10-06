@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import { MarkdownCodeBlock } from '@ai-interaction/react/code';
+import { MarkdownCodeBlock } from '@stackunseen/ui/code';
 
 afterEach(() => vi.unstubAllGlobals());
 

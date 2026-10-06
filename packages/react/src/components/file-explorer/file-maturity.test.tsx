@@ -1,8 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { FileExplorer, IconsProvider } from '@ai-interaction/react';
-import type { WorkspaceFile, FileOpenRequest } from '@ai-interaction/react';
+import { FileExplorer, IconsProvider } from '@stackunseen/ui';
+import type { WorkspaceFile, FileOpenRequest } from '@stackunseen/ui';
 import { inspectFiles, fileRequest } from './file-model.js';
 import { boundedData } from '../../shared/bounded-data.js';
 

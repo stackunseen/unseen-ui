@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Button, Chart, resolveVariant } from '@ai-interaction/react';
-import type { ChartSeries, ChartProps } from '@ai-interaction/react';
+import { Button, Chart, resolveVariant } from '@stackunseen/ui';
+import type { ChartSeries, ChartProps } from '@stackunseen/ui';
 import styles from './form-specimen.module.css';
 
 export function ChartSpecimen({

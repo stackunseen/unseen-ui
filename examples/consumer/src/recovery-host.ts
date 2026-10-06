@@ -1,5 +1,5 @@
-import { createRuntime } from '@ai-interaction/core';
-import type { Event, MessageData, RuntimeSnapshot } from '@ai-interaction/core';
+import { createRuntime } from '@stackunseen/ui-core';
+import type { Event, MessageData, RuntimeSnapshot } from '@stackunseen/ui-core';
 import type {
   AdapterCommand,
   AdapterJson,
@@ -7,8 +7,8 @@ import type {
   AdapterPort,
   AdapterReceipt,
   AdapterScope,
-} from '@ai-interaction/core/adapter';
-import type { ConversationHistory, HistoryPageRequest } from '@ai-interaction/core/history';
+} from '@stackunseen/ui-core/adapter';
+import type { ConversationHistory, HistoryPageRequest } from '@stackunseen/ui-core/history';
 
 const pageSize = 4;
 const historyLimit = 8;

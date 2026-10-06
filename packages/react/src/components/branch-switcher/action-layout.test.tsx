@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { BranchSwitcher } from '@ai-interaction/react';
+import { BranchSwitcher } from '@stackunseen/ui';
 
 describe('compact contextual actions', () => {
   it.each(['segmented', 'cards', 'select'] as const)(

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { createRuntime, messageText } from '@ai-interaction/core';
-import type { MessageData, MessagePart, Runtime, TextMessagePart } from '@ai-interaction/core';
-import { messageSchema, snapshotSchema } from '@ai-interaction/core/schema';
+import { createRuntime, messageText } from '@stackunseen/ui-core';
+import type { MessageData, MessagePart, Runtime, TextMessagePart } from '@stackunseen/ui-core';
+import { messageSchema, snapshotSchema } from '@stackunseen/ui-core/schema';
 
 import { initialSnapshot, source } from '../../../apps/docs/lib/fixtures';
 

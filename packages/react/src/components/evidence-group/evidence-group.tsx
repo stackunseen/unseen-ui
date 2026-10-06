@@ -1,5 +1,5 @@
 'use client';
-import type { Source } from '@ai-interaction/core';
+import type { Source } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';

@@ -6,10 +6,28 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@ai-interaction/core/uploads': fileURLToPath(
+      '@stackunseen/ui/editor': fileURLToPath(
+        new URL('./packages/react/src/editor.tsx', import.meta.url),
+      ),
+      '@stackunseen/ui/artifact-editor': fileURLToPath(
+        new URL('./packages/react/src/artifact-editor.tsx', import.meta.url),
+      ),
+      '@stackunseen/ui/conversation-flow': fileURLToPath(
+        new URL('./packages/react/src/conversation-flow.tsx', import.meta.url),
+      ),
+      '@stackunseen/ui-core/editing': fileURLToPath(
+        new URL('./packages/core/src/editing.ts', import.meta.url),
+      ),
+      '@stackunseen/ui/application': fileURLToPath(
+        new URL('./packages/react/src/application.ts', import.meta.url),
+      ),
+      '@stackunseen/ui/marketing': fileURLToPath(
+        new URL('./packages/react/src/marketing.ts', import.meta.url),
+      ),
+      '@stackunseen/ui-core/uploads': fileURLToPath(
         new URL('./packages/core/src/uploads.ts', import.meta.url),
       ),
-      '@ai-interaction/react/upload': fileURLToPath(
+      '@stackunseen/ui/upload': fileURLToPath(
         new URL('./packages/react/src/upload-attachment.tsx', import.meta.url),
       ),
       '@xterm/xterm': fileURLToPath(
@@ -30,57 +48,55 @@ export default defineConfig({
           import.meta.url,
         ),
       ),
-      '@ai-interaction/core/history': fileURLToPath(
+      '@stackunseen/ui-core/history': fileURLToPath(
         new URL('./packages/core/src/history.ts', import.meta.url),
       ),
-      '@ai-interaction/core/adapter': fileURLToPath(
+      '@stackunseen/ui-core/adapter': fileURLToPath(
         new URL('./packages/core/src/adapter.ts', import.meta.url),
       ),
-      '@ai-interaction/react/layout': fileURLToPath(
+      '@stackunseen/ui/layout': fileURLToPath(
         new URL('./packages/react/src/layout.ts', import.meta.url),
       ),
-      '@ai-interaction/react/sidecar': fileURLToPath(
+      '@stackunseen/ui/sidecar': fileURLToPath(
         new URL('./packages/react/src/sidecar.tsx', import.meta.url),
       ),
-      '@ai-interaction/react/workspace': fileURLToPath(
+      '@stackunseen/ui/workspace': fileURLToPath(
         new URL('./packages/react/src/workspace-shell.tsx', import.meta.url),
       ),
-      '@ai-interaction/react/viewport': fileURLToPath(
+      '@stackunseen/ui/viewport': fileURLToPath(
         new URL('./packages/react/src/viewport.tsx', import.meta.url),
       ),
-      '@ai-interaction/core/conversation': fileURLToPath(
+      '@stackunseen/ui-core/conversation': fileURLToPath(
         new URL('./packages/core/src/conversation-validation.ts', import.meta.url),
       ),
-      '@ai-interaction/core/schema': fileURLToPath(
+      '@stackunseen/ui-core/schema': fileURLToPath(
         new URL('./packages/core/src/schema.ts', import.meta.url),
       ),
-      '@ai-interaction/core': fileURLToPath(
+      '@stackunseen/ui-core': fileURLToPath(
         new URL('./packages/core/src/index.ts', import.meta.url),
       ),
-      '@ai-interaction/react/theme': fileURLToPath(
+      '@stackunseen/ui/theme': fileURLToPath(
         new URL('./packages/react/src/theme.ts', import.meta.url),
       ),
-      '@ai-interaction/react/rich-markdown': fileURLToPath(
+      '@stackunseen/ui/rich-markdown': fileURLToPath(
         new URL('./packages/react/src/rich-markdown.tsx', import.meta.url),
       ),
-      '@ai-interaction/react/markdown': fileURLToPath(
+      '@stackunseen/ui/markdown': fileURLToPath(
         new URL('./packages/react/src/markdown.tsx', import.meta.url),
       ),
-      '@ai-interaction/react/math': fileURLToPath(
+      '@stackunseen/ui/math': fileURLToPath(
         new URL('./packages/react/src/math.tsx', import.meta.url),
       ),
-      '@ai-interaction/react/mermaid': fileURLToPath(
+      '@stackunseen/ui/mermaid': fileURLToPath(
         new URL('./packages/react/src/mermaid.tsx', import.meta.url),
       ),
-      '@ai-interaction/react/code': fileURLToPath(
+      '@stackunseen/ui/code': fileURLToPath(
         new URL('./packages/react/src/code.ts', import.meta.url),
       ),
-      '@ai-interaction/react/highlight': fileURLToPath(
+      '@stackunseen/ui/highlight': fileURLToPath(
         new URL('./packages/react/src/highlight.tsx', import.meta.url),
       ),
-      '@ai-interaction/react': fileURLToPath(
-        new URL('./packages/react/src/index.ts', import.meta.url),
-      ),
+      '@stackunseen/ui': fileURLToPath(new URL('./packages/react/src/index.ts', import.meta.url)),
     },
   },
   test: {

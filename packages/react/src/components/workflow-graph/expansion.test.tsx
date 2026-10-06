@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
-import { WorkflowGraph } from '@ai-interaction/react';
+import { WorkflowGraph } from '@stackunseen/ui';
 
 vi.stubGlobal(
   'ResizeObserver',

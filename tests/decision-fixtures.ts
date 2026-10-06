@@ -2,12 +2,8 @@ import type {
   PermissionSnapshot,
   PermissionDecisionCommand,
   PermissionReceipt,
-} from '@ai-interaction/react';
-import type {
-  HandoffSnapshot,
-  HandoffDecisionCommand,
-  HandoffReceipt,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
+import type { HandoffSnapshot, HandoffDecisionCommand, HandoffReceipt } from '@stackunseen/ui';
 
 export const decisionNow = Date.parse('2026-09-30T12:00:00Z');
 export const acknowledgement = { by: 'host', at: '2026-09-30T11:00:00Z' };

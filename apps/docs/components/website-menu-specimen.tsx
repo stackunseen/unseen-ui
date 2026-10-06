@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { ContextMenu, DropdownMenu, NavigationMenu } from '@ai-interaction/react';
+import { ContextMenu, DropdownMenu, NavigationMenu } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteMenuSpecimen({ name, state }: WebsiteSpecimenProps) {
@@ -11,7 +11,7 @@ export function WebsiteMenuSpecimen({ name, state }: WebsiteSpecimenProps) {
       <NavigationMenu.Root aria-label="Example component navigation">
         <NavigationMenu.List>
           <NavigationMenu.Item>
-            <NavigationMenu.Link href="/?component=Button">Foundations</NavigationMenu.Link>
+            <NavigationMenu.Link href="/?component=Button">Actions</NavigationMenu.Link>
           </NavigationMenu.Item>
           <NavigationMenu.Item>
             <NavigationMenu.Trigger disabled={state === 'Disabled trigger'}>

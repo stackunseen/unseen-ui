@@ -1,8 +1,8 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { AITheme } from '@ai-interaction/react';
-import { MermaidDiagram } from '@ai-interaction/react/rich-markdown';
+import { AITheme } from '@stackunseen/ui';
+import { MermaidDiagram } from '@stackunseen/ui/rich-markdown';
 
 const mermaid = vi.hoisted(() => ({ initialize: vi.fn(), render: vi.fn() }));
 

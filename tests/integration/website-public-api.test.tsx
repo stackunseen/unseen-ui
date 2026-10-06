@@ -1,9 +1,9 @@
 import { renderToString } from 'react-dom/server';
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, expectTypeOf, it } from 'vitest';
-import { DataTable, Field, Input, Progress, Table, TableRow } from '@ai-interaction/react';
+import { DataTable, Field, Input, Progress, Table, TableRow } from '@stackunseen/ui';
 import type { TableRow as ExistingDataRow } from '../../packages/react/src/components/data-table/data-table.js';
-import type { TableRowProps } from '@ai-interaction/react';
+import type { TableRowProps } from '@stackunseen/ui';
 import { WebsitePublicExample } from '../fixtures/website-public-example.js';
 
 describe('website root API integration', () => {

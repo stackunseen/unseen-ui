@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { HighlightedCodeBlock } from '@ai-interaction/react/highlight';
+import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
 
 import { tokenizeCode } from '../../shared/code-highlighting/highlight-engine.js';
 

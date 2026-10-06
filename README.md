@@ -2,7 +2,7 @@
 
 React and TypeScript components for AI interfaces and everyday application controls, by **Stack Unseen**.
 
-**Private experimental alpha.** Packages are unpublished and marked `UNLICENSED`. The `@ai-interaction/*` names are local workspace imports, not published npm packages.
+**Private experimental alpha.** Packages are unpublished and marked `UNLICENSED`. The selected npm names are `@stackunseen/ui-core` and `@stackunseen/ui`; publication setup is pending.
 
 ## Run locally
 
@@ -30,7 +30,7 @@ To run [Relay](examples/consumer/src/relay/README.md), build packages, run `pnpm
 
 ## Use and customize
 
-Start with [Getting Started](docs/GETTING-STARTED.md) for a complete React example and entry/peer requirements. Import `@ai-interaction/react/styles.css` once. Use `AITheme` for appearance and theme tokens, and `IconsProvider` for semantic SVG overrides. [Customization](docs/CUSTOMIZATION.md) explains variants, fonts, content slots and supported styling.
+Start with [Getting Started](docs/GETTING-STARTED.md) for a complete React example and entry/peer requirements. Import `@stackunseen/ui/styles.css` once. Use `AITheme` for appearance and theme tokens, and `IconsProvider` for semantic SVG overrides. [Customization](docs/CUSTOMIZATION.md) explains variants, fonts, content slots and supported styling.
 
 Guides: [website components](docs/WEBSITE-COMPONENTS.md), [rich responses](docs/RICH-RESPONSES.md), [theming](docs/THEMING.md), [controls and icons](docs/CONTROLS-AND-ICONS.md), [permissions and handoffs](docs/PERMISSIONS-AND-HANDOFFS.md).
 
@@ -52,6 +52,8 @@ Component code lives in `packages/react/src/components/<name>/`, alongside its c
 ## Check changes
 
 Run `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm format:check` and `pnpm build`. `pnpm check:packages` verifies isolated packed consumers; `pnpm check:size` enforces bundle budgets. `pnpm storybook` opens component states on port 6006; `pnpm build:storybook` builds them.
+
+[Releasing](docs/RELEASING.md) covers manual version bumps, alpha promotion, npm trusted publishing and recovery. Run `pnpm test:release` for the release safeguards.
 
 After building, install Chromium with `pnpm exec playwright-cli install-browser chromium` (add `--with-deps` on Linux when needed), then run `pnpm test:browser` and `pnpm test:template`. Reports stay under ignored `output/` directories. Automated checks do not replace manual accessibility testing.
 

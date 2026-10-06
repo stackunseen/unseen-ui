@@ -3,7 +3,7 @@ import {
   inspectHandoffReceipt,
   validatePermissionDecision,
   validateHandoffDecision,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import type {
   HandoffDecisionCommand,
   HandoffReceipt,
@@ -13,7 +13,7 @@ import type {
   PermissionReceipt,
   PermissionSnapshot,
   PermissionSubmission,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 
 export interface PermissionDemo {
   value: PermissionSnapshot;

@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
+import { updateShowcaseTheme } from '../lib/showcase-theme';
 import {
   Button,
   StatusBadge,
@@ -7,19 +9,15 @@ import {
   Accordion,
   AIIcon,
   PromptInput,
+  Textarea,
   Modal,
   Skeleton,
   LoadingIndicator,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import { ThemeOptions } from './theme-options';
-import {
-  createTheme,
-  exportTheme,
-  importTheme,
-  themeToCSS,
-  updateTheme,
-} from '@ai-interaction/react/theme';
-import type { Appearance, ResolvedTheme, ThemeInput } from '@ai-interaction/react/theme';
+import { SurfaceThemeControls } from './surface-theme-controls';
+import { createTheme, exportTheme, importTheme, themeToCSS } from '@stackunseen/ui/theme';
+import type { Appearance, ResolvedTheme, ThemeInput } from '@stackunseen/ui/theme';
 
 function ColourField({
   label,
@@ -80,33 +78,40 @@ export function ThemeEditor({
   iconSet: 'default' | 'lucide';
   onIconSetChange: (value: 'default' | 'lucide') => void;
 }) {
-  const [history, setHistory] = useState<ResolvedTheme[]>([]);
+  const [history, setHistory] = useState<
+    { theme: ResolvedTheme; appearance: Appearance; iconSet: 'default' | 'lucide' }[]
+  >([]);
   const [notice, setNotice] = useState('');
   const [json, setJson] = useState('');
+  const [copyFallback, setCopyFallback] = useState<{ label: string; text: string } | null>(null);
   const [revision, setRevision] = useState(0);
   const [draft, setDraft] = useState('');
   const [previewChoice, setPreviewChoice] = useState('summary');
   const [dialogOpen, setDialogOpen] = useState(false);
-  function change(next: ResolvedTheme) {
-    setHistory((old) => [...old.slice(-19), theme]);
+  function change(next: ResolvedTheme, nextAppearance = appearance, nextIconSet = iconSet) {
+    setHistory((old) => [...old.slice(-19), { theme, appearance, iconSet }]);
     onChange(next);
+    onAppearanceChange(nextAppearance);
+    onIconSetChange(nextIconSet);
   }
   function update(input: ThemeInput) {
-    change(updateTheme(theme, input));
+    change(updateShowcaseTheme(theme, input));
   }
   async function copy(kind: 'css' | 'typescript' | 'json') {
     const text =
       kind === 'css'
         ? themeToCSS(theme, 'brand', appearance)
         : kind === 'typescript'
-          ? `import { importTheme } from '@ai-interaction/react/theme';\n\nexport const theme = importTheme(${JSON.stringify(exportTheme(theme))});`
+          ? `import { importTheme } from '@stackunseen/ui/theme';\n\nexport const theme = importTheme(${JSON.stringify(exportTheme(theme))});`
           : exportTheme(theme);
     try {
       await navigator.clipboard.writeText(text);
+      setCopyFallback(null);
       setNotice(`Copied ${kind === 'css' ? 'CSS' : kind === 'json' ? 'JSON' : 'TypeScript'}.`);
     } catch {
-      setJson(text);
-      setNotice('Clipboard unavailable. Select and copy the exported text below.');
+      const label = kind === 'css' ? 'CSS' : kind === 'json' ? 'JSON' : 'TypeScript';
+      setCopyFallback({ label, text });
+      setNotice(`Clipboard unavailable. Select and copy the ${label} export below.`);
     }
   }
   const failures = theme.diagnostics.filter((d) => !d.passes);
@@ -115,11 +120,32 @@ export function ThemeEditor({
       <div className="theme-lead">
         <span className="eyebrow">CUSTOMIZE</span>
         <h1>Theme studio</h1>
-        <p>Preview colours and controls, then export the theme for your app.</p>
+        <p>
+          Change the look of this showcase. Colors, borders and corners update live and stay with
+          you as you browse in this browser.
+        </p>
+        <nav className="theme-browse-links" aria-label="Try your theme across the site">
+          <Link prefetch={false} href="/">
+            View homepage
+          </Link>
+          <Link prefetch={false} href="/components/">
+            Browse components
+          </Link>
+          <Link prefetch={false} href="/templates/">
+            Try live templates
+          </Link>
+          <Link prefetch={false} href="#theme-export">
+            Copy your configuration
+          </Link>
+        </nav>
       </div>
       <div className="theme-editor-grid">
         <section className="theme-controls" aria-label="Theme settings">
           <h2>Brand colours</h2>
+          <p className="theme-note">
+            Brand colors update both appearances. Your individual background and text colors stay in
+            place. Presets start a fresh palette; Undo restores the previous look.
+          </p>
           {(['primary', 'secondary', 'accent'] as const).map((role) => (
             <ColourField
               key={`${role}-${revision}`}
@@ -138,7 +164,8 @@ export function ThemeEditor({
                 variant="outline"
                 key={name}
                 onClick={() => {
-                  update(preset);
+                  change(createTheme({ ...theme.seeds, ...preset }));
+                  setNotice(`${name} palette applied to this showcase.`);
                   setRevision((r) => r + 1);
                 }}
               >
@@ -150,7 +177,7 @@ export function ThemeEditor({
             Appearance
             <Select
               value={appearance}
-              onValueChange={(value) => onAppearanceChange(value as Appearance)}
+              onValueChange={(value) => change(theme, value as Appearance)}
               options={[
                 { value: 'light', label: 'Light' },
                 { value: 'dark', label: 'Dark' },
@@ -159,6 +186,7 @@ export function ThemeEditor({
             />
           </label>
           <ThemeOptions seeds={theme.seeds} onChange={update} />
+          <SurfaceThemeControls theme={theme} onChange={change} />
           <label className="editor-label">
             Density
             <Select
@@ -174,7 +202,7 @@ export function ThemeEditor({
             Component icons
             <Select
               value={iconSet}
-              onValueChange={(value) => onIconSetChange(value as 'default' | 'lucide')}
+              onValueChange={(value) => change(theme, appearance, value as 'default' | 'lucide')}
               options={[
                 { value: 'default', label: 'Radix · default' },
                 { value: 'lucide', label: 'Lucide · outline' },
@@ -192,8 +220,11 @@ export function ThemeEditor({
               onClick={() => {
                 const previous = history.at(-1);
                 if (previous) {
-                  onChange(previous);
+                  onChange(previous.theme);
+                  onAppearanceChange(previous.appearance);
+                  onIconSetChange(previous.iconSet);
                   setHistory((h) => h.slice(0, -1));
+                  setNotice('Previous theme restored.');
                   setRevision((r) => r + 1);
                 }
               }}
@@ -203,9 +234,8 @@ export function ThemeEditor({
             <Button
               variant="ghost"
               onClick={() => {
-                change(createTheme());
-                onAppearanceChange('light');
-                onIconSetChange('default');
+                change(createTheme(), 'light', 'default');
+                setNotice('Default theme, appearance and icons restored.');
                 setRevision((r) => r + 1);
               }}
             >
@@ -321,8 +351,13 @@ export function ThemeEditor({
           </div>
         </section>
       </div>
-      <section className="theme-export">
+      <section className="theme-export" id="theme-export">
         <h2>Take your theme with you</h2>
+        <p className="theme-note">
+          JSON and TypeScript include both palettes. CSS follows Appearance; System includes both
+          modes. Apply the CSS to a wrapper with <code>data-ai-theme="brand"</code>, or pass the
+          imported theme to <code>AITheme</code>. Icons are configured separately.
+        </p>
         <div className="flex gap-2 flex-wrap">
           <Button
             variant="outline"
@@ -364,6 +399,17 @@ export function ThemeEditor({
             Download JSON
           </Button>
         </div>
+        {copyFallback && (
+          <label className="editor-label">
+            {copyFallback.label} export
+            <Textarea
+              rows={8}
+              value={copyFallback.text}
+              readOnly
+              onFocus={(event) => event.currentTarget.select()}
+            />
+          </label>
+        )}
         <Accordion
           type="single"
           collapsible
@@ -376,7 +422,7 @@ export function ThemeEditor({
                 <>
                   <label className="editor-label">
                     Theme JSON
-                    <textarea
+                    <Textarea
                       rows={6}
                       value={json}
                       onChange={(e) => setJson(e.target.value)}

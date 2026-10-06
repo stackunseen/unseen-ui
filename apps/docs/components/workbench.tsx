@@ -1,311 +1,345 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Activity, BookOpen, ShieldCheck } from 'lucide-react';
-import {
-  AgentSteps,
-  Accordion,
-  AIIcon,
-  ApprovalCard,
-  ArtifactPanel,
-  Button,
-  Citation,
-  ContextBar,
-  ConnectionStatus,
-  MessageActions,
-  PromptInput,
-  RuntimeProvider,
-  StatusBadge,
-  Suggestions,
-  ToolCall,
-  useRuntimeSelector,
-} from '@ai-interaction/react';
-import { ConversationViewport } from '@ai-interaction/react/viewport';
-import type { ConversationHistory } from '@ai-interaction/core/history';
-import type { ApprovalProposal, SubmissionState } from '@ai-interaction/core';
-import { messageText } from '@ai-interaction/core';
+
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
+import { ChevronDown, CircleDot, PanelRight, Plus, RotateCcw } from 'lucide-react';
+import { Button, RuntimeProvider, StatusBadge, Tabs, useRuntimeSelector } from '@stackunseen/ui';
+import { SplitPane } from '@stackunseen/ui/layout';
+import type { ApprovalProposal, SubmissionState } from '@stackunseen/ui-core';
 import { createMockHost } from '../lib/mock-host';
 import type { MockHost } from '../lib/mock-host';
+import {
+  WorkbenchAccounts,
+  WorkbenchActivity,
+  WorkbenchConversation,
+  WorkbenchInspector,
+} from './workbench-panels';
+import s from './workbench.module.css';
 
-function Conversation({ host }: { host: MockHost }) {
-  const messages = useRuntimeSelector((s) => s.messages);
-  const run = useRuntimeSelector((s) => s.run);
-  const stale = useRuntimeSelector((s) => s.stale);
-  const sources = useRuntimeSelector((s) => s.sources);
-  const [draft, setDraft] = useState('Find inactive accounts and prepare them for review.');
-  const sequence = useRuntimeSelector((s) => s.lastSequence);
-  const streamId = useRuntimeSelector((s) => s.streamId);
-  const history = useMemo<ConversationHistory>(
-    () =>
-      Object.freeze({
-        context: Object.freeze({
-          workspaceId: 'simulated-workbench',
-          threadId: run.threadId,
-          branchId: run.attemptId,
-          snapshotId: streamId,
-          version: String(sequence),
-        }),
-        messages: Object.freeze([...messages]),
-        older: Object.freeze({ state: 'end' as const }),
-        newer: Object.freeze({ state: 'end' as const }),
-        startIndex: 0,
-        totalMessages: messages.length,
-      }),
-    [messages, run.threadId, run.attemptId, streamId, sequence],
+export interface WorkbenchReview {
+  id: number;
+  title: string;
+  draft: string;
+  host: MockHost;
+  submission: SubmissionState;
+  commandId: string;
+  error: string;
+  loseAcknowledgement: boolean;
+}
+
+function createReview(id: number): WorkbenchReview {
+  return {
+    id,
+    title: id === 1 ? 'Account review' : `New review ${id}`,
+    draft: 'Find inactive accounts and prepare them for review.',
+    host: createMockHost(),
+    submission: 'idle',
+    commandId: '',
+    error: '',
+    loseAcknowledgement: false,
+  };
+}
+
+function ReviewLink({
+  review,
+  selected,
+  onSelect,
+}: {
+  review: WorkbenchReview;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const snapshot = useSyncExternalStore(
+    review.host.runtime.subscribe,
+    review.host.runtime.getSnapshot,
+    review.host.runtime.getServerSnapshot,
   );
-  const busy = ['running', 'waiting-approval', 'waiting-input', 'paused'].includes(run.lifecycle);
   return (
-    <div className="conversation-pane">
-      <div className="pane-heading">
-        <div>
-          <span className="eyebrow">CUSTOMER OPERATIONS</span>
-          <h2>Account review</h2>
-        </div>
-        <StatusBadge state={run.lifecycle} />
-      </div>
-      <ConversationViewport
-        className="workbench-transcript"
-        value={history}
-        label="Conversation transcript"
-        availability={stale ? 'stale' : 'ready'}
-        empty={
-          <div className="empty-conversation">
-            <span className="assistant-mark">
-              <AIIcon name="assistant" />
-            </span>
-            <h3>A useful next step starts here.</h3>
-            <p>
-              Try a complete workflow: search, review a proposed action, then inspect its evidence.
-            </p>
-            <span className="fixture-label">Simulated host · no external changes</span>
-          </div>
-        }
-        renderActions={(message) =>
-          message.role === 'assistant' && message.state === 'complete' ? (
-            <>
-              <div className="citation-row">
-                {sources.map((source, i) => (
-                  <Citation key={source.id} source={source} number={i + 1} />
-                ))}
-              </div>
-              <MessageActions text={messageText(message)} />
-            </>
-          ) : undefined
-        }
-      />
-      <div className="composer-area">
-        <Suggestions
-          items={['Review inactive accounts', 'Show a recovery scenario']}
-          disabled={busy}
-          onSelect={setDraft}
-        />
-        <PromptInput
-          value={draft}
-          onValueChange={setDraft}
-          busy={busy}
-          disabled={stale}
-          disabledReason={stale ? 'Reconnect before starting another request.' : undefined}
-          onCancel={() => host.cancel()}
-          onSubmit={(text) => {
-            if (host.start(text)) setDraft('');
-          }}
-        />
-      </div>
-    </div>
+    <button
+      className={s.reviewLink}
+      aria-current={selected ? 'page' : undefined}
+      onClick={onSelect}
+    >
+      <span>{review.title}</span>
+      <small>
+        {review.submission === 'outcome-unknown'
+          ? 'Decision unconfirmed'
+          : snapshot.run.lifecycle === 'queued'
+            ? 'Draft'
+            : snapshot.run.lifecycle.replaceAll('-', ' ')}
+      </small>
+    </button>
   );
 }
-function Execution({ host }: { host: MockHost }) {
-  const steps = useRuntimeSelector((s) => s.steps);
-  const tools = useRuntimeSelector((s) => s.tools);
-  const proposal = useRuntimeSelector((s) => s.approval);
-  const stale = useRuntimeSelector((s) => s.stale);
-  const artifacts = useRuntimeSelector((s) => s.artifacts);
-  const [submission, setSubmission] = useState<SubmissionState>('idle');
-  const [error, setError] = useState('');
-  const [loseAck, setLoseAck] = useState(false);
-  const commandId = useRef('');
-  const [artifactOpen, setArtifactOpen] = useState(false);
-  const run = useRuntimeSelector((s) => s.run);
-  useEffect(() => {
-    setSubmission('idle');
-    setError('');
-    commandId.current = '';
-  }, [run.attemptId, proposal?.version]);
-  function decide(decision: 'approve' | 'reject', p: ApprovalProposal) {
-    if (submission === 'submitting' || submission === 'outcome-unknown') return;
-    setSubmission('submitting');
-    setError('');
-    commandId.current = crypto.randomUUID();
-    const result = host.decide(
-      {
-        commandId: commandId.current,
-        proposalId: p.id,
-        version: p.version,
-        actionDigest: p.actionDigest,
-        decision,
-      },
-      loseAck,
-    );
-    if (result.reason === 'outcome-unknown') setSubmission('outcome-unknown');
-    else {
-      setSubmission(result.accepted ? 'acknowledged' : 'failed');
-      setError(result.reason ?? '');
+
+function WorkbenchRun({
+  review,
+  reviews,
+  update,
+  select,
+  add,
+  reset,
+}: {
+  review: WorkbenchReview;
+  reviews: WorkbenchReview[];
+  update: (patch: Partial<WorkbenchReview>) => void;
+  select: (id: number) => void;
+  add: () => void;
+  reset: () => void;
+}) {
+  const run = useRuntimeSelector((state) => state.run);
+  const stale = useRuntimeSelector((state) => state.stale);
+  const connection = useRuntimeSelector((state) => state.connection);
+  const [view, setView] = useState('review');
+  const [inspectorOpen, setInspectorOpen] = useState(true);
+  const [reviewsOpen, setReviewsOpen] = useState(false);
+  const [sizes, setSizes] = useState<readonly [number, number]>([60, 40]);
+  const reviewsId = useId();
+  const reviewsButton = useRef<HTMLButtonElement>(null);
+  const busy = ['running', 'waiting-approval', 'waiting-input', 'paused'].includes(run.lifecycle);
+  const decisionUnknown = review.submission === 'outcome-unknown';
+
+  function start(text: string) {
+    if (!stale && review.host.start(text)) {
+      update({
+        title: text.length > 48 ? `${text.slice(0, 48).trimEnd()}…` : text,
+        draft: '',
+        submission: 'idle',
+        commandId: '',
+        error: '',
+      });
+      setInspectorOpen(true);
     }
   }
+  function decide(decision: 'approve' | 'reject', proposal: ApprovalProposal) {
+    if (review.submission === 'submitting' || decisionUnknown) return;
+    const commandId = crypto.randomUUID();
+    update({ submission: 'submitting', commandId, error: '' });
+    const result = review.host.decide(
+      {
+        commandId,
+        proposalId: proposal.id,
+        version: proposal.version,
+        actionDigest: proposal.actionDigest,
+        decision,
+      },
+      review.loseAcknowledgement,
+    );
+    update({
+      submission:
+        result.reason === 'outcome-unknown'
+          ? 'outcome-unknown'
+          : result.accepted
+            ? 'acknowledged'
+            : 'failed',
+      commandId,
+      error: result.reason === 'outcome-unknown' ? '' : (result.reason ?? ''),
+    });
+  }
+  const inspector = <WorkbenchInspector review={review} update={update} decide={decide} />;
+  const conversation = <WorkbenchConversation review={review} update={update} start={start} />;
   return (
-    <div className="execution-pane">
-      <div className="pane-heading">
-        <h2>
-          <Activity size={16} /> Execution
-        </h2>
-        <span className="fixture-label">Host events</span>
-      </div>
-      <div className="execution-content">
-        {run.lifecycle === 'cancelled' && run.activity && <p role="status">{run.activity}</p>}
-        <AgentSteps steps={steps} />
-        {tools.map((tool) => (
-          <ToolCall key={tool.id} value={tool} />
-        ))}
-        {proposal && (
-          <ApprovalCard
-            proposal={proposal}
-            stale={stale && submission !== 'outcome-unknown'}
-            submission={submission}
-            error={error}
-            onDecision={decide}
-            onReconcile={() => {
-              const r = host.reconcile(commandId.current);
-              setSubmission(r.accepted ? 'acknowledged' : 'failed');
-              setError(r.reason ?? '');
-            }}
-          />
-        )}
-        {artifacts[0] && (
-          <ArtifactPanel
-            artifact={artifacts[0]}
-            open={artifactOpen}
-            onOpenChange={setArtifactOpen}
-          />
-        )}
-        {!proposal && !tools.length && (
-          <div className="execution-placeholder">
-            <ShieldCheck size={24} />
-            <p>Every action has a visible state.</p>
-            <small>Tool calls, approval requests and results will appear here.</small>
+    <div className={s.app} data-template-preview="workbench">
+      <header className={s.appHeader}>
+        <div className={s.workspaceName}>
+          <CircleDot size={18} aria-hidden="true" />
+          <strong>Fieldwork</strong>
+          <span>Customer operations</span>
+        </div>
+        <span className={s.simulation}>Simulated host · no external changes</span>
+      </header>
+      <div className={s.appBody}>
+        <aside className={s.sidebar}>
+          <div className={s.sidebarActions}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                add();
+                setView('review');
+                setReviewsOpen(false);
+              }}
+              disabled={reviews.length >= 8}
+            >
+              <Plus size={15} aria-hidden="true" /> New review
+            </Button>
+            <button
+              ref={reviewsButton}
+              className={s.reviewToggle}
+              aria-expanded={reviewsOpen}
+              aria-controls={reviewsId}
+              onClick={() => setReviewsOpen(!reviewsOpen)}
+            >
+              Reviews <ChevronDown size={16} aria-hidden="true" />
+            </button>
           </div>
-        )}
-        <Accordion
-          type="single"
-          collapsible
-          className="scenario-controls"
-          items={[
-            {
-              value: 'recovery',
-              title: 'Test recovery states',
-              content: (
-                <>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={loseAck}
-                      onChange={(e) => setLoseAck(e.target.checked)}
-                    />
-                    Lose approval acknowledgement
-                  </label>
-                  <div className="flex gap-2 flex-wrap">
-                    <Button variant="outline" onClick={() => host.disconnect()}>
-                      Disconnect
-                    </Button>
-                    <Button variant="outline" onClick={() => host.reconnect()}>
-                      Reconnect
-                    </Button>
-                    <Button
-                      variant="outline"
-                      disabled={!proposal || proposal.status !== 'pending'}
-                      onClick={() => host.revise()}
-                    >
-                      Revise proposal
-                    </Button>
-                    <Button
-                      variant="outline"
-                      disabled={!proposal || proposal.status !== 'pending'}
-                      onClick={() => host.revokePermission()}
-                    >
-                      Revoke access
-                    </Button>
-                  </div>
-                  <p>These controls affect only this in-memory simulation.</p>
-                </>
-              ),
-            },
-          ]}
-        />
+          <div id={reviewsId} className={s.reviewNavigation} data-open={reviewsOpen}>
+            <p className={s.reviewListHeading}>
+              Local reviews <span>{reviews.length}/8</span>
+            </p>
+            <nav
+              aria-label="Local reviews"
+              onKeyDown={(event) => {
+                if (event.key === 'Escape' && reviewsOpen) {
+                  event.stopPropagation();
+                  setReviewsOpen(false);
+                  reviewsButton.current?.focus();
+                }
+              }}
+            >
+              {reviews.map((item) => (
+                <ReviewLink
+                  key={item.id}
+                  review={item}
+                  selected={review.id === item.id}
+                  onSelect={() => {
+                    select(item.id);
+                    setView('review');
+                    setReviewsOpen(false);
+                    if (reviewsOpen) reviewsButton.current?.focus();
+                  }}
+                />
+              ))}
+            </nav>
+            <p>Reviews and drafts stay in this tab until you reload.</p>
+          </div>
+          <div className={s.sidebarFooter}>
+            <span className={s.connectionDot} data-connected={connection === 'connected'} />
+            <span>
+              {connection === 'connected' ? 'Demo host connected' : 'Demo host disconnected'}
+            </span>
+          </div>
+        </aside>
+        <section className={s.workspace} aria-label="Account review workspace">
+          <div className={s.workspaceHeader}>
+            <div>
+              <span className={s.eyebrow}>DEMO WORKSPACE</span>
+              <h2>{review.title}</h2>
+            </div>
+            <div className={s.headerActions}>
+              <StatusBadge state={run.lifecycle} />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={reset}
+                disabled={busy || stale || decisionUnknown}
+                aria-label="Reset this review"
+                title="Reset this review"
+              >
+                <RotateCcw size={16} aria-hidden="true" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                aria-pressed={inspectorOpen}
+                onClick={() => setInspectorOpen(!inspectorOpen)}
+              >
+                <PanelRight size={16} aria-hidden="true" /> Inspector
+              </Button>
+            </div>
+          </div>
+          <div className={s.tabs}>
+            <Tabs
+              label="Workbench views"
+              value={view}
+              onValueChange={setView}
+              items={[
+                {
+                  value: 'review',
+                  label: 'Review',
+                  content: (
+                    <div className={s.reviewSurface} data-inspector={inspectorOpen}>
+                      {inspectorOpen ? (
+                        <SplitPane
+                          label="Review and inspector"
+                          resizeLabel="Resize review and inspector"
+                          className={s.split}
+                          presentation="responsive"
+                          stackAt={700}
+                          sizes={sizes}
+                          onSizesChange={setSizes}
+                          primary={{
+                            id: 'conversation',
+                            label: 'Conversation',
+                            minSize: 40,
+                            maxSize: 72,
+                            children: conversation,
+                          }}
+                          secondary={{
+                            id: 'inspector',
+                            label: 'Run inspector',
+                            minSize: 28,
+                            maxSize: 60,
+                            scroll: 'auto',
+                            children: inspector,
+                          }}
+                        />
+                      ) : (
+                        conversation
+                      )}
+                    </div>
+                  ),
+                },
+                { value: 'accounts', label: 'Accounts', content: <WorkbenchAccounts /> },
+                {
+                  value: 'activity',
+                  label: 'Activity',
+                  content: <WorkbenchActivity review={review} />,
+                },
+              ]}
+            />
+          </div>
+        </section>
       </div>
+      <footer className={s.appFooter}>
+        <span>3 fixed synthetic accounts · host validates each approval</span>
+        <span>No model or backend connected</span>
+      </footer>
     </div>
   );
 }
-function ConnectionDetails({ host }: { host: MockHost }) {
-  const connection = useRuntimeSelector((s) => s.connection);
-  const stale = useRuntimeSelector((s) => s.stale);
-  const streamId = useRuntimeSelector((s) => s.streamId);
-  const sequence = useRuntimeSelector((s) => s.lastSequence);
-  const diagnostic = useRuntimeSelector((s) => s.diagnostic);
-  return (
-    <ConnectionStatus
-      variant="banner"
-      value={{
-        state: connection,
-        recovery: 'none',
-        freshness: stale ? 'stale' : 'current',
-        adapter: { name: 'In-memory demo host', version: '1', resume: false, snapshot: true },
-        cursor: { streamId, sequence },
-        detail: diagnostic ?? undefined,
-      }}
-      onRefresh={() => host.reconnect()}
-    />
-  );
-}
-function Connection({ host }: { host: MockHost }) {
-  const interrupted = useRuntimeSelector(
-    (s) => s.stale || s.connection !== 'connected' || !!s.diagnostic,
-  );
-  return interrupted ? <ConnectionDetails host={host} /> : null;
-}
-function WorkbenchContext() {
-  const sources = useRuntimeSelector((s) => s.sources);
-  const revoked = sources.some((source) => source.access === 'revoked');
-  return (
-    <div className="context-strip">
-      <BookOpen size={16} />
-      <ContextBar
-        items={[
-          {
-            id: 'handbook',
-            label: 'Operations handbook',
-            state: revoked ? 'excluded' : 'included',
-            reason: revoked ? 'Access revoked by the simulated host' : 'Synthetic demo context',
-          },
-        ]}
-      />
-    </div>
-  );
-}
+
 export function Workbench() {
-  const [host] = useState(createMockHost);
-  // This instance is owned by the page; stopping timers on unmount avoids orphan streams.
+  const [reviews, setReviews] = useState<WorkbenchReview[]>(() => [createReview(1)]);
+  const [selectedId, setSelectedId] = useState(1);
+  const hosts = useRef(reviews.map((review) => review.host));
+  const nextId = useRef(2);
+  const review = reviews.find((item) => item.id === selectedId)!;
   useEffect(
     () => () => {
-      host.cancel();
+      hosts.current.forEach((host) => host.cancel());
     },
-    [host],
+    [],
   );
+  function update(patch: Partial<WorkbenchReview>) {
+    setReviews((current) =>
+      current.map((item) => (item.id === selectedId ? { ...item, ...patch } : item)),
+    );
+  }
+  function add() {
+    if (reviews.length >= 8) return;
+    const next = createReview(nextId.current++);
+    hosts.current.push(next.host);
+    setReviews((current) => [...current, next]);
+    setSelectedId(next.id);
+  }
+  function reset() {
+    const next = createReview(selectedId);
+    next.title = 'Account review';
+    review.host.dispose();
+    hosts.current = hosts.current.filter((host) => host !== review.host);
+    hosts.current.push(next.host);
+    setReviews((current) => current.map((item) => (item.id === selectedId ? next : item)));
+  }
   return (
-    <RuntimeProvider runtime={host.runtime}>
-      <Connection host={host} />
-      <div className="workbench">
-        <Conversation host={host} />
-        <Execution host={host} />
-      </div>
-      <WorkbenchContext />
+    <RuntimeProvider runtime={review.host.runtime}>
+      <WorkbenchRun
+        review={review}
+        reviews={reviews}
+        update={update}
+        select={setSelectedId}
+        add={add}
+        reset={reset}
+      />
     </RuntimeProvider>
   );
 }

@@ -34,7 +34,7 @@ import {
   ToolGroup,
   ToolResult,
   Workflow,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import { artifact, proposal, source, steps, tool } from '../lib/fixtures';
 import { markdownStates } from '../lib/markdown-fixtures';
 import { partStates } from '../lib/message-parts-fixtures';

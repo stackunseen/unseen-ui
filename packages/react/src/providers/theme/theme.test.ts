@@ -1,13 +1,33 @@
 import { describe, expect, it } from 'vitest';
+import { wcagContrast } from 'culori';
 import {
   createTheme,
   exportTheme,
   importTheme,
   themeToCSS,
   updateTheme,
-} from '@ai-interaction/react/theme';
+} from '@stackunseen/ui/theme';
 
 describe('theme resolver', () => {
+  it('keeps neutral surfaces readable and required controls distinguishable in both appearances', () => {
+    const theme = createTheme();
+    for (const mode of ['light', 'dark'] as const) {
+      const palette = theme[mode];
+      for (const surface of ['canvas', 'surface', 'surface-subtle'] as const) {
+        expect(wcagContrast(palette.text, palette[surface])).toBeGreaterThanOrEqual(4.5);
+        expect(wcagContrast(palette.muted, palette[surface])).toBeGreaterThanOrEqual(4.5);
+        expect(wcagContrast(palette.focus, palette[surface])).toBeGreaterThanOrEqual(3);
+      }
+      expect(palette.surface).not.toBe(palette['surface-subtle']);
+      expect(palette.canvas).not.toBe(palette.surface);
+    }
+    expect(theme.dark.canvas).toBe('#09090b');
+    expect(theme.dark.surface).toBe('#18181b');
+    expect(theme.light.canvas).toBe('#fafafa');
+    expect(theme.seeds.primary).toBe('#2563eb');
+    expect(theme.light.success).toBe('#166534');
+    expect(theme.dark.danger).toBe('#fca5a5');
+  });
   it('preserves imported colour overrides during geometry edits and updates only the requested boundary', () => {
     const theme = createTheme();
     theme.light.surface = '#fffefd';
@@ -16,7 +36,7 @@ describe('theme resolver', () => {
     const next = updateTheme(theme, { borderStrength: 'strong' });
     expect(next.light.surface).toBe('#fffefd');
     expect(next.dark.text).toBe('#fafafa');
-    expect(next.light['control-border']).toBe('#64748b');
+    expect(next.light['control-border']).toBe('#71717a');
     expect(updateTheme(theme, { primary: '#166534' }).light.surface).toBe('#ffffff');
   });
   it.each(['#ffff00', '#000000', '#ffffff', '#ff00ff', '#2563eb', '#808080'])(

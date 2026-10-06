@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Chart, Button } from '@ai-interaction/react';
-import type { ChartSeries } from '@ai-interaction/react';
+import { Chart, Button } from '@stackunseen/ui';
+import type { ChartSeries } from '@stackunseen/ui';
 
 const series: ChartSeries[] = [
   {

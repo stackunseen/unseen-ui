@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Select, componentVariants } from '@ai-interaction/react';
+import { Select, componentVariants } from '@stackunseen/ui';
 
 describe('Select option reuse', () => {
   it.each(componentVariants.Select)(

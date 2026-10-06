@@ -1,5 +1,6 @@
 import { build } from 'vite';
 import { gzipSync } from 'node:zlib';
+import console from 'node:console';
 import { readFile, readdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -62,8 +63,13 @@ for (const result of Array.isArray(baseResult) ? baseResult : [baseResult]) {
   for (const item of result.output) {
     if (
       item.type === 'chunk' &&
+      item.moduleIds.some((id) => /[\\/](?:application|marketing)\.js$/.test(id))
+    )
+      throw new Error('Optional application or marketing entry leaked into base entry.');
+    if (
+      item.type === 'chunk' &&
       item.moduleIds.some((id) =>
-        /[\\/](?:react-markdown|remark-gfm|remend|micromark|mermaid|katex|dompurify|remark-math|shiki|@shikijs|@xterm|@tanstack|react-resizable-panels|node-pty)(?:[\\/@]|$)/.test(
+        /[\\/](?:react-markdown|remark-gfm|remend|micromark|mermaid|katex|dompurify|remark-math|shiki|@shikijs|@xterm|@tanstack|@codemirror|@lezer|react-resizable-panels|node-pty)(?:[\\/@]|$)/.test(
           id,
         ),
       )
@@ -92,7 +98,7 @@ console.log(
   }),
 );
 
-for (const entry of ['index', 'adapter', 'uploads']) {
+for (const entry of ['index', 'adapter', 'uploads', 'editing']) {
   const built = await build({
     configFile: false,
     logLevel: 'silent',
@@ -108,13 +114,13 @@ for (const entry of ['index', 'adapter', 'uploads']) {
   const modules = chunks.flatMap((item) => item.moduleIds);
   if (
     modules.some((id) =>
-      /[\\/](?:react|react-dom|@ai-interaction[\\/]react|node-pty|@xterm|@tanstack|react-resizable-panels)(?:[\\/@]|$)/.test(
+      /[\\/](?:react|react-dom|@ai-interaction[\\/]react|node-pty|@xterm|@tanstack|@codemirror|@lezer|react-resizable-panels)(?:[\\/@]|$)/.test(
         id,
       ),
     )
   )
     throw new Error('UI/native dependency entered pure core.');
-  if (entry === 'index' && modules.some((id) => /[\\/](?:adapter|uploads)\.js$/.test(id)))
+  if (entry === 'index' && modules.some((id) => /[\\/](?:adapter|uploads|editing)\.js$/.test(id)))
     throw new Error('Optional adapter/uploads entered base core.');
   console.log(
     JSON.stringify({
@@ -126,6 +132,8 @@ for (const entry of ['index', 'adapter', 'uploads']) {
 }
 
 for (const entry of [
+  'application',
+  'marketing',
   'math',
   'mermaid',
   'code',
@@ -136,6 +144,9 @@ for (const entry of [
   'workspace',
   'layout',
   'upload',
+  'editor',
+  'artifact-editor',
+  'conversation-flow',
 ]) {
   const isolated = await build({
     configFile: false,
@@ -153,7 +164,18 @@ for (const entry of [
   const forbidden =
     entry === 'code' ||
     entry === 'terminal' ||
-    ['viewport', 'sidecar', 'workspace', 'layout', 'upload'].includes(entry)
+    [
+      'application',
+      'marketing',
+      'viewport',
+      'sidecar',
+      'workspace',
+      'layout',
+      'upload',
+      'editor',
+      'artifact-editor',
+      'conversation-flow',
+    ].includes(entry)
       ? /[\\/](?:react-markdown|remark-gfm|remend|micromark|mermaid|katex|dompurify|remark-math|shiki|@shikijs)(?:[\\/@]|$)/
       : entry === 'highlight'
         ? /[\\/](?:react-markdown|remark-gfm|remend|micromark|mermaid|katex|dompurify|remark-math)(?:[\\/@]|$)/
@@ -169,6 +191,7 @@ for (const entry of [
           /[\\/]node-pty(?:[\\/@]|$)/.test(id) ||
           (entry !== 'terminal' && /[\\/]@xterm(?:[\\/@]|$)/.test(id)) ||
           (entry !== 'viewport' && /[\\/]@tanstack(?:[\\/@]|$)/.test(id)) ||
+          (entry !== 'editor' && /[\\/](?:@codemirror|@lezer)(?:[\\/@]|$)/.test(id)) ||
           (entry !== 'layout' && /[\\/]react-resizable-panels(?:[\\/@]|$)/.test(id)),
       ),
     )
@@ -194,6 +217,23 @@ for (const entry of [
             ].map((id) => id.split(/[\\/]/).at(-1))
           : undefined,
     }),
+  );
+}
+
+for (const entry of [
+  'application',
+  'marketing',
+  'editor',
+  'artifact-editor',
+  'conversation-flow',
+]) {
+  const asset = await readFile(`packages/react/dist/${entry}.css`);
+  if (!asset.length) throw new Error(`Optional ${entry} stylesheet missing.`);
+  if (entry === 'application' && asset.includes('uim-'))
+    throw new Error('Marketing CSS leaked into application stylesheet.');
+  if (css.includes('uim-')) throw new Error('Marketing CSS leaked into base stylesheet.');
+  console.log(
+    JSON.stringify({ optionalCss: entry, bytes: asset.length, gzipBytes: gzipSync(asset).length }),
   );
 }
 

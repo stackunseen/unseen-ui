@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AIIcon, Button, Card, Field, Input } from '@ai-interaction/react';
+import { AIIcon, Button, Card, Field, Input } from '@stackunseen/ui';
 import { RelayMark } from './icons';
 import s from './relay.module.css';
 

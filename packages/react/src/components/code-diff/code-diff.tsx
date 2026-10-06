@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { diffLines } from 'diff';
+import { sameDocumentIdentity } from '@stackunseen/ui-core/editing';
+import type { DocumentIdentity } from '@stackunseen/ui-core/editing';
 import { Button } from '../button/button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
@@ -14,6 +16,8 @@ export interface CodeDiffProps extends VariantProps<'CodeDiff'> {
   after: string;
   baseVersion: string;
   nextVersion: string;
+  /** Paired host identities allow independent sources to share a version string. */
+  sourceIdentities?: { readonly before: DocumentIdentity; readonly after: DocumentIdentity };
   status?: 'ready' | 'loading' | 'conflict' | 'denied' | 'error' | 'unavailable';
   error?: string;
   copyable?: boolean;
@@ -39,21 +43,42 @@ export function CodeDiff({
   after,
   baseVersion,
   nextVersion,
+  sourceIdentities,
   status = 'ready',
   variant = 'unified',
   copyable = true,
   renderLine,
   error,
 }: CodeDiffProps) {
+  const identityValid =
+    !sourceIdentities ||
+    (sameDocumentIdentity(sourceIdentities.before, sourceIdentities.before) &&
+      sameDocumentIdentity(sourceIdentities.after, sourceIdentities.after) &&
+      !!sourceIdentities.before.documentId.trim() &&
+      !!sourceIdentities.after.documentId.trim() &&
+      sourceIdentities.before.documentId.length <= 256 &&
+      sourceIdentities.after.documentId.length <= 256 &&
+      sourceIdentities.before.version.length <= 256 &&
+      sourceIdentities.after.version.length <= 256 &&
+      sourceIdentities.before.version === baseVersion &&
+      sourceIdentities.after.version === nextVersion);
+  const sourceKey =
+    sourceIdentities && identityValid
+      ? JSON.stringify([sourceIdentities.before.documentId, sourceIdentities.after.documentId])
+      : undefined;
   const versionValid =
     Boolean(baseVersion.trim() && nextVersion.trim()) &&
-    (baseVersion !== nextVersion || before === after);
+    identityValid &&
+    (sourceIdentities
+      ? !sameDocumentIdentity(sourceIdentities.before, sourceIdentities.after) || before === after
+      : baseVersion !== nextVersion || before === after);
   const [feedback, setFeedback] = useState<{
     path: string;
     before: string;
     after: string;
     baseVersion: string;
     nextVersion: string;
+    sourceKey?: string;
     message: string;
   }>();
   const copyRequest = useRef(0);
@@ -61,7 +86,7 @@ export function CodeDiff({
     () => () => {
       copyRequest.current += 1;
     },
-    [path, before, after, baseVersion, nextVersion, status, copyable],
+    [path, before, after, baseVersion, nextVersion, sourceKey, status, copyable],
   );
   const rows = useMemo((): DiffRow[] | undefined => {
     if (status !== 'ready' || !versionValid || before.length + after.length > 60000)
@@ -120,6 +145,7 @@ export function CodeDiff({
           after,
           baseVersion,
           nextVersion,
+          sourceKey,
           message: `${side === 'before' ? 'Before' : 'After'} version copied`,
         });
     } catch {
@@ -130,6 +156,7 @@ export function CodeDiff({
           after,
           baseVersion,
           nextVersion,
+          sourceKey,
           message: 'Copy unavailable. Select and copy the source.',
         });
     }
@@ -141,7 +168,8 @@ export function CodeDiff({
     feedback.before === before &&
     feedback.after === after &&
     feedback.baseVersion === baseVersion &&
-    feedback.nextVersion === nextVersion
+    feedback.nextVersion === nextVersion &&
+    feedback.sourceKey === sourceKey
       ? feedback.message
       : undefined;
   const additions = rows?.filter((row) => row.kind === 'added').length ?? 0;

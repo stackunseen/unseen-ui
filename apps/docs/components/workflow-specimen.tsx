@@ -1,12 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Button, WorkflowGraph, resolveVariant } from '@ai-interaction/react';
-import type {
-  GraphNode,
-  GraphEdge,
-  GraphSelection,
-  WorkflowGraphProps,
-} from '@ai-interaction/react';
+import { Button, WorkflowGraph, resolveVariant } from '@stackunseen/ui';
+import type { GraphNode, GraphEdge, GraphSelection, WorkflowGraphProps } from '@stackunseen/ui';
 import { nodes as fixtureNodes, edges as fixtureEdges } from '../lib/coding-fixtures';
 import styles from './form-specimen.module.css';
 

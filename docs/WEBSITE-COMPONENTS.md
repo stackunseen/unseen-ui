@@ -1,6 +1,6 @@
 # Website components
 
-The root `@ai-interaction/react` entry includes 22 application component families alongside the AI components. They use the shared stylesheet and theme.
+The root `@stackunseen/ui` entry includes 22 application component families alongside the AI components. They use the shared stylesheet and theme.
 
 ## Available families
 

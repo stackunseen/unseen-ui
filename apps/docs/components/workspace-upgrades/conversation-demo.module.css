@@ -1,0 +1,37 @@
+.demo {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-width: 0;
+  max-width: 760px;
+  margin-inline: auto;
+  gap: 20px;
+}
+.message {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding-block: 8px;
+  line-height: 1.7;
+}
+.message > button {
+  justify-self: start;
+}
+.branch {
+  max-width: 320px;
+  width: 100%;
+}
+.message p,
+.note {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.note {
+  color: var(--ai-muted);
+  font-size: 14px;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}

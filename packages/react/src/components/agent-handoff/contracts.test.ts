@@ -4,7 +4,7 @@ import {
   inspectHandoffReceipt,
   inspectHandoffSnapshot,
   validateHandoffDecision,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import { inspectHandoffSubmission } from './handoff-model.js';
 import {
   acknowledgement,

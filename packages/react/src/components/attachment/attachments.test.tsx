@@ -7,7 +7,7 @@ import {
   AttachmentPicker,
   PromptInput,
   componentVariants,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 
 describe('controlled attachment composition', () => {
   it('keeps an unknown upload outcome separate from failure and ready state', () => {

@@ -1,17 +1,12 @@
 # Getting started
 
-Unseen UI by Stack Unseen provides React components for AI interfaces and everyday application controls. It is a private experimental alpha with unpublished packages marked `UNLICENSED`. The `@ai-interaction/*` names are workspace imports, not an npm registry installation.
+Unseen UI by Stack Unseen is an experimental React component library. The current packages are private local builds; public npm publication is pending. You need an authorized checkout or matching package archives.
 
-## Run the workspace
+## Start with a local build
 
-Use Node 24.13.0 and pnpm 11.5.0. With access to the private repository, create a local checkout:
+You need an authorized checkout or matching package archives from its maintainer. The source repository is private.
 
-```sh
-git clone https://github.com/stackunseen/unseen-ui.git
-cd unseen-ui
-```
-
-From the checkout root, install and build the packages before starting the gallery:
+For this workspace, use **Node 24.13 or later within Node 24** and **pnpm 11.5.0**. From the repository root:
 
 ```sh
 pnpm install --frozen-lockfile
@@ -19,71 +14,108 @@ pnpm build:packages
 pnpm dev
 ```
 
-Open `http://127.0.0.1:3000`. For a production preview, run `pnpm build`, then `pnpm preview`, and open `http://127.0.0.1:4173`.
+Open [the development site](http://127.0.0.1:3000). Build the packages before starting a workspace consumer.
 
-`packages/core` contains framework-independent contracts. `packages/react` contains components and compiled CSS. `apps/docs` is the Next/MDX gallery, and `examples/consumer` is a plain React/Vite application. Tailwind is used only for gallery layout; consumers do not need it or a CSS Modules configuration.
+For the static website preview:
 
-The gallery uses Next.js 16.3.6 and React 19.3.0; the consumer uses Vite 8.3.1. The workspace includes optional renderers for its examples. Other applications need only the peers required by their chosen entries.
+```sh
+pnpm --filter @ai-interaction/docs build
+node apps/docs/scripts/preview.mjs
+```
 
-## Explore the library and template
+Open [the website preview](http://127.0.0.1:4175). The preview serves the built site; rebuild the docs app after changing a page.
 
-The gallery contains 93 component entries: 44 UI Components and 49 AI Components. Patterns includes Agent workbench, Coding studio and the single current template, Relay. Customize contains Theme Studio and design foundations. Style and State selectors show the presentations and fixtures that each component actually supports.
 
-[Relay](../examples/consumer/src/relay/README.md) is a customer dashboard with mock login, editable accounts and a simulated assistant. After building packages, run `pnpm template:dev` and open `http://127.0.0.1:4184/relay.html`. Its guide covers the built preview and customization. All state stays in memory; no identity or model service is connected.
+### Use local archives in another React app
 
-For another application in this pnpm workspace, use workspace dependencies on `@ai-interaction/react` and `@ai-interaction/core`, plus compatible React and ReactDOM peers. Both React peers are currently `^19.3.0`. The package's ordinary dependencies, including Radix primitives, install with it. For an isolated local application, `pnpm check:packages` demonstrates packing both packages and installing them together without a registry release.
+The app needs React and ReactDOM satisfying `^19.3.0`, a bundler that supports CSS imports, and React types if you use TypeScript. Next.js and Tailwind are optional.
 
-## Render a controlled component
+In the authorized workspace, `pnpm check:packages` creates and verifies the two archives in `output/packages/` after the packages have been built. Copy the matching archives into your app's `vendor/` directory.
 
-Import the stylesheet once in the application entry. In Next, put interactive composition in a Client Component; pure theme helpers remain available from `@ai-interaction/react/theme` on the server.
+Add this override to your app's `pnpm-workspace.yaml`, preserving its existing settings. It resolves the unpublished core dependency from the local archive:
+
+```yaml
+overrides:
+  '@stackunseen/ui-core': file:./vendor/stackunseen-ui-core-0.1.0-alpha.0.tgz
+```
+
+Then run this from your app's root:
+
+```sh
+pnpm add ./vendor/stackunseen-ui-core-0.1.0-alpha.0.tgz ./vendor/stackunseen-ui-0.1.0-alpha.0.tgz
+```
+
+Keep both archives at the same version. This installs local files; it does not publish a package.
+
+
+
+## Render your first component
+
+Import the base stylesheet once and wrap the interface in `AITheme`. Put interactive composition in a Client Component in Next.js. This example saves a name in local memory and shows the result; nothing is sent or persisted.
 
 ```tsx
 'use client';
 import { useState } from 'react';
-import { AITheme, Button, Field, Input } from '@ai-interaction/react';
-import '@ai-interaction/react/styles.css';
+import { AITheme, Button, Field, Input } from '@stackunseen/ui';
+import '@stackunseen/ui/styles.css';
 
-export function NameForm({ onSave }: { onSave: (name: string) => void }) {
+export function FirstExample() {
   const [name, setName] = useState('');
+  const [savedName, setSavedName] = useState('');
   return (
-    <AITheme appearance="system" config={{ primary: '#2563eb', density: 'comfortable' }}>
+    <AITheme>
       <form
+        style={{ display: 'grid', gap: 12, maxWidth: 360 }}
         onSubmit={(event) => {
           event.preventDefault();
-          onSave(name);
+          setSavedName(name.trim());
         }}
       >
-        <Field label="Display name" description="Shown to your team" required>
-          <Input name="displayName" value={name} onChange={(event) => setName(event.target.value)} />
+        <Field label="Your name" required>
+          <Input
+            name="displayName"
+            value={name}
+            maxLength={80}
+            onChange={(event) => setName(event.target.value)}
+          />
         </Field>
-        <Button type="submit">Save name</Button>
+        <Button type="submit">Save locally</Button>
+        <p role="status">{savedName ? `Saved locally: ${savedName}` : 'Nothing saved yet.'}</p>
       </form>
     </AITheme>
   );
 }
 ```
 
-The callback requests a save. The host validates and persists the value and supplies any pending, error or confirmed state. For approvals, permissions and handoffs, use the family-specific versioned contracts rather than treating a click as confirmation.
+The application owns validation and persistence. Connect the local callback to your host and render its pending, failed or confirmed state.
 
 ## Choose the right entry
 
 | Import | Use | Additional optional peers |
 | --- | --- | --- |
-| `@ai-interaction/react` | AI components, native form controls, overlays, feedback, menus, navigation, Card and Table | None beyond React/ReactDOM |
-| `@ai-interaction/react/theme` | Pure theme resolution, validation and export | None |
-| `@ai-interaction/react/status` | StatusBadge entry | None |
-| `@ai-interaction/react/code` | Plain code blocks | None |
-| `@ai-interaction/react/markdown` | GFM responses | react-markdown, remark-gfm, remend |
-| `@ai-interaction/react/math` | Standalone formulae | katex, plus its CSS/fonts |
-| `@ai-interaction/react/mermaid` | Standalone diagrams | mermaid, dompurify; math-label styling also needs KaTeX CSS/fonts |
-| `@ai-interaction/react/rich-markdown` | Markdown with formulae and diagrams | Markdown peers, remark-math, katex, mermaid, dompurify |
-| `@ai-interaction/react/highlight` | Highlighted code and diffs | shiki |
-| `@ai-interaction/react/terminal` | Optional xterm view | @xterm/xterm, @xterm/addon-fit; also import terminal.css |
-| `@ai-interaction/react/viewport` | Bounded conversation history views | @tanstack/react-virtual |
-| `@ai-interaction/react/layout` | Resizable application layout | react-resizable-panels |
-| `@ai-interaction/react/sidecar`, `/workspace`, `/upload` | Independent application compositions | No additional optional peer |
+| `@stackunseen/ui` | AI components, native form controls, overlays, feedback, menus, navigation, Card and Table | None beyond React/ReactDOM |
+| `@stackunseen/ui/theme` | Pure theme resolution, validation and export | None |
+| `@stackunseen/ui/status` | StatusBadge entry | None |
+| `@stackunseen/ui/code` | Plain code blocks | None |
+| `@stackunseen/ui/markdown` | GFM responses | react-markdown, remark-gfm, remend |
+| `@stackunseen/ui/math` | Standalone formulae | katex, plus its CSS/fonts |
+| `@stackunseen/ui/mermaid` | Standalone diagrams | mermaid, dompurify; math-label styling also needs KaTeX CSS/fonts |
+| `@stackunseen/ui/rich-markdown` | Markdown with formulae and diagrams | Markdown peers, remark-math, katex, mermaid, dompurify |
+| `@stackunseen/ui/highlight` | Highlighted code and diffs | shiki |
+| `@stackunseen/ui/terminal` | Optional xterm view | @xterm/xterm, @xterm/addon-fit; also import terminal.css |
+| `@stackunseen/ui/viewport` | Bounded conversation history views | @tanstack/react-virtual |
+| `@stackunseen/ui/layout` | Resizable application layout | react-resizable-panels |
+| `@stackunseen/ui/sidecar`, `/workspace`, `/upload` | Independent application compositions | No additional optional peer |
+| `@stackunseen/ui/application` | DataGrid, searchable selection, date controls and application patterns | No additional peer; import application.css alongside styles.css |
+| `@stackunseen/ui/marketing` | Website navigation, hero, features, pricing, FAQ, contact and article blocks | No additional peer; import marketing.css alongside styles.css |
+| `@stackunseen/ui/editor` | Controlled CodeMirror editing, selection, diagnostics and text proposals | @codemirror/state, @codemirror/view, @codemirror/commands, @codemirror/language, @codemirror/lint, @codemirror/lang-javascript; import editor.css |
+| `@stackunseen/ui/artifact-editor` | Draft preview/edit/diff, save/export requests and receipt recovery | No additional peer; import artifact-editor.css. Compose CodeEditor through renderEditor when needed |
+| `@stackunseen/ui/conversation-flow` | Exact message edit-to-branch and regenerate-to-attempt intents | No additional peer; import conversation-flow.css |
+| `@stackunseen/ui-core/editing` | Pure document identities, UTF-16 ranges and bounded atomic text edits | None |
 
 Use named public imports. There are no `/button`, `/icons` or generic-family subpaths. Heavy renderer and layout peers stay outside the base entry. Importing an optional entry requires its peers even when a particular render skips that feature. Exact tested versions are in the [React package manifest](../packages/react/package.json) and the relevant feature guide.
+
+The [public editing example](../tests/fixtures/editing-public-example.tsx) composes the optional entries. The host supplies document/draft revisions, command identities, permissions and receipts. CodeEditor preserves host UTF-16 offsets and existing line endings; a single completion can emit a next-word prefix intent. The host must validate that prefix against its original proposal. Pending and unknown requests require the original receipt before another mutation. These UI contracts do not provide model services, authentication, filesystem writes or durable storage.
 
 ## Continue with a feature
 

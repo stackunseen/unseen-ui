@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react';
-import { CodeDiff } from '@ai-interaction/react';
-import { HighlightedCodeDiff } from '@ai-interaction/react/highlight';
+import { CodeDiff } from '@stackunseen/ui';
+import { HighlightedCodeDiff } from '@stackunseen/ui/highlight';
 const base = {
   path: 'test.ts',
   baseVersion: 'a',

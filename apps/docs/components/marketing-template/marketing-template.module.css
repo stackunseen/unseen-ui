@@ -1,0 +1,306 @@
+.template {
+  inline-size: 100%;
+  max-inline-size: 76rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 3rem);
+  color: var(--ai-text);
+  background: var(--ai-surface);
+}
+.templateBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding-block: 1rem;
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+  border-block-end: 1px solid var(--ai-border);
+}
+.templateBar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-block-size: 2.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+.templateBar a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.darkLink,
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-block-size: 2.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.template .darkLink {
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--ai-text);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-text);
+  color: var(--ai-surface);
+}
+.template .darkLink:hover,
+.template .actionButton:hover:not(:disabled) {
+  color: var(--ai-surface);
+  background: var(--ai-muted);
+  border-color: var(--ai-muted);
+}
+.textLink {
+  color: var(--ai-text);
+  text-underline-offset: 0.25em;
+}
+.textLink:hover {
+  text-decoration: underline;
+}
+.template .actionButton,
+.template .planButton {
+  min-block-size: 2.75rem;
+  padding-inline: 1rem;
+  font-size: 0.875rem;
+}
+.template .actionButton {
+  background: var(--ai-text);
+  border-color: var(--ai-text);
+  color: var(--ai-surface);
+}
+.template .planButton[aria-pressed='true'] {
+  border-color: var(--ai-text);
+  background: var(--ai-surface-subtle);
+}
+.intentStrip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  padding-block: 1.5rem 2.5rem;
+  color: var(--ai-muted);
+}
+.intentStrip span {
+  inline-size: 100%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.intentStrip p {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+.planFeedback {
+  margin: 0;
+  min-block-size: 2.75rem;
+  font-size: 0.875rem;
+  color: var(--ai-muted);
+}
+.preview {
+  background: var(--ai-canvas);
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-radius, 10px);
+  box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--ai-text) 6%, transparent);
+  overflow: hidden;
+}
+.previewTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-block-end: 1px solid var(--ai-border);
+  background: var(--ai-surface);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.previewTop > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.previewSample {
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+.previewBody {
+  display: flex;
+}
+.previewRail {
+  display: none;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  inline-size: 3.5rem;
+  padding-block: 1.75rem;
+  border-inline-end: 1px solid var(--ai-border);
+  color: var(--ai-muted);
+}
+.previewMain {
+  flex: 1;
+  min-inline-size: 0;
+  padding: 1.5rem;
+}
+.previewBreadcrumb {
+  margin-block-end: 1.5rem;
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+}
+.previewMain h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 550;
+  letter-spacing: -0.045em;
+}
+.previewDescription {
+  margin: 0.5rem 0 1.5rem;
+  color: var(--ai-muted);
+  font-size: 0.8125rem;
+  max-inline-size: 42ch;
+}
+.projectContent {
+  display: grid;
+  gap: 1.25rem;
+  min-block-size: 20rem;
+}
+.projectNote {
+  padding: 1.25rem;
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface);
+}
+.smallLabel {
+  display: block;
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+.projectNote h3 {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.projectNote p {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 0.8125rem;
+}
+.noteTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-start: 1.25rem;
+}
+.noteTags span {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface-subtle);
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+}
+.previewTasks {
+  padding-inline: 0.25rem;
+}
+.previewTasks p {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--ai-muted);
+}
+.previewTasks svg {
+  flex-shrink: 0;
+}
+.previewBottom {
+  padding: 0.75rem 1.25rem;
+  border-block-start: 1px solid var(--ai-border);
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+}
+.journalCover {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem;
+  margin-block-end: 2rem;
+  background: var(--ai-text);
+  color: var(--ai-surface);
+  border-radius: var(--ai-control-radius, 8px);
+}
+.journalCover span:first-child {
+  font-size: clamp(2rem, 3vw, 2.75rem);
+  line-height: 1.1;
+  font-weight: 450;
+  letter-spacing: -0.05em;
+}
+.journalCover span:last-child {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+.contactNote {
+  margin: 0;
+  max-inline-size: 36ch;
+  font-size: 0.8125rem;
+  color: var(--ai-muted);
+}
+.fieldPair {
+  display: grid;
+  gap: 1.25rem;
+  min-inline-size: 0;
+}
+.fieldPair > * {
+  min-inline-size: 0;
+}
+.template :where(input, textarea) {
+  font-size: 1rem;
+}
+.draftPreview {
+  padding: 1.25rem;
+  background: var(--ai-surface-subtle);
+  border-radius: var(--ai-control-radius, 8px);
+}
+.draftPreview h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+.draftPreview p {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+@media (min-width: 32rem) {
+  .previewRail {
+    display: flex;
+  }
+  .fieldPair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64rem) {
+  .intentStrip span {
+    inline-size: auto;
+    max-inline-size: 20ch;
+  }
+}
+@media (forced-colors: active) {
+  .template .darkLink,
+  .template .actionButton {
+    border-color: ButtonText;
+  }
+  .journalCover {
+    border: 1px solid CanvasText;
+  }
+}

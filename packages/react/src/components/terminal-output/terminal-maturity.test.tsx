@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { TerminalOutput } from '@ai-interaction/react';
+import { TerminalOutput } from '@stackunseen/ui';
 import { inspectTerminal, inspectTerminalContext } from './terminal-model.js';
 
 const context = { sessionId: 'session', streamId: 'stream', version: '1' };

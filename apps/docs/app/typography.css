@@ -1,0 +1,250 @@
+/* Site reading scale. Library specimens retain their own semantic sizes. */
+html {
+  --ai-font-family: var(--font-unseen), Arial, sans-serif;
+  --ai-font-size: 15px;
+}
+body {
+  margin: 0;
+  font-family: var(--ai-font-family);
+}
+.unseen-web {
+  font-size: 15px;
+  line-height: 1.6;
+}
+.web-brand small {
+  font-size: 12px;
+}
+.web-nav a,
+.web-button,
+.web-docs-nav nav a {
+  font-size: 14px;
+}
+.web-eyebrow {
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+}
+.web-page-heading h1,
+.web-article h1,
+.missing-page h1,
+.explorer-main .detail-heading h1,
+.theme-lead h1 {
+  font-size: clamp(34px, 3.5vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+.web-page-heading > p:not(.web-eyebrow),
+.article-lead,
+.explorer-main .detail-heading p {
+  font-size: 17px;
+  line-height: 1.65;
+  max-width: 68ch;
+}
+.web-article {
+  font-size: 16px;
+  line-height: 1.75;
+}
+.web-article h2,
+.directory-collection > h2,
+.relay-page h2 {
+  font-size: 27px;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+.web-article h3 {
+  font-size: 20px;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+.web-article pre,
+.web-article pre code,
+.relay-page pre,
+.relay-page pre code,
+.explorer-main .code-example pre,
+.component-signature pre {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.web-article code,
+.relay-page code {
+  font-size: 0.875em;
+}
+.docs-links strong {
+  font-size: 18px;
+}
+.docs-links a > span,
+.pattern-list p,
+.collection-note p,
+.relay-page p {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.pattern-list h2 {
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.directory-search input {
+  font-size: 16px;
+}
+.directory-filters button,
+.directory-count,
+.directory-group h3 {
+  font-size: 14px;
+}
+.directory-group strong {
+  font-size: 17px;
+  line-height: 1.4;
+}
+.directory-group li a > span {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.web-docs-nav p,
+.web-footer p,
+.web-footer nav a,
+.web-footer span {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.explorer-sidebar .nav-main,
+.explorer-sidebar .search-field input {
+  font-size: 14px !important;
+}
+.component-link {
+  font-size: 14px;
+}
+.catalog-group-label {
+  font-size: 14px;
+}
+.catalog-group-label small,
+.component-link small,
+.library-count,
+.detail-kicker {
+  font-size: 12px;
+}
+.explorer-context,
+.detail-jump-links,
+.detail-toolbar,
+.preview-caption,
+.explorer-note {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.explorer-main .api-section h2,
+.integration-note h2 {
+  font-size: 25px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+.component-guidance,
+.integration-note p,
+.component-prop-list {
+  font-size: 15px;
+  line-height: 1.65;
+}
+.component-prop-list dd {
+  font-size: 15px;
+  line-height: 1.65;
+}
+.component-prop-list code,
+.component-prop-list dt > span {
+  font-size: 13px;
+}
+.template-workspace-heading h1 {
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+.template-workspace-heading p {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.theme-editor .theme-lead h1 {
+  font-size: clamp(34px, 3.5vw, 48px);
+}
+.theme-lead p,
+.theme-note {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.theme-editor h2 {
+  font-size: 18px;
+  line-height: 1.4;
+}
+.colour-field,
+.editor-label,
+.theme-editor label,
+.contrast-report {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.theme-preview .preview-caption,
+.preset-button {
+  font-size: 12px;
+}
+@media (max-width: 640px) {
+  .web-page-heading h1,
+  .web-article h1,
+  .explorer-main .detail-heading h1,
+  .theme-lead h1 {
+    font-size: 34px;
+  }
+  .web-page-heading > p:not(.web-eyebrow),
+  .article-lead,
+  .explorer-main .detail-heading p {
+    font-size: 16px;
+  }
+  .web-article h2,
+  .directory-collection > h2,
+  .relay-page h2 {
+    font-size: 25px;
+  }
+}
+
+.preset-row button {
+  font-size: 12px;
+}
+.component-signature h3 {
+  font-size: 18px;
+}
+.web-footer-compact {
+  align-items: center;
+  padding: 14px 32px;
+  gap: 16px;
+}
+.web-footer-compact > div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.web-footer-compact .web-footer-brand {
+  font-size: 14px;
+}
+.web-footer-compact > div > span {
+  font-size: 12px;
+}
+.web-footer-compact nav {
+  align-items: center;
+  gap: 20px;
+}
+@media (max-width: 780px) {
+  .web-footer-compact {
+    padding: 12px 20px;
+    gap: 4px;
+  }
+  .web-footer-compact nav {
+    gap: 20px;
+  }
+}
+
+.web-article p,
+.web-article li,
+.relay-page p,
+.relay-page li {
+  max-inline-size: 68ch;
+  overflow-wrap: anywhere;
+}

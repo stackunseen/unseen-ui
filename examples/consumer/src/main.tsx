@@ -19,13 +19,13 @@ import {
   AttachmentGroup,
   AttachmentPicker,
   DataTable,
-} from '@ai-interaction/react';
-import type { AttachmentReference, TableColumn, TablePagination } from '@ai-interaction/react';
-import type { ModelSettings } from '@ai-interaction/core';
+} from '@stackunseen/ui';
+import type { AttachmentReference, TableColumn, TablePagination } from '@stackunseen/ui';
+import type { ModelSettings } from '@stackunseen/ui-core';
 import type { SVGProps } from 'react';
-import { createTheme } from '@ai-interaction/react/theme';
-import { MarkdownResponse, renderMarkdownPart } from '@ai-interaction/react/markdown';
-import '@ai-interaction/react/styles.css';
+import { createTheme } from '@stackunseen/ui/theme';
+import { MarkdownResponse, renderMarkdownPart } from '@stackunseen/ui/markdown';
+import '@stackunseen/ui/styles.css';
 import { FormExample } from './form-example';
 import { GeneratedExample } from './generated-example';
 import { ChartExample } from './chart-example';

@@ -1,0 +1,36 @@
+.demo {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-width: 0;
+}
+.demo > button {
+  justify-self: start;
+}
+.selection {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.demo :global([data-part='review-changes'][data-variant='accordion']) {
+  gap: 16px;
+}
+.controls > :first-child {
+  min-width: 220px;
+  max-width: 100%;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preview pre {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface-subtle);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

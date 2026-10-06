@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import { AIForm, Button, resolveVariant } from '@ai-interaction/react';
+import { AIForm, Button, resolveVariant } from '@stackunseen/ui';
 import type {
   AIArrayChange,
   AIArrayValues,
@@ -10,7 +10,7 @@ import type {
   AIFormReceipt,
   AIFormSubmission,
   FormValues,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import { formFields } from '../lib/coding-fixtures';
 import s from './form-specimen.module.css';
 

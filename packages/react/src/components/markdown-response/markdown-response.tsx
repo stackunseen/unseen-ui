@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import type { Components, ExtraProps, Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remend from 'remend';
-import { safeUrl } from '@ai-interaction/core';
+import { safeUrl } from '@stackunseen/ui-core';
 import { StreamingResponse } from '../streaming-response/streaming-response.js';
 import type { StreamingResponseProps } from '../streaming-response/streaming-response.js';
 import type { MessageContentProps } from '../message-content/message-content.js';
@@ -65,7 +65,8 @@ const elements = [
   'sup',
 ];
 
-function linkUrl(value?: string) {
+function linkUrl(value?: unknown) {
+  if (typeof value !== 'string') return;
   return value && /^https?:\/\//i.test(value) && !/[\s\\]/.test(value) ? safeUrl(value) : undefined;
 }
 type MarkdownNode = NonNullable<ExtraProps['node']>['children'][number];

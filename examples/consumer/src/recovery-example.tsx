@@ -7,10 +7,10 @@ import {
   Message,
   Select,
   StatusBadge,
-} from '@ai-interaction/react';
-import { createAdapterSession } from '@ai-interaction/core/adapter';
-import type { AdapterSession } from '@ai-interaction/core/adapter';
-import type { HistoryPageRequest } from '@ai-interaction/core/history';
+} from '@stackunseen/ui';
+import { createAdapterSession } from '@stackunseen/ui-core/adapter';
+import type { AdapterSession } from '@stackunseen/ui-core/adapter';
+import type { HistoryPageRequest } from '@stackunseen/ui-core/history';
 import { createLocalRecoveryHost } from './recovery-host';
 import type { LocalRecoveryHost } from './recovery-host';
 import s from './recovery-example.module.css';

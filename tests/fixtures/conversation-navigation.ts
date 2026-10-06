@@ -1,4 +1,4 @@
-import type { ConversationContext } from '@ai-interaction/core';
+import type { ConversationContext } from '@stackunseen/ui-core';
 
 export const context: ConversationContext = {
   workspaceId: 'workspace',

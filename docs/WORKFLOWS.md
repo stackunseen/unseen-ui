@@ -1,10 +1,10 @@
 # Workflow inspection
 
-`WorkflowGraph` has three presentations: **graph** is a routed read-only canvas, **list** is node adjacency with incoming/outgoing disclosures, and **compact** is a bounded discovery outline with explicit cycle/shared-node references. All views use the same validated snapshot and controlled selection. Import from `@ai-interaction/react` with scoped styles; no graph engine or new dependency is required.
+`WorkflowGraph` has three presentations: **graph** is a routed read-only canvas, **list** is node adjacency with incoming/outgoing disclosures, and **compact** is a bounded discovery outline with explicit cycle/shared-node references. All views use the same validated snapshot and controlled selection. Import from `@stackunseen/ui` with scoped styles; no graph engine or new dependency is required.
 
 ```tsx
-import { WorkflowGraph } from '@ai-interaction/react';
-import type { GraphSelection } from '@ai-interaction/react';
+import { WorkflowGraph } from '@stackunseen/ui';
+import type { GraphSelection } from '@stackunseen/ui';
 
 // These values belong to the host. Handlers request inspection, never execution.
 <WorkflowGraph nodes={nodes} edges={edges} source="Host public workflow"

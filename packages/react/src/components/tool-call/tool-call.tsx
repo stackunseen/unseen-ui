@@ -1,7 +1,7 @@
 'use client';
 import { useContext } from 'react';
 import type { ReactNode } from 'react';
-import type { ToolCallData } from '@ai-interaction/core';
+import type { ToolCallData } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';

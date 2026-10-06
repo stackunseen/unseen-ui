@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, act } from '@testing-library/react';
-import { HighlightedCodeBlock, HighlightedCodeDiff } from '@ai-interaction/react/highlight';
+import { HighlightedCodeBlock, HighlightedCodeDiff } from '@stackunseen/ui/highlight';
 import { useCodeHighlight } from './use-code-highlight.js';
 import { CodeTokenLine } from './code-tokens.js';
 const engine = vi.hoisted(() => ({ tokenizeCode: vi.fn() }));
