@@ -6,7 +6,7 @@ Publishing requires a selected license, initial package registration and trusted
 
 ## One-time setup
 
-1. The MIT license is selected and its text is in `LICENSE` in both package folders. Set those two manifests to `private: false`; keep other workspaces private. Review the package READMEs and source maps: the current maps include original source, even though GitHub stays private.
+1. Done: the MIT license text is in `LICENSE` in both package folders, and both manifests are `private: false`; other workspaces stay private. Review the package READMEs and source maps: the current maps include original source, even though GitHub stays private.
 2. Confirm CLI identity with `npm whoami --registry=https://registry.npmjs.org`. Browser login alone is insufficient. Complete the first reviewed alpha publication using the account's interactive authentication, core before React. Do not store an npm token in GitHub. Trusted publisher configuration lives in each existing npm package's settings.
 3. Approve activation of `.github/workflows/release.yml` and its job permissions: `contents: write` for version commits/tags/GitHub releases, and `id-token: write` for the npm publishing job. Validation has read-only repository access; dependency installation/builds run without write or OIDC permissions.
 4. For **each** npm package, add a GitHub trusted publisher with organization/user `stackunseen`, repository `unseen-ui`, workflow filename `release.yml`, and **no environment**. Allow direct `npm publish`. This workflow needs no separate dist-tag management grant, npm secret, paid environment or account-security change.

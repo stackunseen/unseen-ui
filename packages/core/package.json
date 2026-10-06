@@ -1,7 +1,19 @@
 {
   "name": "@stackunseen/ui-core",
   "version": "0.1.0-alpha.0",
-  "private": true,
+  "description": "Framework-independent contracts, schemas and state projection for AI interfaces. Part of Unseen UI.",
+  "keywords": [
+    "ai",
+    "agents",
+    "llm",
+    "chat",
+    "schema",
+    "approvals",
+    "tool-calls",
+    "unseen-ui"
+  ],
+  "author": "Stack Unseen",
+  "private": false,
   "type": "module",
   "license": "MIT",
   "files": [
