@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
-import { MessageQueue } from '@ai-interaction/react';
+import { MessageQueue } from '@stackunseen/ui';
 
 vi.stubGlobal(
   'ResizeObserver',

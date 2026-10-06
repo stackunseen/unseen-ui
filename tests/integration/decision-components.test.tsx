@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, expect, it, vi } from 'vitest';
-import { PermissionRequest, AgentHandoff } from '@ai-interaction/react';
+import { PermissionRequest, AgentHandoff } from '@stackunseen/ui';
 import { permissionFixture, handoffFixture } from '../decision-fixtures.js';
 
 afterEach(() => vi.useRealTimers());

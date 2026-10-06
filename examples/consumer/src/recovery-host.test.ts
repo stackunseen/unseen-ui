@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createAdapterSession } from '@ai-interaction/core/adapter';
-import type { AdapterCommand, AdapterSession, AdapterObserver } from '@ai-interaction/core/adapter';
+import { createAdapterSession } from '@stackunseen/ui-core/adapter';
+import type { AdapterCommand, AdapterSession, AdapterObserver } from '@stackunseen/ui-core/adapter';
 import { createLocalRecoveryHost } from './recovery-host';
 import type { LocalRecoveryHost } from './recovery-host';
 

@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@ai-interaction/core": "workspace:*"
+    "@stackunseen/ui-core": "workspace:*"
   }
 }

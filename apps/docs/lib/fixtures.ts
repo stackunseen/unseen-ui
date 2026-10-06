@@ -5,7 +5,7 @@ import type {
   Source,
   Step,
   ToolCallData,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 
 export const source: Source = {
   id: 'source-handbook',

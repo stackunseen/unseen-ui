@@ -1,6 +1,6 @@
 # Attachments and composer integration
 
-`Attachment` displays host-owned file state in `row`, `tile` and `compact` presentations. Import it from `@ai-interaction/react` with the shared stylesheet. File selection and preview do not upload a file or connect a provider.
+`Attachment` displays host-owned file state in `row`, `tile` and `compact` presentations. Import it from `@stackunseen/ui` with the shared stylesheet. File selection and preview do not upload a file or connect a provider.
 
 ## Controlled data
 
@@ -24,7 +24,7 @@ An unknown upload outcome has explicit status text, no retry control and no enab
 The convenience component renders all default parts. `Attachment.Root`, `.Preview`, `.Info`, `.Actions` and `.Progress` allow a different arrangement using the same controlled context. Parts require a root. Explicit children replace the convenience layout.
 
 ```tsx
-import { Attachment, AttachmentGroup } from '@ai-interaction/react';
+import { Attachment, AttachmentGroup } from '@stackunseen/ui';
 
 <AttachmentGroup variant="list" label="Report attachments">
   <Attachment.Root

@@ -1,21 +1,43 @@
-import { componentVariants } from '@ai-interaction/react';
-import type { VariantComponent } from '@ai-interaction/react';
+import { componentVariants } from '@stackunseen/ui';
+import type { VariantComponent } from '@stackunseen/ui';
 import { partStates } from './message-parts-fixtures';
 import { expandedCatalog } from './expanded-catalog';
 import { genericCatalog } from './generic-catalog';
 export const categories = [
   'All components',
-  'Foundations',
+  'Actions',
   'Forms',
   'Navigation',
   'Overlays',
   'Feedback',
   'Data Display',
+  'Rich Content',
   'Layout',
+  'Application patterns',
+  'Marketing blocks',
   'AI Components',
 ] as const;
 export type CatalogGroup = Exclude<(typeof categories)[number], 'All components'>;
 export type GenericComponent =
+  | 'DataGrid'
+  | 'Combobox'
+  | 'MultiSelect'
+  | 'Calendar'
+  | 'DateRangePicker'
+  | 'PageHeader'
+  | 'OrgSwitcher'
+  | 'ListToolbar'
+  | 'MasterDetail'
+  | 'SettingsSaveCancel'
+  | 'UnsavedGuard'
+  | 'MarketingHeader'
+  | 'MarketingFooter'
+  | 'MarketingHero'
+  | 'MarketingFeatures'
+  | 'MarketingPricing'
+  | 'MarketingFAQ'
+  | 'MarketingContact'
+  | 'MarketingArticle'
   | 'Button'
   | 'IconButton'
   | 'Modal'
@@ -512,14 +534,11 @@ const genericGroups: Partial<Record<CatalogEntry['name'], CatalogGroup>> = {
   Skeleton: 'Feedback',
   StatusBadge: 'Feedback',
   Accordion: 'Data Display',
-  DataTable: 'Data Display',
-  Chart: 'Data Display',
-  CodeDiff: 'Data Display',
-  MarkdownResponse: 'Data Display',
-  MarkdownCodeBlock: 'Data Display',
-  RichMarkdownResponse: 'Data Display',
-  MathFormula: 'Data Display',
-  MermaidDiagram: 'Data Display',
+  MarkdownResponse: 'Rich Content',
+  MarkdownCodeBlock: 'Rich Content',
+  RichMarkdownResponse: 'Rich Content',
+  MathFormula: 'Rich Content',
+  MermaidDiagram: 'Rich Content',
 };
 export function catalogGroup(entry: CatalogEntry): CatalogGroup {
   return entry.group ?? genericGroups[entry.name] ?? 'AI Components';

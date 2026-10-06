@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { Button, GeneratedUI } from '@ai-interaction/react';
+import { Button, GeneratedUI } from '@stackunseen/ui';
 import type {
   GeneratedSurface,
   GeneratedActionRequest,
   GeneratedFormSnapshot,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 const surface: GeneratedSurface = {
   id: 'consumer-surface',
   version: '1',

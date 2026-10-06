@@ -1,6 +1,6 @@
 'use client';
-import { Button, StatusBadge } from '@ai-interaction/react';
-import type { ResolvedTheme } from '@ai-interaction/react/theme';
+import { Button, StatusBadge } from '@stackunseen/ui';
+import type { ResolvedTheme } from '@stackunseen/ui/theme';
 import { ActionPlacementDemo } from './action-placement-demo';
 import { WorkspaceExample } from '../../../examples/consumer/src/workspace-example';
 import { UploadExample } from '../../../examples/consumer/src/upload-example';

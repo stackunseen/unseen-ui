@@ -9,6 +9,7 @@ export default defineConfig({
         history: 'src/history.ts',
         adapter: 'src/adapter.ts',
         uploads: 'src/uploads.ts',
+        editing: 'src/editing.ts',
       },
       formats: ['es'],
     },

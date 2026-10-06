@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { ToolGroup } from '@ai-interaction/react';
+import { ToolGroup } from '@stackunseen/ui';
 
 describe('execution content and contextual actions', () => {
   it.each(['stack', 'grid', 'accordion'] as const)(

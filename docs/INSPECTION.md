@@ -1,6 +1,6 @@
 # Inspection components
 
-Experimental controlled components. Import components from `@ai-interaction/react`, types/helpers from `@ai-interaction/core`, and optional validators from `@ai-interaction/core/schema`. Load the library stylesheet once. Gallery fixtures and `examples/consumer/src/main.tsx` show runnable composition without provider credentials.
+Experimental controlled components. Import components from `@stackunseen/ui`, types/helpers from `@stackunseen/ui-core`, and optional validators from `@stackunseen/ui-core/schema`. Load the library stylesheet once. Gallery fixtures and `examples/consumer/src/main.tsx` show runnable composition without provider credentials.
 
 | Component | Data and callbacks | Three styles | Critical behavior |
 | --- | --- | --- | --- |
@@ -14,9 +14,9 @@ Experimental controlled components. Import components from `@ai-interaction/reac
 Optional `ConnectionInfo.freshness` reports current/stale/unknown projection separately from transport and protocol compatibility. Legacy absence preserves existing behavior. All three ConnectionStatus styles retain snapshot refresh for connected stale/unknown data and unresolved recovery requests when capability/callback exist. Text does not prescribe unavailable snapshot recovery. A connected or resumed transport does not settle an unknown original command; use the separate [adapter](ADAPTERS.md) command record/lookup path.
 
 ```tsx
-import { ConnectionStatus, ModelControls } from '@ai-interaction/react';
-import { modelCapabilitiesSchema, modelSettingsSchema } from '@ai-interaction/core/schema';
-import { modelSettingsIssues } from '@ai-interaction/core';
+import { ConnectionStatus, ModelControls } from '@stackunseen/ui';
+import { modelCapabilitiesSchema, modelSettingsSchema } from '@stackunseen/ui-core/schema';
+import { modelSettingsIssues } from '@stackunseen/ui-core';
 
 // At a host boundary, validate unknown data before rendering it.
 const capabilities = modelCapabilitiesSchema.parse(capabilitiesPayload);

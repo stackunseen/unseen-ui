@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { ToolGroup, componentVariants } from '@ai-interaction/react';
+import { ToolGroup, componentVariants } from '@stackunseen/ui';
 
 describe('design audit interaction corrections', () => {
   it.each(componentVariants.ToolGroup)('%s tool group explains the absence of calls', (variant) => {

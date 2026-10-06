@@ -7,7 +7,7 @@ import type {
   AIField,
   GraphNode,
   GraphEdge,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 export const commands: CommandOption[] = [
   { id: 'review', label: 'review', description: 'Review the current changes for regressions.' },
   { id: 'plan', label: 'plan', description: 'Outline an implementation before making changes.' },

@@ -27,13 +27,13 @@ export type {
   ConversationPageRequest,
   ConversationSearchRequest,
   BranchChangeGuard,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 export { ThreadList } from './components/thread-list/thread-list.js';
 export { BranchSwitcher } from './components/branch-switcher/branch-switcher.js';
 export { MessageQueue } from './components/message-queue/message-queue.js';
 export { MemoryControls } from './components/memory-controls/memory-controls.js';
 export type { ThreadListProps } from './components/thread-list/thread-list.js';
-export type { ThreadSummary, ConversationBranch, QueuedMessage } from '@ai-interaction/core';
+export type { ThreadSummary, ConversationBranch, QueuedMessage } from '@stackunseen/ui-core';
 export type { BranchSwitcherProps } from './components/branch-switcher/branch-switcher.js';
 export type { MessageQueueProps } from './components/message-queue/message-queue.js';
 export type {
@@ -61,6 +61,16 @@ export type {
 export type {
   ReviewChangesProps,
   ProposedChange,
+  ReviewChangesContract,
+  ReviewFileOperation,
+  ProposedHunk,
+  ReviewHunkSelection,
+  ReviewFileSelection,
+  ReviewCommand,
+  ReviewFileOutcome,
+  ReviewReceipt,
+  ReviewSubmissionState,
+  ReviewPolicy,
 } from './components/review-changes/review-changes.js';
 export type {
   ArtifactDiffProps,
@@ -130,6 +140,7 @@ export { VoiceControl } from './components/voice-control/voice-control.js';
 export type { SlashCommandMenuProps } from './components/slash-command-menu/slash-command-menu.js';
 export type { MentionPickerProps } from './components/mention-picker/mention-picker.js';
 export type { CommandOption, ReferenceOption } from './shared/command-picker/command-picker.js';
+export { referenceUnavailableReason } from './shared/command-picker/command-picker.js';
 export type {
   ReasoningControlProps,
   ReasoningOption,

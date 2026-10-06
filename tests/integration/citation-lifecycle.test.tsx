@@ -1,8 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { Message } from '@ai-interaction/react';
-import type { Source, MessageData } from '@ai-interaction/core';
+import { Message } from '@stackunseen/ui';
+import type { Source, MessageData } from '@stackunseen/ui-core';
 import { source } from '../../apps/docs/lib/fixtures';
 
 const original: Source = { ...source, url: 'https://example.com/original' };

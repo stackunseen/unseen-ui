@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import type { MessageData, MessagePart, Runtime, TextMessagePart } from '@ai-interaction/core';
+import type { MessageData, MessagePart, Runtime, TextMessagePart } from '@stackunseen/ui-core';
 
-import { MessageContent } from '@ai-interaction/react';
+import { MessageContent } from '@stackunseen/ui';
 
 const closed: TextMessagePart = {
   id: 'intro',

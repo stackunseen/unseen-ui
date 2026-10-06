@@ -2,7 +2,7 @@
 
 ## Math and diagrams
 
-`@ai-interaction/react/rich-markdown` exports `RichMarkdownResponse`, `MathFormula` and `MermaidDiagram`. `MarkdownCodeBlock` is separately available from `/markdown`, with panel/minimal/numbered styles. The base entry remains plain-text capable without renderer peers.
+`@stackunseen/ui/rich-markdown` exports `RichMarkdownResponse`, `MathFormula` and `MermaidDiagram`. `MarkdownCodeBlock` is separately available from `/markdown`, with panel/minimal/numbered styles. The base entry remains plain-text capable without renderer peers.
 
 Standalone consumers can use independent `/math` and `/mermaid` entries. All three styles and props are identical; the aggregate entry re-exports the same renderers. Install only the peers needed by the selected entry:
 
@@ -15,11 +15,11 @@ Standalone consumers can use independent `/math` and `/mermaid` entries. All thr
 Mermaid has its own transitive dependencies, including a math engine. The diagram entry isolates Markdown/GFM/remark-math peers; it does not remove Mermaid's internal math or grammar costs. For math-label styles, install direct `katex@0.18.9` to import the tested CSS explicitly. The host/bundler serves fonts from its own assets, with no hidden CDN request.
 
 ```tsx
-import { MathFormula } from '@ai-interaction/react/math';
-import type { MathFormulaProps } from '@ai-interaction/react/math';
-import { MermaidDiagram } from '@ai-interaction/react/mermaid';
-import type { MermaidDiagramProps } from '@ai-interaction/react/mermaid';
-import '@ai-interaction/react/styles.css';
+import { MathFormula } from '@stackunseen/ui/math';
+import type { MathFormulaProps } from '@stackunseen/ui/math';
+import { MermaidDiagram } from '@stackunseen/ui/mermaid';
+import type { MermaidDiagramProps } from '@stackunseen/ui/mermaid';
+import '@stackunseen/ui/styles.css';
 import 'katex/dist/katex.min.css'; // Formulae and diagram math labels.
 ```
 
@@ -28,8 +28,8 @@ pnpm add react-markdown@10.1.0 remark-gfm@4.0.1 remend@1.3.1 remark-math@6.0.0 k
 ```
 
 ```tsx
-import { RichMarkdownResponse, MathFormula, MermaidDiagram } from '@ai-interaction/react/rich-markdown';
-import '@ai-interaction/react/styles.css';
+import { RichMarkdownResponse, MathFormula, MermaidDiagram } from '@stackunseen/ui/rich-markdown';
+import '@stackunseen/ui/styles.css';
 import 'katex/dist/katex.min.css';
 
 <RichMarkdownResponse text={'Inline $x^2$ and display math:\n\n$$\\int_0^1 x\\,dx = 1/2$$'} state="complete" />;
@@ -45,7 +45,7 @@ The gallery exercises flowchart, sequence, class, state, entity relationship, Ga
 
 Renderer peers are optional and externalized; Mermaid loads dynamically. Use `/math` or `/mermaid` for standalone rendering. `/rich-markdown` requires the full peer set even when a render skips math or diagrams. All diagram entry paths share one render queue per package instance.
 
-Message and StreamingResponse render plain text by default. Use `@ai-interaction/react/markdown` for Markdown; it is separate from the base entry.
+Message and StreamingResponse render plain text by default. Use `@stackunseen/ui/markdown` for Markdown; it is separate from the base entry.
 
 ## Markdown
 
@@ -56,9 +56,9 @@ pnpm add react-markdown@10.1.0 remark-gfm@4.0.1 remend@1.3.1
 ```
 
 ```tsx
-import { Message } from '@ai-interaction/react';
-import { MarkdownResponse } from '@ai-interaction/react/markdown';
-import '@ai-interaction/react/styles.css';
+import { Message } from '@stackunseen/ui';
+import { MarkdownResponse } from '@stackunseen/ui/markdown';
+import '@stackunseen/ui/styles.css';
 
 <Message
   variant="bubble"
@@ -103,9 +103,9 @@ The plain `MarkdownCodeBlock` has a `/code` subpath requiring no Markdown peers.
 
 ```tsx
 'use client';
-import { MarkdownResponse } from '@ai-interaction/react/markdown';
-import { HighlightedCodeBlock } from '@ai-interaction/react/highlight';
-import '@ai-interaction/react/styles.css';
+import { MarkdownResponse } from '@stackunseen/ui/markdown';
+import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
+import '@stackunseen/ui/styles.css';
 
 <MarkdownResponse
   text={markdown}
@@ -127,7 +127,7 @@ Highlight limits: 20,000 UTF-16 units, 300 lines, 2,000 units per line and 10,00
 `HighlightedCodeDiff` from `/highlight` composes the canonical base CodeDiff with the same optional tokenizer. Its unified/split/compact styles retain original line numbers, addition/removal signs and semantic gutters. Token cells use neutral theme surfaces to keep primary/secondary syntax colours readable.
 
 ```tsx
-import { HighlightedCodeDiff } from '@ai-interaction/react/highlight';
+import { HighlightedCodeDiff } from '@stackunseen/ui/highlight';
 
 <HighlightedCodeDiff
   path="src/search.ts"

@@ -5,7 +5,7 @@ import type {
   UploadCommand,
   UploadContext,
   UploadReceipt,
-} from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
 export class UploadHostError extends Error {
   status: number;
   constructor(status: number, message: string);

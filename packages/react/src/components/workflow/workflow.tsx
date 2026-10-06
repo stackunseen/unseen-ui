@@ -1,5 +1,5 @@
 'use client';
-import type { Step } from '@ai-interaction/core';
+import type { Step } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';

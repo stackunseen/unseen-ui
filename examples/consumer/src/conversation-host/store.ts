@@ -1,4 +1,4 @@
-import type { ConversationWorkspace } from '@ai-interaction/core';
+import type { ConversationWorkspace } from '@stackunseen/ui-core';
 
 export interface ConversationStore {
   read: () => Promise<unknown>;

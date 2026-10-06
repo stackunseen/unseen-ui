@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import { StrictMode } from 'react';
-import { ConversationViewport } from '@ai-interaction/react/viewport';
+import { ConversationViewport } from '@stackunseen/ui/viewport';
 import { context, row, history } from '../../../../../tests/fixtures/conversation-history.js';
 
 describe('controlled message reading surface', () => {

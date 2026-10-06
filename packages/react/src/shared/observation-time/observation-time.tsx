@@ -1,5 +1,5 @@
 'use client';
-import { validTimestamp } from '@ai-interaction/core';
+import { validTimestamp } from '@stackunseen/ui-core';
 
 const observationFormat = new Intl.DateTimeFormat('en-US', {
   dateStyle: 'medium',

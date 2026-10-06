@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createUploadHost } from '../../../upload-host/host.mjs';
 import { createUploadClient } from './client';
-import type { UploadCommand } from '@ai-interaction/core/uploads';
+import type { UploadCommand } from '@stackunseen/ui-core/uploads';
 const cleanups: (() => Promise<void>)[] = [];
 afterEach(async () => {
   for (const cleanup of cleanups.splice(0)) await cleanup();

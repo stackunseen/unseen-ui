@@ -38,7 +38,10 @@
   opacity: 1;
 }
 .textarea {
-  resize: vertical;
+  resize: none;
+}
+.input.textarea:focus-visible {
+  outline-offset: -1px;
 }
 .input[aria-invalid='true'],
 .checkbox[aria-invalid='true']::before,

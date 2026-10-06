@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { ClarificationRequest, componentVariants } from '@ai-interaction/react';
+import { ClarificationRequest, componentVariants } from '@stackunseen/ui';
 
 describe('design audit interaction corrections', () => {
   it.each(componentVariants.ClarificationRequest)(

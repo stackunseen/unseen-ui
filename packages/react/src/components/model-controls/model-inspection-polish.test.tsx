@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { ModelControls } from '@ai-interaction/react';
+import { ModelControls } from '@stackunseen/ui';
 
 import { componentVariants } from '../../shared/variants.js';
 import {

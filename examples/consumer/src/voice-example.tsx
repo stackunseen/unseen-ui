@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useLayoutEffect, useState, useSyncExternalStore } from 'react';
-import { Attachment, Button, Select, VoiceControl } from '@ai-interaction/react';
+import { Attachment, Button, Select, VoiceControl } from '@stackunseen/ui';
 import { BrowserVoiceHost } from './voice-host/host';
 import { browserVoicePlatform } from './voice-host/platform';
 

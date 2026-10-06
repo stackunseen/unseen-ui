@@ -3,7 +3,7 @@ import {
   sameConversationContext,
   inspectConversationContext,
   inspectConversationWorkspace,
-} from '@ai-interaction/core/conversation';
+} from '@stackunseen/ui-core/conversation';
 import type {
   ConversationWorkspace,
   ConversationContext,
@@ -25,7 +25,7 @@ import type {
   QueueMoveRequest,
   ConversationSearchRequest,
   ConversationPageRequest,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 import type { ConversationStore } from './store';
 
 export interface ConversationHostSnapshot {

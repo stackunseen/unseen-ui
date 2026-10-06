@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   inspectQueueWindow,
   inspectConversationPagination,
-} from '@ai-interaction/core/conversation';
+} from '@stackunseen/ui-core/conversation';
 import type {
   ConversationPagination,
   QueuedMessage,
@@ -11,7 +11,7 @@ import type {
   QueueEditRequest,
   QueueMoveRequest,
   ConversationPageRequest,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
@@ -19,6 +19,7 @@ import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import n from '../../shared/styles/navigation.module.css';
 import actions from '../../shared/styles/action-layout.module.css';
+import { Textarea } from '../textarea/textarea.js';
 import type { NavigationStateProps } from '../../shared/conversation-navigation/conversation-navigation.js';
 import {
   navigationState,
@@ -153,7 +154,7 @@ export function MessageQueue(props: MessageQueueProps) {
                           >
                             <label>
                               Edit queued draft
-                              <textarea
+                              <Textarea
                                 ref={input}
                                 className={s.search}
                                 value={currentEdit.text}

@@ -19,9 +19,9 @@ Raw output retains at most 64,000 UTF-16 units without a leading low surrogate. 
 Install `@xterm/xterm@6.0.0` and `@xterm/addon-fit@0.11.0`. Use the independent client entry and opt-in styles:
 
 ```tsx
-import { TerminalEmulator } from '@ai-interaction/react/terminal';
-import '@ai-interaction/react/styles.css';
-import '@ai-interaction/react/terminal.css';
+import { TerminalEmulator } from '@stackunseen/ui/terminal';
+import '@stackunseen/ui/styles.css';
+import '@stackunseen/ui/terminal.css';
 
 <TerminalEmulator
   output={host.output}

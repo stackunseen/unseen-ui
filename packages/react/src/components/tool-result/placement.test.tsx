@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AITheme, ToolResult } from '@ai-interaction/react';
+import { AITheme, ToolResult } from '@stackunseen/ui';
 
 describe('execution content and contextual actions', () => {
   it.each(['code', 'text', 'expandable'] as const)(

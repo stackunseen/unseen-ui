@@ -1,5 +1,7 @@
 import { spawnSync } from 'node:child_process';
-import { mkdir, mkdtemp, readFile, readdir, writeFile, copyFile, cp } from 'node:fs/promises';
+import process from 'node:process';
+import console from 'node:console';
+import { mkdir, mkdtemp, readFile, writeFile, copyFile, cp } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
@@ -8,6 +10,14 @@ const root = process.cwd();
 const pm = process.env.npm_execpath;
 if (!pm) throw new Error('Run this script through pnpm check:packages.');
 const log = [];
+const editorPeers = [
+  '@codemirror/state',
+  '@codemirror/view',
+  '@codemirror/commands',
+  '@codemirror/language',
+  '@codemirror/lint',
+  '@codemirror/lang-javascript',
+];
 function run(args, cwd = root) {
   // Reuse an already populated store when registry access is slow; missing
   // dependencies still fail rather than silently widening the test fixture.
@@ -30,15 +40,12 @@ const outputDir = resolve('output/packages');
 try {
   for (const name of ['core', 'react'])
     run(['--dir', `packages/${name}`, 'pack', '--pack-destination', outputDir]);
-  const tarballs = (await readdir(outputDir)).filter((f) => f.endsWith('.tgz'));
-  const core = resolve(
-    outputDir,
-    tarballs.find((f) => f.startsWith('ai-interaction-core-')),
-  );
-  const react = resolve(
-    outputDir,
-    tarballs.find((f) => f.startsWith('ai-interaction-react-')),
-  );
+  async function packedPath(folder) {
+    const pkg = JSON.parse(await readFile(`packages/${folder}/package.json`, 'utf8'));
+    return resolve(outputDir, `${pkg.name.slice(1).replace('/', '-')}-${pkg.version}.tgz`);
+  }
+  const core = await packedPath('core');
+  const react = await packedPath('react');
   const stage = await mkdtemp(join(tmpdir(), 'ai-interaction-packed-'));
   console.log(`Isolated consumers: ${stage}`);
   log.push(`Isolated consumers: ${stage}`);
@@ -53,8 +60,8 @@ try {
         private: true,
         type: 'module',
         dependencies: {
-          '@ai-interaction/core': `file:${core}`,
-          '@ai-interaction/react': `file:${react}`,
+          '@stackunseen/ui-core': `file:${core}`,
+          '@stackunseen/ui': `file:${react}`,
           react: rootPkg.devDependencies.react,
           'react-dom': rootPkg.devDependencies['react-dom'],
           next: docsPkg.dependencies.next,
@@ -72,6 +79,7 @@ try {
               '@xterm/addon-fit',
               '@tanstack/react-virtual',
               'react-resizable-panels',
+              ...editorPeers,
             ].map((key) => [key, docsPkg.dependencies[key]]),
           ),
         },
@@ -92,7 +100,7 @@ try {
   );
   await writeFile(
     join(stage, 'pnpm-workspace.yaml'),
-    `packages: []\nallowBuilds:\n  esbuild: true\nstrictPeerDependencies: true\noverrides:\n  '@ai-interaction/core': ${JSON.stringify(`file:${core.replaceAll('\\', '/')}`)}\n`,
+    `packages: []\nallowBuilds:\n  esbuild: true\nstrictPeerDependencies: true\noverrides:\n  # Match the existing workspace resolution for reproducible offline consumer checks.\n  mdast-util-find-and-replace: 3.0.2\n  '@stackunseen/ui-core': ${JSON.stringify(`file:${core.replaceAll('\\', '/')}`)}\n`,
   );
   await mkdir(join(stage, 'src'));
   // The consumer has two HTML entries. Exercise Relay against the packed public packages too.
@@ -107,6 +115,11 @@ try {
       'tests/fixtures/website-public-example.tsx',
       join(stage, folder, 'website-public-example.tsx'),
     );
+    for (const entry of ['application', 'marketing', 'editing'])
+      await copyFile(
+        `tests/fixtures/${entry}-public-example.tsx`,
+        join(stage, folder, `${entry}-public-example.tsx`),
+      );
     for (const file of [
       'viewport-example.tsx',
       'viewport-example.module.css',
@@ -184,18 +197,18 @@ try {
   );
   await writeFile(
     join(stage, 'app/layout.tsx'),
-    "import type { ReactNode } from 'react';\nimport '@ai-interaction/react/styles.css';\nexport default function Layout({children}:{children:ReactNode}){return <html lang=\"en\"><body>{children}</body></html>;}\n",
+    "import type { ReactNode } from 'react';\nimport '@stackunseen/ui/styles.css';\nexport default function Layout({children}:{children:ReactNode}){return <html lang=\"en\"><body>{children}</body></html>;}\n",
   );
   await writeFile(
     join(stage, 'app/page.tsx'),
-    "import { StatusBadge, AITheme } from '@ai-interaction/react';\nimport { MarkdownResponse } from '@ai-interaction/react/markdown';\nimport { createTheme } from '@ai-interaction/react/theme';\nimport { canTransition } from '@ai-interaction/core';\nexport default function Page(){const theme=createTheme({primary:'#166534'});return <AITheme theme={theme}><h1>Packed Next consumer</h1><StatusBadge state={canTransition('queued','running')?'running':'unknown'}/><MarkdownResponse headingLevel={2} text={'# Rich response\\n\\nA **formatted** server-rendered example.'} state=\"complete\" /></AITheme>;}\n",
+    "import { StatusBadge, AITheme } from '@stackunseen/ui';\nimport { MarkdownResponse } from '@stackunseen/ui/markdown';\nimport { createTheme } from '@stackunseen/ui/theme';\nimport { canTransition } from '@stackunseen/ui-core';\nexport default function Page(){const theme=createTheme({primary:'#166534'});return <AITheme theme={theme}><h1>Packed Next consumer</h1><StatusBadge state={canTransition('queued','running')?'running':'unknown'}/><MarkdownResponse headingLevel={2} text={'# Rich response\\n\\nA **formatted** server-rendered example.'} state=\"complete\" /></AITheme>;}\n",
   );
   await writeFile(
     join(stage, 'app/rich-example.tsx'),
     `
 'use client';
-import { RichMarkdownResponse, MathFormula, MermaidDiagram } from '@ai-interaction/react/rich-markdown';
-import { HighlightedCodeBlock, HighlightedCodeDiff } from '@ai-interaction/react/highlight';
+import { RichMarkdownResponse, MathFormula, MermaidDiagram } from '@stackunseen/ui/rich-markdown';
+import { HighlightedCodeBlock, HighlightedCodeDiff } from '@stackunseen/ui/highlight';
 import 'katex/dist/katex.min.css';
 export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'} /><MermaidDiagram title="Packed diagram" code={'flowchart LR\\n A-->B'} /><HighlightedCodeBlock code={'const value = 1;'} language="ts" variant="numbered"/><HighlightedCodeDiff path="a.ts" before="const value = 1;" after="const value = 2;" baseVersion="v1" nextVersion="v2" language="ts" variant="split"/><RichMarkdownResponse text={'A formula: $x^2$.'} state="complete" renderCodeBlock={(props)=><HighlightedCodeBlock {...props}/>} /></>; }
 `,
@@ -209,6 +222,18 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
         '<WebsitePublicExample /><UploadExample /><RecoveryExample /><WorkspaceExample /><ViewportExample /><ConversationExample /><VoiceExample /><FormExample /><GeneratedExample /><ChartExample /><WorkflowExample /><FileExample /><TerminalExample /><RichExample /></AITheme>',
       ),
   );
+  for (const folder of ['src', 'app']) {
+    const file = join(stage, folder, folder === 'src' ? 'main.tsx' : 'page.tsx');
+    const source = await readFile(file, 'utf8');
+    await writeFile(
+      file,
+      "import {ApplicationPublicExample} from './application-public-example';\nimport {MarketingPublicExample} from './marketing-public-example';\nimport {EditingPublicExample} from './editing-public-example';\n" +
+        source.replace(
+          '</AITheme>',
+          '<ApplicationPublicExample/><MarketingPublicExample/><EditingPublicExample/></AITheme>',
+        ),
+    );
+  }
   run(['install'], stage);
   run(['exec', 'tsc', '--noEmit'], stage);
   run(['exec', 'vite', 'build'], stage);
@@ -219,7 +244,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
       'node',
       '--input-type=module',
       '-e',
-      "const rich=await import('@ai-interaction/react/rich-markdown'); const math=await import('@ai-interaction/react/math'); const diagram=await import('@ai-interaction/react/mermaid'); const plain=await import('@ai-interaction/react/code'); const markdown=await import('@ai-interaction/react/markdown'); if(plain.MarkdownCodeBlock!==markdown.MarkdownCodeBlock) throw new Error('Plain code exports diverged'); if(rich.MathFormula!==math.MathFormula || rich.MermaidDiagram!==diagram.MermaidDiagram) throw new Error('Aggregate renderer exports diverged'); console.log('PASS: aggregate and independent entries share renderer identities.');",
+      "const rich=await import('@stackunseen/ui/rich-markdown'); const math=await import('@stackunseen/ui/math'); const diagram=await import('@stackunseen/ui/mermaid'); const plain=await import('@stackunseen/ui/code'); const markdown=await import('@stackunseen/ui/markdown'); if(plain.MarkdownCodeBlock!==markdown.MarkdownCodeBlock) throw new Error('Plain code exports diverged'); if(rich.MathFormula!==math.MathFormula || rich.MermaidDiagram!==diagram.MermaidDiagram) throw new Error('Aggregate renderer exports diverged'); console.log('PASS: aggregate and independent entries share renderer identities.');",
     ],
     stage,
   );
@@ -231,8 +256,8 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
         private: true,
         type: 'module',
         dependencies: {
-          '@ai-interaction/core': `file:${core}`,
-          '@ai-interaction/react': `file:${react}`,
+          '@stackunseen/ui-core': `file:${core}`,
+          '@stackunseen/ui': `file:${react}`,
           react: rootPkg.devDependencies.react,
           'react-dom': rootPkg.devDependencies['react-dom'],
         },
@@ -247,7 +272,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
   );
   await writeFile(
     join(baseStage, 'pnpm-workspace.yaml'),
-    `packages: []\nallowBuilds:\n  esbuild: true\nstrictPeerDependencies: true\noverrides:\n  '@ai-interaction/core': ${JSON.stringify(`file:${core.replaceAll('\\', '/')}`)}\n`,
+    `packages: []\nallowBuilds:\n  esbuild: true\nstrictPeerDependencies: true\noverrides:\n  # Match the existing workspace resolution for reproducible offline consumer checks.\n  mdast-util-find-and-replace: 3.0.2\n  '@stackunseen/ui-core': ${JSON.stringify(`file:${core.replaceAll('\\', '/')}`)}\n`,
   );
   await writeFile(
     join(baseStage, 'index.html'),
@@ -255,7 +280,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
   );
   await writeFile(
     join(baseStage, 'main.tsx'),
-    "import {createRoot} from 'react-dom/client';\nimport {WebsitePublicExample} from './website-public-example';\nimport {Message,StatusBadge,IconButton} from '@ai-interaction/react';\nimport type {IconButtonProps} from '@ai-interaction/react';\nimport '@ai-interaction/react/styles.css';\nconst action:IconButtonProps={label:'Archive sample conversation',icon:'archive',disabled:true};\ncreateRoot(document.getElementById('root')!).render(<><StatusBadge state=\"running\"/><IconButton {...action}/><Message value={{id:'base',role:'assistant',text:'Plain text without optional parsers',state:'complete',revision:1}}/><WebsitePublicExample/></>);\n",
+    "import {createRoot} from 'react-dom/client';\nimport {WebsitePublicExample} from './website-public-example';\nimport {Message,StatusBadge,IconButton} from '@stackunseen/ui';\nimport type {IconButtonProps} from '@stackunseen/ui';\nimport '@stackunseen/ui/styles.css';\nconst action:IconButtonProps={label:'Archive sample conversation',icon:'archive',disabled:true};\ncreateRoot(document.getElementById('root')!).render(<><StatusBadge state=\"running\"/><IconButton {...action}/><Message value={{id:'base',role:'assistant',text:'Plain text without optional parsers',state:'complete',revision:1}}/><WebsitePublicExample/></>);\n",
   );
   await copyFile(
     'tests/fixtures/website-public-example.tsx',
@@ -274,7 +299,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
       'node',
       '--input-type=module',
       '-e',
-      "for (const name of ['react-markdown','remark-gfm','remend','mermaid','katex','dompurify','remark-math','shiki','@xterm/xterm','@xterm/addon-fit','node-pty','@tanstack/react-virtual','react-resizable-panels']) { try { await import(name); throw new Error('Optional peer unexpectedly present: '+name); } catch (error) { if (error.code !== 'ERR_MODULE_NOT_FOUND') throw error; } } console.log('PASS: rich/terminal peers and native PTY absent from base-only consumer.');",
+      `for (const name of ${JSON.stringify(['react-markdown', 'remark-gfm', 'remend', 'mermaid', 'katex', 'dompurify', 'remark-math', 'shiki', '@xterm/xterm', '@xterm/addon-fit', 'node-pty', '@tanstack/react-virtual', 'react-resizable-panels', ...editorPeers])}) { try { await import(name); throw new Error('Optional peer unexpectedly present: '+name); } catch (error) { if (error.code !== 'ERR_MODULE_NOT_FOUND') throw error; } } console.log('PASS: optional renderer/editor peers and native PTY absent from base-only consumer.');`,
     ],
     baseStage,
   );
@@ -285,11 +310,16 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
       'node',
       '--input-type=module',
       '-e',
-      "const {createElement:h}=await import('react'); const {renderToString}=await import('react-dom/server'); const {Field,Input,Card,Table,TableRow,Progress}=await import('@ai-interaction/react'); if(TableRow!==Table.Row)throw new Error('Root table aliases diverged'); const html=renderToString(h(Card,null,h(Field,{label:'Packed field'},h(Input,{value:'Public value',readOnly:true})),h(Table,{label:'Packed native table'},h(Table.Body,null,h(TableRow,null,h(Table.Cell,null,'Public cell')))),h(Progress,{label:'Pending data',value:null}))); if(!html.includes('Public value')||!html.includes('Public cell')||!html.includes('indeterminate'))throw new Error('Generic public SSR missing'); console.log('PASS: generic root controls and native table SSR without optional peers or browser globals.');",
+      "const {createElement:h}=await import('react'); const {renderToString}=await import('react-dom/server'); const {Field,Input,Card,Table,TableRow,Progress}=await import('@stackunseen/ui'); if(TableRow!==Table.Row)throw new Error('Root table aliases diverged'); const html=renderToString(h(Card,null,h(Field,{label:'Packed field'},h(Input,{value:'Public value',readOnly:true})),h(Table,{label:'Packed native table'},h(Table.Body,null,h(TableRow,null,h(Table.Cell,null,'Public cell')))),h(Progress,{label:'Pending data',value:null}))); if(!html.includes('Public value')||!html.includes('Public cell')||!html.includes('indeterminate'))throw new Error('Generic public SSR missing'); console.log('PASS: generic root controls and native table SSR without optional peers or browser globals.');",
     ],
     baseStage,
   );
   for (const entry of [
+    'editor',
+    'artifact-editor',
+    'conversation-flow',
+    'application',
+    'marketing',
     'math',
     'mermaid',
     'code',
@@ -304,19 +334,21 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
     const isolatedStage = await mkdtemp(join(tmpdir(), `ai-interaction-${entry}-only-`));
     log.push(`Isolated ${entry} consumer: ${isolatedStage}`);
     const peers =
-      entry === 'layout'
-        ? ['react-resizable-panels']
-        : entry === 'viewport'
-          ? ['@tanstack/react-virtual']
-          : entry === 'terminal'
-            ? ['@xterm/xterm', '@xterm/addon-fit']
-            : entry === 'math'
-              ? ['katex']
-              : entry === 'mermaid'
-                ? ['mermaid', 'dompurify']
-                : entry === 'highlight'
-                  ? ['shiki']
-                  : [];
+      entry === 'editor'
+        ? editorPeers
+        : entry === 'layout'
+          ? ['react-resizable-panels']
+          : entry === 'viewport'
+            ? ['@tanstack/react-virtual']
+            : entry === 'terminal'
+              ? ['@xterm/xterm', '@xterm/addon-fit']
+              : entry === 'math'
+                ? ['katex']
+                : entry === 'mermaid'
+                  ? ['mermaid', 'dompurify']
+                  : entry === 'highlight'
+                    ? ['shiki']
+                    : [];
     await writeFile(
       join(isolatedStage, 'package.json'),
       JSON.stringify(
@@ -324,8 +356,8 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
           private: true,
           type: 'module',
           dependencies: {
-            '@ai-interaction/core': `file:${core}`,
-            '@ai-interaction/react': `file:${react}`,
+            '@stackunseen/ui-core': `file:${core}`,
+            '@stackunseen/ui': `file:${react}`,
             react: rootPkg.devDependencies.react,
             'react-dom': rootPkg.devDependencies['react-dom'],
             ...Object.fromEntries(peers.map((p) => [p, docsPkg.dependencies[p]])),
@@ -347,7 +379,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
     );
     await writeFile(
       join(isolatedStage, 'pnpm-workspace.yaml'),
-      `packages: []\nallowBuilds:\n  esbuild: true\nstrictPeerDependencies: true\noverrides:\n  '@ai-interaction/core': ${JSON.stringify(`file:${core.replaceAll('\\', '/')}`)}\n`,
+      `packages: []\nallowBuilds:\n  esbuild: true\nstrictPeerDependencies: true\noverrides:\n  # Match the existing workspace resolution for reproducible offline consumer checks.\n  mdast-util-find-and-replace: 3.0.2\n  '@stackunseen/ui-core': ${JSON.stringify(`file:${core.replaceAll('\\', '/')}`)}\n`,
     );
     await writeFile(
       join(isolatedStage, 'tsconfig.json'),
@@ -358,27 +390,43 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
       `<html lang="en"><head><title>${entry} entry</title></head><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>`,
     );
     const body =
-      entry === 'upload'
-        ? `import {UploadAttachment} from '@ai-interaction/react/upload';\nimport type {UploadCheckpoint} from '@ai-interaction/core/uploads';\nconst value:UploadCheckpoint={context:{workspaceId:'w',threadId:'t',attachmentId:'a',version:'v',uploadId:'u'},revision:1,state:'uploading',access:'available',name:'Public upload',mediaType:'text/plain',sizeBytes:4,receivedBytes:0,sha256:'a'.repeat(64),capabilities:{resume:'supported',cancel:true,remove:true,maxFileBytes:4,maxChunkBytes:2,source:'packed-host',version:'1'}};\ncreateRoot(document.getElementById('root')!).render(<UploadAttachment value={value} reference={value.context} />);`
-        : ['sidecar', 'workspace', 'layout'].includes(entry)
-          ? `import {${entry === 'sidecar' ? 'Sidecar' : entry === 'workspace' ? 'WorkspaceShell' : 'SplitPane'} as View} from '@ai-interaction/react/${entry}';\nimport type {${entry === 'sidecar' ? 'SidecarProps' : entry === 'workspace' ? 'WorkspaceShellProps' : 'SplitPaneProps'} as Props} from '@ai-interaction/react/${entry}';\nconst props:Props=${entry === 'sidecar' ? "{open:true,onOpenChange:()=>{},title:'Public inspector',mobileBreakpoint:false,children:'Public detail'}" : entry === 'workspace' ? "{main:'Public workspace',mainAs:'section'}" : "{label:'Public split',primary:{id:'a',label:'First',children:'First'},secondary:{id:'b',label:'Second',children:'Second'},sizes:[70,30]}"};\ncreateRoot(document.getElementById('root')!).render(<View {...props}/>);`
-          : entry === 'viewport'
-            ? `import {ConversationViewport} from '@ai-interaction/react/viewport';\nimport type {ConversationViewportProps} from '@ai-interaction/react/viewport';\nconst props:ConversationViewportProps={value:{context:{workspaceId:'w',threadId:'t',snapshotId:'s',version:'1'},messages:[{id:'m',role:'assistant',text:'Public history',state:'complete',revision:0}],older:{state:'end'},newer:{state:'end'}},mode:'reading'};\ncreateRoot(document.getElementById('root')!).render(<ConversationViewport {...props}/>);`
-            : entry === 'terminal'
-              ? `import {TerminalEmulator} from '@ai-interaction/react/terminal';\nimport type {TerminalEmulatorProps} from '@ai-interaction/react/terminal';\nimport '@ai-interaction/react/terminal.css';\nconst props:TerminalEmulatorProps={output:'Public terminal sample',state:'complete',context:{sessionId:'s',streamId:'o',version:'1'},variant:'compact'};\ncreateRoot(document.getElementById('root')!).render(<TerminalEmulator {...props}/>);`
-              : entry === 'code' || entry === 'highlight'
-                ? `import {${entry === 'code' ? 'MarkdownCodeBlock' : 'HighlightedCodeBlock'} as View} from '@ai-interaction/react/${entry}';\nimport type {${entry === 'code' ? 'MarkdownCodeBlockProps' : 'HighlightedCodeBlockProps'} as Props} from '@ai-interaction/react/${entry}';\nconst props:Props={code:'const value = 1;',language:'ts',variant:'numbered'};\ncreateRoot(document.getElementById('root')!).render(<View {...props}/>);`
-                : entry === 'math'
-                  ? `import {MathFormula} from '@ai-interaction/react/math';\nimport type {MathFormulaProps} from '@ai-interaction/react/math';\nimport 'katex/dist/katex.min.css';\nconst props:MathFormulaProps={formula:'x^2 + y^2 = z^2',variant:'scroll'};\ncreateRoot(document.getElementById('root')!).render(<MathFormula {...props}/>);`
-                  : `import {MermaidDiagram} from '@ai-interaction/react/mermaid';\nimport type {MermaidDiagramProps} from '@ai-interaction/react/mermaid';\nconst props:MermaidDiagramProps={code:'flowchart LR\\n A-->B',variant:'minimal'};\ncreateRoot(document.getElementById('root')!).render(<MermaidDiagram {...props}/>);`;
+      entry === 'editor'
+        ? `import {CodeEditor} from '@stackunseen/ui/editor';\nimport '@stackunseen/ui/editor.css';\nimport type {DocumentSnapshot} from '@stackunseen/ui-core/editing';\nconst document:DocumentSnapshot={documentId:'public',version:'1',text:'const value = 1;',language:'ts'};\ncreateRoot(document.getElementById('root')!).render(<CodeEditor document={document} readOnly/>);`
+        : entry === 'artifact-editor'
+          ? `import {ArtifactEditor} from '@stackunseen/ui/artifact-editor';\nimport '@stackunseen/ui/artifact-editor.css';\nconst document={documentId:'public',version:'1',text:'Public artifact'};\ncreateRoot(document.getElementById('root')!).render(<ArtifactEditor document={document} draft={{...document,version:'draft:1',base:document}} view="edit"/>);`
+          : entry === 'conversation-flow'
+            ? `import {MessageEditForm} from '@stackunseen/ui/conversation-flow';\nimport type {ConversationMessageTarget} from '@stackunseen/ui/conversation-flow';\nimport '@stackunseen/ui/conversation-flow.css';\nconst target:ConversationMessageTarget={documentId:'m',version:'1',workspaceId:'w',threadId:'t',branchId:'b',branchVersion:'1',attemptId:'a',role:'user'};\nconst draft={documentId:'m',version:'draft:1',text:'Revised prompt'};\ncreateRoot(document.getElementById('root')!).render(<MessageEditForm autoFocus={false} target={target} current={{...target,text:'Original'}} draft={draft} state={{status:'idle'}} onDraftChange={()=>{}} onRequest={()=>{}} onCancel={()=>{}}/>);`
+            : entry === 'application' || entry === 'marketing'
+              ? `import {${entry === 'application' ? 'ApplicationPublicExample' : 'MarketingPublicExample'} as Example} from './${entry}-public-example';\ncreateRoot(document.getElementById('root')!).render(<Example/>);`
+              : entry === 'upload'
+                ? `import {UploadAttachment} from '@stackunseen/ui/upload';\nimport type {UploadCheckpoint} from '@stackunseen/ui-core/uploads';\nconst value:UploadCheckpoint={context:{workspaceId:'w',threadId:'t',attachmentId:'a',version:'v',uploadId:'u'},revision:1,state:'uploading',access:'available',name:'Public upload',mediaType:'text/plain',sizeBytes:4,receivedBytes:0,sha256:'a'.repeat(64),capabilities:{resume:'supported',cancel:true,remove:true,maxFileBytes:4,maxChunkBytes:2,source:'packed-host',version:'1'}};\ncreateRoot(document.getElementById('root')!).render(<UploadAttachment value={value} reference={value.context} />);`
+                : ['sidecar', 'workspace', 'layout'].includes(entry)
+                  ? `import {${entry === 'sidecar' ? 'Sidecar' : entry === 'workspace' ? 'WorkspaceShell' : 'SplitPane'} as View} from '@stackunseen/ui/${entry}';\nimport type {${entry === 'sidecar' ? 'SidecarProps' : entry === 'workspace' ? 'WorkspaceShellProps' : 'SplitPaneProps'} as Props} from '@stackunseen/ui/${entry}';\nconst props:Props=${entry === 'sidecar' ? "{open:true,onOpenChange:()=>{},title:'Public inspector',mobileBreakpoint:false,children:'Public detail'}" : entry === 'workspace' ? "{main:'Public workspace',mainAs:'section'}" : "{label:'Public split',primary:{id:'a',label:'First',children:'First'},secondary:{id:'b',label:'Second',children:'Second'},sizes:[70,30]}"};\ncreateRoot(document.getElementById('root')!).render(<View {...props}/>);`
+                  : entry === 'viewport'
+                    ? `import {ConversationViewport} from '@stackunseen/ui/viewport';\nimport type {ConversationViewportProps} from '@stackunseen/ui/viewport';\nconst props:ConversationViewportProps={value:{context:{workspaceId:'w',threadId:'t',snapshotId:'s',version:'1'},messages:[{id:'m',role:'assistant',text:'Public history',state:'complete',revision:0}],older:{state:'end'},newer:{state:'end'}},mode:'reading'};\ncreateRoot(document.getElementById('root')!).render(<ConversationViewport {...props}/>);`
+                    : entry === 'terminal'
+                      ? `import {TerminalEmulator} from '@stackunseen/ui/terminal';\nimport type {TerminalEmulatorProps} from '@stackunseen/ui/terminal';\nimport '@stackunseen/ui/terminal.css';\nconst props:TerminalEmulatorProps={output:'Public terminal sample',state:'complete',context:{sessionId:'s',streamId:'o',version:'1'},variant:'compact'};\ncreateRoot(document.getElementById('root')!).render(<TerminalEmulator {...props}/>);`
+                      : entry === 'code' || entry === 'highlight'
+                        ? `import {${entry === 'code' ? 'MarkdownCodeBlock' : 'HighlightedCodeBlock'} as View} from '@stackunseen/ui/${entry}';\nimport type {${entry === 'code' ? 'MarkdownCodeBlockProps' : 'HighlightedCodeBlockProps'} as Props} from '@stackunseen/ui/${entry}';\nconst props:Props={code:'const value = 1;',language:'ts',variant:'numbered'};\ncreateRoot(document.getElementById('root')!).render(<View {...props}/>);`
+                        : entry === 'math'
+                          ? `import {MathFormula} from '@stackunseen/ui/math';\nimport type {MathFormulaProps} from '@stackunseen/ui/math';\nimport 'katex/dist/katex.min.css';\nconst props:MathFormulaProps={formula:'x^2 + y^2 = z^2',variant:'scroll'};\ncreateRoot(document.getElementById('root')!).render(<MathFormula {...props}/>);`
+                          : `import {MermaidDiagram} from '@stackunseen/ui/mermaid';\nimport type {MermaidDiagramProps} from '@stackunseen/ui/mermaid';\nconst props:MermaidDiagramProps={code:'flowchart LR\\n A-->B',variant:'minimal'};\ncreateRoot(document.getElementById('root')!).render(<MermaidDiagram {...props}/>);`;
     const diffBody =
       entry === 'highlight'
-        ? `\nimport {HighlightedCodeDiff} from '@ai-interaction/react/highlight';\nimport type {HighlightedCodeDiffProps} from '@ai-interaction/react/highlight';\nconst diffProps:HighlightedCodeDiffProps={path:'a.ts',before:'old',after:'new',baseVersion:'a',nextVersion:'b',language:'ts',variant:'split'};\nvoid <HighlightedCodeDiff {...diffProps}/>;`
+        ? `\nimport {HighlightedCodeDiff} from '@stackunseen/ui/highlight';\nimport type {HighlightedCodeDiffProps} from '@stackunseen/ui/highlight';\nconst diffProps:HighlightedCodeDiffProps={path:'a.ts',before:'old',after:'new',baseVersion:'a',nextVersion:'b',language:'ts',variant:'split'};\nvoid <HighlightedCodeDiff {...diffProps}/>;`
         : '';
+    if (entry === 'application' || entry === 'marketing')
+      await copyFile(
+        `tests/fixtures/${entry}-public-example.tsx`,
+        join(isolatedStage, `${entry}-public-example.tsx`),
+      );
     await writeFile(
       join(isolatedStage, 'main.tsx'),
-      "import {createRoot} from 'react-dom/client';\nimport '@ai-interaction/react/styles.css';\n" +
-        body +
+      "import {createRoot} from 'react-dom/client';\nimport '@stackunseen/ui/styles.css';\n" +
+        body.replaceAll(
+          'createRoot(document.getElementById',
+          'createRoot(globalThis.document.getElementById',
+        ) +
         diffBody,
     );
     await writeFile(
@@ -386,7 +434,18 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
       "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\nexport default defineConfig({ plugins: [react()] });\n",
     );
     run(['install'], isolatedStage);
-    const absent = ['viewport', 'sidecar', 'workspace', 'layout', 'upload'].includes(entry)
+    const absent = [
+      'editor',
+      'artifact-editor',
+      'conversation-flow',
+      'application',
+      'marketing',
+      'viewport',
+      'sidecar',
+      'workspace',
+      'layout',
+      'upload',
+    ].includes(entry)
       ? [
           'react-markdown',
           'remark-gfm',
@@ -399,6 +458,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
           '@xterm/xterm',
           '@xterm/addon-fit',
           'node-pty',
+          ...(entry === 'editor' ? [] : editorPeers),
         ]
       : entry === 'terminal'
         ? [
@@ -445,19 +505,29 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
       isolatedStage,
     );
     const ssr =
-      entry === 'upload'
-        ? `const {UploadAttachment}=await import('@ai-interaction/react/upload'); const value={context:{workspaceId:'w',threadId:'t',attachmentId:'a',version:'v',uploadId:'u'},revision:1,state:'uploading',access:'available',name:'Public upload',mediaType:'text/plain',sizeBytes:4,receivedBytes:0,sha256:'a'.repeat(64),capabilities:{resume:'supported',cancel:true,remove:true,maxFileBytes:4,maxChunkBytes:2,source:'packed-host',version:'1'}}; for(const variant of ['row','tile','compact']) {const html=renderToString(createElement(UploadAttachment,{value,reference:value.context,variant})); if(!html.includes('Host-confirmed received bytes')) throw new Error('Upload SSR missing');}`
-        : ['sidecar', 'workspace', 'layout'].includes(entry)
-          ? `const {${entry === 'sidecar' ? 'Sidecar' : entry === 'workspace' ? 'WorkspaceShell' : 'SplitPane'}:View}=await import('@ai-interaction/react/${entry}'); const html=renderToString(createElement(View,${entry === 'sidecar' ? "{open:true,onOpenChange:()=>{},title:'Public inspector',mobileBreakpoint:false,children:'Public detail'}" : entry === 'workspace' ? "{main:'Public workspace',mainAs:'section'}" : "{label:'Public split',primary:{id:'a',label:'First',children:'First'},secondary:{id:'b',label:'Second',children:'Second'},sizes:[70,30]}"}));if(!html.includes('${entry === 'sidecar' ? 'Public detail' : entry === 'workspace' ? 'Public workspace' : 'First'}')) throw new Error('Layout SSR missing');`
-          : entry === 'viewport'
-            ? `const {ConversationViewport}=await import('@ai-interaction/react/viewport'); const value={context:{workspaceId:'w',threadId:'t',snapshotId:'s',version:'1'},messages:[{id:'m',role:'assistant',text:'Public history',state:'complete',revision:0}],older:{state:'end'},newer:{state:'end'}}; for(const variant of ['thread','bubble','compact']) {const html=renderToString(createElement(ConversationViewport,{value,mode:'reading',variant})); if(!html.includes('Public history')) throw new Error('History SSR missing');} const html=renderToString(createElement(ConversationViewport,{value}));if(!html.includes('Windowed message rendering')) throw new Error('Virtual history shell missing');`
-            : entry === 'terminal'
-              ? `const {TerminalEmulator}=await import('@ai-interaction/react/terminal'); for(const variant of ['console','log','compact']) {const html=renderToString(createElement(TerminalEmulator,{output:'Public terminal sample',state:'complete',context:{sessionId:'s',streamId:'o',version:'1'},variant})); if(!html.includes('Public terminal sample')||!html.includes('Loading optional terminal renderer')) throw new Error('Terminal SSR transcript missing');}`
-              : entry === 'code' || entry === 'highlight'
-                ? `const {${entry === 'code' ? 'MarkdownCodeBlock' : 'HighlightedCodeBlock'}:View}=await import('@ai-interaction/react/${entry}'); const html=renderToString(createElement(View,{code:'const value = 1;',language:'ts'})); if(!html.includes('const value = 1;')) throw new Error('Code SSR fallback missing'); ${entry === 'highlight' ? "const {HighlightedCodeDiff}=await import('@ai-interaction/react/highlight'); const diff=renderToString(createElement(HighlightedCodeDiff,{path:'a.ts',before:'old',after:'new',baseVersion:'a',nextVersion:'b',language:'ts'})); if(!diff.includes('Copy after version')) throw new Error('Diff server rendering missing');" : ''}`
-                : entry === 'math'
-                  ? `const {MathFormula}=await import('@ai-interaction/react/math'); const html=renderToString(createElement(MathFormula,{formula:'x^2',variant:'block'})); if(!html.includes('<math')) throw new Error('Math SSR missing MathML');`
-                  : `const {MermaidDiagram}=await import('@ai-interaction/react/mermaid'); const html=renderToString(createElement(MermaidDiagram,{code:'flowchart LR\\n A-->B',state:'streaming'})); if(!html.includes('Receiving diagram source')) throw new Error('Diagram SSR fallback missing');`;
+      entry === 'editor'
+        ? `const {CodeEditor}=await import('@stackunseen/ui/editor'); const html=renderToString(createElement(CodeEditor,{document:{documentId:'public',version:'1',text:'const value = 1;',language:'ts'},readOnly:true,label:'Public editor'})); if(!html.includes('Public editor')||!html.includes('Read-only document'))throw new Error('Editor SSR shell missing');`
+        : entry === 'artifact-editor'
+          ? `const {ArtifactEditor}=await import('@stackunseen/ui/artifact-editor'); const document={documentId:'public',version:'1',text:'Public artifact'}; const html=renderToString(createElement(ArtifactEditor,{document,draft:{...document,version:'draft:1',base:document},view:'edit'})); if(!html.includes('Public artifact'))throw new Error('Artifact SSR missing');`
+          : entry === 'conversation-flow'
+            ? `const {MessageEditForm}=await import('@stackunseen/ui/conversation-flow'); const target={documentId:'m',version:'1',workspaceId:'w',threadId:'t',branchId:'b',branchVersion:'1',attemptId:'a',role:'user'}; const noop=()=>{}; const html=renderToString(createElement(MessageEditForm,{autoFocus:false,target,current:{...target,text:'Original'},draft:{documentId:'m',version:'draft:1',text:'Revised prompt'},state:{status:'idle'},onDraftChange:noop,onRequest:noop,onCancel:noop})); if(!html.includes('Revised prompt'))throw new Error('Conversation edit SSR missing');`
+            : entry === 'application'
+              ? `const {DataGrid,Calendar,Combobox}=await import('@stackunseen/ui/application'); const noop=()=>{}; const html=renderToString(createElement('div',null,createElement(DataGrid,{caption:'Public records',columns:[{id:'name',header:'Name',cell:row=>row.name}],rows:[{id:'1',name:'Sample record'}],getRowId:row=>row.id}),createElement(Calendar,{locale:'en-GB',month:'2026-10-01',onMonthChange:noop,value:null,onValueChange:noop}),createElement(Combobox,{label:'Public choice',options:[],query:'',onQueryChange:noop,value:null,onValueChange:noop}))); if(!html.includes('Public records')||!html.includes('Sample record')||!html.includes('Public choice')) throw new Error('Application server rendering missing');`
+              : entry === 'marketing'
+                ? `const {MarketingHero,MarketingFAQ,MarketingContact}=await import('@stackunseen/ui/marketing'); const html=renderToString(createElement('div',null,createElement(MarketingHero,{title:'Public website',headingLevel:2}),createElement(MarketingFAQ,{title:'Public questions',value:'',onValueChange:()=>{},items:[]}),createElement(MarketingContact,{title:'Public contact',onSubmit:()=>{},children:'Safe React content'}))); if(!html.includes('Public website')||!html.includes('Public questions')||!html.includes('Safe React content')) throw new Error('Marketing server rendering missing');`
+                : entry === 'upload'
+                  ? `const {UploadAttachment}=await import('@stackunseen/ui/upload'); const value={context:{workspaceId:'w',threadId:'t',attachmentId:'a',version:'v',uploadId:'u'},revision:1,state:'uploading',access:'available',name:'Public upload',mediaType:'text/plain',sizeBytes:4,receivedBytes:0,sha256:'a'.repeat(64),capabilities:{resume:'supported',cancel:true,remove:true,maxFileBytes:4,maxChunkBytes:2,source:'packed-host',version:'1'}}; for(const variant of ['row','tile','compact']) {const html=renderToString(createElement(UploadAttachment,{value,reference:value.context,variant})); if(!html.includes('Host-confirmed received bytes')) throw new Error('Upload SSR missing');}`
+                  : ['sidecar', 'workspace', 'layout'].includes(entry)
+                    ? `const {${entry === 'sidecar' ? 'Sidecar' : entry === 'workspace' ? 'WorkspaceShell' : 'SplitPane'}:View}=await import('@stackunseen/ui/${entry}'); const html=renderToString(createElement(View,${entry === 'sidecar' ? "{open:true,onOpenChange:()=>{},title:'Public inspector',mobileBreakpoint:false,children:'Public detail'}" : entry === 'workspace' ? "{main:'Public workspace',mainAs:'section'}" : "{label:'Public split',primary:{id:'a',label:'First',children:'First'},secondary:{id:'b',label:'Second',children:'Second'},sizes:[70,30]}"}));if(!html.includes('${entry === 'sidecar' ? 'Public detail' : entry === 'workspace' ? 'Public workspace' : 'First'}')) throw new Error('Layout SSR missing');`
+                    : entry === 'viewport'
+                      ? `const {ConversationViewport}=await import('@stackunseen/ui/viewport'); const value={context:{workspaceId:'w',threadId:'t',snapshotId:'s',version:'1'},messages:[{id:'m',role:'assistant',text:'Public history',state:'complete',revision:0}],older:{state:'end'},newer:{state:'end'}}; for(const variant of ['thread','bubble','compact']) {const html=renderToString(createElement(ConversationViewport,{value,mode:'reading',variant})); if(!html.includes('Public history')) throw new Error('History SSR missing');} const html=renderToString(createElement(ConversationViewport,{value}));if(!html.includes('Windowed message rendering')) throw new Error('Virtual history shell missing');`
+                      : entry === 'terminal'
+                        ? `const {TerminalEmulator}=await import('@stackunseen/ui/terminal'); for(const variant of ['console','log','compact']) {const html=renderToString(createElement(TerminalEmulator,{output:'Public terminal sample',state:'complete',context:{sessionId:'s',streamId:'o',version:'1'},variant})); if(!html.includes('Public terminal sample')||!html.includes('Loading optional terminal renderer')) throw new Error('Terminal SSR transcript missing');}`
+                        : entry === 'code' || entry === 'highlight'
+                          ? `const {${entry === 'code' ? 'MarkdownCodeBlock' : 'HighlightedCodeBlock'}:View}=await import('@stackunseen/ui/${entry}'); const html=renderToString(createElement(View,{code:'const value = 1;',language:'ts'})); if(!html.includes('const value = 1;')) throw new Error('Code SSR fallback missing'); ${entry === 'highlight' ? "const {HighlightedCodeDiff}=await import('@stackunseen/ui/highlight'); const diff=renderToString(createElement(HighlightedCodeDiff,{path:'a.ts',before:'old',after:'new',baseVersion:'a',nextVersion:'b',language:'ts'})); if(!diff.includes('Copy after version')) throw new Error('Diff server rendering missing');" : ''}`
+                          : entry === 'math'
+                            ? `const {MathFormula}=await import('@stackunseen/ui/math'); const html=renderToString(createElement(MathFormula,{formula:'x^2',variant:'block'})); if(!html.includes('<math')) throw new Error('Math SSR missing MathML');`
+                            : `const {MermaidDiagram}=await import('@stackunseen/ui/mermaid'); const html=renderToString(createElement(MermaidDiagram,{code:'flowchart LR\\n A-->B',state:'streaming'})); if(!html.includes('Receiving diagram source')) throw new Error('Diagram SSR fallback missing');`;
     run(
       [
         'exec',
@@ -473,6 +543,11 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
   }
   for (const entry of [
     'index',
+    'editor',
+    'artifact-editor',
+    'conversation-flow',
+    'application',
+    'marketing',
     'status',
     'markdown',
     'rich-markdown',

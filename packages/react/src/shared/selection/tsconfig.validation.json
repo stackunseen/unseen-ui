@@ -1,0 +1,15 @@
+{
+  "extends": "../../../../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["vitest/globals", "@testing-library/jest-dom/vitest", "node"]
+  },
+  "include": [
+    "./*.ts",
+    "./*.tsx",
+    "../../css.d.ts",
+    "../../components/combobox/*.ts",
+    "../../components/combobox/*.tsx",
+    "../../components/multi-select/*.ts",
+    "../../components/multi-select/*.tsx"
+  ]
+}

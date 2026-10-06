@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import type { SubmissionState } from '@ai-interaction/core';
+import type { SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';

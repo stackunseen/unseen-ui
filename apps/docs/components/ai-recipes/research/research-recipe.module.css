@@ -1,0 +1,145 @@
+.recipe {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  color: var(--ai-text);
+  background: var(--ai-surface);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.recipe p {
+  margin: 0;
+}
+.muted,
+.disclosure {
+  color: var(--ai-muted);
+  font-size: 13px;
+}
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 360px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: end;
+}
+.controls {
+  display: grid;
+  gap: 6px;
+}
+.controls label {
+  font-weight: 600;
+}
+.announcement {
+  color: var(--ai-muted);
+  font-size: 13px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.answer,
+.sources {
+  min-width: 0;
+}
+.answer h2,
+.sources h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  line-height: 1.4;
+}
+.claims {
+  padding: 0;
+  margin: 0 0 16px;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+.claim {
+  min-width: 0;
+}
+.citations,
+.citation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.citations {
+  margin: 8px 0;
+}
+.citation span {
+  font-size: 13px;
+}
+.detail {
+  display: grid;
+  gap: 12px;
+}
+.sourceList {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+.source {
+  padding: 12px 0;
+  border-block-end: 1px solid var(--ai-border);
+}
+.source:first-child {
+  padding-block-start: 0;
+}
+.source h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.excerpt {
+  margin-block-start: 4px;
+}
+.excerpt summary {
+  cursor: pointer;
+  width: fit-content;
+  font-size: 13px;
+  padding-block: 4px;
+}
+.excerpt summary:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.excerpt blockquote {
+  margin: 8px 0;
+  padding-inline-start: 12px;
+  border-inline-start: 2px solid var(--ai-border);
+}
+.warning {
+  color: var(--ai-text);
+  padding-inline-start: 12px;
+  border-inline-start: 3px solid var(--ai-warning, var(--ai-border));
+}
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+}
+@media (pointer: coarse) {
+  .recipe button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .excerpt summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .excerpt summary::before {
+    content: '+';
+  }
+  .excerpt[open] summary::before {
+    content: '−';
+  }
+}

@@ -3,7 +3,7 @@ import type {
   FilePage,
   WorkspaceFile,
   WorkspaceFileSnapshot,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 export class FileHostError extends Error {
   status: number;
   constructor(status: number, message: string);

@@ -1,0 +1,26 @@
+import { notFound } from 'next/navigation';
+import { Gallery } from '../../../components/gallery';
+import { catalog } from '../../../lib/catalog';
+import { isReleaseComponent } from '../../../lib/first-release';
+import { componentHref, componentSlug } from '../../../lib/site-paths';
+import { pageMetadata } from '../../../lib/site-seo';
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return catalog.map((entry) => ({ slug: componentSlug(entry.name) }));
+}
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const entry = catalog.find((item) => componentSlug(item.name) === slug);
+  if (!entry) notFound();
+  return pageMetadata(
+    `${entry.name} ${isReleaseComponent(entry) ? 'React component' : 'composition example'}`,
+    `${entry.description} Explore live states, usage and props for ${entry.name}.`,
+    componentHref(entry.name),
+  );
+}
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const entry = catalog.find((item) => componentSlug(item.name) === slug);
+  if (!entry) notFound();
+  return <Gallery initialComponent={entry.name} />;
+}

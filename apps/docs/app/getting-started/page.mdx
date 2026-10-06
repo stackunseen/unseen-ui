@@ -1,90 +1,137 @@
-# Getting started with Unseen UI
+import { FirstExample } from '../../components/getting-started/example';
+import { OptionalEntries } from '../../components/getting-started/optional-entries';
 
-[Back to the gallery](/)
+# Getting started
 
-React components by **Stack Unseen** for AI interfaces and ordinary application controls. This is a private experimental alpha. Packages are unpublished and marked `UNLICENSED`; the `@ai-interaction/*` names are workspace imports, not registry packages.
+Build a small React interface, then add the components you need. Unseen UI is an experimental library; the current packages are private local builds, with no public npm installation offered here.
 
-## Run locally
+## 1. Start with a local build
 
-Use Node **24.13.0** and pnpm **11.5.0**. With access to the private repository:
+You need an authorized checkout or matching package archives from its maintainer. The source repository is private.
+
+For this workspace, use **Node 24.13 or later within Node 24** and **pnpm 11.5.0**. From the repository root:
 
 ```sh
-git clone https://github.com/stackunseen/unseen-ui.git
-cd unseen-ui
 pnpm install --frozen-lockfile
 pnpm build:packages
 pnpm dev
 ```
 
-Open `http://127.0.0.1:3000`. For a production preview, run `pnpm build`, then `pnpm preview`, and open `http://127.0.0.1:4173`.
+Open [the development site](http://127.0.0.1:3000). Build the packages before starting a workspace consumer.
 
-The library uses React/ReactDOM `^19.3.0`. The gallery uses Next.js 16.3.6 and MDX; the plain React examples use Vite 8.3.1. Components do not require Next.js, Tailwind or a CSS Modules build setup. Build the workspace packages before using them. For an isolated local app, `pnpm check:packages` demonstrates packing and installing both packages without a registry release.
+For the static website preview:
 
-## Find an example
+```sh
+pnpm --filter @ai-interaction/docs build
+node apps/docs/scripts/preview.mjs
+```
 
-- **UI Components:** 44 entries for forms, overlays, menus, feedback, navigation and content.
-- **AI Components:** 49 entries for conversations, tools, approvals and host-state display.
-- **Patterns:** the [Agent workbench](/?view=workbench), [Coding studio](/?view=coding) and [Relay template](/?view=templates).
-- **Customize:** [Theme Studio](/?view=theme) and [design foundations](/?view=design).
+Open [the website preview](http://127.0.0.1:4175). The preview serves the built site; rebuild the docs app after changing a page.
 
-Search across both catalogs. Dialog and Sheet find [Modal](/?component=Modal); Drawer also finds [Sidecar](/?component=Sidecar). Use Style and State for the component's supported presentations and examples.
+<details className="setup-archives">
+<summary>Use local archives in another React app</summary>
 
-## Render a controlled component
+The app needs React and ReactDOM satisfying `^19.3.0`, a bundler that supports CSS imports, and React types if you use TypeScript. Next.js and Tailwind are optional.
 
-Import the shared stylesheet once. Keep values in your application and handle callbacks explicitly. In Next.js, put interactive composition in a Client Component.
+In the authorized workspace, `pnpm check:packages` creates and verifies the two archives in `output/packages/` after the packages have been built. Copy the matching archives into your app's `vendor/` directory.
+
+Add this override to your app's `pnpm-workspace.yaml`, preserving its existing settings. It resolves the unpublished core dependency from the local archive:
+
+```yaml
+overrides:
+  '@stackunseen/ui-core': file:./vendor/stackunseen-ui-core-0.1.0-alpha.0.tgz
+```
+
+Then run this from your app's root:
+
+```sh
+pnpm add ./vendor/stackunseen-ui-core-0.1.0-alpha.0.tgz ./vendor/stackunseen-ui-0.1.0-alpha.0.tgz
+```
+
+Keep both archives at the same version. This installs local files; it does not publish a package.
+
+</details>
+
+## 2. Render your first component
+
+Import the base stylesheet once and wrap your interface in `AITheme`. In Next.js, this interactive example belongs in a Client Component; other React apps can use the same component.
+
+<div className="setup-live-example" role="region" aria-label="First component example">
+  <FirstExample />
+</div>
+
+This example keeps a draft and a saved name in memory. Nothing is sent or persisted. Copy it into a `.tsx` file and render `<FirstExample />` from your app:
 
 ```tsx
 'use client';
 import { useState } from 'react';
-import { AITheme, PromptInput } from '@ai-interaction/react';
-import '@ai-interaction/react/styles.css';
+import { AITheme, Button, Field, Input } from '@stackunseen/ui';
+import '@stackunseen/ui/styles.css';
 
-export function PromptExample({ onSend }: { onSend: (text: string) => void }) {
-  const [draft, setDraft] = useState('');
+export function FirstExample() {
+  const [name, setName] = useState('');
+  const [savedName, setSavedName] = useState('');
   return (
-    <AITheme appearance="system" config={{ primary: '#2563eb' }}>
-      <PromptInput value={draft} onValueChange={setDraft} onSubmit={onSend} />
+    <AITheme>
+      <form
+        style={{ display: 'grid', gap: 12, maxWidth: 360 }}
+        onSubmit={(event) => {
+          event.preventDefault();
+          setSavedName(name.trim());
+        }}
+      >
+        <Field label="Your name" required>
+          <Input
+            name="displayName"
+            value={name}
+            maxLength={80}
+            onChange={(event) => setName(event.target.value)}
+          />
+        </Field>
+        <Button type="submit">Save locally</Button>
+        <p role="status">{savedName ? `Saved locally: ${savedName}` : 'Nothing saved yet.'}</p>
+      </form>
     </AITheme>
   );
 }
 ```
 
-The callback requests work; your host authorizes and executes it. Keep pending, failed and confirmed outcomes distinct. Approval and handoff components require their matching version/scope and host receipts. Rendering a component does not connect a model or execute a tool.
+The value and callback stay in your application. To save to a server, replace the local update with your host's validation and receipt handling. Read [Connect to your app](/docs/integration/) before wiring tools, approvals or execution.
 
-<h2 id="theme">Customize themes and icons</h2>
+<h2 id="optional-renderers">3. Add only the entries you need</h2>
 
-Use `AITheme` for colours, appearance, density, corners and borders. Theme Studio exports CSS, TypeScript or versioned JSON. Fonts use application-wide `--ai-font-family` and `--ai-font-size` variables. Resolved theme settings follow portals; arbitrary wrapper styles do not.
+Ordinary controls come from `@stackunseen/ui`. DataGrid has a separate entry and stylesheet. Keep the base CSS and `AITheme` from the first example.
 
-<span id="customize" />
+```tsx
+import { DataGrid } from '@stackunseen/ui/application';
+import '@stackunseen/ui/application.css';
+```
 
-Use `IconsProvider icons={{ send: YourSvg }}` to replace semantic icons. Nested providers allow local overrides. Forward SVG props, use `currentColor` and keep accessible control labels. For styling, use documented variants, content slots and exposed `className`/`style` props.
+Open the [DataGrid guide](/components/data-grid/) for controlled rows, sorting and paging. This entry needs no additional optional peers.
 
-The [customization guide](https://github.com/stackunseen/unseen-ui/blob/main/docs/CUSTOMIZATION.md) includes a complete icon example and the current styling limits.
+<details className="setup-entries">
+<summary>Other optional entries and their dependencies</summary>
 
-<h2 id="optional-renderers">Optional entries</h2>
+The paths below are subpaths of `@stackunseen/ui`. Install optional peers only for entries you import. The base React and ReactDOM peers are still required. Exact supported ranges are in the React package manifest included with the local build.
 
-Use named root imports for ordinary controls. There are no `/button` or `/icons` subpaths. Heavy renderers have separate entries and optional peers:
+<OptionalEntries />
 
-- `/code`: no additional peers.
-- `/markdown`: react-markdown, remark-gfm and remend.
-- `/math`: katex and its CSS/fonts.
-- `/mermaid`: mermaid and dompurify; KaTeX CSS/fonts for math labels.
-- `/rich-markdown`: Markdown peers, remark-math, katex, mermaid and dompurify.
-- `/highlight`: shiki.
-- `/terminal`: @xterm/xterm and @xterm/addon-fit; import terminal.css.
-- `/viewport`: @tanstack/react-virtual.
-- `/layout`: react-resizable-panels.
+For example, a Markdown response needs these imports after installing its peers:
 
-Import `@ai-interaction/react/styles.css` once. The workspace installs peers for its examples; other apps should use the [entry requirements](https://github.com/stackunseen/unseen-ui/blob/main/docs/GETTING-STARTED.md#choose-the-right-entry). Model output is untrusted data, never executable HTML/MDX.
+```tsx
+import { MarkdownResponse } from '@stackunseen/ui/markdown';
+import '@stackunseen/ui/styles.css';
+```
 
-## Run Relay
+Follow each component's usage guide for its required values and callbacks. There are no `/button` or `/icons` subpaths.
 
-After building packages, run `pnpm template:dev` and open `http://127.0.0.1:4184/relay.html`.
+</details>
 
-Relay has mock login, editable sample accounts and a deterministic assistant. Reloading discards its in-memory state. The [template guide](https://github.com/stackunseen/unseen-ui/blob/main/examples/consumer/src/relay/README.md) covers built preview, reuse and customization.
+<h2 id="customize">4. Find your next step</h2>
+<span id="theme" />
 
-## Before integrating
+- [UI components](/components/#ui): controls, layout and rich content.
+- [AI components](/components/#ai): conversations, generated output, execution and review.
+- [SaaS admin example](/templates/saas-admin/): a working app with customer records, members and settings.
 
-The API is experimental. Test your actual host, accessibility requirements, browser support and custom styles. Reconcile unknown command outcomes before retrying mutations. Active rich responses still reparse on updates, so check performance with your own content.
-
-See the private repository [README](https://github.com/stackunseen/unseen-ui/blob/main/README.md) for checks and [website component APIs](https://github.com/stackunseen/unseen-ui/blob/main/docs/WEBSITE-COMPONENTS.md) for controls and composition. Repository links require access.
+[Customize](/customize/) previews appearance, colors, density and corners. [Themes and icons](/docs/customization/) covers `AITheme`, `IconsProvider` and custom header/footer composition. For server responses and optional workflow examples, read [Connect to your app](/docs/integration/).

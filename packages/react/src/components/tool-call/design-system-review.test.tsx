@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import { ToolCall, componentVariants } from '@ai-interaction/react';
-import type { ToolState } from '@ai-interaction/core';
+import { ToolCall, componentVariants } from '@stackunseen/ui';
+import type { ToolState } from '@stackunseen/ui-core';
 
 describe('design audit interaction corrections', () => {
   const toolStates: [ToolState, string][] = [

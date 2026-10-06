@@ -1,0 +1,737 @@
+.app {
+  color: var(--ai-text);
+  background: var(--ai-surface);
+  border: 1px solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  overflow: hidden;
+  min-width: 0;
+  container-type: inline-size;
+}
+.appHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--ai-border);
+}
+.workspaceName {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 14px;
+}
+.workspaceName > span {
+  border-left: 1px solid var(--ai-border);
+  padding-left: 12px;
+  margin-left: 4px;
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.simulation {
+  color: var(--ai-muted);
+  font-size: 11px;
+}
+.appBody {
+  display: grid;
+  grid-template-columns: 188px minmax(0, 1fr);
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--ai-surface-subtle);
+  border-right: 1px solid var(--ai-border);
+  min-width: 0;
+  padding: 16px 12px;
+  gap: 24px;
+}
+.sidebarActions > button:first-child {
+  width: 100%;
+}
+.reviewToggle {
+  display: none;
+}
+.reviewListHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ai-muted);
+}
+.reviewListHeading span {
+  font-variant-numeric: tabular-nums;
+}
+.reviewNavigation nav {
+  display: grid;
+  gap: 4px;
+}
+.reviewLink {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid transparent;
+  border-radius: var(--ai-control-radius, 8px);
+  background: transparent;
+  color: var(--ai-text);
+  padding: 10px 8px;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.reviewLink span {
+  overflow-wrap: anywhere;
+}
+.reviewLink small {
+  color: var(--ai-muted);
+  font-size: 11px;
+  text-transform: capitalize;
+}
+.reviewLink:hover {
+  background: var(--ai-surface);
+}
+.reviewLink[aria-current] {
+  background: var(--ai-surface);
+  border-color: var(--ai-border);
+  font-weight: 600;
+}
+.reviewLink[aria-current] span {
+  color: var(--ai-primary-text);
+}
+.reviewNavigation > p:not(.reviewListHeading) {
+  margin: 20px 8px 0;
+  color: var(--ai-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.sidebarFooter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: auto 8px 0;
+  padding-top: 32px;
+  color: var(--ai-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.connectionDot {
+  width: 6px;
+  height: 6px;
+  background: var(--ai-warning);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.connectionDot[data-connected='true'] {
+  background: var(--ai-success);
+}
+.workspace {
+  min-width: 0;
+}
+.workspaceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 88px;
+  padding: 16px 20px;
+}
+.workspaceHeader > div:first-child {
+  min-width: 0;
+}
+.eyebrow {
+  color: var(--ai-muted);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.workspaceHeader h2 {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 6px 0 0;
+  overflow-wrap: anywhere;
+}
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.tabs > div > [role='tablist'] {
+  padding-inline: 20px;
+  gap: 20px;
+}
+.tabs > div > [role='tabpanel'] {
+  margin-top: 0;
+}
+.reviewSurface {
+  height: 716px;
+  min-width: 0;
+}
+.split {
+  min-width: 0;
+  height: 100%;
+}
+.conversation {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+}
+.transcript {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+/* Renderer mode is not a workspace status. Keep real new-output/jump controls. */
+.transcript > div:last-child:has(> [role='status']:only-child) {
+  display: none;
+}
+.emptyConversation {
+  display: flex;
+  min-height: 320px;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 32px 16px;
+}
+.assistantMark {
+  display: inline-grid;
+  place-items: center;
+  background: var(--ai-primary-soft);
+  color: var(--ai-primary-text);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ai-control-radius);
+}
+.emptyConversation h3 {
+  margin: 20px 0 10px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.emptyConversation p {
+  max-width: 34ch;
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0 0 12px;
+  color: var(--ai-muted);
+}
+.emptyConversation > span:last-child {
+  max-width: 34ch;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ai-muted);
+}
+.citations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 12px;
+}
+.runNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 20px;
+  color: var(--ai-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.runNotice svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.composer {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  margin-top: auto;
+}
+.composerContext {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ai-muted);
+}
+.connection {
+  padding: 12px;
+  font-size: 12px;
+}
+.inspector {
+  min-width: 0;
+  background: var(--ai-surface-subtle);
+  min-height: 100%;
+}
+.inspectorHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+}
+.inspectorHeading h3 {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  font-size: 13px;
+}
+.inspectorHeading > span {
+  color: var(--ai-muted);
+  font-size: 11px;
+}
+.inspector > div > [role='tablist'] {
+  padding-inline: 16px;
+}
+.inspector > div > [role='tabpanel'] {
+  margin-top: 0;
+}
+.inspectorContent {
+  display: grid;
+  gap: 24px;
+  padding: 20px 16px;
+}
+.inspectorContent > [data-part='approval'] {
+  margin: 0;
+  padding: 0 0 20px;
+  border: 0;
+  border-bottom: 1px solid var(--ai-border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.inspectorContent > [data-part='approval'] h3 {
+  font-size: 15px;
+}
+.inspectorContent > [data-part='approval'] dl {
+  font-size: 12px;
+}
+.inspectorContent > [data-part='approval'] time {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.inspectorSection {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+.inspectorSection h4 {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.inspectorSection > ol {
+  margin: 0;
+}
+.inspectorSection > [data-part='tool-call'] {
+  border: 0;
+  border-radius: 0;
+  padding: 12px 0;
+  background: transparent;
+  box-shadow: none;
+  border-bottom: 1px solid var(--ai-border);
+}
+.inspectorSection > [data-part='tool-call']:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.emptyInspector {
+  padding: 20px 0;
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.emptyInspector h4 {
+  margin: 16px 0 8px;
+  color: var(--ai-text);
+  font-size: 13px;
+}
+.emptyInspector p {
+  margin: 0;
+  line-height: 1.7;
+}
+.recovery {
+  border-top: 1px solid var(--ai-border);
+  padding-top: 16px;
+}
+.recoveryContent {
+  display: grid;
+  gap: 12px;
+  font-size: 12px;
+}
+.recoveryContent label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.6;
+}
+.recoveryContent input {
+  margin-top: 3px;
+  accent-color: var(--ai-primary);
+}
+.recoveryContent p {
+  margin: 0;
+  color: var(--ai-muted);
+  line-height: 1.7;
+}
+.recoveryActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.contextDetails {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px 16px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.contextDetails dt {
+  color: var(--ai-muted);
+}
+.contextDetails dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.contextDescription {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ai-muted);
+  line-height: 1.7;
+}
+.records,
+.activity {
+  min-height: 480px;
+  padding: 24px;
+}
+.recordsHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.recordsHeading h3,
+.activity > h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+.recordsHeading p,
+.activity > p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ai-muted);
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ai-control-border);
+  border-radius: var(--ai-control-radius);
+  background: var(--ai-surface);
+  padding: 10px 12px;
+  color: var(--ai-muted);
+}
+.search input {
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--ai-text);
+  font: inherit;
+  font-size: 12px;
+}
+.search:focus-within {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.tableScroll {
+  max-width: 100%;
+  overflow: auto;
+}
+.tableHint {
+  display: none;
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.accountTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+.accountTable :is(th, td) {
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--ai-border);
+}
+.accountTable thead th {
+  color: var(--ai-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+.accountTable tbody th {
+  font-weight: 500;
+}
+.accountTable th:first-child {
+  padding-left: 0;
+}
+.accountTable th button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  background: transparent;
+  color: var(--ai-text);
+  border: 0;
+  font: inherit;
+  text-align: left;
+}
+.accountTable th small {
+  display: block;
+  color: var(--ai-muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+.accountTable td {
+  white-space: nowrap;
+}
+.recordsEmpty {
+  display: grid;
+  justify-items: start;
+  align-content: center;
+  min-height: 200px;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--ai-muted);
+}
+.recordsEmpty :is(p, h4) {
+  margin: 0;
+}
+.accountDetail {
+  margin-top: 24px;
+  border-top: 1px solid var(--ai-border);
+  padding-top: 20px;
+  font-size: 13px;
+}
+.accountDetail > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.accountDetail h4 {
+  margin: 0;
+  font-size: 14px;
+}
+.accountDetail p {
+  color: var(--ai-muted);
+  line-height: 1.7;
+}
+.activityList {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+}
+.activityList li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 16px;
+  border-left: 1px solid var(--ai-border);
+  padding: 0 0 24px 20px;
+  position: relative;
+  font-size: 13px;
+}
+.activityList li::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--ai-muted);
+  border: 3px solid var(--ai-surface);
+  border-radius: 50%;
+  position: absolute;
+  left: -7px;
+  top: 3px;
+}
+.activityList li > span:not([data-part='status']) {
+  grid-column: 1;
+  color: var(--ai-muted);
+  line-height: 1.7;
+  font-size: 12px;
+}
+.activityList li > :last-child[data-part='status'] {
+  grid-column: 2;
+  grid-row: 1;
+}
+.appFooter {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 12px 20px;
+  color: var(--ai-muted);
+  border-top: 1px solid var(--ai-border);
+  font-size: 10px;
+}
+.app button {
+  cursor: pointer;
+}
+.app button:disabled {
+  cursor: default;
+}
+.app :is(button, input, .tableScroll):focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+@container (max-width: 1000px) {
+  .workspaceHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .headerActions {
+    justify-content: flex-start;
+  }
+  .workspaceName > span {
+    display: none;
+  }
+}
+@container (max-width: 850px) {
+  .appBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sidebar {
+    padding: 12px 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--ai-border);
+    gap: 16px;
+  }
+  .sidebarActions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .sidebarActions > button:first-child {
+    width: auto;
+  }
+  .reviewToggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: inherit;
+    font-size: 12px;
+    background: transparent;
+    border: 0;
+    color: var(--ai-text);
+    min-height: 36px;
+    padding: 8px;
+  }
+  .reviewNavigation[data-open='false'] {
+    display: none;
+  }
+  .sidebarFooter {
+    display: none;
+  }
+  .reviewNavigation nav {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+@container (max-width: 700px) {
+  .accountTable {
+    min-width: 640px;
+    font-size: 13px;
+  }
+  .accountTable th button {
+    white-space: nowrap;
+  }
+  .tableHint {
+    display: block;
+    margin: 0 0 12px;
+  }
+  .reviewSurface[data-inspector='true'] {
+    height: 1200px;
+  }
+  .appHeader {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .recordsHeading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .records,
+  .activity {
+    padding: 20px 16px;
+  }
+}
+@container (max-width: 420px) {
+  .appHeader {
+    padding: 12px 16px;
+  }
+  .workspaceHeader {
+    padding-inline: 16px;
+  }
+  .tabs > div > [role='tablist'] {
+    padding-inline: 16px;
+    gap: 16px;
+  }
+  .headerActions {
+    gap: 8px;
+  }
+  .headerActions > :first-child {
+    flex-basis: 100%;
+    width: fit-content;
+  }
+  .composer {
+    padding: 12px;
+  }
+  .emptyConversation {
+    padding-inline: 8px;
+  }
+  .emptyConversation h3 {
+    font-size: 18px;
+  }
+  .accountTable :is(th, td) {
+    padding: 12px 8px;
+  }
+}
+@media (any-pointer: coarse) {
+  .reviewLink,
+  .reviewToggle,
+  .accountTable th button {
+    min-height: 44px;
+  }
+  .recoveryContent label {
+    min-height: 44px;
+    align-items: center;
+  }
+  .recoveryContent input {
+    width: 20px;
+    height: 20px;
+    margin-top: 0;
+  }
+}
+@media (forced-colors: active) {
+  .reviewLink[aria-current] {
+    border-color: Highlight;
+  }
+  .connectionDot {
+    background: CanvasText;
+  }
+}

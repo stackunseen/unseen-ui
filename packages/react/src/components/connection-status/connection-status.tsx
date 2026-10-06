@@ -1,6 +1,6 @@
 'use client';
-import type { ConnectionInfo, RecoveryCursor, SubmissionState } from '@ai-interaction/core';
-import { validCount, validTimestamp } from '@ai-interaction/core';
+import type { ConnectionInfo, RecoveryCursor, SubmissionState } from '@stackunseen/ui-core';
+import { validCount, validTimestamp } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
 import { Panel } from '../panel/panel.js';
 import { Button } from '../button/button.js';

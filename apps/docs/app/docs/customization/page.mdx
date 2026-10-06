@@ -1,0 +1,188 @@
+# Customize your components
+
+Wrap a composition in `AITheme` to share a theme. Its styles are scoped, so it can coexist with the rest of your application.
+
+```tsx
+import { AITheme, Button } from '@stackunseen/ui';
+import '@stackunseen/ui/styles.css';
+
+<AITheme appearance="system" config={{ primary: '#2563eb', density: 'compact', radius: 10 }}>
+  <Button>Save changes</Button>
+</AITheme>;
+```
+
+## Preview and export
+
+[Theme Studio](/customize/) changes the look of this showcase as you browse. Try the homepage, component examples and live templates with the same settings, then copy the configuration for your own app. Preferences stay in this browser. Static screenshots and the separately launched Relay app keep their sample theme.
+
+Theme Studio has light, dark and system appearance, brand and neutral colors, density, borders, corners and motion settings. Status colors keep their meaning. JSON and TypeScript include both palettes; CSS follows the selected appearance. Apply exported CSS to a wrapper with `data-ai-theme="brand"`, or pass an imported theme to `AITheme`. Its contrast diagnostics describe the configured palette; they do not certify an entire application.
+
+Fonts use the CSS variables `--ai-font-family` and `--ai-font-size`. Resolved theme settings follow dialogs and other portals. Arbitrary wrapper styles do not automatically follow portals.
+
+## Replace icons
+
+Map semantic icon names through `IconsProvider`. Forward SVG props and use `currentColor` so sizing and color follow the component. Nested providers can override one part of a screen.
+
+```tsx
+import type { SVGProps } from 'react';
+import { IconsProvider, PromptInput } from '@stackunseen/ui';
+
+function SendIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
+      <path d="m5 12 14-7-5 14-2-7-7-2Z" />
+    </svg>
+  );
+}
+
+<IconsProvider icons={{ send: SendIcon }}>
+  <PromptInput value={draft} onValueChange={setDraft} onSubmit={send} />
+</IconsProvider>;
+```
+
+Keep accessible labels on controls when replacing their icons. The icon artwork alone does not name an action.
+
+## Style a component
+
+Start with the documented presentation variants and content slots. Use exposed `className` and `style` props for local layout. Components do not offer a public selector for every internal element; inspect the component's contract before relying on implementation details.
+
+Validate your palette in both appearances and in disabled, focused and error states. A theme change can affect text, required control boundaries and focus indicators.
+
+<h2 id="custom-headers-and-footers">Custom headers and footers</h2>
+
+For [Modal](/components/modal/), pass React content to `header` and `footer`. The body scrolls between them, so the actions stay visible in a sheet or fullscreen dialog. Keep `title` and `description`: they give the dialog its accessible name and description even when the header looks different. The close button and Escape behavior are kept for you.
+
+```tsx
+import { useId, useState } from 'react';
+import { Button, Input, Modal } from '@stackunseen/ui';
+
+export function ProjectDialog() {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState('My project');
+  const formId = useId();
+
+  return (
+    <Modal
+      open={open}
+      onOpenChange={setOpen}
+      title="Project details"
+      description="Edit the local sample name."
+      layout="sheet"
+      className="project-dialog"
+      trigger={<Button>Edit project</Button>}
+      header={
+        <div className="project-dialog-heading">
+          <strong>Project details</strong>
+          <span>Local draft</span>
+        </div>
+      }
+      footer={
+        <>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button type="submit" form={formId}>
+            Use this name
+          </Button>
+        </>
+      }
+    >
+      <form
+        id={formId}
+        onSubmit={(event) => {
+          event.preventDefault();
+          setOpen(false);
+        }}
+      >
+        <label>
+          Project name
+          <Input value={name} onChange={(event) => setName(event.target.value)} />
+        </label>
+      </form>
+    </Modal>
+  );
+}
+```
+
+The footer button uses the native `form` attribute to submit the form in the body. This sample only edits local React state. For a saved record, connect the submit handler to your save request and close after it succeeds.
+
+Use `className` or `style` on Modal for local sizing. To style a particular region, scope its documented `data-slot` selector to your own class:
+
+```css
+.project-dialog [data-slot='modal-header'] {
+  background: var(--ai-surface-subtle);
+}
+.project-dialog [data-slot='modal-footer'] {
+  gap: 16px;
+}
+.project-dialog-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+```
+
+You can omit either slot. Without `header`, Modal shows its normal title and description. Without `footer`, your children are the body content.
+
+[Card](/components/card/) and [AlertDialog](/components/alert-dialog/) use composition instead. Put your own content inside `Card.Header` and `Card.Footer`, or arrange `AlertDialog.Title`, `AlertDialog.Description` and `AlertDialog.Actions`. AlertDialog does not have Modal's `header` and `footer` props.
+
+```tsx
+<Card className="project-card">
+  <Card.Header>
+    <Card.Title as="h2">Project overview</Card.Title>
+    <Card.Description>Review the current draft.</Card.Description>
+  </Card.Header>
+  <Card.Content>{content}</Card.Content>
+  <Card.Footer className="project-card-footer">{actions}</Card.Footer>
+</Card>
+```
+
+If a card has a fixed or minimum height, use a column flex layout and `margin-top: auto` on your footer class. Card.Footer otherwise follows the content at its natural height.
+
+## Backgrounds for light and dark mode
+
+The default palette uses neutral charcoal in dark mode and soft grays in light mode. Dark `canvas` is `#09090b`, `surface` is `#18181b`, and `surface-subtle` is `#27272a`. Those colors are independent of `primary`; blue is the default primary action and focus color. The default accent is teal.
+
+For a different neutral palette, override the resolved light and dark tokens, then validate the result with `importTheme`. `ThemeInput` does not have a background-color option.
+
+```tsx
+import { AITheme } from '@stackunseen/ui';
+import { createTheme, importTheme } from '@stackunseen/ui/theme';
+
+const base = createTheme({ primary: '#2563eb' });
+const theme = importTheme(
+  JSON.stringify({
+    ...base,
+    light: {
+      ...base.light,
+      canvas: '#fafafa',
+      surface: '#ffffff',
+      'surface-subtle': '#f4f4f5',
+      text: '#18181b',
+      muted: '#52525b',
+      border: '#e4e4e7',
+      'control-border': '#71717a',
+    },
+    dark: {
+      ...base.dark,
+      canvas: '#09090b',
+      surface: '#18181b',
+      'surface-subtle': '#27272a',
+      text: '#fafafa',
+      muted: '#d4d4d8',
+      border: '#3f3f46',
+      'control-border': '#a1a1aa',
+    },
+  }),
+);
+
+<AITheme theme={theme} appearance="system">
+  {children}
+</AITheme>;
+```
+
+[Theme Studio](/customize/) has a **Backgrounds and text** section for editing each appearance and exporting both palettes. Choose the same Appearance as the palette you're editing to see it. Geometry edits preserve token overrides; brand-color edits through `updateTheme` regenerate the palette, so reapply your overrides afterwards if needed.
+
+`AITheme` emits scoped `--ai-canvas`, `--ai-surface`, `--ai-surface-subtle`, `--ai-text`, `--ai-muted`, `--ai-border` and `--ai-control-border` CSS variables. Use a resolved theme for overrides that should also follow portals. `themeToCSS(theme, 'brand', 'system')` targets `[data-ai-theme="brand"]` and switches palettes with the system color preference.
+
+`importTheme` recalculates token-pair contrast measurements; it does not reject a low-contrast palette. Check text at 4.5:1 and required control/focus boundaries at 3:1, then verify your actual screens. Status colors and their tinted backgrounds are separate pairs and need their own checks.

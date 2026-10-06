@@ -1,9 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { GeneratedUI } from '@ai-interaction/react';
+import { GeneratedUI } from '@stackunseen/ui';
 import type { GeneratedActionPresentation } from './generated-model.js';
-import type { GeneratedSurface } from '@ai-interaction/react';
+import type { GeneratedSurface } from '@stackunseen/ui';
 
 const surface: GeneratedSurface = {
   id: 'result',

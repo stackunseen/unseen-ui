@@ -1,0 +1,135 @@
+name: Release packages
+on:
+  workflow_dispatch:
+    inputs:
+      expected_version:
+        description: 'Current version of BOTH packages (guards against stale/double requests)'
+        required: true
+        type: string
+      bump:
+        description: 'Alpha stays alpha unless promote is selected'
+        required: true
+        default: prerelease
+        type: choice
+        options: [prerelease, patch, minor, major, promote]
+
+permissions:
+  contents: read
+concurrency:
+  group: unseen-ui-release
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.repository == 'stackunseen/unseen-ui' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      artifact: ${{ steps.artifact.outputs.artifact-id }}
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      RELEASE_BUMP: ${{ inputs.bump }}
+      RELEASE_EXPECTED_VERSION: ${{ inputs.expected_version }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:release
+      - run: pnpm release:prepare
+      - run: pnpm build:packages
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm exec playwright-cli install-browser chromium --with-deps
+        timeout-minutes: 5
+      - run: pnpm test:browser
+        timeout-minutes: 5
+      - run: pnpm check:packages
+      - run: pnpm check:size
+      - run: pnpm build:storybook
+      - run: pnpm release:pack
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        id: artifact
+        with:
+          name: release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: output/release/
+          if-no-files-found: error
+          retention-days: 30
+
+  reserve:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    outputs:
+      commit: ${{ steps.reserve.outputs.commit }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          artifact-ids: ${{ needs.validate.outputs.artifact }}
+          path: output/release
+          merge-multiple: true
+      - run: node scripts/release.mjs reserve
+        id: reserve
+
+  publish:
+    needs: [validate, reserve]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.reserve.outputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          artifact-ids: ${{ needs.validate.outputs.artifact }}
+          path: output/release
+          merge-multiple: true
+      - run: node scripts/release.mjs publish
+
+  complete:
+    needs: [validate, reserve, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.reserve.outputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          artifact-ids: ${{ needs.validate.outputs.artifact }}
+          path: output/release
+          merge-multiple: true
+      - run: node scripts/release.mjs complete
+        env:
+          GH_TOKEN: ${{ github.token }}

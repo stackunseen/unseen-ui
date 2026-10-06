@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { SVGProps } from 'react';
-import type { ConnectionState, SubmissionState } from '@ai-interaction/core';
+import type { ConnectionState, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { Select } from '../select/select.js';

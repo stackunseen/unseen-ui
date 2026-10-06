@@ -31,8 +31,8 @@ import {
   ToastViewport,
   Tooltip,
   TooltipProvider,
-} from '@ai-interaction/react';
-import type { TableRow as DataRow, TableRowProps } from '@ai-interaction/react';
+} from '@stackunseen/ui';
+import type { TableRow as DataRow, TableRowProps } from '@stackunseen/ui';
 
 /** The same public-only fixture is compiled and bundled from isolated packed tarballs. */
 export function WebsitePublicExample() {

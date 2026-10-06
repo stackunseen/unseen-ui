@@ -1,10 +1,10 @@
 'use client';
 import { Children, createContext, useContext, useRef, useState } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
-import { safeUrl } from '@ai-interaction/core';
-import type { MessagePart } from '@ai-interaction/core';
-import type { AttachmentState, AttachmentAccess } from '@ai-interaction/core/uploads';
-export type { AttachmentState, AttachmentAccess } from '@ai-interaction/core/uploads';
+import { safeUrl } from '@stackunseen/ui-core';
+import type { MessagePart } from '@stackunseen/ui-core';
+import type { AttachmentState, AttachmentAccess } from '@stackunseen/ui-core/uploads';
+export type { AttachmentState, AttachmentAccess } from '@stackunseen/ui-core/uploads';
 import { Button } from '../button/button.js';
 import { Modal } from '../modal/modal.js';
 import { IconButton } from '../icon-button/icon-button.js';

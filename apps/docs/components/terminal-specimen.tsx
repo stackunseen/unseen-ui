@@ -1,12 +1,8 @@
 'use client';
 import { useState } from 'react';
-import { Button, TerminalOutput, resolveVariant } from '@ai-interaction/react';
-import type {
-  TerminalContext,
-  TerminalAvailability,
-  TerminalProcessState,
-} from '@ai-interaction/react';
-import { TerminalEmulator } from '@ai-interaction/react/terminal';
+import { Button, TerminalOutput, resolveVariant } from '@stackunseen/ui';
+import type { TerminalContext, TerminalAvailability, TerminalProcessState } from '@stackunseen/ui';
+import { TerminalEmulator } from '@stackunseen/ui/terminal';
 
 import { emulatorStates } from '../lib/terminal-fixtures';
 const sample =

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { AlertDialog, Button, Field, Input, Popover, Tooltip } from '@ai-interaction/react';
+import { AlertDialog, Button, Field, Input, Popover, Tooltip } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteOverlaySpecimen({ name, state }: WebsiteSpecimenProps) {

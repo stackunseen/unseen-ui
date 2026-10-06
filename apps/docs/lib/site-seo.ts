@@ -1,0 +1,108 @@
+import type { Metadata } from 'next';
+import { releaseCatalog } from './first-release';
+import { componentHref } from './site-paths';
+
+export function parseSiteOrigin(value: string | undefined): string | undefined {
+  if (!value?.trim()) return;
+  const url = new URL(value);
+  if (
+    url.protocol !== 'https:' ||
+    url.username ||
+    url.password ||
+    url.pathname !== '/' ||
+    url.search ||
+    url.hash ||
+    url.hostname === 'localhost' ||
+    url.hostname.endsWith('.localhost') ||
+    /^127\./.test(url.hostname) ||
+    url.hostname === '[::1]'
+  ) {
+    throw new Error(
+      'SITE_ORIGIN must be the verified public HTTPS origin, without a path, credentials, query or fragment.',
+    );
+  }
+  return url.origin;
+}
+
+// Build-time configuration. No guessed domain and no localhost canonical.
+export const siteOrigin = parseSiteOrigin(process.env.SITE_ORIGIN);
+export const siteDescription =
+  'React components for application interfaces and AI workflows. Explore live examples, controlled APIs and scoped themes in Unseen UI by Stack Unseen.';
+export const staticPaths = [
+  '/',
+  '/components/',
+  '/docs/',
+  '/getting-started/',
+  '/docs/customization/',
+  '/docs/integration/',
+  '/patterns/',
+  '/patterns/agent-workbench/',
+  '/patterns/coding-studio/',
+  '/patterns/recoverable-chat/',
+  '/patterns/action-receipts/',
+  '/patterns/research-answers/',
+  '/templates/',
+  '/templates/relay/',
+  '/templates/saas-admin/',
+  '/templates/marketing/',
+  '/customize/',
+  '/design/',
+];
+export const releasePagePaths = [
+  '/',
+  '/components/',
+  '/docs/',
+  '/getting-started/',
+  '/docs/customization/',
+  '/docs/integration/',
+  '/templates/saas-admin/',
+  '/customize/',
+  '/design/',
+];
+// Additional examples retain their public URLs, but stay out of launch indexing.
+export const indexablePaths = [
+  ...releasePagePaths,
+  ...releaseCatalog.map((entry) => componentHref(entry.name)),
+];
+
+export function pageMetadata(
+  title: string,
+  description: string,
+  path: string,
+  origin = siteOrigin,
+): Metadata {
+  const fullTitle = `${title} | Unseen UI`;
+  const image = origin ? `${origin}/social-preview.png` : undefined;
+  return {
+    title: { absolute: fullTitle },
+    description,
+    alternates: origin ? { canonical: `${origin}${path}` } : undefined,
+    robots: { index: Boolean(origin) && indexablePaths.includes(path), follow: Boolean(origin) },
+    openGraph: {
+      title: fullTitle,
+      description,
+      type: 'website',
+      siteName: 'Unseen UI by Stack Unseen',
+      locale: 'en_US',
+      ...(origin ? { url: `${origin}${path}` } : {}),
+      ...(image
+        ? {
+            images: [
+              {
+                url: image,
+                width: 1200,
+                height: 630,
+                alt: 'Unseen UI by Stack Unseen. React components for application interfaces and AI workflows.',
+              },
+            ],
+          }
+        : {}),
+    },
+    twitter: {
+      card: image ? 'summary_large_image' : 'summary',
+      title: fullTitle,
+      description,
+      ...(image ? { images: [image] } : {}),
+    },
+  };
+}

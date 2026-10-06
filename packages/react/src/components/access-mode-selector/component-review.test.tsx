@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AccessModeSelector } from '@ai-interaction/react';
+import { AccessModeSelector } from '@stackunseen/ui';
 import { accessModes } from '../../../../../apps/docs/lib/coding-fixtures';
 
 vi.stubGlobal(

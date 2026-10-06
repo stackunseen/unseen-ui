@@ -11,7 +11,7 @@ async function files(dir) {
 for (const file of await files('packages/core/src')) {
   const source = await readFile(file, 'utf8');
   if (
-    /from\s+['"](?:react|react-dom|next|@radix-ui|@ai-interaction\/react)|\b(?:window|document|localStorage|fetch)\s*[.(]/.test(
+    /from\s+['"](?:react|react-dom|next|@radix-ui|@stackunseen\/ui)|\b(?:window|document|localStorage|fetch)\s*[.(]/.test(
       source,
     )
   )

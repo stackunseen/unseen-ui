@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { ThreadList } from '@ai-interaction/react';
+import { ThreadList } from '@stackunseen/ui';
 import { context, thread } from '../../../../../tests/fixtures/conversation-navigation.js';
 
 describe('controlled navigation and compact contextual actions', () => {

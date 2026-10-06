@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { createRuntime } from '@ai-interaction/core';
-import type { Event, Runtime } from '@ai-interaction/core';
+import { createRuntime } from '@stackunseen/ui-core';
+import type { Event, Runtime } from '@stackunseen/ui-core';
 import {
   Button,
   Message,
@@ -9,9 +9,9 @@ import {
   RuntimeProvider,
   useRuntimeSelector,
   resolveVariant,
-} from '@ai-interaction/react';
-import { MarkdownResponse, renderMarkdownPart } from '@ai-interaction/react/markdown';
-import type { MessageAttachment } from '@ai-interaction/react';
+} from '@stackunseen/ui';
+import { MarkdownResponse, renderMarkdownPart } from '@stackunseen/ui/markdown';
+import type { MessageAttachment } from '@stackunseen/ui';
 import { partsSnapshot } from '../lib/message-parts-fixtures';
 import { source as fixtureSource } from '../lib/fixtures';
 type Body = Event extends infer E ? (E extends Event ? Pick<E, 'type' | 'payload'> : never) : never;

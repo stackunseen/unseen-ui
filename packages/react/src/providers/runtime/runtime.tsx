@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useCallback, useContext, useSyncExternalStore } from 'react';
 import type { ReactNode } from 'react';
-import type { Runtime, RuntimeSnapshot } from '@ai-interaction/core';
+import type { Runtime, RuntimeSnapshot } from '@stackunseen/ui-core';
 const RuntimeContext = createContext<Runtime | null>(null);
 export function RuntimeProvider({ runtime, children }: { runtime: Runtime; children: ReactNode }) {
   return <RuntimeContext.Provider value={runtime}>{children}</RuntimeContext.Provider>;

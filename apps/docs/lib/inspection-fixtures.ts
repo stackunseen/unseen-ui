@@ -5,7 +5,7 @@ import type {
   ContextInspection,
   ConnectionInfo,
   PolicyCheck,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 
 // Fictional models, usage and authority records: these are not product capability or price claims.
 export const modelCapabilities: ModelCapabilities = {

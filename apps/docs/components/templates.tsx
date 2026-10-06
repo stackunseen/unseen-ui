@@ -1,6 +1,9 @@
-import { ArrowUpRight, Check, Layers3 } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle, Card } from '@ai-interaction/react';
+'use client';
+import { ArrowUpRight, Check, Code2, Layers3, Workflow } from 'lucide-react';
+import Link from 'next/link';
+import { Alert, AlertDescription, AlertTitle, Card } from '@stackunseen/ui';
 import s from './templates.module.css';
+import { componentHref } from '../lib/site-paths';
 
 const componentGroups = [
   { label: 'Account workspace', components: ['Card', 'Table', 'Input', 'Select'] },
@@ -14,10 +17,65 @@ export function Templates() {
       <header className="page-heading">
         <span className="eyebrow">APPLICATION TEMPLATES</span>
         <h1>Templates</h1>
-        <p>Explore a working app, adapt its source and connect your services.</p>
+        <p>Try a complete local workflow, adapt its source and connect your services.</p>
       </header>
 
-      <Card className={s.template} aria-labelledby="relay-template-title">
+      <div className="pattern-list template-options">
+        <Link prefetch={false} href="/templates/saas-admin/">
+          <Layers3 size={28} aria-hidden="true" />
+          <div>
+            <h2>SaaS admin</h2>
+            <p>
+              Manage sample customers, member roles, organization settings and plan details. Try
+              rejected saves and lost acknowledgements.
+            </p>
+            <span>
+              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+            </span>
+          </div>
+        </Link>
+        <Link prefetch={false} href="/templates/marketing/">
+          <Layers3 size={28} aria-hidden="true" />
+          <div>
+            <h2>Marketing website</h2>
+            <p>
+              A fictional product site with responsive navigation, plan cards, a FAQ and a contact
+              form. Built from reusable marketing blocks.
+            </p>
+            <span>
+              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+            </span>
+          </div>
+        </Link>
+        <Link prefetch={false} href="/patterns/agent-workbench/">
+          <Workflow size={28} aria-hidden="true" />
+          <div>
+            <h2>Agent Workbench</h2>
+            <p>
+              Review accounts, inspect sources and manage version-bound decisions. Search, sessions,
+              cancellation and recovery are interactive.
+            </p>
+            <span>
+              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+            </span>
+          </div>
+        </Link>
+        <Link prefetch={false} href="/patterns/coding-studio/">
+          <Code2 size={28} aria-hidden="true" />
+          <div>
+            <h2>Coding Studio</h2>
+            <p>
+              Edit sample files, stage changes and apply a reviewed patch. Test and terminal results
+              use a disclosed local simulation.
+            </p>
+            <span>
+              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+            </span>
+          </div>
+        </Link>
+      </div>
+
+      <Card className={s.template} role="region" aria-labelledby="relay-template-title">
         <div className={s.summary}>
           <div className={s.identity}>
             <span className={s.mark} aria-hidden="true">
@@ -33,12 +91,12 @@ export function Templates() {
             Review accounts and draft follow-ups with a simulated assistant.
           </p>
           <div className={s.actions}>
-            <a className={s.previewLink} href="http://127.0.0.1:4184/relay.html">
-              Open Relay demo <ArrowUpRight size={17} aria-hidden="true" />
-            </a>
-            <a className={s.setupLink} href="#relay-setup">
+            <Link prefetch={false} className={s.previewLink} href="/templates/relay/">
+              Explore Relay <ArrowUpRight size={17} aria-hidden="true" />
+            </Link>
+            <Link prefetch={false} className={s.setupLink} href="#relay-setup">
               Run it locally
-            </a>
+            </Link>
           </div>
           <p className={s.meta}>React + TypeScript · Vite · Public library imports</p>
         </div>
@@ -83,14 +141,13 @@ export function Templates() {
         <section id="relay-setup" className={s.setup} aria-labelledby="relay-setup-title">
           <h2 id="relay-setup-title">Run and adapt</h2>
           <p>From the repository root, install dependencies, build the packages and start Relay.</p>
-          <pre tabIndex={0} aria-label="Relay setup commands">
+          <pre tabIndex={0} role="group" aria-label="Relay setup commands">
             <code>{`pnpm install --frozen-lockfile
 pnpm build:packages
 pnpm template:dev`}</code>
           </pre>
           <p>
-            Open <code>http://127.0.0.1:4184/relay.html</code>. The preview link above needs this
-            local server running.
+            Open <code>http://127.0.0.1:4184/relay.html</code> while the local server is running.
           </p>
           <dl className={s.source}>
             <div>
@@ -109,9 +166,9 @@ pnpm template:dev`}</code>
           <p>
             Adapt the theme, icons and sample data. The source guide maps screens to components.
           </p>
-          <a className={s.textLink} href="/getting-started/#customize">
+          <Link prefetch={false} className={s.textLink} href="/getting-started/#customize">
             Theme and icon customization <ArrowUpRight size={15} aria-hidden="true" />
-          </a>
+          </Link>
         </section>
         <section className={s.map} aria-labelledby="relay-components-title">
           <h2 id="relay-components-title">Built from the library</h2>
@@ -122,9 +179,9 @@ pnpm template:dev`}</code>
               <ul>
                 {group.components.map((component) => (
                   <li key={component}>
-                    <a href={`?view=components&component=${component}`}>
+                    <Link prefetch={false} href={componentHref(component)}>
                       {component} <ArrowUpRight size={13} aria-hidden="true" />
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

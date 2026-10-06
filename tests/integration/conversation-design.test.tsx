@@ -12,7 +12,7 @@ import {
   ReasoningControl,
   SlashCommandMenu,
   StatusBadge,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import styles from '../../packages/react/src/shared/styles/styles.module.css';
 import iconStyles from '../../packages/react/src/components/icon-button/icon-button.module.css';
 import agentStyles from '../../packages/react/src/shared/styles/agent-controls.module.css';

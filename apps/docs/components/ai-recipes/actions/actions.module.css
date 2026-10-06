@@ -1,0 +1,158 @@
+.recipe {
+  color: var(--ai-text);
+  background: var(--ai-surface);
+  font-family: var(--ai-font-family);
+  font-size: var(--ai-font-size);
+  line-height: 1.6;
+  min-width: 0;
+  container-type: inline-size;
+}
+.recipe h2 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin: 0;
+}
+.recipe h3 {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+.recipe p {
+  margin: 0;
+}
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 0 0.75rem;
+}
+.header p,
+.boundary,
+.controls > p {
+  color: var(--ai-muted);
+}
+.notice {
+  border-inline-start: 3px solid var(--ai-primary);
+  background: var(--ai-surface-subtle);
+  padding: 0.75rem 1rem;
+}
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  padding: 1rem 0;
+}
+.review,
+.execution {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.receipt {
+  display: grid;
+  gap: 0.75rem;
+  border-top: 1px solid var(--ai-border);
+  padding-top: 0.75rem;
+}
+.identity {
+  font-family: var(--ai-font-mono, monospace);
+}
+.binding {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+  gap: 0.25rem;
+}
+.binding dt {
+  color: var(--ai-muted);
+}
+.binding dd {
+  margin: 0 0 0.75rem;
+}
+.recipe p,
+.binding dd,
+.effects li {
+  overflow-wrap: anywhere;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.buttons button {
+  max-width: 100%;
+  white-space: normal;
+  text-align: start;
+}
+.controls {
+  padding: 0.25rem 0 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.controls h3,
+.controls p {
+  margin: 0;
+}
+.faults {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.faults legend {
+  padding: 0 0 0.5rem;
+  font-weight: 600;
+}
+.warning {
+  color: var(--ai-text);
+  border-inline-start: 3px solid var(--ai-warning);
+  padding-inline-start: 0.75rem;
+}
+.effects {
+  padding-inline-start: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.effects span {
+  display: block;
+}
+@container (min-width: 800px) {
+  .columns {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+  .execution {
+    border-inline-start: 1px solid var(--ai-border);
+    padding-inline-start: 1.25rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .recipe *,
+  .recipe *::before,
+  .recipe *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.grant {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+@media (pointer: coarse) {
+  .recipe button {
+    min-height: 44px;
+  }
+}
+
+.review:focus-visible,
+.receipt:focus-visible,
+.review > [tabindex='-1']:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 4px;
+}

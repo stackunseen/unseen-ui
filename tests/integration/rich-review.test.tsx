@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { MarkdownCodeBlock, MarkdownResponse } from '@ai-interaction/react/markdown';
+import { MarkdownCodeBlock, MarkdownResponse } from '@stackunseen/ui/markdown';
 
 const mermaid = vi.hoisted(() => ({ initialize: vi.fn(), render: vi.fn() }));
 

@@ -1,0 +1,25 @@
+.application {
+  width: 100%;
+  min-width: 0;
+}
+.application > form {
+  display: grid;
+  gap: 20px;
+  max-width: 640px;
+}
+.marketing {
+  width: 100%;
+  min-width: 0;
+}
+.marketing :global(.uim-hero) {
+  padding-block: 32px;
+}
+.marketing :global(.uim-hero-copy) {
+  max-width: 760px;
+}
+.marketing :global(.uim-section) {
+  padding-block: 32px;
+}
+.marketing :global(.uim-footer) {
+  padding-block: 32px;
+}

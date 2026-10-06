@@ -6,10 +6,10 @@ import {
   AttachmentPicker,
   PromptInput,
   resolveVariant,
-} from '@ai-interaction/react';
-import type { AttachmentProps, ComponentVariant } from '@ai-interaction/react';
-import { UploadAttachment } from '@ai-interaction/react/upload';
-import type { UploadCheckpoint, UploadOperation } from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui';
+import type { AttachmentProps, ComponentVariant } from '@stackunseen/ui';
+import { UploadAttachment } from '@stackunseen/ui/upload';
+import type { UploadCheckpoint, UploadOperation } from '@stackunseen/ui-core/uploads';
 
 const image = {
   kind: 'image' as const,

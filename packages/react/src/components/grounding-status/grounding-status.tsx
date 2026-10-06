@@ -1,5 +1,5 @@
 'use client';
-import type { Grounding } from '@ai-interaction/core';
+import type { Grounding } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';

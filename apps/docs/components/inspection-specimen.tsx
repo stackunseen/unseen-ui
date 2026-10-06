@@ -6,7 +6,7 @@ import {
   ModelControls,
   PolicyStatus,
   resolveVariant,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import {
   connectionInfo,
   contextInspection,

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { MessageContent, StreamingResponse } from '@ai-interaction/react';
-import type { MessageData } from '@ai-interaction/core';
+import { MessageContent, StreamingResponse } from '@stackunseen/ui';
+import type { MessageData } from '@stackunseen/ui-core';
 
 describe('StreamingResponse design and announcement contracts', () => {
   it.each(['cursor', 'dots', 'shimmer'] as const)(

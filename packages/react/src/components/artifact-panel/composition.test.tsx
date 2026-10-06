@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import type { Artifact } from '@ai-interaction/core';
+import type { Artifact } from '@stackunseen/ui-core';
 import { ArtifactPanel } from './artifact-panel.js';
 import { IconButton } from '../icon-button/icon-button.js';
 
@@ -16,6 +16,39 @@ const artifact: Artifact = {
 };
 
 describe('ArtifactPanel trusted trigger composition', () => {
+  it('keeps trusted body/actions in the existing panel while hiding them on loading/error', () => {
+    const values = {
+      artifact,
+      open: true,
+      onOpenChange: vi.fn(),
+      body: <p>Controlled artifact editor</p>,
+      actions: <button>Save exact draft</button>,
+    };
+    const { rerender } = render(<ArtifactPanel {...values} />);
+    const panel = screen.getByRole('dialog', { name: artifact.title });
+    expect(within(panel).getByText('Controlled artifact editor')).toBeVisible();
+    expect(within(panel).queryByText(artifact.content)).not.toBeInTheDocument();
+    const action = within(panel).getByRole('button', { name: 'Save exact draft' });
+    expect(action.closest('[data-slot="modal-footer"]')).not.toBeNull();
+    expect(action.closest('[data-slot="modal-body"]')).toBeNull();
+    rerender(<ArtifactPanel {...values} loading />);
+    expect(within(panel).queryByText('Controlled artifact editor')).not.toBeInTheDocument();
+    expect(
+      within(panel).queryByRole('button', { name: 'Save exact draft' }),
+    ).not.toBeInTheDocument();
+    rerender(<ArtifactPanel {...values} error="Access revoked." />);
+    expect(within(panel).getByRole('alert')).toHaveTextContent('Access revoked.');
+    expect(within(panel).queryByText('Controlled artifact editor')).not.toBeInTheDocument();
+    expect(
+      within(panel).queryByRole('button', { name: 'Save exact draft' }),
+    ).not.toBeInTheDocument();
+    rerender(<ArtifactPanel {...values} artifact={null} />);
+    expect(within(panel).getByText('No artifact selected.')).toBeVisible();
+    expect(
+      within(panel).queryByRole('button', { name: 'Save exact draft' }),
+    ).not.toBeInTheDocument();
+  });
+
   it.each(['dialog', 'sheet', 'fullscreen'] as const)(
     '%s uses one contextual trigger and restores focus after the host closes the panel',
     async (variant) => {

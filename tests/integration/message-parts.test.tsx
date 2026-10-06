@@ -1,11 +1,11 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createRuntime, messageText } from '@ai-interaction/core';
-import type { MessageData, MessagePart, Runtime, TextMessagePart } from '@ai-interaction/core';
+import { createRuntime, messageText } from '@stackunseen/ui-core';
+import type { MessageData, MessagePart, Runtime, TextMessagePart } from '@stackunseen/ui-core';
 
-import { Message, RuntimeProvider, useRuntimeSelector } from '@ai-interaction/react';
-import { renderMarkdownPart } from '@ai-interaction/react/markdown';
+import { Message, RuntimeProvider, useRuntimeSelector } from '@stackunseen/ui';
+import { renderMarkdownPart } from '@stackunseen/ui/markdown';
 import { initialSnapshot, source, tool } from '../../apps/docs/lib/fixtures';
 
 const closed: TextMessagePart = {

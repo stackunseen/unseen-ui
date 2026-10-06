@@ -6,7 +6,7 @@ import {
   inspectUploadOperation,
   sameUploadContext,
   uploadContextKey,
-} from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
 import type {
   UploadActionRequest,
   UploadCheckpoint,
@@ -14,7 +14,7 @@ import type {
   UploadContext,
   UploadOperation,
   UploadOpenRequest,
-} from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
 import { Attachment } from '../attachment/attachment.js';
 import type { AttachmentPreviewSource } from '../attachment/attachment.js';
 import { IconButton } from '../icon-button/icon-button.js';

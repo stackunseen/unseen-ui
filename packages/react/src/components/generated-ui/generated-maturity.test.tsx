@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { GeneratedUI } from '@ai-interaction/react';
+import { GeneratedUI } from '@stackunseen/ui';
 import type {
   GeneratedSurface,
   GeneratedFormSnapshot,
   GeneratedFormRequest,
   GeneratedActionSnapshot,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 
 const formSurface: GeneratedSurface = {
   id: 'deployment',

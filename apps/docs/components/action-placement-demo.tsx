@@ -7,8 +7,8 @@ import {
   MessageQueue,
   PromptInput,
   ThreadList,
-} from '@ai-interaction/react';
-import type { QueuedMessage, ThreadSummary } from '@ai-interaction/react';
+} from '@stackunseen/ui';
+import type { QueuedMessage, ThreadSummary } from '@stackunseen/ui';
 
 /** Local host acknowledgements demonstrate composition, not durable conversation storage. */
 export function ActionPlacementDemo() {

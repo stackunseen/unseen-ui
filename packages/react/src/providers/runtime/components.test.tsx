@@ -1,8 +1,8 @@
 import { act, render } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
-import { RuntimeProvider, useRuntimeSelector } from '@ai-interaction/react';
-import { createRuntime } from '@ai-interaction/core';
+import { RuntimeProvider, useRuntimeSelector } from '@stackunseen/ui';
+import { createRuntime } from '@stackunseen/ui-core';
 
 import { initialSnapshot } from '../../../../../apps/docs/lib/fixtures';
 

@@ -1,13 +1,13 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Attachment, componentVariants } from '@ai-interaction/react';
-import { UploadAttachment } from '@ai-interaction/react/upload';
+import { Attachment, componentVariants } from '@stackunseen/ui';
+import { UploadAttachment } from '@stackunseen/ui/upload';
 import type {
   UploadCheckpoint,
   UploadContext,
   UploadOperation,
-} from '@ai-interaction/core/uploads';
+} from '@stackunseen/ui-core/uploads';
 
 const context: UploadContext = {
   workspaceId: 'workspace',

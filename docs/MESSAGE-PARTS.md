@@ -7,9 +7,9 @@ Core supports schema versions 1 and 2. Version 1 uses the existing text payload;
 `MessageData` contains exactly one of `text` or `parts`. Parts have stable, unique IDs and preserve host order. Supported kinds are plain/Markdown text, tool-call references, source references, attachment references and an explicit unsupported-content summary. `Message` and `MessageContent` render plain text by default. Pass the stable optional renderer for formatted text:
 
 ```tsx
-import { Message } from '@ai-interaction/react';
-import { renderMarkdownPart } from '@ai-interaction/react/markdown';
-import '@ai-interaction/react/styles.css';
+import { Message } from '@stackunseen/ui';
+import { renderMarkdownPart } from '@stackunseen/ui/markdown';
+import '@stackunseen/ui/styles.css';
 
 <Message
   value={message}

@@ -1,0 +1,6 @@
+/* Preserve the unframed document presentation inside an artifact dialog. */
+.body > [data-variant='document'] {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}

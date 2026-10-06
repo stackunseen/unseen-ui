@@ -4,7 +4,7 @@ VoiceControl renders controlled host snapshots; rendering it never opens a micro
 
 ## API and identity
 
-Import VoiceControl and its types from `@ai-interaction/react`, with the existing opt-in `@ai-interaction/react/styles.css`. No new peer or package is required.
+Import VoiceControl and its types from `@stackunseen/ui`, with the existing opt-in `@stackunseen/ui/styles.css`. No new peer or package is required.
 
 ```tsx
 <VoiceControl

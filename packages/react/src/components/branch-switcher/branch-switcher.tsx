@@ -4,14 +4,14 @@ import {
   inspectBranchWindow,
   inspectConversationPagination,
   inspectBranchChangeGuard,
-} from '@ai-interaction/core/conversation';
+} from '@stackunseen/ui-core/conversation';
 import type {
   ConversationPagination,
   ConversationBranch,
   BranchSelectionRequest,
   ConversationPageRequest,
   BranchChangeGuard,
-} from '@ai-interaction/core';
+} from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Select } from '../select/select.js';
 import type { VariantProps } from '../../shared/variants.js';

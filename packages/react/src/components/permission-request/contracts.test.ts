@@ -4,7 +4,7 @@ import {
   inspectPermissionReceipt,
   inspectPermissionSnapshot,
   validatePermissionDecision,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 import { inspectPermissionSubmission } from './permission-model.js';
 import {
   acknowledgement,

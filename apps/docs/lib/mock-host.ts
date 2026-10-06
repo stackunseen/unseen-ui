@@ -1,5 +1,5 @@
-import { createRuntime, validateApprovalDecision, messageText } from '@ai-interaction/core';
-import type { ApprovalDecision, Event, RuntimeSnapshot } from '@ai-interaction/core';
+import { createRuntime, validateApprovalDecision, messageText } from '@stackunseen/ui-core';
+import type { ApprovalDecision, Event, RuntimeSnapshot } from '@stackunseen/ui-core';
 import { artifact, initialSnapshot, proposal, source, steps, tool } from './fixtures';
 
 type EventBody = Event extends infer E

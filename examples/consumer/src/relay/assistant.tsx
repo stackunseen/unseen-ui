@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { AIIcon, Button, Message, PromptInput } from '@ai-interaction/react';
+import { AIIcon, Button, Message, PromptInput } from '@stackunseen/ui';
 import type { Account } from './data';
 import { ASSISTANT_LIMITS, useAssistantHost } from './assistant-host';
 import s from './assistant.module.css';

@@ -1,6 +1,6 @@
 # Conversation history and reading surfaces
 
-Experimental controlled composition. Import `ConversationViewport` from `@ai-interaction/react/viewport`, history types/inspection from `@ai-interaction/core/history`, and the shared opt-in stylesheet/theme. Install the optional `@tanstack/react-virtual` peer. The tested version is 3.14.13 with virtual-core 3.17.11; the base, code, math, diagram and terminal entries do not require it.
+Experimental controlled composition. Import `ConversationViewport` from `@stackunseen/ui/viewport`, history types/inspection from `@stackunseen/ui-core/history`, and the shared opt-in stylesheet/theme. Install the optional `@tanstack/react-virtual` peer. The tested version is 3.14.13 with virtual-core 3.17.11; the base, code, math, diagram and terminal entries do not require it.
 
 ## Ownership and data
 
@@ -29,12 +29,12 @@ The component has a default bounded height; the host can set its height through 
 `restore` binds request ID, exact context, message ID and inset. Restoration reports `applied`, `obsolete` or `missing`, does not fetch a missing target, clamps inset to the measured target height and discards obsolete asynchronous work. It is a local reading operation, not a durable receipt. A mounted reader retains the most recent 128 consumed restoration identities; hosts should provide fresh request IDs and not replay old requests. Reload/persistence belongs to the host.
 
 ```tsx
-import { ConversationViewport } from '@ai-interaction/react/viewport';
-import type { ConversationHistory } from '@ai-interaction/core/history';
+import { ConversationViewport } from '@stackunseen/ui/viewport';
+import type { ConversationHistory } from '@stackunseen/ui-core/history';
 
 function History({ value, requestPage }: {
   value: ConversationHistory;
-  requestPage: (request: import('@ai-interaction/core/history').HistoryPageRequest) => void;
+  requestPage: (request: import('@stackunseen/ui-core/history').HistoryPageRequest) => void;
 }) {
   return <ConversationViewport value={value} variant="thread" onRequestPage={requestPage} />;
 }

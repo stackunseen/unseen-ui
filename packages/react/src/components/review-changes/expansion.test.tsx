@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
-import { ReviewChanges } from '@ai-interaction/react';
+import { ReviewChanges } from '@stackunseen/ui';
 import { before, after } from '../../../../../apps/docs/lib/coding-fixtures';
 
 vi.stubGlobal(

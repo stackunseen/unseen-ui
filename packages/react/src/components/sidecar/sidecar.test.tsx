@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { createRef, useRef, useState } from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { AITheme, Button, IconButton, IconsProvider, Select } from '@ai-interaction/react';
+import { AITheme, Button, IconButton, IconsProvider, Select } from '@stackunseen/ui';
 import { Sidecar } from './sidecar.js';
 import { SplitPane } from '../split-pane/split-pane.js';
 import type { SidecarPresentation } from './sidecar.js';

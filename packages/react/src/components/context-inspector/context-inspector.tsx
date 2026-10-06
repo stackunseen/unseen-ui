@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import type { ContextInspection, InspectedContextItem } from '@ai-interaction/core';
-import { validCount, validTimestamp } from '@ai-interaction/core';
+import type { ContextInspection, InspectedContextItem } from '@stackunseen/ui-core';
+import { validCount, validTimestamp } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
 import { Select } from '../select/select.js';
 import { Panel } from '../panel/panel.js';

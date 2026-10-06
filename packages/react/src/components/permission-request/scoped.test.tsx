@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import { hydrateRoot } from 'react-dom/client';
 import type { Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { PermissionRequest } from '@ai-interaction/react';
+import { PermissionRequest } from '@stackunseen/ui';
 import type { PermissionSubmission, PermissionSnapshot } from './permission-model.js';
 import {
   permissionFixture,

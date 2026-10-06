@@ -1,15 +1,15 @@
 'use client';
 import { useRef, useState } from 'react';
-import { Accordion, Button, MessageActions, PromptInput, Select } from '@ai-interaction/react';
-import { messageText } from '@ai-interaction/core';
-import type { MessageData, NavigationAvailability } from '@ai-interaction/core';
+import { Accordion, Button, MessageActions, PromptInput, Select } from '@stackunseen/ui';
+import { messageText } from '@stackunseen/ui-core';
+import type { MessageData, NavigationAvailability } from '@stackunseen/ui-core';
 import type {
   ConversationHistory,
   HistoryPosition,
   HistoryRestore,
-} from '@ai-interaction/core/history';
-import { ConversationViewport } from '@ai-interaction/react/viewport';
-import type { ConversationViewportVariant } from '@ai-interaction/react/viewport';
+} from '@stackunseen/ui-core/history';
+import { ConversationViewport } from '@stackunseen/ui/viewport';
+import type { ConversationViewportVariant } from '@stackunseen/ui/viewport';
 import s from './viewport-example.module.css';
 
 function message(index: number, scope: string): MessageData {

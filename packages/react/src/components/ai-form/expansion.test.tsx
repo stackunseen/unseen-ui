@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AIForm } from '@ai-interaction/react';
+import { AIForm } from '@stackunseen/ui';
 import { formFields } from '../../../../../apps/docs/lib/coding-fixtures';
 
 vi.stubGlobal(

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Button, VoiceControl, resolveVariant } from '@ai-interaction/react';
-import type { VoiceCaptureSnapshot, VoiceContext, VoiceTranscription } from '@ai-interaction/react';
+import { Button, VoiceControl, resolveVariant } from '@stackunseen/ui';
+import type { VoiceCaptureSnapshot, VoiceContext, VoiceTranscription } from '@stackunseen/ui';
 
 const same = (a: VoiceContext, b: VoiceContext) =>
   a.sessionId === b.sessionId && a.captureId === b.captureId && a.version === b.version;

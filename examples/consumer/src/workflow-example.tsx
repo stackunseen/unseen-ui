@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Button, WorkflowGraph } from '@ai-interaction/react';
-import type { GraphNode, GraphEdge, GraphSelection } from '@ai-interaction/react';
+import { Button, WorkflowGraph } from '@stackunseen/ui';
+import type { GraphNode, GraphEdge, GraphSelection } from '@stackunseen/ui';
 
 const nodes: GraphNode[] = [
   {

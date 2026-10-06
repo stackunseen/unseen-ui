@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AIForm } from '@ai-interaction/react';
+import { AIForm } from '@stackunseen/ui';
 import type {
   AIArrayChange,
   AIArrayValues,
@@ -11,7 +11,7 @@ import type {
   AIFormProps,
   AIFormStep,
   FormValues,
-} from '@ai-interaction/react';
+} from '@stackunseen/ui';
 
 const identity = { formId: 'deployment', schemaVersion: '2', draftVersion: 'draft-4' };
 const fields: AIField[] = [{ id: 'project', label: 'Project', type: 'text', required: true }];

@@ -3,8 +3,8 @@ import {
   historyScopeKey,
   inspectConversationHistory,
   inspectHistoryRestore,
-} from '@ai-interaction/core/history';
-import type { MessageData } from '@ai-interaction/core';
+} from '@stackunseen/ui-core/history';
+import type { MessageData } from '@stackunseen/ui-core';
 import { context, row, history } from '../../../tests/fixtures/conversation-history.js';
 
 describe('bounded chronological history', () => {
