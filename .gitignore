@@ -46,6 +46,17 @@ coverage/
 /scripts/catalog-inventory.js
 /scripts/benchmark-*.js
 /tests/*.browser.js
+/scripts/benchmark-*.mjs
+/scripts/measure-*.mjs
+/scripts/check-file-host-http.mjs
+/scripts/check-terminal-host-http.mjs
+/scripts/check-terminal-ssr.mjs
+/apps/docs/scripts/check-accordions-theme.mjs
+/apps/docs/scripts/check-compact-recipes.mjs
+/apps/docs/scripts/check-control-visibility.mjs
+/apps/docs/scripts/check-expansion.mjs
+/apps/docs/scripts/check-first-release.mjs
+/apps/docs/scripts/check-site-theme.mjs
 
 # Credentials, local agent settings and package archives are never source.
 .aws/
