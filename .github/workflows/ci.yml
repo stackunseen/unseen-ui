@@ -1,7 +1,16 @@
 name: Verify
 on:
   push:
+    branches: [main]
+    paths-ignore: ['**/*.md', 'docs/**']
   pull_request:
+    branches: [main]
+    paths-ignore: ['**/*.md', 'docs/**']
+  workflow_dispatch:
+# A newer push to the same branch or PR cancels the run in progress.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -24,15 +33,19 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      # Pull requests run the fast checks; main and manual runs add the slow ones.
       - run: pnpm build
+        if: github.event_name != 'pull_request'
       - name: Install smoke browser
+        if: github.event_name != 'pull_request'
         run: pnpm exec playwright-cli install-browser chromium --with-deps
         timeout-minutes: 5
       - name: Browser accessibility and recovery smoke
+        if: github.event_name != 'pull_request'
         run: pnpm test:browser
         timeout-minutes: 4
       - name: Retain browser smoke evidence
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: browser-smoke
@@ -40,5 +53,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
       - run: pnpm check:packages
+        if: github.event_name != 'pull_request'
       - run: pnpm check:size
       - run: pnpm build:storybook
+        if: github.event_name != 'pull_request'
