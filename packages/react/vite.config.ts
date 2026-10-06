@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -19,6 +20,15 @@ const sharedPublicModules = new Set([
   'providers/icons/icons',
 ]);
 
+// Short, deterministic CSS Module names: the class name plus a per-file suffix.
+// The same source file always maps to the same suffix, so root and optional
+// builds stay consistent.
+function scopedName(name: string, file: string) {
+  const source = file.replaceAll('\\', '/').split('/src/').pop() ?? file;
+  const hash = createHash('sha256').update(source).digest('hex');
+  return `${name}_${hash.slice(0, 4)}`;
+}
+
 export default defineConfig(({ mode }) => {
   const optional = [
     'application',
@@ -28,6 +38,7 @@ export default defineConfig(({ mode }) => {
     'conversation-flow',
   ].includes(mode);
   return {
+    css: { modules: { generateScopedName: scopedName } },
     plugins: [
       react(),
       {

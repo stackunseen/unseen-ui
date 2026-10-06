@@ -30,6 +30,15 @@ export interface ScopedPermissionRequestProps extends VariantProps<'PermissionRe
   reconciling?: boolean;
   headingLevel?: 2 | 3 | 4 | 5 | 6;
 }
+export const permissionTone = {
+  requested: 'warning',
+  granted: 'success',
+  denied: 'danger',
+  revoked: 'danger',
+  expired: undefined,
+  unknown: undefined,
+} as const;
+
 export function ScopedPermissionRequest({
   value: input,
   commandId,
@@ -66,21 +75,37 @@ export function ScopedPermissionRequest({
   }
   return (
     <Panel data-part="permission-request" data-variant={variant} className={s.permission}>
-      <Heading className={s.title}>
-        {value ? `Connect to ${value.target.resource}` : 'Connection access request'}
-      </Heading>
-      {value ? (
-        <>
-          <p>Requested access: {value.target.scopes.join(', ')}</p>
-          <p className={s.muted}>
-            For {value.target.subjectId} · Request {value.target.requestId} · Version{' '}
-            {value.target.version}
-          </p>
-          <div role="status">
+      <div className={s.row}>
+        <Heading className={`${s.title} ${s.grow}`}>
+          {value ? `Connect to ${value.target.resource}` : 'Connection access request'}
+        </Heading>
+        {value && (
+          <span role="status" className={s.badge} data-tone={permissionTone[value.status]}>
             Permission: {value.status}
             {value.freshness !== 'current' ? ` · ${value.freshness} snapshot` : ''}
-          </div>
-          <p className={s.muted}>Access permission does not approve later actions.</p>
+          </span>
+        )}
+      </div>
+      {value ? (
+        <>
+          <dl className={s.definition}>
+            <dt>Requested access</dt>
+            <dd>{value.target.scopes.join(', ')}</dd>
+            <dt>Requested by</dt>
+            <dd>{value.target.subjectId}</dd>
+            <dt>Request</dt>
+            <dd>
+              {value.target.requestId} · Version {value.target.version}
+            </dd>
+            <dt>Decision access</dt>
+            <dd>
+              {value.access.state} · Checked by {value.access.checkedBy} at {value.access.checkedAt}
+            </dd>
+            <dt>Expires</dt>
+            <dd>
+              <time dateTime={value.target.expiresAt}>{value.target.expiresAt}</time>
+            </dd>
+          </dl>
           {value.grant && value.status === 'granted' && (
             <p>
               Host-confirmed grant {value.grant.id} · {value.grant.acknowledged.by} ·{' '}
@@ -98,19 +123,12 @@ export function ScopedPermissionRequest({
               This request has expired. Ask the host for a current request.
             </p>
           )}
-          <p className={s.muted}>
-            Decision access: {value.access.state} · Checked by {value.access.checkedBy} at{' '}
-            {value.access.checkedAt}
-          </p>
           {value.access.state !== 'available' && (
             <p className={s.warning}>
               Decision access is {value.access.state}. The host must verify access before a new
               decision.
             </p>
           )}
-          <p className={s.muted}>
-            Expires: <time dateTime={value.target.expiresAt}>{value.target.expiresAt}</time>
-          </p>
         </>
       ) : (
         <p role="alert" className={s.error}>
@@ -147,6 +165,7 @@ export function ScopedPermissionRequest({
           Allow access
         </Button>
       </div>
+      <p className={s.muted}>Access permission does not approve later actions.</p>
       {original &&
         onReconcile &&
         (invalidReceipt ||
