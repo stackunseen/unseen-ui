@@ -1,6 +1,6 @@
 # @stackunseen/ui-core
 
-Framework-independent contracts and state projection for **Unseen UI by Stack Unseen**. Experimental alpha; registry publication and license selection are pending. The package is currently unpublished and `UNLICENSED`.
+Framework-independent contracts and state projection for **Unseen UI by Stack Unseen**. Experimental alpha; registry publication is pending. MIT licensed; the package is currently unpublished.
 
 Once the first alpha is published, install it with `npm install @stackunseen/ui-core@alpha`. It also installs automatically with `@stackunseen/ui`.
 

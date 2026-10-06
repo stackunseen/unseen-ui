@@ -2,7 +2,7 @@
 
 React components for **Unseen UI by Stack Unseen**: forms, overlays, navigation, chat, tool cards and approval controls.
 
-Experimental alpha. Registry publication and license selection are pending; the package is currently unpublished and `UNLICENSED`.
+Experimental alpha. Registry publication is pending. MIT licensed; the package is currently unpublished.
 
 ## Use
 
