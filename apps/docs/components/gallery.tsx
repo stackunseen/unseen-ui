@@ -284,10 +284,6 @@ export function Gallery({
                 )}
               </LocalLink>
             ))}
-            <a className="nav-main getting-started-link" href="/getting-started/">
-              <BookOpen size={16} aria-hidden="true" />
-              <span>Getting Started</span>
-            </a>
           </nav>
           <div className="library-search">
             <label className="search-field">

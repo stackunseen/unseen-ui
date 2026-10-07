@@ -4,6 +4,7 @@ import type { ComponentProps } from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { ThemeSurface } from '../../providers/theme/theme-provider.js';
 import { AIIcon } from '../../providers/icons/icons.js';
+import { useFieldControl } from '../field/field.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import selectStyles from './select.module.css';
@@ -47,6 +48,8 @@ export function Select({
   className = '',
   ...props
 }: SelectProps) {
+  // Inside a Field the trigger takes the field's id, label and description like other controls.
+  const field = useFieldControl({ ...props, disabled, required });
   // Reuse option elements during unrelated host updates; replace the readonly array
   // when labels, availability or choices change. Radix still owns item interaction.
   const optionItems = useMemo(
@@ -74,12 +77,16 @@ export function Select({
       value={value}
       onValueChange={onValueChange}
       name={name}
-      required={required}
-      disabled={disabled}
+      required={field.required}
+      disabled={field.disabled}
       dir={dir}
     >
       <SelectPrimitive.Trigger
         {...props}
+        id={field.id}
+        aria-labelledby={field['aria-labelledby']}
+        aria-describedby={field['aria-describedby']}
+        aria-invalid={field['aria-invalid']}
         data-variant={variant}
         className={`${s.selectTrigger} ${selectStyles.trigger} ${className}`}
       >

@@ -70,11 +70,7 @@ describe('ActionReceiptRecipe composition', () => {
     expect(screen.getByText('accounts:archive / access-3')).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Review current action' }));
     await waitFor(() => expect(screen.getByRole('group', { name: 'Action review' })).toHaveFocus());
-    const requestedAccess = screen.getByText('Requested access', { selector: 'dt' });
-    expect(requestedAccess.nextElementSibling).toHaveTextContent(
-      'accounts:archive, accounts:export',
-    );
-    expect(requestedAccess.nextElementSibling).toBeVisible();
+    expect(screen.getByText(/requests accounts:archive, accounts:export$/)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Allow access' })).toBeEnabled();
   });
 

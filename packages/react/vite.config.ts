@@ -36,6 +36,9 @@ export default defineConfig(({ mode }) => {
     'editor',
     'artifact-editor',
     'conversation-flow',
+    'assistant',
+    'devtools',
+    'media',
   ].includes(mode);
   return {
     css: { modules: { generateScopedName: scopedName } },

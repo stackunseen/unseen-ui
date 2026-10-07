@@ -8,6 +8,14 @@
 body {
   margin: 0;
 }
+/* Radix Select and DropdownMenu lock body scroll while open. With the reserved scrollbar
+   gutter that hides the scrollbar and shifts the page, so the page keeps its own scrolling;
+   the open list still follows its trigger. Dialogs keep the lock. */
+html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu-content]) {
+  overflow: visible !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
 .site {
   min-height: 100vh;
   background: var(--ai-canvas);
@@ -347,10 +355,12 @@ body {
 }
 .search-field:focus-within {
   outline: 2px solid var(--ai-focus);
-  outline-offset: 2px;
+  outline-offset: -1px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus) 22%, transparent);
 }
 .search-field input:focus-visible {
   outline: none;
+  box-shadow: none;
 }
 .search-field kbd {
   font:
@@ -869,7 +879,7 @@ body {
   width: 100%;
   accent-color: var(--ai-primary);
 }
-.preview-caption {
+.theme-preview .preview-caption {
   font:
     10px ui-monospace,
     monospace;

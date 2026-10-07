@@ -13,8 +13,8 @@
   color: var(--ai-primary-text, #1d4ed8);
 }
 .root[data-part='icon-button'][data-variant='primary'] {
-  width: max(36px, var(--ai-control-height, 40px));
-  height: max(36px, var(--ai-control-height, 40px));
+  width: max(36px, var(--ai-control-height, 36px));
+  height: max(36px, var(--ai-control-height, 36px));
 }
 .fallback {
   display: none;

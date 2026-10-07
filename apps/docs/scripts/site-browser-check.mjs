@@ -64,51 +64,36 @@ async function journeys(page, { origin, output }, audit) {
       await page.locator('#main-content').evaluate((node) => node === document.activeElement),
       'Skip link reaches main content',
     );
-    await page.getByRole('tab', { name: 'Forms', exact: true }).click();
-    await page.getByLabel('Workspace name', { exact: true }).fill('Review Sandbox');
-    await page.getByRole('button', { name: 'Save changes', exact: true }).click();
-    assert(
-      await page.getByText('Saved in this preview.', { exact: true }).isVisible(),
-      'Settings show local save acknowledgement',
-    );
-    await page.getByRole('tab', { name: 'Composer', exact: true }).click();
-    await page.locator('.home-assistant textarea').fill('Summarize');
-    await page.locator('.home-assistant textarea').press('Enter');
+    const composer = page.locator('.home-tile textarea').first();
+    await composer.fill('Summarize');
+    await composer.press('Enter');
     assert(
       await page
-        .getByText('Fixed sample response. No model is connected.', { exact: true })
+        .getByText('Your app receives “Summarize”. No model is connected here.', { exact: true })
         .isVisible(),
-      'Prompt produces the disclosed sample response',
+      'Prompt reports the disclosed local handling',
     );
-    await page.getByRole('button', { name: 'Forest accent', exact: true }).click();
+    await page.getByLabel('Workspace name', { exact: true }).fill('Review Sandbox');
     assert(
-      (await page.getByRole('button', { name: 'Forest accent' }).getAttribute('aria-pressed')) ===
+      (await page.getByLabel('Workspace name', { exact: true }).inputValue()) === 'Review Sandbox',
+      'Showcase form field is controlled locally',
+    );
+    await page.getByRole('button', { name: 'Approve action', exact: true }).click();
+    assert(
+      await page.getByText('Action approved', { exact: true }).isVisible(),
+      'Approval tile acknowledges the local sample decision',
+    );
+    await page.getByRole('button', { name: 'Forest primary', exact: true }).click();
+    assert(
+      (await page.getByRole('button', { name: 'Forest primary' }).getAttribute('aria-pressed')) ===
         'true',
-      'Accent updates the actual shared theme',
+      'Primary swatch updates the actual shared theme',
     );
     await page.reload();
     assert(
-      (await page.getByRole('button', { name: 'Forest accent' }).getAttribute('aria-pressed')) ===
+      (await page.getByRole('button', { name: 'Forest primary' }).getAttribute('aria-pressed')) ===
         'true',
       'Validated theme preference survives refresh',
-    );
-    await page.getByRole('tab', { name: 'Dialog', exact: true }).click();
-    await page.getByRole('button', { name: 'Open dialog', exact: true }).click();
-    const dialog = page.getByRole('dialog', { name: 'Edit project', exact: true });
-    await dialog.getByLabel('Project name', { exact: true }).fill('Review notes');
-    await dialog.getByRole('button', { name: 'Save project', exact: true }).click();
-    assert(
-      await page.getByText('Saved “Review notes” in this preview.', { exact: true }).isVisible(),
-      'Custom dialog footer submits the body form',
-    );
-    await page.waitForFunction(
-      () => document.querySelector('.home-dialog-demo button') === document.activeElement,
-    );
-    assert(
-      await page
-        .getByRole('button', { name: 'Open dialog', exact: true })
-        .evaluate((node) => node === document.activeElement),
-      'Closing custom dialog returns focus to its trigger',
     );
     const finder = page.getByRole('searchbox', { name: 'Find a component in the library' });
     await finder.fill('approval');
@@ -122,17 +107,16 @@ async function journeys(page, { origin, output }, audit) {
       'Homepage search explains its empty state',
     );
     await finder.fill('');
-    await page.getByRole('button', { name: 'UI · 44', exact: true }).click();
+    await page.getByRole('button', { name: 'UI · 46', exact: true }).click();
     assert(
       await page.locator('.home-found-components a[href="/components/input/"]').isVisible(),
       'Homepage collection filters show relevant starter components',
     );
-    await page.getByRole('tab', { name: 'Coding Studio', exact: true }).click();
     assert(
       await page
-        .getByRole('link', { name: 'Open Coding Studio interactive template', exact: true })
+        .getByRole('link', { name: 'Open the SaaS admin example', exact: true })
         .isVisible(),
-      'Template switcher exposes the working application link',
+      'Homepage exposes the working application link',
     );
   });
   await scenario('Catalog discovery', async () => {
@@ -142,12 +126,19 @@ async function journeys(page, { origin, output }, audit) {
       await search.evaluate((node) => document.activeElement === node),
       'Search deep link receives focus',
     );
+    const announced = async () =>
+      Number.parseInt((await page.locator('.directory-count').innerText()).trim(), 10);
+    const total = await announced();
     assert(
-      (await page.locator('.directory-group li').count()) === 112,
-      'All 112 entries are rendered in the catalog',
+      total > 100 && (await page.locator('.directory-group li').count()) === total,
+      'All announced entries are rendered in the catalog',
     );
-    await page.getByRole('button', { name: 'AI components', exact: true }).click();
-    assert((await page.locator('.directory-group li').count()) === 49, 'AI filter finds49 entries');
+    await page.getByRole('button', { name: /^AI components/ }).click();
+    assert(
+      (await announced()) < total &&
+        (await page.locator('.directory-group li').count()) === (await announced()),
+      'AI filter narrows to its announced count',
+    );
     await search.fill('does-not-exist-xyz');
     assert(
       await page.getByRole('heading', { name: 'No matching components' }).isVisible(),
@@ -155,11 +146,12 @@ async function journeys(page, { origin, output }, audit) {
     );
     await page.getByRole('button', { name: 'Clear search' }).click();
     assert(
-      (await page.locator('.directory-group li').count()) === 112,
+      (await page.locator('.directory-group li').count()) === total,
       'Clear search restores all entries',
     );
     await search.fill('button');
     await page.locator('.directory-group a[href="/components/button/"]').click();
+    await page.waitForURL((url) => url.pathname === '/components/button/');
     assert(
       page.url().split('?')[0] === `${origin}/components/button/`,
       'Catalog links open stable component routes',
@@ -316,7 +308,11 @@ async function journeys(page, { origin, output }, audit) {
           )
             throw new Error('Repeated generic integration heading remains');
           const header = await page.locator('.web-header').boundingBox();
-          if (header.x !== 0 || Math.abs(header.width - width) > 1)
+          // The page reserves a stable scrollbar gutter, so compare with the body's layout width.
+          const layoutWidth = await page.evaluate(
+            () => document.body.getBoundingClientRect().width,
+          );
+          if (header.x !== 0 || Math.abs(header.width - layoutWidth) > 1)
             throw new Error('Shared header must span the viewport');
           if (
             (route === '/' || route === '/components/button/' || route === '/templates/') &&

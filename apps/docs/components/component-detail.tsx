@@ -125,11 +125,6 @@ export function ComponentDetail({
             kept here for existing links and is separate from the first-release component catalog.
           </p>
         )}
-        <nav className="detail-jump-links" aria-label="On this component page">
-          <a href="#component-example">Example</a>
-          <a href="#component-props">Usage and props</a>
-          <a href="#component-customization">Customize</a>
-        </nav>
       </div>
       <div className="detail-toolbar">
         <label>
@@ -163,7 +158,6 @@ export function ComponentDetail({
           <RotateCcw size={15} aria-hidden="true" /> Reset example
         </Button>
       </div>
-      <p className="explorer-note">Interactions use local sample data.</p>
       <div id="component-example" className="component-anchor">
         <Tabs
           label="Component example"
@@ -200,11 +194,11 @@ export function ComponentDetail({
                       )}
                     </div>
                   </div>
-                  {compare && (
-                    <p className="preview-caption">
-                      Styles start with the same data; interactions are independent.
-                    </p>
-                  )}
+                  <p className="preview-caption">
+                    {compare
+                      ? 'Styles start with the same data; interactions are independent.'
+                      : 'Interactions use local sample data.'}
+                  </p>
                 </>
               ),
             },

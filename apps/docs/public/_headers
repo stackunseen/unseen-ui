@@ -1,0 +1,10 @@
+# Cloudflare Pages response headers. Next copies this file into the static export root.
+# Hashed build assets never change at a given URL, so browsers may keep them for a year.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML, metadata files and fixtures are revalidated on every request.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), geolocation=(), payment=()

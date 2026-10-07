@@ -15,9 +15,11 @@ import type {
   PermissionSubmission,
 } from './permission-model.js';
 import { receiptMessage } from '../../shared/decision-contracts.js';
+import { useDisclosure } from '../../shared/disclosure.js';
 import { useDecisionExpiry } from '../../shared/decision-expiry.js';
 import s from '../../shared/styles/styles.module.css';
 import a from '../../shared/styles/action-layout.module.css';
+import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
 export interface ScopedPermissionRequestProps extends VariantProps<'PermissionRequest'> {
   value: PermissionSnapshot;
@@ -67,6 +69,7 @@ export function ScopedPermissionRequest({
     !expiry.expired &&
     validatePermissionDecision(value, command, expiry.now ?? NaN);
   const Heading = `h${headingLevel}` as const;
+  const details = useDisclosure({ defaultOpen: variant === 'banner' });
   function decide(decision: PermissionDecisionCommand['decision']) {
     const current =
       value && inspectPermissionCommand({ commandId, target: value.target, decision });
@@ -88,7 +91,10 @@ export function ScopedPermissionRequest({
       </div>
       {value ? (
         <>
-          <dl className={s.definition}>
+          <p className={s.approvalSummary}>
+            {value.target.subjectId} requests {value.target.scopes.join(', ')}
+          </p>
+          <dl className={s.definition} {...details.contentProps}>
             <dt>Requested access</dt>
             <dd>{value.target.scopes.join(', ')}</dd>
             <dt>Requested by</dt>
@@ -99,17 +105,18 @@ export function ScopedPermissionRequest({
             </dd>
             <dt>Decision access</dt>
             <dd>
-              {value.access.state} · Checked by {value.access.checkedBy} at {value.access.checkedAt}
+              {value.access.state} · Checked by {value.access.checkedBy} at{' '}
+              <ObservationTime value={value.access.checkedAt} />
             </dd>
             <dt>Expires</dt>
             <dd>
-              <time dateTime={value.target.expiresAt}>{value.target.expiresAt}</time>
+              <ObservationTime value={value.target.expiresAt} />
             </dd>
           </dl>
           {value.grant && value.status === 'granted' && (
             <p>
               Host-confirmed grant {value.grant.id} · {value.grant.acknowledged.by} ·{' '}
-              {value.grant.acknowledged.at}
+              <ObservationTime value={value.grant.acknowledged.at} />
             </p>
           )}
           {value.freshness !== 'current' && (
@@ -158,6 +165,11 @@ export function ScopedPermissionRequest({
         </div>
       )}
       <div className={`${s.actions} ${a.footer}`} role="group" aria-label="Permission decision">
+        {value && (
+          <Button variant="ghost" size="sm" {...details.triggerProps}>
+            {details.open ? 'Hide details' : 'Details'}
+          </Button>
+        )}
         <Button variant="outline" disabled={!canDecide} onClick={() => decide('deny')}>
           Deny access
         </Button>

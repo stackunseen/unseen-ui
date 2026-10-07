@@ -161,7 +161,11 @@ export function TerminalOutput({
           <AIIcon name="tool" /> {label}
         </strong>
         {model && (
-          <span role="status" className={s.badge}>
+          <span
+            role="status"
+            className={s.badge}
+            data-tone={exitCode === undefined ? undefined : exitCode === 0 ? 'success' : 'danger'}
+          >
             {state}
             {exitCode !== undefined ? ` · exit ${exitCode}` : ''}
           </span>

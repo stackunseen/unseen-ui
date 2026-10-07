@@ -1,4 +1,6 @@
 'use client';
+import { ModelSelector } from '@stackunseen/ui/assistant';
+import '@stackunseen/ui/assistant.css';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
@@ -85,6 +87,7 @@ export function Specimen({
   const [result, setResult] = useState('');
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('');
+  const [model, setModel] = useState('atlas-fast');
   const [removedContext, setRemovedContext] = useState<string[]>([]);
   const failed = variant === 'Failed';
   const empty = variant === 'Empty';
@@ -276,6 +279,25 @@ export function Specimen({
                   {variant === 'Long toolbar' ? 'Add a versioned source reference' : '@ Reference'}
                 </Button>
               </>
+            ) : variant === 'Default' || variant === 'Busy' ? (
+              <>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setResult('Attachment picker requested in demo.')}
+                >
+                  + Attach
+                </Button>
+                <ModelSelector
+                  className="prompt-model-picker"
+                  value={model}
+                  onValueChange={setModel}
+                  models={[
+                    { id: 'atlas-fast', name: 'Atlas Fast', provider: 'Demo provider' },
+                    { id: 'atlas-deep', name: 'Atlas Deep', provider: 'Demo provider' },
+                  ]}
+                />
+              </>
             ) : undefined
           }
         />
@@ -288,6 +310,20 @@ export function Specimen({
       }
       preview = markdownStates.includes(variant) ? (
         <MarkdownSpecimen name="Message" state={variant} presentation={presentation} />
+      ) : variant === 'Default' ? (
+        <div className="message-exchange">
+          <Message
+            variant="bubble"
+            value={{
+              id: 'question',
+              role: 'user',
+              revision: 1,
+              text: 'Which accounts need an owner review before archival?',
+              state: 'complete',
+            }}
+          />
+          <Message variant={resolveVariant('Message', presentation)} value={message} />
+        </div>
       ) : (
         <Message variant={resolveVariant('Message', presentation)} value={message} />
       );

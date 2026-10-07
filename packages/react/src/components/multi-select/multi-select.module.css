@@ -9,22 +9,29 @@
 .chip {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   max-inline-size: 100%;
-  padding-inline-start: 8px;
+  min-block-size: 28px;
+  padding-inline: 10px 2px;
   border: var(--ai-border-width, 1px) solid var(--ai-border, #e2e8f0);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: 999px;
   background: var(--ai-surface-subtle, #f1f5f9);
+  font-size: var(--ai-font-size-meta, 13px);
 }
 .chip > span {
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
+/* The remove control stays inside the pill; coarse pointers keep the shared 44px target. */
 .chip > button {
   flex-shrink: 0;
+  min-height: 24px;
+  min-width: 24px;
+  padding: 0 4px;
+  border-radius: 999px;
 }
 .chip small,
 .summary {
   color: var(--ai-muted, #475569);
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
 }

@@ -10,7 +10,8 @@ import {
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Blocks, Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { BrandMark } from './brand-mark';
 import { AITheme, IconsProvider } from '@stackunseen/ui';
 import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
 import type { Appearance, ResolvedTheme } from '@stackunseen/ui/theme';
@@ -105,7 +106,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               aria-label="Unseen UI home"
             >
               <span className="web-mark">
-                <Blocks size={22} aria-hidden="true" />
+                <BrandMark size={28} />
               </span>
               <span>
                 Unseen UI<small>by Stack Unseen</small>

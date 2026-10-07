@@ -120,10 +120,10 @@
   appearance: none;
   box-sizing: border-box;
   inline-size: 100%;
-  block-size: 8px;
+  block-size: 6px;
   overflow: hidden;
-  border: 1px solid var(--ai-control-border, #64748b);
-  border-radius: var(--ai-control-radius, 8px);
+  border: 0;
+  border-radius: 999px;
   background: var(--ai-surface-subtle, #f1f5f9);
   accent-color: var(--ai-primary, #2563eb);
 }

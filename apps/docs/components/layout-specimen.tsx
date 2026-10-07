@@ -97,7 +97,7 @@ export function LayoutSpecimen({
               {['Overview', 'Activity'].map((label) => (
                 <Button
                   key={label}
-                  variant={section === label ? 'secondary' : 'ghost'}
+                  variant={section === label ? 'outline' : 'ghost'}
                   aria-pressed={section === label}
                   onClick={() => setSection(label)}
                 >

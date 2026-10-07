@@ -113,7 +113,22 @@
       "types": "./dist/conversation-flow.d.ts",
       "import": "./dist/conversation-flow.js"
     },
-    "./conversation-flow.css": "./dist/conversation-flow.css"
+    "./conversation-flow.css": "./dist/conversation-flow.css",
+    "./assistant": {
+      "types": "./dist/assistant.d.ts",
+      "import": "./dist/assistant.js"
+    },
+    "./assistant.css": "./dist/assistant.css",
+    "./devtools": {
+      "types": "./dist/devtools.d.ts",
+      "import": "./dist/devtools.js"
+    },
+    "./devtools.css": "./dist/devtools.css",
+    "./media": {
+      "types": "./dist/media.d.ts",
+      "import": "./dist/media.js"
+    },
+    "./media.css": "./dist/media.css"
   },
   "peerDependencies": {
     "@tanstack/react-virtual": "^3.14.13",
@@ -215,7 +230,7 @@
     "zod": "4.6.5"
   },
   "scripts": {
-    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && tsc -p tsconfig.build.json",
+    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && vite build --mode assistant && vite build --mode devtools && vite build --mode media && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

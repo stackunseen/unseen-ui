@@ -3,6 +3,7 @@ import { StatusBadge } from '../status-badge/status-badge.js';
 import { Select } from '../select/select.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
 export interface TimelineEntry {
   id: string;
@@ -70,7 +71,7 @@ export function ExecutionTimeline({
                     <small>{timelineDuration(e.durationMs)}</small>
                   </td>
                   <td>
-                    <time dateTime={e.timestamp}>{e.timestamp}</time>
+                    <ObservationTime value={e.timestamp} />
                   </td>
                   <td>
                     <StatusBadge state={e.state} />
@@ -93,7 +94,7 @@ export function ExecutionTimeline({
               <div className={s.grow}>
                 <strong>{e.label}</strong>
                 <div className={s.muted}>
-                  <time dateTime={e.timestamp}>{e.timestamp}</time>
+                  <ObservationTime value={e.timestamp} />
                   {` · ${timelineDuration(e.durationMs)}`}
                 </div>
                 {e.detail && <p>{e.detail}</p>}

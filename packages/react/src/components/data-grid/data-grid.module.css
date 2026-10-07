@@ -137,7 +137,7 @@
 .muted,
 .summary {
   color: var(--ai-muted, #52525b);
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
 }
 .error {
   margin: 0;

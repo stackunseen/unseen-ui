@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react';
-import { HomePreview } from '../components/home-preview';
+import { HomeShowcase } from '../components/home-showcase';
 import { HomeFinder } from '../components/home-finder';
 import { HomeAppExample } from '../components/home-app-example';
 import { LegacyGalleryRedirect } from '../components/legacy-gallery-redirect';
@@ -50,8 +50,8 @@ export default function Page() {
           <p className="web-eyebrow">Unseen UI / React + TypeScript</p>
           <h1>Compose an interface.</h1>
           <p className="home-intro-description">
-            {releaseCatalog.length} components for forms, layouts and AI workflows.
-            <br className="home-desktop-break" /> Try them here, then connect them to your app.
+            {releaseCatalog.length} React components for forms, layouts and AI workflows.
+            <br className="home-desktop-break" /> Try them below, then connect them to your app.
           </p>
           <div className="home-intro-meta">
             <span>Experimental alpha · Packages not yet on npm</span>
@@ -60,19 +60,8 @@ export default function Page() {
             </a>
           </div>
         </header>
+        <HomeShowcase />
         <HomeFinder entries={entries} />
-        <section className="home-playground" aria-labelledby="home-playground-title">
-          <div className="home-section-heading">
-            <div>
-              <p className="web-eyebrow">Actual components. Try the controls.</p>
-              <h2 id="home-playground-title">A small interface, ready to explore.</h2>
-            </div>
-            <a className="web-text-link" href="/components/">
-              States and usage <ArrowRight size={17} aria-hidden="true" />
-            </a>
-          </div>
-          <HomePreview />
-        </section>
         <HomeAppExample />
         <section className="home-start" aria-labelledby="home-start-title">
           <div>

@@ -90,7 +90,7 @@
 .muted,
 .notice {
   color: var(--ai-muted);
-  font-size: 12px;
+  font-size: var(--ai-font-size-meta, 13px);
 }
 .notice,
 .error {

@@ -1,11 +1,13 @@
 import type { CatalogEntry } from './catalog';
 import { websiteCatalog } from './website-catalog';
 import { applicationCatalog, marketingCatalog } from './optional-catalog';
+import { aiExtrasCatalog } from './ai-extras-catalog';
 
 export const genericCatalog: CatalogEntry[] = [
   ...websiteCatalog,
   ...applicationCatalog,
   ...marketingCatalog,
+  ...aiExtrasCatalog,
   {
     name: 'Button',
     group: 'Actions',

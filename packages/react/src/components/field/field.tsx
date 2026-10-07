@@ -18,6 +18,8 @@ export interface FieldProps extends Omit<ComponentPropsWithoutRef<'div'>, 'child
   label: ReactNode;
   /** Use "span" for grouped/range controls; their group/thumbs use aria-labelledby. */
   labelAs?: 'label' | 'span';
+  /** "horizontal" places a checkbox or switch before its label. */
+  orientation?: 'vertical' | 'horizontal';
   description?: ReactNode;
   error?: ReactNode;
   required?: boolean;
@@ -31,6 +33,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(
     id,
     label,
     labelAs = 'label',
+    orientation = 'vertical',
     description,
     error,
     required,
@@ -64,6 +67,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(
         ref={ref}
         className={`${s.field} ${className}`}
         data-disabled={disabled || undefined}
+        data-orientation={orientation}
       >
         {labelAs === 'label' ? (
           <label id={value.labelId} htmlFor={controlId} className={s.label}>

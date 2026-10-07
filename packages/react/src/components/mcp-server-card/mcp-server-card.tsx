@@ -62,7 +62,7 @@ export function MCPServerCard({
             </Button>
           )}
           {status === 'connected' && onDisconnect && (
-            <Button size="sm" variant="ghost" disabled={pending} onClick={onDisconnect}>
+            <Button size="sm" variant="outline" disabled={pending} onClick={onDisconnect}>
               Disconnect
             </Button>
           )}

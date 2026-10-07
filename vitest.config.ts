@@ -12,6 +12,15 @@ export default defineConfig({
       '@stackunseen/ui/artifact-editor': fileURLToPath(
         new URL('./packages/react/src/artifact-editor.tsx', import.meta.url),
       ),
+      '@stackunseen/ui/assistant': fileURLToPath(
+        new URL('./packages/react/src/assistant.ts', import.meta.url),
+      ),
+      '@stackunseen/ui/devtools': fileURLToPath(
+        new URL('./packages/react/src/devtools.ts', import.meta.url),
+      ),
+      '@stackunseen/ui/media': fileURLToPath(
+        new URL('./packages/react/src/media.ts', import.meta.url),
+      ),
       '@stackunseen/ui/conversation-flow': fileURLToPath(
         new URL('./packages/react/src/conversation-flow.tsx', import.meta.url),
       ),

@@ -19,8 +19,8 @@ const neutral = {
     surface: '#18181b',
     'surface-subtle': '#27272a',
     text: '#fafafa',
-    muted: '#d4d4d8',
-    border: '#3f3f46',
+    muted: '#a1a1aa',
+    border: '#2e2e33',
     'control-border': '#a1a1aa',
   },
 };

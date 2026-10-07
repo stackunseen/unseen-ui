@@ -97,8 +97,8 @@ function palette(seeds: Required<ThemeInput>, dark: boolean): ThemeTokens {
     surface,
     'surface-subtle': subtle,
     text: dark ? '#fafafa' : '#18181b',
-    muted: dark ? '#d4d4d8' : '#52525b',
-    border: dark ? '#3f3f46' : '#e4e4e7',
+    muted: dark ? '#a1a1aa' : '#52525b',
+    border: dark ? '#2e2e33' : '#e4e4e7',
     'control-border': {
       subtle: dark ? '#52525b' : '#d4d4d8',
       balanced: dark ? '#71717a' : '#a1a1aa',
@@ -257,7 +257,7 @@ export function themeToCSS(
     soft: ['0 4px 16px rgb(0 0 0 / .1)', '0 12px 40px rgb(0 0 0 / .16)'],
     lifted: ['0 8px 28px rgb(0 0 0 / .18)', '0 20px 70px rgb(0 0 0 / .24)'],
   }[s.elevation];
-  const geometry = `--ai-radius:${s.radius}px;--ai-control-radius:${s.controlRadius}px;--ai-composer-radius:${s.composerRadius}px;--ai-border-width:${s.borderWidth}px;--ai-field-background:var(--ai-${s.fieldSurface === 'tinted' ? 'surface-subtle' : 'surface'});--ai-shadow-popover:${shadows[0]};--ai-shadow-dialog:${shadows[1]};--ai-control-height:${s.density === 'compact' ? 36 : 40}px;`;
+  const geometry = `--ai-radius:${s.radius}px;--ai-control-radius:${s.controlRadius}px;--ai-composer-radius:${s.composerRadius}px;--ai-border-width:${s.borderWidth}px;--ai-field-background:var(--ai-${s.fieldSurface === 'tinted' ? 'surface-subtle' : 'surface'});--ai-shadow-popover:${shadows[0]};--ai-shadow-dialog:${shadows[1]};--ai-control-height:${s.density === 'compact' ? 32 : 36}px;`;
   const spacing = `--ai-gap:${s.density === 'compact' ? 8 : 12}px;--ai-field-gap:${s.density === 'compact' ? 4 : 8}px;--ai-panel-padding:${s.density === 'compact' ? 12 : 16}px;`;
   const block = (mode: 'light' | 'dark') =>
     `${selector}{${tokenNames.map((key) => `--ai-${key}:${checked[mode][key]};`).join('')}${geometry}${spacing}color-scheme:${mode};}`;

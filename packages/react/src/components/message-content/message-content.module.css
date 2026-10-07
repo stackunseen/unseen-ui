@@ -34,6 +34,6 @@
 }
 .metadata time {
   color: var(--ai-muted, #475569);
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
   font-weight: 400;
 }
