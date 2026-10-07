@@ -1,6 +1,6 @@
 # Unseen UI website
 
-The existing Next.js docs app now exports the Unseen UI by Stack Unseen website. It uses the library's public imports and preserves the component specimens. The source is private and the packages are not published; the website describes local setup accordingly.
+The existing Next.js docs app now exports the Unseen UI by Stack Unseen website. It uses the library's public imports and preserves the component specimens. The source is private; the packages are published on npm under the `alpha` tag, and the website's Getting Started page shows the npm install first.
 
 ## Local preview
 
@@ -30,7 +30,7 @@ The site-only preview serves `apps/docs/out` at `http://127.0.0.1:4175/`. `PORT`
 
 The two template URLs retain the established pattern route names. Their pages use the full viewport rather than a component-explorer sidebar. Old query links resolve to these routes. Search and presentation states do not create separate indexable component URLs. Directory collection filters use `?collection=ui|ai|application|marketing`; search uses `?q=...` and remains global when typing. Back, forward and direct query links restore those choices.
 
-The application and marketing components are optional public entries, `@stackunseen/ui/application` and `@stackunseen/ui/marketing`. Each has a separate stylesheet alongside `@stackunseen/ui/styles.css`; neither stylesheet joins the base bundle. Their built controls share the root theme, icons and portal direction. This does not change the package's unpublished status.
+The application and marketing components are optional public entries, `@stackunseen/ui/application` and `@stackunseen/ui/marketing`. Each has a separate stylesheet alongside `@stackunseen/ui/styles.css`; neither stylesheet joins the base bundle. Their built controls share the root theme, icons and portal direction.
 
 Appearance, validated theme JSON and icon preferences can persist in local storage. Workspace records and simulated actions are page-session data. Templates disclose their boundaries in the UI.
 

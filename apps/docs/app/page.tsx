@@ -54,7 +54,7 @@ export default function Page() {
             <br className="home-desktop-break" /> Try them below, then connect them to your app.
           </p>
           <div className="home-intro-meta">
-            <span>Experimental alpha · Packages not yet on npm</span>
+            <span>Experimental alpha · On npm as @stackunseen/ui@alpha</span>
             <a href="/getting-started/">
               Getting started <ArrowRight size={16} aria-hidden="true" />
             </a>

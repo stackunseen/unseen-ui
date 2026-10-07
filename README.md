@@ -2,7 +2,7 @@
 
 React and TypeScript components for AI interfaces and everyday application controls, by **Stack Unseen**.
 
-**Private experimental alpha.** Packages are unpublished and MIT licensed (see [LICENSE](LICENSE)). The selected npm names are `@stackunseen/ui-core` and `@stackunseen/ui`; publication setup is pending.
+**Experimental alpha.** The packages `@stackunseen/ui-core` and `@stackunseen/ui` are published on npm under the `alpha` tag and MIT licensed (see [LICENSE](LICENSE)); the source repository stays private.
 
 ## Run locally
 

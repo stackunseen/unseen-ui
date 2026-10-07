@@ -1,10 +1,18 @@
 # Getting started
 
-Unseen UI by Stack Unseen is an experimental React component library. The current packages are private local builds; public npm publication is pending. You need an authorized checkout or matching package archives.
+Unseen UI by Stack Unseen is an experimental React component library, published on npm under the `alpha` tag as `@stackunseen/ui` (with `@stackunseen/ui-core` as its dependency). The source repository is private.
+
+## Install from npm
+
+```sh
+npm install @stackunseen/ui@alpha react@^19.3.0 react-dom@^19.3.0
+```
+
+Pin the exact version in your lockfile; the `alpha` tag moves with each prerelease.
 
 ## Start with a local build
 
-You need an authorized checkout or matching package archives from its maintainer. The source repository is private.
+With an authorized checkout:
 
 For this workspace, use **Node 24.13 or later within Node 24** and **pnpm 11.5.0**. From the repository root:
 
@@ -24,29 +32,6 @@ node apps/docs/scripts/preview.mjs
 ```
 
 Open [the website preview](http://127.0.0.1:4175). The preview serves the built site; rebuild the docs app after changing a page.
-
-
-### Use local archives in another React app
-
-The app needs React and ReactDOM satisfying `^19.3.0`, a bundler that supports CSS imports, and React types if you use TypeScript. Next.js and Tailwind are optional.
-
-In the authorized workspace, `pnpm check:packages` creates and verifies the two archives in `output/packages/` after the packages have been built. Copy the matching archives into your app's `vendor/` directory.
-
-Add this override to your app's `pnpm-workspace.yaml`, preserving its existing settings. It resolves the unpublished core dependency from the local archive:
-
-```yaml
-overrides:
-  '@stackunseen/ui-core': file:./vendor/stackunseen-ui-core-0.1.0-alpha.0.tgz
-```
-
-Then run this from your app's root:
-
-```sh
-pnpm add ./vendor/stackunseen-ui-core-0.1.0-alpha.0.tgz ./vendor/stackunseen-ui-0.1.0-alpha.0.tgz
-```
-
-Keep both archives at the same version. This installs local files; it does not publish a package.
-
 
 
 ## Render your first component

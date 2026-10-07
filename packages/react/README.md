@@ -2,11 +2,11 @@
 
 React components for **Unseen UI by Stack Unseen**: forms, overlays, navigation, chat, tool cards and approval controls.
 
-Experimental alpha. Registry publication is pending. MIT licensed; the package is currently unpublished.
+Experimental alpha, published on npm under the `alpha` tag. MIT licensed.
 
 ## Use
 
-The planned public install command, once the first alpha is published, is:
+Install the current alpha:
 
 ```sh
 npm install @stackunseen/ui@alpha react@^19.3.0 react-dom@^19.3.0
