@@ -228,14 +228,20 @@ if (command === 'plan' || command === 'prepare') {
   console.log(`Reserved ${plan.tag} at ${commit}.`);
 } else if (command === 'publish') {
   assertActions();
-  if (!process.env.ACTIONS_ID_TOKEN_REQUEST_URL || !process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN)
-    throw new Error('The publish job needs the approved npm OIDC trust and id-token: write.');
-  const npmVersion = run('npm', ['--version']).split('.').map(Number);
-  if (
-    npmVersion[0] < 11 ||
-    (npmVersion[0] === 11 && (npmVersion[1] < 5 || (npmVersion[1] === 5 && npmVersion[2] < 1)))
-  )
-    throw new Error('Trusted publishing requires npm >=11.5.1.');
+  // A granular npm token (NPM_TOKEN secret) is only for the first release of a package;
+  // trusted publishing cannot be configured before the package exists. Afterwards remove the
+  // secret and the job falls back to OIDC.
+  const token = process.env.NPM_TOKEN?.trim() ?? '';
+  if (!token) {
+    if (!process.env.ACTIONS_ID_TOKEN_REQUEST_URL || !process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN)
+      throw new Error('The publish job needs the approved npm OIDC trust and id-token: write.');
+    const npmVersion = run('npm', ['--version']).split('.').map(Number);
+    if (
+      npmVersion[0] < 11 ||
+      (npmVersion[0] === 11 && (npmVersion[1] < 5 || (npmVersion[1] === 5 && npmVersion[2] < 1)))
+    )
+      throw new Error('Trusted publishing requires npm >=11.5.1.');
+  } else console.log('Publishing with the bootstrap npm token instead of OIDC trust.');
   const plan = verifiedArtifacts();
   await publishInOrder(plan.packages, {
     lookup: (entry) => registryRecord(entry.name, entry.version),
@@ -258,7 +264,7 @@ if (command === 'plan' || command === 'prepare') {
             '--provenance=false',
             '--ignore-scripts',
           ],
-          { NODE_AUTH_TOKEN: '', NPM_TOKEN: '', NPM_CONFIG_PROVENANCE: 'false' },
+          { NODE_AUTH_TOKEN: token, NPM_TOKEN: '', NPM_CONFIG_PROVENANCE: 'false' },
         ),
       );
     },
