@@ -121,3 +121,19 @@ export const DropdownMenu = {
   SubTrigger,
   SubContent,
 };
+/* Named parts for Server Components, where a client reference proxy has no static properties. */
+export {
+  Root as DropdownMenuRoot,
+  Trigger as DropdownMenuTrigger,
+  Content as DropdownMenuContent,
+  Item as DropdownMenuItem,
+  CheckboxItem as DropdownMenuCheckboxItem,
+  RadioItem as DropdownMenuRadioItem,
+  Label as DropdownMenuLabel,
+  Separator as DropdownMenuSeparator,
+  SubTrigger as DropdownMenuSubTrigger,
+  SubContent as DropdownMenuSubContent,
+};
+export const DropdownMenuRadioGroup = Primitive.RadioGroup;
+export const DropdownMenuGroup = Primitive.Group;
+export const DropdownMenuSub = Primitive.Sub;

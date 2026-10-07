@@ -187,3 +187,36 @@ describe('marketing block contracts', () => {
     },
   );
 });
+
+describe('MarketingArticle page-level use', () => {
+  it('renders the requested heading level with a byline and an aside beside the body', () => {
+    render(
+      <MarketingArticle
+        title="Shipping the alpha"
+        headingLevel={1}
+        byline="By Sam Rivera · 6 min read"
+        aside={<a href="/related/">Related guide</a>}
+      >
+        <p>Article body</p>
+      </MarketingArticle>,
+    );
+    const article = screen.getByRole('article', { name: 'Shipping the alpha' });
+    expect(screen.getByRole('heading', { level: 1, name: 'Shipping the alpha' })).toBeVisible();
+    expect(screen.queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
+    expect(article).toHaveTextContent('By Sam Rivera · 6 min read');
+    expect(screen.getByRole('complementary')).toContainElement(
+      screen.getByRole('link', { name: 'Related guide' }),
+    );
+    expect(article.querySelector('.uim-article-body')).toHaveAttribute('data-aside', 'true');
+  });
+
+  it('keeps h2 and no aside wrapper by default', () => {
+    render(
+      <MarketingArticle title="Notes">
+        <p>Body</p>
+      </MarketingArticle>,
+    );
+    expect(screen.getByRole('heading', { level: 2, name: 'Notes' })).toBeVisible();
+    expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+  });
+});

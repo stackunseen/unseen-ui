@@ -272,6 +272,33 @@
   color: var(--ai-danger);
   border-color: var(--ai-danger);
 }
+.uim-byline {
+  margin: 0;
+  color: var(--ai-muted, #475569);
+  font-size: 0.9rem;
+}
+.uim-article-body {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+.uim-article-body[data-aside] {
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 280px);
+}
+.uim-article-aside {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  min-inline-size: 0;
+  color: var(--ai-muted, #475569);
+  font-size: 0.9rem;
+}
+@media (max-width: 760px) {
+  .uim-article-body[data-aside] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 .uim-article-content {
   min-inline-size: 0;
   max-inline-size: 64ch;

@@ -92,3 +92,12 @@ function Link({ className = '', ...props }: NavigationMenuLinkProps) {
 
 /** Site navigation uses native links, not application menu roles. Use Link asChild for routers. */
 export const NavigationMenu = { Root, List, Item, Trigger, Content, Link };
+/* Named parts for Server Components, where a client reference proxy has no static properties. */
+export {
+  Root as NavigationMenuRoot,
+  List as NavigationMenuList,
+  Item as NavigationMenuItem,
+  Trigger as NavigationMenuTrigger,
+  Content as NavigationMenuContent,
+  Link as NavigationMenuLink,
+};

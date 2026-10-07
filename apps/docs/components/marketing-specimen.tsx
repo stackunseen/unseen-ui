@@ -19,7 +19,7 @@ const navigation = [
   { id: 'blocks', label: 'Browse blocks', href: '/components/#ui' },
 ];
 
-export function MarketingSpecimen({ name }: { name: string }) {
+export function MarketingSpecimen({ name, state = 'Default' }: { name: string; state?: string }) {
   const id = useId();
   const [question, setQuestion] = useState('');
   const [notice, setNotice] = useState('');
@@ -172,8 +172,19 @@ export function MarketingSpecimen({ name }: { name: string }) {
     content = (
       <MarketingArticle
         title="Working together"
+        headingLevel={state === 'Page level with aside' ? (1 as const) : (2 as const)}
+        byline={state === 'Page level with aside' ? 'By Sam Rivera · 6 min read' : undefined}
         meta={<span>Sample article · 5 October 2026</span>}
         description="Keep decisions where the work happens."
+        aside={
+          state === 'Page level with aside' ? (
+            <>
+              <strong>Related</strong>
+              <a href="/templates/marketing/#folio-journal">Sample journal</a>
+              <a href="/components/marketing-hero/">MarketingHero</a>
+            </>
+          ) : undefined
+        }
       >
         <p>
           Write down the next step, who owns it and the context they need. A short note is easier to

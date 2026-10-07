@@ -122,3 +122,5 @@ const SidebarLink = forwardRef<HTMLAnchorElement, SidebarLinkProps>(function Sid
 });
 
 export const Sidebar = Object.assign(SidebarRoot, { Group: SidebarGroup, Link: SidebarLink });
+/* Named parts for Server Components, where a client reference proxy has no static properties. */
+export { SidebarGroup, SidebarLink };

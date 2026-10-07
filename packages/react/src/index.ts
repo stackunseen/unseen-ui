@@ -336,9 +336,47 @@ export type {
   AlertDialogActionProps,
   AlertDialogCancelProps,
 } from './components/alert-dialog/alert-dialog.js';
-export { DropdownMenu } from './components/dropdown-menu/dropdown-menu.js';
-export { ContextMenu } from './components/context-menu/context-menu.js';
-export { NavigationMenu } from './components/navigation-menu/navigation-menu.js';
+export {
+  DropdownMenu,
+  DropdownMenuRoot,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from './components/dropdown-menu/dropdown-menu.js';
+export {
+  ContextMenu,
+  ContextMenuRoot,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuGroup,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuSub,
+  ContextMenuSubTrigger,
+  ContextMenuSubContent,
+} from './components/context-menu/context-menu.js';
+export {
+  NavigationMenu,
+  NavigationMenuRoot,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from './components/navigation-menu/navigation-menu.js';
 export type {
   DropdownMenuProps,
   DropdownMenuContentProps,
@@ -387,7 +425,7 @@ export type {
 export type { FeedbackTone } from './shared/feedback-types.js';
 export { Breadcrumb } from './components/breadcrumb/breadcrumb.js';
 export { Pagination } from './components/pagination/pagination.js';
-export { Sidebar } from './components/sidebar/sidebar.js';
+export { Sidebar, SidebarGroup, SidebarLink } from './components/sidebar/sidebar.js';
 export type { BreadcrumbItem, BreadcrumbProps } from './components/breadcrumb/breadcrumb.js';
 export type { PaginationLabels, PaginationProps } from './components/pagination/pagination.js';
 export type {
@@ -403,6 +441,23 @@ export {
   CardContent,
   CardFooter,
 } from './components/card/card.js';
+export { LinkButton } from './components/link-button/link-button.js';
+export type { LinkButtonProps } from './components/link-button/link-button.js';
+export { ToggleGroup } from './components/toggle-group/toggle-group.js';
+export type {
+  ToggleGroupOption,
+  ToggleGroupProps,
+  SingleToggleGroupProps,
+  MultipleToggleGroupProps,
+} from './components/toggle-group/toggle-group.js';
+export { Tag } from './components/tag/tag.js';
+export type { TagProps, TagTone } from './components/tag/tag.js';
+export { Avatar, avatarInitials } from './components/avatar/avatar.js';
+export type { AvatarProps } from './components/avatar/avatar.js';
+export { Stat, StatGroup } from './components/stat/stat.js';
+export type { StatProps, StatGroupProps } from './components/stat/stat.js';
+export { LinkCard } from './components/link-card/link-card.js';
+export type { LinkCardProps } from './components/link-card/link-card.js';
 export {
   Table,
   TableCaption,

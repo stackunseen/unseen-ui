@@ -58,9 +58,10 @@ export function GenericSpecimen({
   const variant =
     buttonVariants.find((item) => item === presentation) ??
     (name === 'IconButton' ? 'ghost' : 'primary');
-  if (websiteNames.has(name)) return <WebsiteSpecimen name={name} state={state} />;
+  if (websiteNames.has(name))
+    return <WebsiteSpecimen name={name} state={state} presentation={presentation} />;
   if (applicationNames.has(name)) return <ApplicationSpecimen name={name} state={state} />;
-  if (marketingNames.has(name)) return <MarketingSpecimen name={name} />;
+  if (marketingNames.has(name)) return <MarketingSpecimen name={name} state={state} />;
   if (aiExtrasNames.has(name)) return <AIExtrasSpecimen name={name} state={state} />;
   if (name === 'SplitPane') return <SplitPaneSpecimen state={state} presentation={presentation} />;
   if (['PanelHeader', 'Sidecar', 'WorkspaceShell'].includes(name))

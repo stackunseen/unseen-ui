@@ -74,6 +74,26 @@ export function FirstExample() {
 
 The application owns validation and persistence. Connect the local callback to your host and render its pending, failed or confirmed state.
 
+### Compound parts in Server Components
+
+Compound components such as `Card.Header`, `Sidebar.Group`, `Tooltip.Trigger` and `NavigationMenu.List` are undefined when imported into a Next.js Server Component, because the client reference proxy does not carry static properties. Every part is also a top-level named export, so import those there:
+
+```tsx
+import { Card, CardHeader, CardTitle, CardContent } from '@stackunseen/ui';
+```
+
+The property form (`Card.Header`) works in Client Components. Button, LinkButton, Tag, Stat, LinkCard, Card, Table, Breadcrumb and the marketing blocks render in Server Components; controls with local state, such as Select, Avatar and ToggleGroup, are Client Components and can be rendered from a Server Component.
+
+### Dark code panels on a light page
+
+Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (or any component) to render it dark inside a light page. The nested provider inherits the parent theme's colours and scopes its tokens to that subtree, and portals opened from inside it keep the same appearance.
+
+```tsx
+<AITheme appearance="dark">
+  <HighlightedCodeBlock code={code} language="tsx" />
+</AITheme>
+```
+
 ## Choose the right entry
 
 | Import | Use | Additional optional peers |

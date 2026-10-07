@@ -63,6 +63,8 @@ export const componentVariants = {
   ModelControls: ['panel', 'compact', 'accordion'],
   ContextInspector: ['list', 'table', 'accordion'],
   PolicyStatus: ['list', 'cards', 'accordion'],
+  ToggleGroup: ['pills', 'segmented'],
+  LinkCard: ['card', 'row'],
 } as const;
 export type VariantComponent = keyof typeof componentVariants;
 export type ComponentVariant<K extends VariantComponent> = (typeof componentVariants)[K][number];

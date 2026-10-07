@@ -5,6 +5,7 @@ import { ExampleLoading } from './example-loading';
 export interface WebsiteSpecimenProps {
   name: string;
   state: string;
+  presentation?: string;
 }
 const FormSpecimen = dynamic(
   () => import('./website-form-specimen').then((m) => m.WebsiteFormSpecimen),
@@ -30,6 +31,10 @@ const SurfaceSpecimen = dynamic(
   () => import('./website-surface-specimen').then((m) => m.WebsiteSurfaceSpecimen),
   { loading: ExampleLoading },
 );
+const DisplaySpecimen = dynamic(
+  () => import('./website-display-specimen').then((m) => m.WebsiteDisplaySpecimen),
+  { loading: ExampleLoading },
+);
 
 export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
   const { name } = props;
@@ -51,7 +56,9 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
           ? FeedbackSpecimen
           : ['Breadcrumb', 'Pagination', 'Sidebar'].includes(name)
             ? NavigationSpecimen
-            : SurfaceSpecimen;
+            : ['LinkButton', 'ToggleGroup', 'Tag', 'Avatar', 'Stat', 'LinkCard'].includes(name)
+              ? DisplaySpecimen
+              : SurfaceSpecimen;
   return (
     <div className="generic-demo" data-demo={name}>
       <Component {...props} />

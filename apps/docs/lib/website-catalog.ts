@@ -326,6 +326,100 @@ export const websiteCatalog: CatalogEntry[] = [
       'Tab reaches the scroll region when needed; arrow keys scroll wide content. Column and row headers preserve native table semantics.',
     code: '<Table label="Packages"><Table.Caption>Sample package status</Table.Caption><Table.Header><Table.Row><Table.Head>Package</Table.Head><Table.Head>Status</Table.Head></Table.Row></Table.Header><Table.Body><Table.Row><Table.Head scope="row">Components</Table.Head><Table.Cell>Experimental alpha</Table.Cell></Table.Row></Table.Body></Table>',
   }),
+  entry({
+    name: 'LinkButton',
+    group: 'Actions',
+    aliases: ['Call to action', 'Anchor button', 'asChild'],
+    description: 'A native link with Button styling, for calls to action that navigate.',
+    states: ['Default', 'Outline', 'Small', 'External'],
+    contract:
+      'Native anchor props · href · variant?: primary | secondary | outline | ghost | danger · size?: default | sm',
+    responsibility:
+      'Use LinkButton for navigation and Button for actions. For a router link component, render Button with asChild so the child keeps its own href, target and rel.',
+    keyboard:
+      'Tab focuses the link; Enter follows it. Modified clicks open new tabs or windows as the browser decides.',
+    relatedImports: ['Button'],
+    code: '<LinkButton href="/getting-started/">Get started</LinkButton>\n<Button asChild variant="outline"><Link href="/docs/">Read the docs</Link></Button>',
+  }),
+  {
+    ...entry({
+      name: 'ToggleGroup',
+      group: 'Actions',
+      aliases: ['Filter chips', 'Toggle buttons', 'Segmented filter'],
+      description:
+        'A row of filter chips with single or multiple selection and host-supplied counts.',
+      states: ['Default', 'Multiple', 'With counts', 'Disabled option', 'Small'],
+      contract:
+        'label · options: { value, label, count?, disabled? }[] · type?: single | multiple · value · onValueChange · allowEmpty? · size?: default | sm · disabled?',
+      responsibility:
+        'The application owns the selected values and the counts. Single selection uses radio semantics; multiple selection uses pressed buttons.',
+      keyboard:
+        'Tab reaches the group once. Arrow keys, Home and End move between enabled chips; in single mode they also select. Space or Enter toggles a chip in multiple mode.',
+      code: '<ToggleGroup label="Topics" options={topics} value={topic} onValueChange={setTopic} />',
+    }),
+    presentations: ['pills', 'segmented'],
+    presentationProp: 'variant',
+  },
+  entry({
+    name: 'Tag',
+    group: 'Data Display',
+    aliases: ['Label', 'Category badge', 'Chip'],
+    description: 'A neutral label for categories and levels, with tones and two sizes.',
+    states: ['Default', 'Tones', 'Small', 'With icon'],
+    contract:
+      'Native span props · children · tone?: neutral | primary | accent | success | warning · size?: default | sm · icon?',
+    responsibility:
+      'Meaning belongs to the application; the tag adds no status semantics. Use StatusBadge for run and approval states.',
+    keyboard: 'Inert content; it adds no tab stop.',
+    relatedImports: ['StatusBadge'],
+    code: '<Tag tone="accent">Advanced</Tag>',
+  }),
+  entry({
+    name: 'Avatar',
+    group: 'Data Display',
+    aliases: ['Profile picture', 'Initials', 'User image'],
+    description: 'An image or initials for a person or team, decorative unless given a name.',
+    states: ['Default', 'With image', 'Image failed', 'Sizes', 'No name'],
+    contract: 'name? · initials? · src? · size?: sm | default | lg · native span props',
+    responsibility:
+      'Pass name when the avatar is the only sign of who is shown; otherwise leave it decorative beside visible text. Supply accessible, licensed image URLs.',
+    keyboard: 'Inert content; it adds no tab stop.',
+    code: '<Avatar name="Ada Lovelace" src={photoUrl} />',
+  }),
+  entry({
+    name: 'Stat',
+    group: 'Data Display',
+    aliases: ['Metric', 'KPI', 'Number tile'],
+    description:
+      'A formatted number with its label, optional change and note, for rows of metrics.',
+    states: ['Default', 'With trend', 'Group'],
+    contract:
+      'label · value · delta? · trend?: up | down | neutral · note? · StatGroup: native div props',
+    responsibility:
+      'Format numbers, units and signs in the application. Trend colour only reinforces text that already carries the sign. Renders on the server.',
+    keyboard: 'Inert content; it adds no tab stop.',
+    relatedImports: ['StatGroup'],
+    code: '<StatGroup aria-label="Usage">\n  <Stat label="Active users" value="1,204" delta="+12%" trend="up" note="Last 30 days" />\n</StatGroup>',
+  }),
+  {
+    ...entry({
+      name: 'LinkCard',
+      group: 'Navigation',
+      aliases: ['Resource card', 'Related link', 'Outbound card'],
+      description:
+        'A plain link presented as a card or row, with icon, title, description and meta.',
+      states: ['Default', 'External', 'Row', 'With icon'],
+      contract:
+        'href · title · description? · meta? · icon? · external? · variant?: card | row · native anchor props',
+      responsibility:
+        'The whole card is one anchor, so keep interactive content out of it. Use SourceCard for cited material with a locator, version and access state.',
+      keyboard: 'Tab focuses the card; Enter follows the link.',
+      relatedImports: ['SourceCard'],
+      code: '<LinkCard href="/guides/rag/" title="Retrieval guide" description="Chunking and ranking." meta="12 min read" />',
+    }),
+    presentations: ['card', 'row'],
+    presentationProp: 'variant',
+  },
 ];
 
 export const websiteNames = new Set<string>(websiteCatalog.map((item) => item.name));

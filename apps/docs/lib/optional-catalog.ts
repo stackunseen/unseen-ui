@@ -226,10 +226,11 @@ export const marketingCatalog: CatalogEntry[] = [
     name: 'MarketingArticle',
     category: 'Website sections',
     description: 'An article introduction, body and action area with supplied metadata.',
-    states: ['Default'],
-    contract: 'title · children · description? · meta? · actions?',
+    states: ['Default', 'Page level with aside'],
+    contract:
+      'title · children · headingLevel?: 1 | 2 | 3 · byline? · description? · meta? · actions? · aside?',
     responsibility:
-      'Supply author, date and article content. Use safe React content rather than evaluating generated HTML or MDX.',
+      'Supply author, date and article content. Use headingLevel 1 when the article is the page. Use safe React content rather than evaluating generated HTML or MDX.',
     code: '<MarketingArticle title="Working together" meta={articleMeta}>\n  {articleBody}\n</MarketingArticle>',
   }),
 ];

@@ -164,3 +164,19 @@ export const ContextMenu = {
   SubTrigger,
   SubContent,
 };
+/* Named parts for Server Components, where a client reference proxy has no static properties. */
+export {
+  Root as ContextMenuRoot,
+  Trigger as ContextMenuTrigger,
+  Content as ContextMenuContent,
+  Item as ContextMenuItem,
+  CheckboxItem as ContextMenuCheckboxItem,
+  RadioItem as ContextMenuRadioItem,
+  Label as ContextMenuLabel,
+  Separator as ContextMenuSeparator,
+  SubTrigger as ContextMenuSubTrigger,
+  SubContent as ContextMenuSubContent,
+};
+export const ContextMenuRadioGroup = Primitive.RadioGroup;
+export const ContextMenuGroup = Primitive.Group;
+export const ContextMenuSub = Primitive.Sub;

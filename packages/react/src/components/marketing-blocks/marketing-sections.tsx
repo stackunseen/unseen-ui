@@ -120,15 +120,19 @@ export function MarketingFAQ({
 
 export function MarketingArticle({
   title,
+  headingLevel = 2,
   eyebrow,
   description,
+  byline,
   meta,
   actions,
+  aside,
   children,
   className = '',
   ...props
 }: MarketingArticleProps) {
   const titleId = useId();
+  const Heading = `h${headingLevel}` as 'h1' | 'h2' | 'h3';
   return (
     <article
       {...props}
@@ -137,12 +141,16 @@ export function MarketingArticle({
     >
       <header className="uim-section-heading">
         {eyebrow && <p className="uim-eyebrow">{eyebrow}</p>}
-        <h2 id={titleId}>{title}</h2>
+        <Heading id={titleId}>{title}</Heading>
+        {byline && <p className="uim-byline">{byline}</p>}
         {description && <div className="uim-description">{description}</div>}
         {meta && <div className="uim-note">{meta}</div>}
         {actions && <div className="uim-actions">{actions}</div>}
       </header>
-      <div className="uim-article-content">{children}</div>
+      <div className="uim-article-body" data-aside={aside ? 'true' : undefined}>
+        <div className="uim-article-content">{children}</div>
+        {aside && <aside className="uim-article-aside">{aside}</aside>}
+      </div>
     </article>
   );
 }

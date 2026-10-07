@@ -1,6 +1,6 @@
 # Website components
 
-The root `@stackunseen/ui` entry includes 22 application component families alongside the AI components. They use the shared stylesheet and theme.
+The root `@stackunseen/ui` entry includes 28 application component families alongside the AI components. They use the shared stylesheet and theme.
 
 ## Available families
 
@@ -12,8 +12,22 @@ The root `@stackunseen/ui` entry includes 22 application component families alon
 | Feedback | Alert, Toast, Progress, EmptyState | Host-supplied messages and measurements; deliberate announcement behavior |
 | Navigation | Breadcrumb, Pagination, Sidebar | Native links/current-page semantics and controlled page requests |
 | Surfaces | Card, Table | Composable section and native table markup |
+| Actions and links | LinkButton, ToggleGroup | Native anchors with Button presentation; controlled single or multiple filter chips |
+| Display | Tag, Avatar, Stat, LinkCard | Inert labels, people, metrics and plain link cards with application-formatted content |
 
-Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available. Dialog and Sheet are gallery aliases for Modal layouts, not additional exports. Use the [root public fixture](../tests/fixtures/website-public-example.tsx) for a composition of all 22 families using only supported imports. Each family also exports its public prop types.
+Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available. Dialog and Sheet are gallery aliases for Modal layouts, not additional exports. Use the [root public fixture](../tests/fixtures/website-public-example.tsx) for a composition of all 28 families using only supported imports. Each family also exports its public prop types.
+
+## Actions, links and display
+
+`Button` accepts `asChild` and then renders its single child element with the button presentation, so a router link keeps its own `href`, `target`, `rel` and modified-click behaviour. `LinkButton` is a native anchor with the same `variant` and `size` tokens for plain destinations. Neither disables a link; omit the destination instead.
+
+`ToggleGroup` is a row of filter chips. Single selection (the default) uses radio semantics: one tab stop, arrow keys move and select, and `allowEmpty` lets the selected chip be cleared to `null`. `type="multiple"` uses pressed buttons: arrow keys move focus and Space or Enter toggles. Each option takes a host-supplied `count` and may be disabled. Variants are `pills` and `segmented`; `size` is `default` or `sm`.
+
+`Tag` is an inert label with `tone` (`neutral`, `primary`, `accent`, `success`, `warning`) and `size`. Its meaning belongs to the application; `StatusBadge` stays keyed to run and approval states. `Avatar` shows an image, else initials derived from `name` (or explicit `initials`), else a generic icon; it is decorative unless `name` is supplied, which makes it `role="img"`. `Stat` renders an application-formatted `value` with `label`, optional `delta` (whose text must carry the sign; `trend` only colours it) and `note`; `StatGroup` lays a row out responsively. Both render on the server. `LinkCard` is one native anchor with `icon`, `title`, `description` and `meta`, in `card` or `row` presentation; `external` opens a new tab with `rel="noreferrer"`. Use `SourceCard` for cited material with a locator, version and access state.
+
+### Server Components
+
+Every compound part is also a top-level named export: `CardHeader`, `CardTitle`, `SidebarGroup`, `SidebarLink`, `TooltipTrigger`, `NavigationMenuList`, `DropdownMenuItem`, `ContextMenuContent` and so on. In a Next.js Server Component import those names; the `Card.Header` property form is undefined there because a client reference proxy carries no static properties. The property form works in Client Components.
 
 ## Forms
 

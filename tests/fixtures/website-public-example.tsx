@@ -4,8 +4,12 @@ import {
   AlertTitle,
   AlertDescription,
   AlertDialog,
+  Avatar,
   Breadcrumb,
+  Button,
   Card,
+  CardHeader,
+  CardTitle,
   Checkbox,
   ContextMenu,
   DataTable,
@@ -14,8 +18,17 @@ import {
   EmptyStateTitle,
   Field,
   Input,
+  LinkButton,
+  LinkCard,
   NavigationMenu,
+  NavigationMenuList,
   Pagination,
+  SidebarGroup,
+  SidebarLink,
+  Stat,
+  StatGroup,
+  Tag,
+  ToggleGroup,
   Popover,
   Progress,
   RadioGroup,
@@ -101,6 +114,43 @@ export function WebsitePublicExample() {
           rows={[row]}
         />
         <Pagination page={1} pageCount={3} getPageHref={(page) => `/billing?page=${page}`} />
+        <ToggleGroup
+          label="Invoice filter"
+          options={[
+            { value: 'all', label: 'All', count: 3 },
+            { value: 'paid', label: 'Paid', count: 2 },
+          ]}
+          value="all"
+          onValueChange={() => {}}
+        />
+        <StatGroup aria-label="Billing summary">
+          <Stat label="Open invoices" value="2" delta="-1" trend="down" />
+          <Stat label="Paid this month" value="4" />
+        </StatGroup>
+        <Tag tone="primary">Alpha</Tag>
+        <Avatar name="Sample team" />
+        <LinkCard href="/billing/history" title="Invoice history" description="Public fixture." />
+        <LinkButton href="/billing/new" variant="outline">
+          New invoice
+        </LinkButton>
+        <Button asChild>
+          <a href="/billing/export">Export</a>
+        </Button>
+        <Card aria-label="Named parts">
+          <CardHeader>
+            <CardTitle as="h3">Named compound parts</CardTitle>
+          </CardHeader>
+        </Card>
+        <SidebarGroup label="Named sidebar parts">
+          <SidebarLink href="/billing/settings">Settings</SidebarLink>
+        </SidebarGroup>
+        <NavigationMenu.Root aria-label="Named navigation parts">
+          <NavigationMenuList>
+            <NavigationMenu.Item>
+              <NavigationMenu.Link href="/billing">Billing</NavigationMenu.Link>
+            </NavigationMenu.Item>
+          </NavigationMenuList>
+        </NavigationMenu.Root>
         <Alert>
           <AlertTitle>Billing information</AlertTitle>
           <AlertDescription>Only the host confirms a payment.</AlertDescription>

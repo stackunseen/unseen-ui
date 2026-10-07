@@ -82,8 +82,14 @@ export interface MarketingContactProps extends Omit<ComponentPropsWithoutRef<'fo
 
 export interface MarketingArticleProps extends Omit<ComponentPropsWithoutRef<'article'>, 'title'> {
   title: ReactNode;
+  /** Use 1 for a page-level article; 2 (the default) inside a page that already has an h1. */
+  headingLevel?: 1 | 2 | 3;
   eyebrow?: ReactNode;
   description?: ReactNode;
+  /** Author, date or reading time, shown under the title. */
+  byline?: ReactNode;
   meta?: ReactNode;
   actions?: ReactNode;
+  /** Related links or notes placed beside the body on wide screens and after it on narrow ones. */
+  aside?: ReactNode;
 }
