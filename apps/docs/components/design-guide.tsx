@@ -155,10 +155,6 @@ export function DesignGuide({
         </p>
         <UploadExample />
       </section>
-      <footer className="design-reference-note">
-        Reference studies: <a href="https://www.assistant-ui.com/design">assistant-ui design</a> and{' '}
-        <a href="https://elements.ai-sdk.dev/components/attachments">AI Elements attachments</a>.
-      </footer>
     </article>
   );
 }

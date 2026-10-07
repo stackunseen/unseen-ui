@@ -1199,8 +1199,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   font-size: 15px;
 }
 .design-section p,
-.design-section li,
-.design-reference-note {
+.design-section li {
   color: var(--ai-muted);
   font-size: 13px;
 }
@@ -1253,13 +1252,6 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 }
 .design-surface-samples > div + div {
   box-shadow: var(--ai-shadow-popover);
-}
-.design-reference-note {
-  padding: 24px 0;
-  border-top: 1px solid var(--ai-border);
-}
-.design-reference-note a {
-  color: var(--ai-primary-text);
 }
 @media (max-width: 800px) {
   .theme-preview {

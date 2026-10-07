@@ -21,6 +21,9 @@ jobs:
       NEXT_TELEMETRY_DISABLED: '1'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # Pull requests need the base branch so Vitest can select the affected test files.
+          fetch-depth: ${{ github.event_name == 'pull_request' && 0 || 1 }}
       - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
@@ -32,10 +35,30 @@ jobs:
       - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm typecheck
-      - run: pnpm test
+      # Pull requests run only the test files affected by the changed modules; main runs everything.
+      - name: Affected unit tests
+        if: github.event_name == 'pull_request'
+        run: pnpm vitest run --changed origin/${{ github.base_ref }}
+      - name: Unit tests
+        if: github.event_name != 'pull_request'
+        run: pnpm test
       # Pull requests run the fast checks; main and manual runs add the slow ones.
+      - name: Restore Next.js build cache
+        if: github.event_name != 'pull_request'
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: apps/docs/.next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('apps/docs/**/*.{ts,tsx,mdx,css}', 'packages/*/src/**') }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
       - run: pnpm build
         if: github.event_name != 'pull_request'
+      - name: Restore smoke browser
+        if: github.event_name != 'pull_request'
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Install smoke browser
         if: github.event_name != 'pull_request'
         run: pnpm exec playwright-cli install-browser chromium --with-deps
