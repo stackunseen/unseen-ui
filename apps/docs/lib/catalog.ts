@@ -67,7 +67,28 @@ export type GenericComponent =
   | 'Pagination'
   | 'Sidebar'
   | 'Card'
-  | 'Table';
+  | 'Table'
+  | 'Reasoning'
+  | 'ChainOfThought'
+  | 'Plan'
+  | 'Task'
+  | 'Checkpoint'
+  | 'Shimmer'
+  | 'Sources'
+  | 'ModelSelector'
+  | 'OpenInChat'
+  | 'Snippet'
+  | 'Commit'
+  | 'EnvironmentVariables'
+  | 'PackageInfo'
+  | 'SchemaDisplay'
+  | 'StackTrace'
+  | 'WebPreview'
+  | 'AudioPlayer'
+  | 'Transcription'
+  | 'VoiceSelector'
+  | 'Persona'
+  | 'Image';
 export interface CatalogEntry {
   name: VariantComponent | GenericComponent;
   category: string;

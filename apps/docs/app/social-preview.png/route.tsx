@@ -16,21 +16,12 @@ export function GET() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 56,
-            height: 56,
-            background: '#2563eb',
-            borderRadius: 12,
-            color: '#ffffff',
-            fontSize: 34,
-          }}
-        >
-          u
-        </div>
+        <svg viewBox="0 0 100 100" width="56" height="56">
+          <path d="M22 0h16q6 0 6 6v32q0 6-6 6H6q-6 0-6-6V22A22 22 0 0 1 22 0Z" fill="#1f2328" />
+          <circle cx="78" cy="22" r="22" fill="#2563eb" />
+          <path d="M6 56h32q6 0 6 6v32q0 6-6 6H22A22 22 0 0 1 0 78V62q0-6 6-6Z" fill="#d4d7dd" />
+          <path d="M62 56h16a22 22 0 0 1 22 22v16q0 6-6 6H62q-6 0-6-6V62q0-6 6-6Z" fill="#1f2328" />
+        </svg>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <span style={{ fontSize: 32 }}>Unseen UI</span>
           <span style={{ color: '#52525b', fontSize: 24 }}>by Stack Unseen</span>

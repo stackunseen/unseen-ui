@@ -147,6 +147,9 @@ for (const entry of [
   'editor',
   'artifact-editor',
   'conversation-flow',
+  'assistant',
+  'devtools',
+  'media',
 ]) {
   const isolated = await build({
     configFile: false,
@@ -175,6 +178,9 @@ for (const entry of [
       'editor',
       'artifact-editor',
       'conversation-flow',
+      'assistant',
+      'devtools',
+      'media',
     ].includes(entry)
       ? /[\\/](?:react-markdown|remark-gfm|remend|micromark|mermaid|katex|dompurify|remark-math|shiki|@shikijs)(?:[\\/@]|$)/
       : entry === 'highlight'
@@ -226,6 +232,9 @@ for (const entry of [
   'editor',
   'artifact-editor',
   'conversation-flow',
+  'assistant',
+  'devtools',
+  'media',
 ]) {
   const asset = await readFile(`packages/react/dist/${entry}.css`);
   if (!asset.length) throw new Error(`Optional ${entry} stylesheet missing.`);

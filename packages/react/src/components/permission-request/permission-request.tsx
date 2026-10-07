@@ -58,10 +58,9 @@ function LegacyPermissionRequest({
           {pending ? 'Sending permission request…' : `Permission: ${status}`}
         </span>
       </div>
-      <dl className={s.definition}>
-        <dt>Requested access</dt>
-        <dd>{scopes.join(', ') || 'No scopes specified'}</dd>
-      </dl>
+      <p className={s.approvalSummary}>
+        Requested access: {scopes.join(', ') || 'No scopes specified'}
+      </p>
       {!completeScope && (
         <p className={s.warning} role="status">
           The host must provide the resource and requested scopes before you can allow access.

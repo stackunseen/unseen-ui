@@ -73,8 +73,8 @@
   align-items: center;
   box-sizing: border-box;
   max-inline-size: 100%;
-  min-inline-size: var(--ai-control-height, 40px);
-  min-block-size: var(--ai-control-height, 40px);
+  min-inline-size: var(--ai-control-height, 36px);
+  min-block-size: var(--ai-control-height, 36px);
   padding: 6px 10px;
   border: var(--ai-border-width, 1px) solid var(--ai-control-border, #64748b);
   border-radius: var(--ai-control-radius, 6px);
@@ -136,7 +136,7 @@
   align-items: center;
   gap: var(--ai-field-gap, 8px);
   box-sizing: border-box;
-  min-block-size: var(--ai-control-height, 40px);
+  min-block-size: var(--ai-control-height, 36px);
   padding: 8px 10px;
   border-inline-start: 3px solid transparent;
   border-radius: var(--ai-control-radius, 6px);

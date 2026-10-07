@@ -61,7 +61,7 @@ export function MultiSelect<T extends MultiSelectOption>({
                       aria-label={`Remove ${label}`}
                       onClick={() => remove(item)}
                     >
-                      <AIIcon name="close" /> Remove
+                      <AIIcon name="close" />
                     </Button>
                   </li>
                 );

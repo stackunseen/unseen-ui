@@ -7,11 +7,14 @@ import g from '../../shared/styles/structured.module.css';
 import c from '../../shared/styles/coding.module.css';
 import s from '../../shared/styles/agent-controls.module.css';
 import a from '../../shared/styles/action-layout.module.css';
+import b from '../../shared/styles/styles.module.css';
 
 export type TableCellValue = string | number | boolean | null;
 export type TableCellFormat =
   | { kind: 'number'; options?: Intl.NumberFormatOptions }
-  | { kind: 'date'; options?: Intl.DateTimeFormatOptions };
+  | { kind: 'date'; options?: Intl.DateTimeFormatOptions }
+  /** Shows the text as a badge; tones map cell values to a badge colour. */
+  | { kind: 'status'; tones?: Record<string, 'primary' | 'success' | 'warning' | 'danger'> };
 export interface TableColumn {
   id: string;
   label: string;
@@ -90,7 +93,7 @@ export function DataTable({
     const formats = new Map<string, Intl.NumberFormat | Intl.DateTimeFormat>();
     const invalidFormats: string[] = [];
     for (const column of columns.slice(0, 20)) {
-      if (!column.format) continue;
+      if (!column.format || column.format.kind === 'status') continue;
       try {
         formats.set(
           column.id,
@@ -293,7 +296,16 @@ export function DataTable({
                   <tr key={row.id}>
                     {shownColumns.map((column) => (
                       <td key={column.id} data-format={column.format?.kind}>
-                        {display(row, column)}
+                        {column.format?.kind === 'status' ? (
+                          <span
+                            className={b.badge}
+                            data-tone={column.format.tones?.[String(row.cells[column.id])]}
+                          >
+                            {display(row, column)}
+                          </span>
+                        ) : (
+                          display(row, column)
+                        )}
                       </td>
                     ))}
                   </tr>

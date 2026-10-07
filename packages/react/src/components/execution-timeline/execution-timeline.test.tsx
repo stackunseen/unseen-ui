@@ -93,10 +93,14 @@ describe('ExecutionTimeline controlled presentation', () => {
       expect(screen.getByText('<img src=x onerror=event()>')).toBeVisible();
       expect(container.querySelector('script, img')).toBeNull();
       expect(screen.getByText('Unknown')).toBeVisible();
-      expect(screen.getByText(timestamp)).toHaveAttribute('datetime', timestamp);
-      expect([...container.querySelectorAll('time')].map((node) => node.textContent)).toEqual([
+      const times = [...container.querySelectorAll('time')];
+      expect(times.map((node) => node.getAttribute('datetime'))).toEqual([
         timestamp,
         events[0]!.timestamp,
+      ]);
+      expect(times.map((node) => node.textContent)).toEqual([
+        'Oct 1, 2026, 7:00 AM UTC',
+        'Oct 1, 2026, 7:00 AM UTC',
       ]);
     },
   );

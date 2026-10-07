@@ -1,0 +1,8 @@
+# Cloudflare Pages redirects. Next copies this file into the static export root.
+# Pages already serves directory index.html files, the exported 404.html and HTTPS.
+# The production site is https://unseenui.com; the www hostname forwards to it.
+https://www.unseenui.com/* https://unseenui.com/:splat 301!
+
+# Query-string redirects for saved ?view= and ?component= links are not supported by
+# this file (Pages ignores query strings when matching). The homepage keeps its browser
+# fallback for those legacy links, and gallery-routes.json publishes the current mapping.

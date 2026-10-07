@@ -1,3 +1,4 @@
+import { DocsFrame } from '../../components/docs-frame';
 import { ComponentDirectory } from '../../components/component-directory';
 import { catalog } from '../../lib/catalog';
 import { featuredApp, releaseCatalog } from '../../lib/first-release';
@@ -23,7 +24,17 @@ export default function Page() {
     terms: componentSearchText(entry),
   }));
   return (
-    <main id="main-content" className="web-container directory-page" tabIndex={-1}>
+    <DocsFrame
+      label="Library"
+      mainClassName="directory-page"
+      links={[
+        ['All components', '/components/'],
+        ['UI components', '/components/#ui'],
+        ['AI components', '/components/#ai'],
+        ['Customize', '/customize/'],
+        ['Getting started', '/getting-started/'],
+      ]}
+    >
       <header className="web-page-heading">
         <p className="web-eyebrow">The library</p>
         <h1>Components</h1>
@@ -37,6 +48,6 @@ export default function Page() {
         See the components together in the <a href={featuredApp.href}>SaaS admin example</a>, or{' '}
         <a href="/getting-started/">start with your first component</a>.
       </p>
-    </main>
+    </DocsFrame>
   );
 }

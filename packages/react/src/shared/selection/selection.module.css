@@ -38,14 +38,18 @@
   font-size: var(--ai-font-size-meta, 12px);
 }
 .option[aria-selected='true'] {
-  font-weight: 600;
+  color: var(--ai-primary-text, #1d4ed8);
+  font-weight: 500;
 }
+/* A quiet highlight keeps option text and descriptions readable while browsing. */
 .option[data-active='true'] {
-  background: var(--ai-primary, #2563eb);
-  color: var(--ai-primary-foreground, #fff);
+  background: var(--ai-surface-subtle, #f1f5f9);
 }
-.option[data-active='true'] small {
-  color: inherit;
+@media (forced-colors: active) {
+  .option[data-active='true'] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
 }
 .option[aria-disabled='true'] {
   opacity: 0.6;

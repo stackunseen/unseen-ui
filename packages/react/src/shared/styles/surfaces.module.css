@@ -74,7 +74,9 @@
   overflow-wrap: anywhere;
 }
 .table th {
-  font-weight: 600;
+  font-weight: 500;
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size-meta, 13px);
 }
 .table thead,
 .table tfoot {
@@ -87,5 +89,5 @@
   padding: var(--ai-gap, 12px);
   color: var(--ai-muted, #475569);
   text-align: start;
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
 }

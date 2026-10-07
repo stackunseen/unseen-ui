@@ -17,6 +17,8 @@ import { receiptMessage } from '../../shared/decision-contracts.js';
 import { useDecisionExpiry } from '../../shared/decision-expiry.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import a from '../../shared/styles/action-layout.module.css';
+import { ObservationTime } from '../../shared/observation-time/observation-time.js';
+import d from '../../shared/styles/styles.module.css';
 
 export interface ScopedAgentHandoffProps extends VariantProps<'AgentHandoff'> {
   value: HandoffSnapshot;
@@ -87,37 +89,52 @@ export function ScopedAgentHandoff({
                 {value.freshness === 'current' ? 'Current owner' : 'Last acknowledged owner'}:{' '}
                 {value.ownership.ownerId}
               </p>
-              <p className={s.muted}>
-                Ownership {value.ownership.version} · Acknowledged by{' '}
-                {value.ownership.acknowledged.by} at {value.ownership.acknowledged.at}
-              </p>
             </>
           ) : (
             <p className={s.warning}>Current owner: unknown. The host must confirm ownership.</p>
           )}
-          <p className={s.muted}>
-            Request {value.target.handoffId} · Version {value.target.version} · Snapshot{' '}
-            {value.target.snapshotVersion}
-          </p>
-          <p className={s.muted}>Requested scope: {value.target.scopes.join(', ')}</p>
           {contextAvailable ? (
             <>
               <p>{value.summary || 'No public context summary supplied.'}</p>
-              <p className={s.muted}>
-                Context {value.target.context.id} · Version {value.target.context.version} · Source{' '}
-                {value.target.context.sourceId} ({value.target.context.sourceVersion}) · Provided by{' '}
-                {value.target.context.providedBy}
-              </p>
             </>
           ) : (
             <p className={s.warning}>
               Handoff context is not accessible. Access is {value.access.state}.
             </p>
           )}
-          <p className={s.muted}>
-            Recipient access: {value.access.state} · Version {value.access.version} · Checked by{' '}
-            {value.access.checkedBy} at {value.access.checkedAt}
-          </p>
+          <dl className={d.definition}>
+            <dt>Request</dt>
+            <dd>
+              {value.target.handoffId} · Version {value.target.version} · Snapshot{' '}
+              {value.target.snapshotVersion}
+            </dd>
+            <dt>Requested scope</dt>
+            <dd>{value.target.scopes.join(', ')}</dd>
+            {value.ownership.state === 'acknowledged' && (
+              <>
+                <dt>Ownership</dt>
+                <dd>
+                  {value.ownership.version} · Acknowledged by {value.ownership.acknowledged.by} at{' '}
+                  <ObservationTime value={value.ownership.acknowledged.at} />
+                </dd>
+              </>
+            )}
+            {contextAvailable && (
+              <>
+                <dt>Context</dt>
+                <dd>
+                  {value.target.context.id} · Version {value.target.context.version} · Source{' '}
+                  {value.target.context.sourceId} ({value.target.context.sourceVersion}) · Provided
+                  by {value.target.context.providedBy}
+                </dd>
+              </>
+            )}
+            <dt>Recipient access</dt>
+            <dd>
+              {value.access.state} · Version {value.access.version} · Checked by{' '}
+              {value.access.checkedBy} at <ObservationTime value={value.access.checkedAt} />
+            </dd>
+          </dl>
           <p className={s.muted}>
             A handoff does not grant permissions or approve pending actions.
           </p>

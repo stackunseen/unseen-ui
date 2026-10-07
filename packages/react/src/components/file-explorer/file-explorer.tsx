@@ -45,6 +45,8 @@ export interface FileExplorerProps extends VariantProps<'FileExplorer'> {
   error?: string;
   title?: string;
 }
+const changeTone = { added: 'success', modified: 'warning', deleted: 'danger' } as const;
+
 export function FileExplorer({
   files,
   expandedPaths,
@@ -176,7 +178,9 @@ export function FileExplorer({
         <AIIcon name="document" />
         <span data-part="file-name">{full ? file.path : pathParts(file.path)!.at(-1)}</span>
         {(denied || file.change) && (
-          <span className={s.badge}>{denied ? `${file.access} access` : file.change}</span>
+          <span className={s.badge} data-tone={denied ? 'danger' : changeTone[file.change!]}>
+            {denied ? `${file.access} access` : file.change}
+          </span>
         )}
       </button>
     );

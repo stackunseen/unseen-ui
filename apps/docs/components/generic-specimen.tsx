@@ -6,6 +6,7 @@ import type { ButtonProps } from '@stackunseen/ui';
 import { ExampleLoading } from './example-loading';
 import { websiteNames } from '../lib/website-catalog';
 import { applicationNames, marketingNames } from '../lib/optional-catalog';
+import { aiExtrasNames } from '../lib/ai-extras-catalog';
 
 const ApplicationSpecimen = dynamic(
   () => import('./application-specimen').then((m) => m.ApplicationSpecimen),
@@ -16,6 +17,10 @@ const MarketingSpecimen = dynamic(
   { loading: ExampleLoading },
 );
 
+const AIExtrasSpecimen = dynamic(
+  () => import('./ai-extras-specimen').then((m) => m.AIExtrasSpecimen),
+  { loading: ExampleLoading },
+);
 const WebsiteSpecimen = dynamic(() => import('./website-specimen').then((m) => m.WebsiteSpecimen), {
   loading: ExampleLoading,
 });
@@ -56,6 +61,7 @@ export function GenericSpecimen({
   if (websiteNames.has(name)) return <WebsiteSpecimen name={name} state={state} />;
   if (applicationNames.has(name)) return <ApplicationSpecimen name={name} state={state} />;
   if (marketingNames.has(name)) return <MarketingSpecimen name={name} />;
+  if (aiExtrasNames.has(name)) return <AIExtrasSpecimen name={name} state={state} />;
   if (name === 'SplitPane') return <SplitPaneSpecimen state={state} presentation={presentation} />;
   if (['PanelHeader', 'Sidecar', 'WorkspaceShell'].includes(name))
     return <LayoutSpecimen name={name} state={state} presentation={presentation} />;

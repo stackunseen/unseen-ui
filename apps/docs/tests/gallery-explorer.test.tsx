@@ -25,7 +25,7 @@ import {
 describe('gallery links', () => {
   it('maps every component to one scoped navigation group without changing its identity', () => {
     expect(sectionCatalog('ui')).toHaveLength(46);
-    expect(sectionCatalog('ai')).toHaveLength(52);
+    expect(sectionCatalog('ai')).toHaveLength(73);
     expect(
       new Set(
         componentSections.flatMap((section) => sectionCatalog(section)).map((entry) => entry.name),
@@ -139,9 +139,7 @@ describe('gallery scoped host examples', () => {
   it('historical permission lookup does not grant the replacement scope', async () => {
     render(<PermissionSpecimen state="Scope changed" />);
     await userEvent.click(screen.getByRole('button', { name: 'Check original decision' }));
-    const requestedAccess = screen.getByText('Requested access', { selector: 'dt' });
-    expect(requestedAccess.nextElementSibling).toHaveTextContent('accounts:write');
-    expect(requestedAccess.nextElementSibling).toBeVisible();
+    expect(screen.getByText(/requests accounts:write$/)).toBeVisible();
     expect(screen.getByText('Permission: requested')).toBeVisible();
     expect(screen.queryByText(/Host-confirmed grant/)).not.toBeInTheDocument();
   });

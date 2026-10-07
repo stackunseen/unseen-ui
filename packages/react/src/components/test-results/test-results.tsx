@@ -44,7 +44,18 @@ export function TestResults({ results, onOpenFile, loading, variant = 'list' }: 
             <li key={result.id} className={s.test}>
               <div className={s.row}>
                 <strong>{result.name}</strong>
-                <span className={s.badge}>{result.state}</span>
+                <span
+                  className={s.badge}
+                  data-tone={
+                    result.state === 'passed'
+                      ? 'success'
+                      : result.state === 'failed'
+                        ? 'danger'
+                        : undefined
+                  }
+                >
+                  {result.state}
+                </span>
                 {result.durationMs !== undefined &&
                   Number.isFinite(result.durationMs) &&
                   result.durationMs >= 0 && (

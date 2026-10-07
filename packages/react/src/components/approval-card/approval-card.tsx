@@ -5,10 +5,11 @@ import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { AIIcon } from '../../providers/icons/icons.js';
-import { SummaryHeading } from '../../shared/summary-heading.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import a from '../../shared/styles/action-layout.module.css';
+import { ObservationTime } from '../../shared/observation-time/observation-time.js';
+import { useDisclosure } from '../../shared/disclosure.js';
 
 export interface ApprovalCardProps extends VariantProps<'ApprovalCard'> {
   proposal: ApprovalProposal;
@@ -43,6 +44,7 @@ export function ApprovalCard({
     return () => clearTimeout(timer);
   }, [proposal.expiresAt, proposal.id, proposal.version]);
   const hasExpired = expired ?? clockExpired;
+  const details = useDisclosure({ defaultOpen: variant === 'split' });
   const unavailable =
     proposal.status !== 'pending' ||
     stale ||
@@ -63,33 +65,34 @@ export function ApprovalCard({
   return (
     <Panel data-part="approval" data-variant={variant} className={s.approval}>
       <div className={s.row}>
-        <SummaryHeading
-          icon={
-            <span className={s.reviewIcon} aria-hidden="true">
-              <AIIcon name="warning" />
-            </span>
-          }
-        >
-          {heading}
-        </SummaryHeading>
+        <div className={s.approvalHeading}>
+          <span className={s.reviewIcon} aria-hidden="true">
+            <AIIcon name="warning" />
+          </span>
+          <div className={s.grow}>
+            <span className={s.eyebrow}>{heading}</span>
+            <h3 className={s.title}>{proposal.title}</h3>
+          </div>
+        </div>
         <StatusBadge state={status} />
       </div>
-      <h3 className={s.title}>{proposal.title}</h3>
-      <dl className={s.definition}>
-        <dt>Affected system</dt>
-        <dd>{proposal.target}</dd>
-        <dt>Impact</dt>
-        <dd>{proposal.impact}</dd>
-        <dt>Requested scope</dt>
-        <dd>{proposal.scopes.join(', ') || 'No scopes supplied'}</dd>
+      <p className={s.approvalSummary}>
+        <span>{proposal.target}</span> ·{' '}
+        <span>{proposal.scopes.join(', ') || 'No scopes supplied'}</span> ·{' '}
+        <span>{proposal.risk} risk</span>
+      </p>
+      <p>{proposal.impact}</p>
+      <dl className={s.definition} {...details.contentProps}>
         <dt>Risk / version</dt>
         <dd>
           {proposal.risk} · v{proposal.version}
         </dd>
         <dt>Expires</dt>
         <dd>
-          <time dateTime={proposal.expiresAt}>{proposal.expiresAt}</time>
+          <ObservationTime value={proposal.expiresAt} />
         </dd>
+        <dt>Execution</dt>
+        <dd>The host verifies permission and the current proposal before execution.</dd>
       </dl>
       {stale && (
         <p className={s.warning}>This proposal changed or is stale. Refresh before deciding.</p>
@@ -118,6 +121,9 @@ export function ApprovalCard({
       ) : (
         <>
           <div className={`${s.actions} ${a.footer}`} role="group" aria-label="Approval decision">
+            <Button variant="ghost" size="sm" {...details.triggerProps}>
+              {details.open ? 'Hide details' : 'Details'}
+            </Button>
             <Button
               variant="outline"
               disabled={unavailable}
@@ -134,7 +140,7 @@ export function ApprovalCard({
               ? 'Sending decision…'
               : submission === 'acknowledged'
                 ? 'Decision acknowledged. Execution is reported separately.'
-                : 'The host verifies permission and the current proposal before execution.'}
+                : ''}
           </p>
         </>
       )}

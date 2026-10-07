@@ -36,7 +36,7 @@
 .grid th {
   padding: 4px 0;
   color: var(--ai-muted, #475569);
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
   font-weight: 500;
 }
 .grid abbr {
@@ -98,7 +98,7 @@
 .status {
   margin: 8px 0 0;
   color: var(--ai-muted, #475569);
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
   overflow-wrap: anywhere;
 }
 .error {

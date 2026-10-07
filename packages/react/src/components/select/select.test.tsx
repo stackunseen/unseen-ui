@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Select, componentVariants } from '@stackunseen/ui';
+import { Field, Select, componentVariants } from '@stackunseen/ui';
 
 describe('Select option reuse', () => {
   it.each(componentVariants.Select)(
@@ -50,4 +50,26 @@ describe('Select option reuse', () => {
       expect(trigger).toHaveFocus();
     },
   );
+});
+
+describe('Select inside a Field', () => {
+  it('takes the field label, description and invalid state like other controls', () => {
+    render(
+      <Field label="Data region" description="Where records are stored." error="Choose a region.">
+        <Select
+          value=""
+          onValueChange={() => {}}
+          options={[{ value: 'eu', label: 'European Union' }]}
+          placeholder="Select a region"
+        />
+      </Field>,
+    );
+    const trigger = screen.getByRole('combobox', { name: 'Data region' });
+    expect(trigger).toHaveAttribute('aria-invalid', 'true');
+    expect(trigger).toHaveAccessibleDescription('Where records are stored. Choose a region.');
+    expect(screen.getByText('Data region').closest('label')).toHaveAttribute(
+      'for',
+      trigger.getAttribute('id'),
+    );
+  });
 });

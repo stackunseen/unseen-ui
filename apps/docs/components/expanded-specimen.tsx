@@ -621,8 +621,15 @@ export function ExpandedSpecimen({
           ]
         : [
             { id: 'name', label: 'Check', sortable: true },
-            { id: 'duration', label: 'Seconds', sortable: true },
-            { id: 'state', label: 'State' },
+            { id: 'duration', label: 'Seconds', sortable: true, format: { kind: 'number' } },
+            {
+              id: 'state',
+              label: 'State',
+              format: {
+                kind: 'status',
+                tones: { Passed: 'success', Running: 'primary', Failed: 'danger' },
+              },
+            },
           ];
       const rows: TableRow[] = [
         {

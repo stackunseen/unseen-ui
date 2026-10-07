@@ -69,3 +69,6 @@ coverage/
 *.log
 id_rsa
 id_ed25519
+
+# Wrangler local state
+.wrangler/

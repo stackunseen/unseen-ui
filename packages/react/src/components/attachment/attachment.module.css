@@ -23,7 +23,7 @@
   align-self: start;
   flex-direction: column;
   padding: 8px;
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
   line-height: 1.5;
   gap: 4px;
 }

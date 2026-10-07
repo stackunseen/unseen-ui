@@ -111,6 +111,9 @@ The application owns validation and persistence. Connect the local callback to y
 | `@stackunseen/ui/editor` | Controlled CodeMirror editing, selection, diagnostics and text proposals | @codemirror/state, @codemirror/view, @codemirror/commands, @codemirror/language, @codemirror/lint, @codemirror/lang-javascript; import editor.css |
 | `@stackunseen/ui/artifact-editor` | Draft preview/edit/diff, save/export requests and receipt recovery | No additional peer; import artifact-editor.css. Compose CodeEditor through renderEditor when needed |
 | `@stackunseen/ui/conversation-flow` | Exact message edit-to-branch and regenerate-to-attempt intents | No additional peer; import conversation-flow.css |
+| `@stackunseen/ui/assistant` | Reasoning summary, ChainOfThought, Plan, Task, Checkpoint, Shimmer, Sources, ModelSelector, OpenInChat | No additional peer; import assistant.css |
+| `@stackunseen/ui/devtools` | Snippet, Commit, EnvironmentVariables, PackageInfo, SchemaDisplay, StackTrace, sandboxed WebPreview | No additional peer; import devtools.css |
+| `@stackunseen/ui/media` | AudioPlayer, Transcription, VoiceSelector, Persona, Image | No additional peer; import media.css |
 | `@stackunseen/ui-core/editing` | Pure document identities, UTF-16 ranges and bounded atomic text edits | None |
 
 Use named public imports. There are no `/button`, `/icons` or generic-family subpaths. Heavy renderer and layout peers stay outside the base entry. Importing an optional entry requires its peers even when a particular render skips that feature. Exact tested versions are in the [React package manifest](../packages/react/package.json) and the relevant feature guide.
@@ -132,3 +135,13 @@ The [root README](../README.md#check-changes) lists development checks. `pnpm ch
 After building and installing the local Playwright Chromium browser, `pnpm test:browser` runs the bounded decision/form/select smoke. It is not a complete browser or assistive-technology audit.
 
 Hosts own authorization, execution, routing, storage and durable receipts. The gallery uses simulated hosts; the file, upload, voice and PTY guides describe separate local integrations. Test your production host and accessibility requirements independently.
+
+If your page reserves a scrollbar gutter (`html { scrollbar-gutter: stable }`), add this rule as well. Select and DropdownMenu lock body scrolling while open; with a reserved gutter that lock hides the scrollbar and shifts the page, so the rule lets the page keep scrolling while the open list follows its trigger. Dialogs keep the lock.
+
+```css
+html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu-content]) {
+  overflow: visible !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+```

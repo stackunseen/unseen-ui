@@ -26,6 +26,7 @@ export function WebsiteFormSpecimen({ name, state }: WebsiteSpecimenProps) {
       <>
         <Field
           label={name === 'Checkbox' ? 'Include documentation' : 'Show release notes'}
+          orientation="horizontal"
           description={description}
           disabled={disabled}
           error={invalid ? 'Review this setting before continuing.' : undefined}

@@ -14,10 +14,15 @@
   justify-content: flex-start;
   inline-size: 100%;
   text-align: start;
+  /* A field, not an action: match the input and select look. */
+  border-color: var(--ai-control-border, #64748b);
+  font-size: inherit;
+  font-weight: 400;
 }
 .trigger:focus-visible {
   outline: 2px solid var(--ai-focus, #2563eb);
-  outline-offset: 3px;
+  outline-offset: -1px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #2563eb) 22%, transparent);
 }
 .trigger[aria-invalid='true'] {
   border-color: var(--ai-danger, #991b1b);
@@ -40,7 +45,7 @@
 .error {
   margin: 0;
   color: var(--ai-muted, #475569);
-  font-size: var(--ai-font-size-meta, 12px);
+  font-size: var(--ai-font-size-meta, 13px);
   overflow-wrap: anywhere;
 }
 .error {
