@@ -122,7 +122,8 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ConnectionStatus',
     category: 'State & status',
-    description: 'Connection and recovery controls with explicit replay capabilities.',
+    description:
+      'Shows the connection state and offers the reconnect and replay actions supplied by the host.',
     states: [
       'Disconnected',
       'Connected',
@@ -144,7 +145,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ModelControls',
     category: 'Model controls',
-    description: 'Capabilities, settings and usage with clear provenance.',
+    description: 'Model capabilities, settings and usage, each showing where the value came from.',
     states: ['Default', 'Loading', 'Unavailable', 'Stale', 'Unsupported', 'Error', 'Usage unknown'],
     contract: 'capabilities · value: ModelSettings · onValueChange · status? · stale? · usage?',
     responsibility:
@@ -154,7 +155,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ContextInspector',
     category: 'Context',
-    description: 'See what was selected, included, excluded or truncated.',
+    description: 'Lists what a request selected, included, excluded or truncated.',
     states: ['Default', 'Stale', 'Unknown usage', 'Over limit', 'Empty', 'Loading', 'Error'],
     contract: 'value: ContextInspection · loading? · error? · onRefresh?',
     responsibility:
@@ -164,7 +165,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'PolicyStatus',
     category: 'Enterprise AI',
-    description: 'Attested results with authority, time, scope and version.',
+    description: 'Attested policy results with their authority, time, scope and version.',
     states: ['Default', 'Passed', 'Blocked', 'Stale', 'Unknown', 'Loading', 'Empty', 'Error'],
     contract: 'checks: PolicyCheck[] · classification? · loading? · error? · onRefresh?',
     responsibility:
@@ -174,7 +175,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Select',
     category: 'Shared controls',
-    description: 'A custom dropdown with keyboard navigation and themed portals.',
+    description: 'A dropdown with keyboard navigation and a themed menu portal.',
     states: ['Default', 'Disabled', 'Long labels'],
     contract: 'value · onValueChange · options · disabled?',
     responsibility: 'Provide an accessible label and disabled options for unavailable choices.',
@@ -183,7 +184,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Accordion',
     category: 'Shared controls',
-    description: 'Progressive disclosure with consistent focus and icon controls.',
+    description: 'Collapsible sections with consistent focus handling and icon controls.',
     states: ['Default', 'Single', 'Long labels'],
     contract: 'items · type · value? · onValueChange? · headingLevel?',
     responsibility: 'Keep decision-critical information visible outside collapsed sections.',
@@ -202,7 +203,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'LoadingIndicator',
     category: 'State & status',
-    description: 'Clear activity without invented progress.',
+    description: 'An activity indicator that never shows invented progress.',
     states: ['Default', 'Small', 'Large', 'Long labels'],
     contract: 'variant · label · size',
     responsibility: 'Render while the host operation is pending. This is indeterminate activity.',
@@ -211,7 +212,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Skeleton',
     category: 'State & status',
-    description: 'Stable placeholders while real content arrives.',
+    description: 'Placeholders that hold space while real content loads.',
     states: ['Default', 'Card', 'Avatar'],
     contract: 'variant · label · lines · shape',
     responsibility: 'Replace placeholders when data arrives; retain an accessible loading label.',
@@ -220,7 +221,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'PromptInput',
     category: 'Conversation',
-    description: 'An intentional start to every conversation.',
+    description: 'A composer for sending a prompt, with attachments, a toolbar and a cancel path.',
     states: [
       'Default',
       'Busy',
@@ -239,7 +240,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Message',
     category: 'Conversation',
-    description: 'A readable home for each response.',
+    description: 'One user, assistant or system message with its parts and references.',
     states: [
       'Default',
       'Streaming',
@@ -261,7 +262,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'MessageActions',
     category: 'Conversation',
-    description: 'Useful actions with explicit feedback.',
+    description: 'Copy, retry, edit and feedback actions for a message, with explicit results.',
     states: ['Default'],
     contract: 'text · onRetry? · onEdit? · onFeedback?',
     responsibility: 'Only provide actions supported by your host.',
@@ -270,7 +271,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'StreamingResponse',
     category: 'Conversation',
-    description: 'Keep partial answers visible and honest.',
+    description: 'Renders an answer as it streams and marks interrupted or failed states.',
     states: [
       'Waiting',
       'Streaming',
@@ -295,7 +296,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Suggestions',
     category: 'Conversation',
-    description: 'Help people find their next question.',
+    description: 'Follow-up prompts the user can send with one click.',
     states: ['Default', 'Disabled'],
     contract: 'items · onSelect · mode: fill | send',
     responsibility: 'Choose whether selection fills a draft or submits.',
@@ -304,7 +305,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Attachment',
     category: 'Conversation',
-    description: 'Composable files, measured progress and accessible media previews.',
+    description: 'File attachments with measured upload progress and accessible media previews.',
     states: [
       'Default',
       'Selected',
@@ -343,7 +344,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'AgentSteps',
     category: 'Execution',
-    description: 'Turn execution into a clear sequence.',
+    description: 'The steps of a run in order, with their states and details.',
     states: ['Default', 'Failed', 'Empty'],
     contract: 'steps: Step[] · label?',
     responsibility: 'Supply public summaries, not private model reasoning.',
@@ -352,7 +353,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ExecutionTimeline',
     category: 'Execution',
-    description: 'Keep a record of what happened, and when.',
+    description: 'A timed record of what happened during a run.',
     states: ['Default', 'Empty'],
     contract: 'entries · filter · onFilterChange?',
     responsibility: 'Timestamps and durations come from the host.',
@@ -361,7 +362,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ToolCall',
     category: 'Tools',
-    description: 'Make inputs, results and failures inspectable.',
+    description: 'A tool request with its input, result, failure and duration.',
     states: [
       'Default',
       'Running',
@@ -382,7 +383,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ToolResult',
     category: 'Tools',
-    description: 'Safe, bounded output with a useful fallback.',
+    description: 'Bounded tool output with a safe fallback for unsupported content.',
     states: ['Default', 'Failed', 'Empty'],
     contract: 'text? · error? · maxCharacters? · onRetry?',
     responsibility: 'Redact secrets before passing content to any UI.',
@@ -391,7 +392,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ToolGroup',
     category: 'Tools',
-    description: 'See completion without losing individual failures.',
+    description: 'Several tool calls grouped together, keeping each failure visible.',
     states: ['Default', 'Failed', 'Empty'],
     contract: 'tools: ToolCallData[]',
     responsibility: 'A group summary does not erase a failed call.',
@@ -400,7 +401,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ApprovalCard',
     category: 'Human review',
-    description: 'A clear decision before a consequential action.',
+    description: 'A review card for approving or rejecting a proposed action.',
     states: ['Default', 'Pending', 'Expired', 'Changed', 'Unknown'],
     contract: 'proposal · submission · stale? · expired? · onDecision · onReconcile?',
     responsibility:
@@ -410,7 +411,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'PermissionRequest',
     category: 'Human review',
-    description: 'Ask for exactly the access you need.',
+    description: 'A request for specific access, with its scope and version shown.',
     states: [
       'Default',
       'Pending',
@@ -432,7 +433,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ClarificationRequest',
     category: 'AI forms',
-    description: 'Resolve uncertainty with a focused question.',
+    description: 'A question the assistant asks before it continues.',
     states: ['Default', 'Text', 'Pending', 'Error', 'Resolved', 'Cancelled'],
     contract: 'question · value · onValueChange · onSubmit · choices? · state?',
     responsibility: 'Validate the answer on the host and acknowledge receipt.',
@@ -441,7 +442,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'AgentCard',
     category: 'Agents',
-    description: 'Identity, capability and activity in one place.',
+    description: 'The identity, capabilities and current activity of one agent.',
     states: ['Default', 'Idle', 'Failed', 'Long labels', 'Read-only'],
     contract: 'name · description · state · activity? · selected? · onSelect?',
     responsibility: 'Identity is separate from the lifecycle of a specific run.',
@@ -450,7 +451,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'SourceCard',
     category: 'Sources & evidence',
-    description: 'Give answers an inspectable source.',
+    description: 'A source behind an answer, with its access state and excerpt.',
     states: ['Default', 'Revoked', 'Missing', 'Host open', 'Long labels'],
     contract: 'source: Source · onOpen?',
     responsibility: 'Enforce source access and supply stable versioned locators.',
@@ -459,7 +460,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Citation',
     category: 'Sources & evidence',
-    description: 'Keep evidence within reach of the answer.',
+    description: 'An inline reference that links a passage to its source.',
     states: ['Default', 'Revoked'],
     contract: 'source: Source · number',
     responsibility: 'The displayed number is not the source identity.',
@@ -468,7 +469,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'EvidenceGroup',
     category: 'Sources & evidence',
-    description: 'Connect a claim to its supporting material.',
+    description: 'A claim with the sources that support it.',
     states: ['Default', 'Empty'],
     contract: 'sources · claim · relationships?',
     responsibility: 'Declare supporting, contradicting or related evidence honestly.',
@@ -477,7 +478,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'GroundingStatus',
     category: 'Sources & evidence',
-    description: 'Show a defined measure, with its limits.',
+    description: 'A grounding measure with its definition and limits.',
     states: ['Default', 'Unknown', 'Long labels'],
     contract: 'value: Grounding',
     responsibility: 'Source coverage is not calibrated answer confidence.',
@@ -486,7 +487,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'MCPServerCard',
     category: 'MCP',
-    description: 'Connection state from your existing host.',
+    description: 'The connection state of an MCP server as reported by the host.',
     states: ['Default', 'Disconnected', 'Unknown', 'Long labels', 'Pending', 'Authorization'],
     contract: 'name · status · toolCount? · onConnect? · onDisconnect?',
     responsibility: 'The host owns transport, credentials and connector permissions.',
@@ -495,7 +496,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'MCPToolList',
     category: 'MCP',
-    description: 'Find available tools and their permissions.',
+    description: 'The tools an MCP server offers and the permissions they need.',
     states: ['Default'],
     contract: 'tools · query · onQueryChange',
     responsibility: 'Tool availability is host supplied; unknown is explicit.',
@@ -504,7 +505,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ContextBar',
     category: 'Context',
-    description: 'Show what is actually included in a request.',
+    description: 'What the current request includes, with removable items.',
     states: ['Default', 'Unknown', 'Long labels', 'Read-only'],
     contract: 'items · usage? · onRemove?',
     responsibility: 'Connected, selected and included are distinct states.',
@@ -513,7 +514,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ArtifactPanel',
     category: 'Artifacts',
-    description: 'A focused place for generated work.',
+    description: 'A panel for generated documents and other artifacts.',
     states: ['Default', 'Loading', 'Empty', 'Failed'],
     contract: 'artifact · open · onOpenChange · loading? · error?',
     responsibility: 'The host resolves versions and content access.',
@@ -522,7 +523,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ArtifactPreview',
     category: 'Artifacts',
-    description: 'Readable documents and bounded tables.',
+    description: 'Read-only previews of documents and bounded tables.',
     states: ['Default', 'Table', 'Unsupported'],
     contract: 'artifact: Artifact · tableLabel?',
     responsibility: 'Only text and bounded JSON tables render in this alpha.',
@@ -531,7 +532,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'StatusBadge',
     category: 'State & status',
-    description: 'A shared language for every operation.',
+    description: 'A status label with a consistent icon and tone for each state.',
     states: ['Default', 'Unknown'],
     contract: 'state · label? · native span props',
     responsibility: 'Unrecognized states never become success.',
@@ -540,7 +541,7 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'Workflow',
     category: 'Workflow',
-    description: 'Follow stages and their dependencies.',
+    description: 'The stages of a workflow and the dependencies between them.',
     states: ['Default', 'Failed', 'Empty'],
     contract: 'steps · selectedId? · onSelect?',
     responsibility: 'A read-only execution view; the host schedules the work.',
