@@ -99,7 +99,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </a>
           <header className="web-header">
             <Link
-              prefetch={false}
               onClick={() => setMenuOpen(false)}
               className="web-brand"
               href="/"
@@ -123,7 +122,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
             >
               {siteNavigation.map(([label, href]) => (
                 <Link
-                  prefetch={false}
                   onClick={() => setMenuOpen(false)}
                   key={href}
                   href={href}
