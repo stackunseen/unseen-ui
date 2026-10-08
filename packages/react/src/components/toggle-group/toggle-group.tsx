@@ -48,16 +48,13 @@ export function ToggleGroup(props: ToggleGroupProps) {
     size = 'default',
     disabled = false,
     className = '',
-    type: _type,
-    value: _value,
-    onValueChange: _onValueChange,
     ...rest
   } = props;
   const allowEmpty = props.type !== 'multiple' && props.allowEmpty === true;
-  const divProps = rest as Omit<ComponentProps<'div'>, 'onChange' | 'defaultValue'> & {
-    allowEmpty?: boolean;
-  };
-  delete divProps.allowEmpty;
+  // Selection props stay out of the DOM element.
+  const divProps: Record<string, unknown> = { ...rest };
+  for (const key of ['type', 'value', 'onValueChange', 'allowEmpty']) delete divProps[key];
+  const elementProps = divProps as Omit<ComponentProps<'div'>, 'onChange' | 'defaultValue'>;
   const group = useRef<HTMLDivElement>(null);
   const multiple = props.type === 'multiple';
   const selected = (option: ToggleGroupOption) =>
@@ -108,7 +105,7 @@ export function ToggleGroup(props: ToggleGroupProps) {
 
   return (
     <div
-      {...divProps}
+      {...elementProps}
       ref={group}
       role={multiple ? 'group' : 'radiogroup'}
       aria-label={label}
@@ -117,7 +114,7 @@ export function ToggleGroup(props: ToggleGroupProps) {
       data-part="toggle-group"
       className={`${d.toggleGroup} ${className}`}
       onKeyDown={(event) => {
-        divProps.onKeyDown?.(event);
+        elementProps.onKeyDown?.(event);
         if (!event.defaultPrevented) onKeyDown(event);
       }}
     >
