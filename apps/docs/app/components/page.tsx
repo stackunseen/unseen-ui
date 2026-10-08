@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { DocsFrame } from '../../components/docs-frame';
 import { ComponentDirectory } from '../../components/component-directory';
 import { catalog } from '../../lib/catalog';
@@ -45,8 +46,8 @@ export default function Page() {
       </header>
       <ComponentDirectory entries={entries} />
       <p className="collection-note">
-        See the components together in the <a href={featuredApp.href}>SaaS admin example</a>, or{' '}
-        <a href="/getting-started/">start with your first component</a>.
+        See the components together in the <Link href={featuredApp.href}>SaaS admin example</Link>,
+        or <Link href="/getting-started/">start with your first component</Link>.
       </p>
     </DocsFrame>
   );

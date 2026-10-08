@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { RotateCcw } from 'lucide-react';
 import { Button, Tabs, Accordion, Select } from '@stackunseen/ui';
@@ -221,9 +222,9 @@ export function ComponentDetail({
                   {peers && (
                     <p className="renderer-dependencies">
                       Optional peers for this example: <code>{peers.join(', ')}</code>.{' '}
-                      <a href="/getting-started/#optional-renderers">
+                      <Link href="/getting-started/#optional-renderers">
                         Installation and stylesheet guide
-                      </a>
+                      </Link>
                       .
                     </p>
                   )}
@@ -287,9 +288,11 @@ export function ComponentDetail({
           >
             See the code example
           </Button>
-          <a href="/docs/integration/">How state and callbacks work</a>
+          <Link href="/docs/integration/">How state and callbacks work</Link>
           {['Modal', 'AlertDialog', 'Card'].includes(entry.name) && (
-            <a href="/docs/customization/#custom-headers-and-footers">Custom headers and footers</a>
+            <Link href="/docs/customization/#custom-headers-and-footers">
+              Custom headers and footers
+            </Link>
           )}
         </div>
         <p className="explorer-note">
@@ -314,9 +317,9 @@ export function ComponentDetail({
                 <p>
                   Change shared colors, spacing, corners and icons with the theme. Use the
                   component's supported props to adapt its content and layout.{' '}
-                  <a href="/docs/customization/">Customization guide</a>
+                  <Link href="/docs/customization/">Customization guide</Link>
                   {' · '}
-                  <a href="/customize/">Theme Studio</a>
+                  <Link href="/customize/">Theme Studio</Link>
                 </p>
               ),
             },

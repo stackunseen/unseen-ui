@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
@@ -15,30 +16,31 @@ export default function Page() {
         connect its values and callbacks to your app.
       </p>
       <div className="docs-links">
-        <a href="/getting-started/">
+        <Link href="/getting-started/">
           <strong>
             Getting started <ArrowRight size={17} aria-hidden="true" />
           </strong>
           <span>Local setup, package imports and a first component.</span>
-        </a>
-        <a href="/docs/customization/">
+        </Link>
+        <Link href="/docs/customization/">
           <strong>
             Themes and icons <ArrowRight size={17} aria-hidden="true" />
           </strong>
           <span>Appearance, density, colors, styling and icon overrides.</span>
-        </a>
-        <a href="/docs/integration/">
+        </Link>
+        <Link href="/docs/integration/">
           <strong>
             Connect to your app <ArrowRight size={17} aria-hidden="true" />
           </strong>
           <span>Use values and callbacks, save changes and handle server responses.</span>
-        </a>
+        </Link>
       </div>
       <h2>Explore while you read</h2>
       <p>
-        The <a href="/components/">component catalog</a> puts live examples beside their props and
-        code. The <a href="/templates/saas-admin/">SaaS admin example</a> combines them in a working
-        app. <a href="/customize/">Customize</a> previews your theme and exports its configuration.
+        The <Link href="/components/">component catalog</Link> puts live examples beside their props
+        and code. The <Link href="/templates/saas-admin/">SaaS admin example</Link> combines them in
+        a working app. <Link href="/customize/">Customize</Link> previews your theme and exports its
+        configuration.
       </p>
       <h2>Current availability</h2>
       <p>

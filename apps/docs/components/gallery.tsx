@@ -1,7 +1,9 @@
 'use client';
+import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import {
   ArrowLeft,
   ArrowRight,
@@ -97,9 +99,9 @@ function LocalLink({
     onNavigate(location);
   }
   return (
-    <a href={siteGalleryHref(location)} onClick={click} {...props}>
+    <Link href={siteGalleryHref(location)} onClick={click} {...props}>
       {children}
-    </a>
+    </Link>
   );
 }
 
@@ -124,6 +126,16 @@ export function Gallery({
   const { theme, setTheme, appearance, setAppearance, iconSet, setIconSet } = useSiteTheme();
   const searchInput = useRef<HTMLInputElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
+  // Client-side route changes land on the new page content, like a same-page change does.
+  const arrived = useRef(`${initialView}:${initialComponent}`);
+  useEffect(() => {
+    const key = `${initialView}:${initialComponent}`;
+    if (arrived.current !== key) {
+      arrived.current = key;
+      focusContent();
+    }
+  }, [initialView, initialComponent]);
 
   useEffect(() => {
     if (view === 'workbench') setWorkbenchVisited(true);
@@ -169,7 +181,9 @@ export function Gallery({
   function navigate(next: GalleryLocation) {
     const destination = siteGalleryHref(next);
     if (destination.split('?')[0] !== window.location.pathname) {
-      window.location.assign(destination);
+      // Another static route: a client transition, not a full document load.
+      setMenuOpen(false);
+      router.push(destination);
       return;
     }
     if (destination !== window.location.pathname + window.location.search) {
@@ -255,9 +269,9 @@ export function Gallery({
           {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
         </button>
         <span>Browse {view === 'components' ? 'components' : 'the library'}</span>
-        <a href="/components/">
+        <Link href="/components/">
           Component index <ArrowRight size={14} aria-hidden="true" />
-        </a>
+        </Link>
       </nav>
       <div className="site-body">
         <aside
@@ -378,9 +392,9 @@ export function Gallery({
                   );
                 })}
                 {section === 'customize' && (
-                  <a className="component-link" href="/getting-started/#customize">
+                  <Link className="component-link" href="/getting-started/#customize">
                     Customization and icons
-                  </a>
+                  </Link>
                 )}
                 <p className="section-description">
                   {section === 'templates'
@@ -408,7 +422,7 @@ export function Gallery({
         <main id="main-content" className="main-content explorer-main" tabIndex={-1}>
           <div className="explorer-context">
             <span>
-              <a href="/components/">Components</a>
+              <Link href="/components/">Components</Link>
               {' / '}
               {view === 'components'
                 ? `${sectionLabels[section]} / ${navigationGroup(entry)}`

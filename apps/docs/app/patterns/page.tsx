@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ExamplePage } from '../../components/example-page';
 import { ArrowRight, Workflow } from 'lucide-react';
 import { pageMetadata } from '../../lib/site-seo';
@@ -35,7 +36,7 @@ export default function Page() {
     >
       <div className="pattern-list">
         {recipes.map((recipe) => (
-          <a key={recipe.href} href={recipe.href}>
+          <Link key={recipe.href} href={recipe.href}>
             <Workflow size={28} aria-hidden="true" />
             <div>
               <h2>{recipe.title}</h2>
@@ -44,12 +45,13 @@ export default function Page() {
                 Try the recipe <ArrowRight size={16} aria-hidden="true" />
               </span>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
       <p className="collection-note">
-        Need a complete application? Explore <a href="/templates/">the templates</a>. Reusable{' '}
-        <a href="/components/#application">application patterns</a> have their own component guides.
+        Need a complete application? Explore <Link href="/templates/">the templates</Link>. Reusable{' '}
+        <Link href="/components/#application">application patterns</Link> have their own component
+        guides.
       </p>
     </ExamplePage>
   );

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { pageMetadata } from '../lib/site-seo';
 export const metadata = {
   ...pageMetadata(
@@ -15,12 +16,12 @@ export default function NotFound() {
       <h1>We could not find that page.</h1>
       <p>Browse the component catalog or pick up the getting started guide.</p>
       <div className="web-actions">
-        <a className="web-button primary" href="/components/">
+        <Link className="web-button primary" href="/components/">
           Browse components
-        </a>
-        <a className="web-button secondary" href="/">
+        </Link>
+        <Link className="web-button secondary" href="/">
           Go home
-        </a>
+        </Link>
       </div>
     </main>
   );

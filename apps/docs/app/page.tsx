@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { HomeShowcase } from '../components/home-showcase';
 import { HomeFinder } from '../components/home-finder';
@@ -55,9 +56,9 @@ export default function Page() {
           </p>
           <div className="home-intro-meta">
             <span>Experimental alpha · On npm as @stackunseen/ui@alpha</span>
-            <a href="/getting-started/">
+            <Link href="/getting-started/">
               Getting started <ArrowRight size={16} aria-hidden="true" />
-            </a>
+            </Link>
           </div>
         </header>
         <HomeShowcase />
@@ -71,21 +72,21 @@ export default function Page() {
           <ol>
             <li>
               <span>01</span>
-              <a href="/getting-started/">
+              <Link href="/getting-started/">
                 Set up your workspace <ArrowRight size={17} aria-hidden="true" />
-              </a>
+              </Link>
             </li>
             <li>
               <span>02</span>
-              <a href="/docs/integration/">
+              <Link href="/docs/integration/">
                 Connect state and callbacks <ArrowRight size={17} aria-hidden="true" />
-              </a>
+              </Link>
             </li>
             <li>
               <span>03</span>
-              <a href="/customize/">
+              <Link href="/customize/">
                 Customize the theme <ArrowRight size={17} aria-hidden="true" />
-              </a>
+              </Link>
             </li>
           </ol>
         </section>

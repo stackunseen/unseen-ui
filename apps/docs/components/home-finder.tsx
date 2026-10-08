@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowRight, ArrowUpRight, Search } from 'lucide-react';
 import type { DirectoryEntry } from './component-directory';
@@ -24,9 +25,9 @@ export function HomeFinder({ entries }: { entries: DirectoryEntry[] }) {
     <section className="home-finder" aria-labelledby="home-find-title">
       <div className="home-finder-heading">
         <h2 id="home-find-title">Find a component</h2>
-        <a href="/components/">
+        <Link href="/components/">
           Browse all {entries.length} <ArrowRight size={16} aria-hidden="true" />
-        </a>
+        </Link>
       </div>
       <label className="home-search">
         <Search size={20} aria-hidden="true" />
@@ -58,13 +59,13 @@ export function HomeFinder({ entries }: { entries: DirectoryEntry[] }) {
       <ul className="home-found-components">
         {items.map((entry) => (
           <li key={entry.name}>
-            <a href={entry.href}>
+            <Link href={entry.href}>
               <span>
                 <strong>{entry.name}</strong>
                 <ArrowUpRight size={17} aria-hidden="true" />
               </span>
               <small>{entry.group}</small>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
