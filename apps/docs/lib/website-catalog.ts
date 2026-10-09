@@ -366,9 +366,9 @@ export const websiteCatalog: CatalogEntry[] = [
     group: 'Data Display',
     aliases: ['Label', 'Category badge', 'Chip'],
     description: 'A neutral label for categories and levels, with tones and two sizes.',
-    states: ['Default', 'Tones', 'Small', 'With icon'],
+    states: ['Default', 'Tones', 'Small', 'With icon', 'Custom hue', 'Mono'],
     contract:
-      'Native span props · children · tone?: neutral | primary | accent | success | warning · size?: default | sm · icon?',
+      'Native span props · children · tone?: neutral | primary | accent | success | warning · hue? · size?: default | sm · mono? · icon?',
     responsibility:
       'Meaning belongs to the application; the tag adds no status semantics. Use StatusBadge for run and approval states.',
     keyboard: 'Inert content; it adds no tab stop.',
@@ -421,6 +421,119 @@ export const websiteCatalog: CatalogEntry[] = [
     presentations: ['card', 'row'],
     presentationProp: 'variant',
   },
+  entry({
+    name: 'SegmentedControl',
+    group: 'Actions',
+    aliases: ['Segmented buttons', 'View switch', 'Joined buttons'],
+    description:
+      'A single choice shown as joined segments, as buttons or as links with aria-current.',
+    states: ['Default', 'Links', 'Small', 'Disabled option'],
+    contract:
+      'label · options: { value, label, description?, href?, disabled? }[] · value · onValueChange? · mode?: buttons | links · size?: default | sm · disabled?',
+    responsibility:
+      'The host owns the value. Button mode is a radiogroup; link mode renders anchors for URL-driven views and works before hydration.',
+    keyboard:
+      'One tab stop. Arrow keys move between segments and, in button mode, select; Home and End jump to the ends.',
+    relatedImports: ['ToggleGroup'],
+    code: '<SegmentedControl label="View" options={views} value={view} onValueChange={setView} />',
+  }),
+  entry({
+    name: 'Chip',
+    group: 'Actions',
+    aliases: ['Filter chip', 'Toggle chip', 'Removable chip', 'ChipGroup'],
+    description:
+      'A compact label that toggles, links or can be removed, with a group that wraps or scrolls.',
+    states: ['Default', 'Links', 'Removable', 'Scrolling group'],
+    contract:
+      'children · pressed/onPressedChange | href/active | onRemove/removeLabel · swatch? · size?: default | sm · disabled? · ChipGroup: label · overflow?: wrap | scroll',
+    responsibility:
+      'Chips report intents; the host applies the filter. Active fills use --ai-chip-active-background and --ai-chip-active-color so labels keep their contrast.',
+    keyboard:
+      'Toggle and remove chips are buttons; link chips are links. Backspace or Delete on a removable chip removes it.',
+    relatedImports: ['ChipGroup'],
+    code: '<ChipGroup label="Lens"><Chip pressed={lens === "agents"} onPressedChange={() => setLens("agents")}>Agents</Chip></ChipGroup>',
+  }),
+  entry({
+    name: 'Stepper',
+    group: 'Navigation',
+    aliases: ['Step indicator', 'Series dots', 'Path steps'],
+    description:
+      'A step indicator for series and multi-step paths, as dots or a list, with optional links.',
+    states: ['Default', 'List', 'With navigation'],
+    contract:
+      'label · steps: { id, label, href?, state?: done | current | upcoming | planned }[] · presentation?: dots | list · previous? · next? · reading?',
+    responsibility:
+      'Supply the current step from routing or host state. Planned steps have no destination; the reading prints "Step 2 of 9" from the current step.',
+    keyboard:
+      'Steps with destinations are ordinary links in a navigation landmark; dots carry their labels for assistive technology.',
+    code: '<Stepper label="Series parts" steps={steps} reading previous={{ href: prev }} next={{ href: next }} />',
+  }),
+  entry({
+    name: 'Disclosure',
+    group: 'Data Display',
+    aliases: ['Details', 'Collapsible', 'Fold', 'Show more'],
+    description: 'One collapsible section on native details and summary, styled like a Card.',
+    states: ['Default', 'Open', 'Plain'],
+    contract:
+      'summary · children · open? · defaultOpen? · onOpenChange? · variant?: card | plain · native details props',
+    responsibility:
+      'Leave open undefined for native behaviour, or control it from the host. Use Accordion for several related sections.',
+    keyboard:
+      'The summary is a native disclosure control: Tab reaches it, Enter or Space toggles it.',
+    relatedImports: ['Accordion'],
+    code: '<Disclosure summary="Overview">{body}</Disclosure>',
+  }),
+  entry({
+    name: 'Matrix',
+    group: 'Data Display',
+    aliases: ['Heatmap', 'Coverage matrix', 'Grid of counts'],
+    description:
+      'A heatmap table of counts with a single-hue fill, linked headers and linked cells.',
+    states: ['Default', 'Linked cells'],
+    contract:
+      'label · rows · columns · value(row, column) · href?(row, column) · max? · format? · caption? · scrollLabel?',
+    responsibility:
+      'Every cell prints its number; the fill from the primary token only reinforces it. Supply counts and destinations from the host.',
+    keyboard:
+      'A real table with scoped headers inside a focusable, labelled scroll region; header and cell links are ordinary links.',
+    relatedImports: ['Table'],
+    code: '<Matrix label="Coverage" rows={disciplines} columns={kinds} value={count} href={filterHref} />',
+  }),
+  entry({
+    name: 'Kbd',
+    group: 'Data Display',
+    aliases: ['Keyboard key', 'Shortcut'],
+    description: 'A keyboard key for shortcuts and instructions.',
+    states: ['Default'],
+    contract: 'Native kbd props · children',
+    responsibility:
+      'Describe the shortcut in nearby text as well; the key alone is not an instruction.',
+    keyboard: 'Inert content; it adds no tab stop.',
+    code: 'Press <Kbd>Esc</Kbd> to close.',
+  }),
+  entry({
+    name: 'SkipLink',
+    group: 'Navigation',
+    aliases: ['Skip to content', 'Skip navigation'],
+    description: 'A link to the main content that appears when focused.',
+    states: ['Default'],
+    contract: 'href · children? · native anchor props',
+    responsibility:
+      'Place it first in the document and give the target tabIndex={-1} so focus lands inside it.',
+    keyboard: 'Tab from the top of the page reveals it; Enter moves focus to the target.',
+    code: '<SkipLink href="#main" />',
+  }),
+  entry({
+    name: 'VisuallyHidden',
+    group: 'Data Display',
+    aliases: ['Screen reader only', 'sr-only'],
+    description: 'Text for assistive technology only, kept in the accessibility tree.',
+    states: ['Default'],
+    contract: 'Native span props · children',
+    responsibility: 'Use it to complete a label, not to hide content that sighted users also need.',
+    keyboard: 'Inert content; it adds no tab stop.',
+    code: '<VisuallyHidden>Opens in a new tab</VisuallyHidden>',
+  }),
 ];
 
 export const websiteNames = new Set<string>(websiteCatalog.map((item) => item.name));

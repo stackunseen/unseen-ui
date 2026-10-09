@@ -35,6 +35,10 @@ const DisplaySpecimen = dynamic(
   () => import('./website-display-specimen').then((m) => m.WebsiteDisplaySpecimen),
   { loading: ExampleLoading },
 );
+const ControlSpecimen = dynamic(
+  () => import('./website-control-specimen').then((m) => m.WebsiteControlSpecimen),
+  { loading: ExampleLoading },
+);
 
 export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
   const { name } = props;
@@ -58,7 +62,18 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
             ? NavigationSpecimen
             : ['LinkButton', 'ToggleGroup', 'Tag', 'Avatar', 'Stat', 'LinkCard'].includes(name)
               ? DisplaySpecimen
-              : SurfaceSpecimen;
+              : [
+                    'SegmentedControl',
+                    'Chip',
+                    'Stepper',
+                    'Disclosure',
+                    'Matrix',
+                    'Kbd',
+                    'SkipLink',
+                    'VisuallyHidden',
+                  ].includes(name)
+                ? ControlSpecimen
+                : SurfaceSpecimen;
   return (
     <div className="generic-demo" data-demo={name}>
       <Component {...props} />

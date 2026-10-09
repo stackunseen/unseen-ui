@@ -1,6 +1,6 @@
 # Website components
 
-The root `@stackunseen/ui` entry includes 28 application component families alongside the AI components. They use the shared stylesheet and theme.
+The root `@stackunseen/ui` entry includes 36 application component families alongside the AI components. They use the shared stylesheet and theme.
 
 ## Available families
 
@@ -12,10 +12,11 @@ The root `@stackunseen/ui` entry includes 28 application component families alon
 | Feedback | Alert, Toast, Progress, EmptyState | Host-supplied messages and measurements; deliberate announcement behavior |
 | Navigation | Breadcrumb, Pagination, Sidebar | Native links/current-page semantics and controlled page requests |
 | Surfaces | Card, Table | Composable section and native table markup |
-| Actions and links | LinkButton, ToggleGroup | Native anchors with Button presentation; controlled single or multiple filter chips |
-| Display | Tag, Avatar, Stat, LinkCard | Inert labels, people, metrics and plain link cards with application-formatted content |
+| Actions and links | LinkButton, ToggleGroup, SegmentedControl, Chip | Native anchors with Button presentation; controlled filter chips, joined segments and toggle, link or removable chips |
+| Display | Tag, Avatar, Stat, LinkCard, Disclosure, Matrix, Kbd, VisuallyHidden | Inert labels, people, metrics, link cards, a native fold, a heatmap table and small primitives |
+| Wayfinding | Stepper, SkipLink | Series and path steps; a focus-revealed link to the main content |
 
-Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available. Dialog and Sheet are gallery aliases for Modal layouts, not additional exports. Use the [root public fixture](../tests/fixtures/website-public-example.tsx) for a composition of all 28 families using only supported imports. Each family also exports its public prop types.
+Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available. Dialog and Sheet are gallery aliases for Modal layouts, not additional exports; a side sheet, drawer or inspector beside content is [Sidecar](APPLICATION-FOUNDATIONS.md#sidecar). Use the [root public fixture](../tests/fixtures/website-public-example.tsx) for a composition of all 36 families using only supported imports. Each family also exports its public prop types.
 
 ## Actions, links and display
 
@@ -25,9 +26,19 @@ Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available.
 
 `Tag` is an inert label with `tone` (`neutral`, `primary`, `accent`, `success`, `warning`) and `size`. Its meaning belongs to the application; `StatusBadge` stays keyed to run and approval states. `Avatar` shows an image, else initials derived from `name` (or explicit `initials`), else a generic icon; it is decorative unless `name` is supplied, which makes it `role="img"`. `Stat` renders an application-formatted `value` with `label`, optional `delta` (whose text must carry the sign; `trend` only colours it) and `note`; `StatGroup` lays a row out responsively. Both render on the server. `LinkCard` is one native anchor with `icon`, `title`, `description` and `meta`, in `card` or `row` presentation; `external` opens a new tab with `rel="noreferrer"`. Use `SourceCard` for cited material with a locator, version and access state.
 
+`SegmentedControl` is a single choice as joined segments: button mode is a radiogroup with one tab stop (arrow keys move and select, Home and End jump); `mode="links"` renders anchors with `aria-current` for URL-driven views, which works in server-rendered filter UIs. Each option may carry a `description` read after its label.
+
+`Chip` is one component with four shapes decided by its props: a toggle (`pressed`/`onPressedChange`), a link (`href`, `active`), a removable value (`onRemove`, with a labelled remove button and Backspace or Delete while focused) or a static label. `swatch` adds a leading colour dot; `--ai-chip-active-background` and `--ai-chip-active-color` set the active fill while keeping text contrast. `ChipGroup` names the row and either wraps or scrolls horizontally; the scroll mode uses `contain: inline-size` so it never widens a flex or grid parent.
+
+`Stepper` renders a navigation landmark with an ordered list of steps (`done`, `current`, `upcoming`, `planned`), as dots that keep their labels for assistive technology or as a printed list, plus optional previous and next links and a "Step 2 of 9" reading. `Disclosure` is a single collapsible section on native `details`/`summary`, controlled through `open`/`onOpenChange` or uncontrolled with `defaultOpen`, styled like a Card or as a plain fold. `Matrix` is a heatmap table: a real `<table>` with scoped row and column headers, header and cell links, a single-hue fill from the primary token behind a printed number in every cell, inside a labelled, focusable scroll region. `Kbd`, `SkipLink` and `VisuallyHidden` are small primitives with native semantics.
+
+`Tag` also takes `hue` (any CSS colour mixed into its surface and text; mid-lightness hues keep AA text contrast in both schemes, very light hues need darkening by the host) and `mono` for identifiers. `Select` accepts option groups (`{ label, options }`) and an inline `label`; its trigger uses the same 13px scale as its items regardless of the parent's type. Per-role corner radii (`buttonRadius`, `pillRadius`, `cardRadius`, `tagRadius`) are theme seeds; see [Theming](THEMING.md).
+
 ### Server Components
 
 Every compound part is also a top-level named export: `CardHeader`, `CardTitle`, `SidebarGroup`, `SidebarLink`, `TooltipTrigger`, `NavigationMenuList`, `DropdownMenuItem`, `ContextMenuContent` and so on. In a Next.js Server Component import those names; the `Card.Header` property form is undefined there because a client reference proxy carries no static properties. The property form works in Client Components.
+
+Button, LinkButton, Tag, Stat, LinkCard, Stepper, Matrix, Kbd, SkipLink, VisuallyHidden, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, SegmentedControl, Chip, Disclosure, Sidecar, Popover, Tooltip, the menus and the dialogs.
 
 ## Forms
 
