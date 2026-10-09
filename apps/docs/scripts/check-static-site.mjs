@@ -1,4 +1,4 @@
-import { readFile, readdir, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { resolve, extname } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { Buffer } from 'node:buffer';
@@ -119,6 +119,7 @@ const report = {
   failures,
   pages,
 };
+await mkdir(resolve('output'), { recursive: true });
 await writeFile(resolve('output/unseen-ui-static-site.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify({ ...report, pages: undefined }, null, 2));
 if (failures.length) process.exitCode = 1;
