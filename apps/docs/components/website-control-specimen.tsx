@@ -50,6 +50,28 @@ const columns = ['Guides', 'Tools', 'Patterns', 'Reports'].map((label) => ({
   id: label.toLowerCase(),
   label,
 }));
+const manyKinds = [
+  'Guides',
+  'Tools',
+  'Patterns',
+  'Reports',
+  'Benchmarks',
+  'Case studies',
+  'Checklists',
+  'Templates',
+  'Talks',
+  'Papers',
+  'Datasets',
+  'Notebooks',
+].map((label) => ({ id: label.toLowerCase().replace(/\s+/g, '-'), label }));
+const wide: Record<string, number | null> = Object.fromEntries(
+  ['rag', 'agents', 'evals', 'observability'].flatMap((row, r) =>
+    manyKinds.map((kind, k) => [
+      `${row}:${kind.id}`,
+      (r * 5 + k * 3) % 7 === 0 ? null : ((r + 1) * (k + 2)) % 9,
+    ]),
+  ),
+);
 const coverage: Record<string, number | null> = {
   'rag:guides': 6,
   'rag:tools': 2,
@@ -145,6 +167,7 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
         steps={steps}
         presentation={state === 'List' ? 'list' : 'dots'}
         reading={state !== 'List'}
+        tooltip={state === 'Tooltips'}
         previous={state === 'With navigation' ? { href: '#part-1' } : undefined}
         next={state === 'With navigation' ? { href: '#part-3', label: 'Scoring' } : undefined}
       />
@@ -164,7 +187,18 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
       </Disclosure>
     );
   if (name === 'Matrix')
-    return (
+    return state === 'Angled headers' ? (
+      <Matrix
+        label="Coverage by kind"
+        caption="Twelve kinds across four disciplines"
+        rows={rows.map((row, index) => ({ ...row, swatch: `hsl(${index * 70 + 20} 60% 50%)` }))}
+        columns={manyKinds}
+        value={(row, column) => wide[`${row.id}:${column.id}`] ?? null}
+        href={(row, column) => `#${row.id}-${column.id}`}
+        columnHeader="angled"
+        zero="·"
+      />
+    ) : (
       <Matrix
         label="Coverage"
         caption="Entries per discipline and kind"

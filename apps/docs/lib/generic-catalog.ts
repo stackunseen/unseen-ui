@@ -99,7 +99,7 @@ export const genericCatalog: CatalogEntry[] = [
     category: 'Inspectors',
     relatedImports: ['Button'],
     description:
-      'A drawer, sheet or inspector panel: docked beside content, floating over it or modal on small screens.',
+      'A drawer, sheet or inspector panel: docked beside content, floating over it, and a modal drawer or bottom sheet on small screens.',
     aliases: ['Inspector', 'Drawer', 'Sheet', 'Sidebar', 'Docked panel'],
     presentations: ['docked', 'drawer', 'overlay'],
     presentationProp: 'presentation',

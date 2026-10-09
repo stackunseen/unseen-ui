@@ -336,7 +336,7 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'Native anchor props · href · variant?: primary | secondary | outline | ghost | danger · size?: default | sm',
     responsibility:
-      'Use LinkButton for navigation and Button for actions. For a router link component, render Button with asChild so the child keeps its own href, target and rel.',
+      'Use LinkButton for navigation and Button for actions. With a LinkProvider at the root it renders the router link; Button with asChild remains for a one-off link component.',
     keyboard:
       'Tab focuses the link; Enter follows it. Modified clicks open new tabs or windows as the browser decides.',
     relatedImports: ['Button'],
@@ -413,7 +413,7 @@ export const websiteCatalog: CatalogEntry[] = [
       contract:
         'href · title · description? · meta? · icon? · external? · variant?: card | row · native anchor props',
       responsibility:
-        'The whole card is one anchor, so keep interactive content out of it. Use SourceCard for cited material with a locator, version and access state.',
+        'The whole card is one anchor (the LinkProvider link when one is set), so keep interactive content out of it. Use SourceCard for cited material with a locator, version and access state.',
       keyboard: 'Tab focuses the card; Enter follows the link.',
       relatedImports: ['SourceCard'],
       code: '<LinkCard href="/guides/rag/" title="Retrieval guide" description="Chunking and ranking." meta="12 min read" />',
@@ -431,9 +431,9 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'label · options: { value, label, description?, href?, disabled? }[] · value · onValueChange? · mode?: buttons | links · size?: default | sm · disabled?',
     responsibility:
-      'The host owns the value. Button mode is a radiogroup; link mode renders anchors for URL-driven views and works before hydration.',
+      'The host owns the value. Button mode is a radiogroup; link mode renders anchors (the LinkProvider link when one is set) for URL-driven views and works before hydration.',
     keyboard:
-      'One tab stop. Arrow keys move between segments and, in button mode, select; Home and End jump to the ends.',
+      'Button mode has one tab stop: arrow keys move and select, Home and End jump to the ends. Link mode puts every link in the tab order.',
     relatedImports: ['ToggleGroup'],
     code: '<SegmentedControl label="View" options={views} value={view} onValueChange={setView} />',
   }),
@@ -447,7 +447,7 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'children · pressed/onPressedChange | href/active | onRemove/removeLabel · swatch? · size?: default | sm · disabled? · ChipGroup: label · overflow?: wrap | scroll',
     responsibility:
-      'Chips report intents; the host applies the filter. Active fills use --ai-chip-active-background and --ai-chip-active-color so labels keep their contrast.',
+      'Chips report intents; the host applies the filter. Link chips render the LinkProvider link when one is set. Active fills use --ai-chip-active-background and --ai-chip-active-color so labels keep their contrast.',
     keyboard:
       'Toggle and remove chips are buttons; link chips are links. Backspace or Delete on a removable chip removes it.',
     relatedImports: ['ChipGroup'],
@@ -459,9 +459,9 @@ export const websiteCatalog: CatalogEntry[] = [
     aliases: ['Step indicator', 'Series dots', 'Path steps'],
     description:
       'A step indicator for series and multi-step paths, as dots or a list, with optional links.',
-    states: ['Default', 'List', 'With navigation'],
+    states: ['Default', 'List', 'With navigation', 'Tooltips'],
     contract:
-      'label · steps: { id, label, href?, state?: done | current | upcoming | planned }[] · presentation?: dots | list · previous? · next? · reading?',
+      'label · steps: { id, label, href?, state?: done | current | upcoming | planned }[] · presentation?: dots | list · previous? · next? · reading? · tooltip?',
     responsibility:
       'Supply the current step from routing or host state. Planned steps have no destination; the reading prints "Step 2 of 9" from the current step.',
     keyboard:
@@ -489,11 +489,11 @@ export const websiteCatalog: CatalogEntry[] = [
     aliases: ['Heatmap', 'Coverage matrix', 'Grid of counts'],
     description:
       'A heatmap table of counts with a single-hue fill, linked headers and linked cells.',
-    states: ['Default', 'Linked cells'],
+    states: ['Default', 'Linked cells', 'Angled headers'],
     contract:
-      'label · rows · columns · value(row, column) · href?(row, column) · max? · format? · caption? · scrollLabel?',
+      'label · rows: { id, label, href?, swatch? }[] · columns · value(row, column) · href?(row, column) · max? · format? · caption? · scrollLabel? · columnHeader?: horizontal | angled · zero?',
     responsibility:
-      'Every cell prints its number; the fill from the primary token only reinforces it. Supply counts and destinations from the host.',
+      'Every cell prints its number; the fill from the primary token only reinforces it and the text flips to the primary foreground at the level the theme measured. Supply counts and destinations from the host.',
     keyboard:
       'A real table with scoped headers inside a focusable, labelled scroll region; header and cell links are ordinary links.',
     relatedImports: ['Table'],

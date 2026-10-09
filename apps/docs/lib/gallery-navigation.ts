@@ -40,6 +40,7 @@ const applicationPlacement: Record<string, (typeof applicationGroups)[number]> =
   MasterDetail: 'Page structure',
   OrgSwitcher: 'Organizations & lists',
   ListToolbar: 'Organizations & lists',
+  FilterBar: 'Organizations & lists',
   SettingsSaveCancel: 'Saving & navigation',
   UnsavedGuard: 'Saving & navigation',
 };

@@ -7,6 +7,7 @@ import type {
   PageHeaderProps,
   OrgSwitcherProps,
   ListToolbarProps,
+  FilterBarProps,
   MasterDetailProps,
   SettingsSaveCancelProps,
   UnsavedGuardProps,
@@ -32,6 +33,7 @@ type APIs = {
   PageHeader: PageHeaderProps;
   OrgSwitcher: OrgSwitcherProps;
   ListToolbar: ListToolbarProps;
+  FilterBar: FilterBarProps;
   MasterDetail: MasterDetailProps;
   SettingsSaveCancel: SettingsSaveCancelProps;
   UnsavedGuard: UnsavedGuardProps;
@@ -331,6 +333,51 @@ const guides = {
         name: 'actions',
         type: 'ReactNode (optional)',
         description: 'List-level buttons or links.',
+      },
+      {
+        name: 'summary',
+        type: 'ReactNode (optional)',
+        description: 'Result summary announced as status text.',
+      },
+    ],
+  },
+  FilterBar: {
+    use: 'One bar above a filtered list: search, an order switch, the main facet as chips and the rest as selects. Apply the filters in your app and pass the result summary back.',
+    keyboard:
+      'Enter in the search box submits. Button-mode order is a radiogroup with arrow keys; chips, links and selects are ordinary controls.',
+    props: [
+      { name: 'searchLabel', type: 'string', description: 'Visible search label.' },
+      { name: 'search', type: 'string', description: 'Controlled query.' },
+      {
+        name: 'onSearchChange',
+        type: '(value: string) => void',
+        description: 'Update the draft query as the user types.',
+      },
+      {
+        name: 'onSearchSubmit',
+        type: '() => void (optional)',
+        description: 'Apply the query on Enter; omit it to filter while typing.',
+      },
+      {
+        name: 'order',
+        type: '{ label, options, value, onValueChange?, mode? } (optional)',
+        description:
+          'A single-choice order or view switch; links mode renders anchors with aria-current.',
+      },
+      {
+        name: 'facet',
+        type: '{ label, options, selected, onToggle?, overflow? } (optional)',
+        description: 'The main facet as chips; options with href render link chips.',
+      },
+      {
+        name: 'selects',
+        type: '{ name, label, value, options, onValueChange, anyLabel? }[] (optional)',
+        description: 'Secondary facets as selects; null means any and the first option says so.',
+      },
+      {
+        name: 'onClear',
+        type: '() => void (optional)',
+        description: 'Shown as a Clear button only while a filter is active.',
       },
       {
         name: 'summary',

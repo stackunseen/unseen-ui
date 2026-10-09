@@ -12,7 +12,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { BrandMark } from './brand-mark';
-import { AITheme, IconsProvider } from '@stackunseen/ui';
+import { AITheme, IconsProvider, LinkProvider } from '@stackunseen/ui';
 import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
 import type { Appearance, ResolvedTheme } from '@stackunseen/ui/theme';
 import { lucideIcons } from './gallery-icons';
@@ -88,115 +88,119 @@ export function SiteShell({ children }: { children: ReactNode }) {
       value={{ theme, setTheme, appearance, setAppearance, iconSet, setIconSet }}
     >
       <IconsProvider icons={iconSet === 'lucide' ? lucideIcons : {}}>
-        <AITheme
-          theme={theme}
-          appearance={appearance}
-          className="unseen-web"
-          data-site-appearance={dark ? 'dark' : 'light'}
-        >
-          <a className="web-skip" href="#main-content">
-            Skip to content
-          </a>
-          <header className="web-header">
-            <Link
-              onClick={() => setMenuOpen(false)}
-              className="web-brand"
-              href="/"
-              aria-label="Unseen UI home"
-            >
-              <span className="web-mark">
-                <BrandMark size={28} />
-              </span>
-              <span>
-                Unseen UI<small>by Stack Unseen</small>
-              </span>
-            </Link>
-            <nav
-              ref={navigationRef}
-              className={`web-nav ${menuOpen ? 'open' : ''}`}
-              id="site-navigation"
-              aria-label="Main navigation"
-              onKeyDown={(event) => {
-                if (event.key === 'Escape') closeMenu();
-              }}
-            >
-              {siteNavigation.map(([label, href]) => (
-                <Link
-                  onClick={() => setMenuOpen(false)}
-                  key={href}
-                  href={href}
-                  aria-current={isSiteSectionActive(path, href) ? 'page' : undefined}
-                >
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            <div className="web-header-actions">
-              <a
-                className="web-icon"
-                href="/components/#component-search"
-                aria-label="Find a component"
+        <LinkProvider component={Link}>
+          <AITheme
+            theme={theme}
+            appearance={appearance}
+            className="unseen-web"
+            data-site-appearance={dark ? 'dark' : 'light'}
+          >
+            <a className="web-skip" href="#main-content">
+              Skip to content
+            </a>
+            <header className="web-header">
+              <Link
+                onClick={() => setMenuOpen(false)}
+                className="web-brand"
+                href="/"
+                aria-label="Unseen UI home"
               >
-                <Search size={18} aria-hidden="true" />
-              </a>
-              <button
-                className="web-icon"
-                type="button"
-                aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-                onClick={() => setAppearance(dark ? 'light' : 'dark')}
-              >
-                {dark ? (
-                  <Sun size={18} aria-hidden="true" />
-                ) : (
-                  <Moon size={18} aria-hidden="true" />
-                )}
-              </button>
-              <button
-                ref={button}
-                className="web-icon web-menu"
-                type="button"
-                aria-controls="site-navigation"
-                aria-expanded={menuOpen}
-                aria-label={menuOpen ? 'Close site menu' : 'Open site menu'}
-                onClick={() => {
-                  if (menuOpen) closeMenu();
-                  else {
-                    setMenuOpen(true);
-                    requestAnimationFrame(() => navigationRef.current?.querySelector('a')?.focus());
-                  }
+                <span className="web-mark">
+                  <BrandMark size={28} />
+                </span>
+                <span>
+                  Unseen UI<small>by Stack Unseen</small>
+                </span>
+              </Link>
+              <nav
+                ref={navigationRef}
+                className={`web-nav ${menuOpen ? 'open' : ''}`}
+                id="site-navigation"
+                aria-label="Main navigation"
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') closeMenu();
                 }}
               >
-                {menuOpen ? (
-                  <X size={20} aria-hidden="true" />
-                ) : (
-                  <Menu size={20} aria-hidden="true" />
-                )}
-              </button>
-            </div>
-          </header>
-          {children}
-          <footer className={`web-footer${path === '/' ? '' : ' web-footer-compact'}`}>
-            <div>
-              <Link
-                prefetch={false}
-                onClick={() => setMenuOpen(false)}
-                className="web-footer-brand"
-                href="/"
-              >
-                Unseen UI
-              </Link>
-              {path === '/' && <p>React components by Stack Unseen. Experimental alpha.</p>}
-              {path !== '/' && <span>Experimental alpha</span>}
-            </div>
-            <nav aria-label="Footer navigation">
-              {siteNavigation.map(([label, href]) => (
-                <Link key={href} prefetch={false} onClick={() => setMenuOpen(false)} href={href}>
-                  {label}
+                {siteNavigation.map(([label, href]) => (
+                  <Link
+                    onClick={() => setMenuOpen(false)}
+                    key={href}
+                    href={href}
+                    aria-current={isSiteSectionActive(path, href) ? 'page' : undefined}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+              <div className="web-header-actions">
+                <a
+                  className="web-icon"
+                  href="/components/#component-search"
+                  aria-label="Find a component"
+                >
+                  <Search size={18} aria-hidden="true" />
+                </a>
+                <button
+                  className="web-icon"
+                  type="button"
+                  aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+                  onClick={() => setAppearance(dark ? 'light' : 'dark')}
+                >
+                  {dark ? (
+                    <Sun size={18} aria-hidden="true" />
+                  ) : (
+                    <Moon size={18} aria-hidden="true" />
+                  )}
+                </button>
+                <button
+                  ref={button}
+                  className="web-icon web-menu"
+                  type="button"
+                  aria-controls="site-navigation"
+                  aria-expanded={menuOpen}
+                  aria-label={menuOpen ? 'Close site menu' : 'Open site menu'}
+                  onClick={() => {
+                    if (menuOpen) closeMenu();
+                    else {
+                      setMenuOpen(true);
+                      requestAnimationFrame(() =>
+                        navigationRef.current?.querySelector('a')?.focus(),
+                      );
+                    }
+                  }}
+                >
+                  {menuOpen ? (
+                    <X size={20} aria-hidden="true" />
+                  ) : (
+                    <Menu size={20} aria-hidden="true" />
+                  )}
+                </button>
+              </div>
+            </header>
+            {children}
+            <footer className={`web-footer${path === '/' ? '' : ' web-footer-compact'}`}>
+              <div>
+                <Link
+                  prefetch={false}
+                  onClick={() => setMenuOpen(false)}
+                  className="web-footer-brand"
+                  href="/"
+                >
+                  Unseen UI
                 </Link>
-              ))}
-            </nav>
-          </footer>
-        </AITheme>
+                {path === '/' && <p>React components by Stack Unseen. Experimental alpha.</p>}
+                {path !== '/' && <span>Experimental alpha</span>}
+              </div>
+              <nav aria-label="Footer navigation">
+                {siteNavigation.map(([label, href]) => (
+                  <Link key={href} prefetch={false} onClick={() => setMenuOpen(false)} href={href}>
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+            </footer>
+          </AITheme>
+        </LinkProvider>
       </IconsProvider>
     </ThemeContext.Provider>
   );

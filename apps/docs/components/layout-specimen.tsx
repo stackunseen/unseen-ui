@@ -78,6 +78,7 @@ export function LayoutSpecimen({
           description="Details for the selected node."
           headingLevel={3}
           inset={{ top: 72, bottom: 16 }}
+          narrowPresentation="sheet"
           initialFocusRef={inspectorStart}
           dismissOnInteractOutside={false}
           bodyLabel="Node details"

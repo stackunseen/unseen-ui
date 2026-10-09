@@ -9,13 +9,13 @@ import {
 } from './gallery-navigation';
 import { isSiteSectionActive, siteNavigation } from './site-navigation';
 describe('library collections', () => {
-  it('places all 147 entries exactly once in a defined group', () => {
-    expect(catalog).toHaveLength(147);
+  it('places all 148 entries exactly once in a defined group', () => {
+    expect(catalog).toHaveLength(148);
     const entries = componentSections.flatMap((section) => sectionCatalog(section));
     expect(entries).toHaveLength(catalog.length);
     expect(new Set(entries.map((entry) => entry.name)).size).toBe(catalog.length);
     expect(componentSections.map((section) => sectionCatalog(section).length)).toEqual([
-      60, 73, 6, 8,
+      60, 73, 7, 8,
     ]);
     for (const section of componentSections) {
       const groups = sectionGroups(section);

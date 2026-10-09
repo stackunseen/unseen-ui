@@ -39,6 +39,7 @@ export type GenericComponent =
   | 'PageHeader'
   | 'OrgSwitcher'
   | 'ListToolbar'
+  | 'FilterBar'
   | 'MasterDetail'
   | 'SettingsSaveCancel'
   | 'UnsavedGuard'

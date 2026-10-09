@@ -6,6 +6,7 @@ import {
   Combobox,
   DataGrid,
   DateRangePicker,
+  FilterBar,
   ListToolbar,
   MasterDetail,
   MultiSelect,
@@ -47,6 +48,95 @@ const columns: DataGridColumn<(typeof customers)[number]>[] = [
   { id: 'company', header: 'Company', cell: (row) => row.company, sortable: true, hideable: true },
   { id: 'status', header: 'Status', cell: (row) => row.status, sortable: true, hideable: true },
 ];
+
+const disciplines = [
+  { value: 'rag', label: 'RAG', count: 12, swatch: 'hsl(20 60% 50%)' },
+  { value: 'agents', label: 'Agents', count: 7, swatch: 'hsl(160 60% 40%)' },
+  { value: 'evals', label: 'Evals', count: 9, swatch: 'hsl(230 60% 55%)' },
+  { value: 'observability', label: 'Observability', count: 4, swatch: 'hsl(300 50% 50%)' },
+];
+const kinds = [
+  {
+    label: 'Writing',
+    options: [
+      { value: 'guide', label: 'Guides' },
+      { value: 'report', label: 'Reports' },
+    ],
+  },
+  {
+    label: 'Code',
+    options: [
+      { value: 'tool', label: 'Tools' },
+      { value: 'pattern', label: 'Patterns' },
+    ],
+  },
+];
+function FilterBarExample({ state }: { state: string }) {
+  const [search, setSearch] = useState('');
+  const [applied, setApplied] = useState('');
+  const [view, setView] = useState('latest');
+  const [selected, setSelected] = useState<string[]>(['agents']);
+  const [kind, setKind] = useState<string | null>(null);
+  const [level, setLevel] = useState<string | null>(null);
+  const links = state === 'URL links';
+  const shown = disciplines
+    .filter((item) => selected.length === 0 || selected.includes(item.value))
+    .reduce((sum, item) => sum + item.count, 0);
+  return (
+    <FilterBar
+      searchLabel="Search the journal"
+      searchPlaceholder="Titles, topics, summaries"
+      search={search}
+      onSearchChange={setSearch}
+      onSearchSubmit={() => setApplied(search.trim())}
+      disabled={state === 'Disabled'}
+      order={{
+        label: 'Order',
+        value: view,
+        onValueChange: setView,
+        mode: links ? 'links' : 'buttons',
+        options: [
+          { value: 'latest', label: 'Latest', href: '#latest' },
+          { value: 'grouped', label: 'By discipline', href: '#grouped' },
+        ],
+      }}
+      facet={{
+        label: 'Discipline',
+        options: links
+          ? disciplines.map((item) => ({ ...item, href: `#discipline-${item.value}` }))
+          : disciplines,
+        selected,
+        onToggle: (value) =>
+          setSelected((current) =>
+            current.includes(value)
+              ? current.filter((item) => item !== value)
+              : [...current, value],
+          ),
+      }}
+      selects={[
+        { name: 'kind', label: 'Kind', value: kind, options: kinds, onValueChange: setKind },
+        {
+          name: 'level',
+          label: 'Level',
+          value: level,
+          onValueChange: setLevel,
+          options: [
+            { value: 'intro', label: 'Introductory' },
+            { value: 'advanced', label: 'Advanced' },
+          ],
+        },
+      ]}
+      onClear={() => {
+        setSearch('');
+        setApplied('');
+        setSelected([]);
+        setKind(null);
+        setLevel(null);
+      }}
+      summary={`${shown} of 32 entries${applied ? ` matching "${applied}"` : ''}`}
+    />
+  );
+}
 
 function GridExample({ state }: { state: string }) {
   const [query, setQuery] = useState('');
@@ -246,6 +336,7 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
         }
       />
     );
+  else if (name === 'FilterBar') content = <FilterBarExample state={state} />;
   else if (name === 'MasterDetail')
     content = (
       <MasterDetail

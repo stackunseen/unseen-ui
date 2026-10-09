@@ -117,6 +117,22 @@ export const applicationCatalog: CatalogEntry[] = [
     code: '<ListToolbar searchLabel="Find customers" search={query} onSearchChange={setQuery}\n  filters={filters} actions={actions} summary={`${total} customers`} />',
   }),
   application({
+    name: 'FilterBar',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description:
+      'Search, an order switch, a chip row for the main facet and selects for the rest, driven by host or URL state.',
+    states: ['Default', 'URL links', 'Disabled'],
+    contract:
+      'searchLabel · search · onSearchChange · onSearchSubmit? · order? · facet? · selects? · onClear? · summary? · disabled?',
+    responsibility:
+      'Keep every value in the host, usually the URL. Link mode on order and facet renders anchors; a LinkProvider makes them router links. The bar never filters data itself.',
+    keyboard:
+      'Enter in the search box submits. Button-mode order is a radiogroup with arrow keys; chips, links and selects are ordinary controls.',
+    code: '<FilterBar searchLabel="Search the journal" search={q} onSearchChange={setQ} onSearchSubmit={apply}\n  order={{ label: "Order", value: view, options: views, mode: "links" }}\n  facet={{ label: "Discipline", options: disciplines, selected, onToggle }}\n  selects={[{ name: "kind", label: "Kind", value: kind, options: kinds, onValueChange: setKind }]}\n  onClear={clear} summary={`${shown} of ${total} entries`} />',
+    relatedImports: ['Chip', 'SegmentedControl', 'Select'],
+  }),
+  application({
     name: 'MasterDetail',
     group: 'Application patterns',
     category: 'Application patterns',

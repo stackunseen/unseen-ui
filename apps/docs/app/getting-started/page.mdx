@@ -133,6 +133,19 @@ import { Card, CardHeader, CardTitle, CardContent } from '@stackunseen/ui';
 
 The property form (`Card.Header`) works in Client Components. Button, LinkButton, Tag, Stat, LinkCard, Stepper, Matrix, Kbd, SkipLink, VisuallyHidden, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, SegmentedControl, Chip, Disclosure, Sidecar, Popover, Tooltip, the menus and the dialogs.
 
+### Router links
+
+Chip, SegmentedControl, Stepper, LinkCard, LinkButton and Matrix render native anchors by default. In Next.js that is a full document load on every filter click. Wrap the app once in `LinkProvider` with the router's link and every one of them renders it instead, with prefetching and client-side navigation:
+
+```tsx
+import Link from 'next/link';
+import { LinkProvider } from '@stackunseen/ui';
+
+<LinkProvider component={Link}>{children}</LinkProvider>;
+```
+
+The provider is a Client Component that a root layout can render; the components inside keep rendering on the server. `useLinkComponent` returns the same component for anchors you render yourself. Disabled links stay native and have no destination.
+
 ### Dark code panels on a light page
 
 Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (or any component) to render it dark inside a light page. The nested provider inherits the parent theme's colours and scopes its tokens to that subtree, and portals opened from inside it keep the same appearance.
