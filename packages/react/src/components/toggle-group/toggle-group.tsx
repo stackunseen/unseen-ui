@@ -2,6 +2,7 @@
 import { useRef } from 'react';
 import type { ComponentProps, KeyboardEvent, ReactNode } from 'react';
 import type { VariantProps } from '../../shared/variants.js';
+import { rovingTarget } from '../../shared/roving-focus.js';
 import d from '../../shared/styles/display.module.css';
 
 export interface ToggleGroupOption {
@@ -33,8 +34,6 @@ export interface MultipleToggleGroupProps extends ToggleGroupBaseProps {
   onValueChange: (value: readonly string[]) => void;
 }
 export type ToggleGroupProps = SingleToggleGroupProps | MultipleToggleGroupProps;
-
-const navigationKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
 
 /**
  * A row of filter chips. Single selection uses radio semantics (arrow keys move and select);
@@ -80,26 +79,11 @@ export function ToggleGroup(props: ToggleGroupProps) {
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (!navigationKeys.includes(event.key) || enabled.length === 0) return;
     const buttons = [...(group.current?.querySelectorAll<HTMLButtonElement>('button') ?? [])];
-    const focused = buttons.findIndex((button) => button === document.activeElement);
-    const enabledIndexes = buttons
-      .map((button, index) => (button.disabled ? -1 : index))
-      .filter((index) => index >= 0);
-    if (enabledIndexes.length === 0) return;
-    const position = Math.max(0, enabledIndexes.indexOf(focused));
-    const next =
-      event.key === 'Home'
-        ? 0
-        : event.key === 'End'
-          ? enabledIndexes.length - 1
-          : event.key === 'ArrowRight' || event.key === 'ArrowDown'
-            ? (position + 1) % enabledIndexes.length
-            : (position - 1 + enabledIndexes.length) % enabledIndexes.length;
-    event.preventDefault();
-    const target = buttons[enabledIndexes[next]!];
-    target?.focus();
-    const option = options.find((item) => item.value === target?.dataset.value);
+    const target = rovingTarget(event, buttons);
+    if (!target) return;
+    target.focus();
+    const option = options.find((item) => item.value === target.dataset.value);
     if (!multiple && option && props.value !== option.value) props.onValueChange(option.value);
   }
 

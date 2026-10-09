@@ -25,7 +25,8 @@ const metrics = {
   baseCssGzipBytes: gzipSync(css).length,
 };
 console.log(JSON.stringify(metrics, null, 2));
-if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 20480)
+// Base CSS budget raised from 20 KiB to 24 KiB on 2026-10-09 (recorded in docs/QUALITY-AND-RELEASE.md).
+if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 24576)
   throw new Error('Initial bundle budget exceeded.');
 
 const markdownResult = await build({

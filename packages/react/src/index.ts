@@ -197,7 +197,12 @@ export { Modal } from './components/modal/modal.js';
 export type { ButtonProps } from './components/button/button.js';
 export { Select } from './components/select/select.js';
 export { Accordion } from './components/accordion/accordion.js';
-export type { SelectProps, SelectOption } from './components/select/select.js';
+export type {
+  SelectProps,
+  SelectOption,
+  SelectOptionGroup,
+  SelectChoice,
+} from './components/select/select.js';
 export type { AccordionProps, AccordionItem } from './components/accordion/accordion.js';
 export { AIIcon, IconsProvider } from './providers/icons/icons.js';
 export type {
@@ -458,6 +463,37 @@ export { Stat, StatGroup } from './components/stat/stat.js';
 export type { StatProps, StatGroupProps } from './components/stat/stat.js';
 export { LinkCard } from './components/link-card/link-card.js';
 export type { LinkCardProps } from './components/link-card/link-card.js';
+export { SegmentedControl } from './components/segmented-control/segmented-control.js';
+export type {
+  SegmentedControlProps,
+  SegmentedOption,
+} from './components/segmented-control/segmented-control.js';
+export { Chip, ChipGroup } from './components/chip/chip.js';
+export type {
+  ChipProps,
+  ChipGroupProps,
+  ToggleChipProps,
+  LinkChipProps,
+  RemovableChipProps,
+  StaticChipProps,
+} from './components/chip/chip.js';
+export { VisuallyHidden } from './components/visually-hidden/visually-hidden.js';
+export type { VisuallyHiddenProps } from './components/visually-hidden/visually-hidden.js';
+export { Kbd } from './components/kbd/kbd.js';
+export type { KbdProps } from './components/kbd/kbd.js';
+export { SkipLink } from './components/skip-link/skip-link.js';
+export type { SkipLinkProps } from './components/skip-link/skip-link.js';
+export { Stepper } from './components/stepper/stepper.js';
+export type {
+  StepperProps,
+  StepperStep,
+  StepperLink,
+  StepState,
+} from './components/stepper/stepper.js';
+export { Disclosure } from './components/disclosure/disclosure.js';
+export type { DisclosureProps } from './components/disclosure/disclosure.js';
+export { Matrix } from './components/matrix/matrix.js';
+export type { MatrixProps, MatrixAxisItem } from './components/matrix/matrix.js';
 export {
   Table,
   TableCaption,

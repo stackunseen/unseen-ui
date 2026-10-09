@@ -29,6 +29,15 @@ import {
   StatGroup,
   Tag,
   ToggleGroup,
+  SegmentedControl,
+  Chip,
+  ChipGroup,
+  Stepper,
+  Disclosure,
+  Matrix,
+  Kbd,
+  SkipLink,
+  VisuallyHidden,
   Popover,
   Progress,
   RadioGroup,
@@ -128,6 +137,48 @@ export function WebsitePublicExample() {
           <Stat label="Paid this month" value="4" />
         </StatGroup>
         <Tag tone="primary">Alpha</Tag>
+        <Tag hue="#b45309" mono>
+          v0.1
+        </Tag>
+        <SegmentedControl
+          label="View"
+          mode="links"
+          value="latest"
+          options={[
+            { value: 'latest', label: 'Latest', href: '/billing/' },
+            { value: 'archive', label: 'Archive', href: '/billing/archive/' },
+          ]}
+        />
+        <ChipGroup label="Filters" overflow="scroll">
+          <Chip href="/billing/?paid" active>
+            Paid
+          </Chip>
+          <Chip pressed={false} onPressedChange={() => {}}>
+            Overdue
+          </Chip>
+          <Chip onRemove={() => {}}>Q3</Chip>
+        </ChipGroup>
+        <Stepper
+          label="Setup"
+          reading
+          steps={[
+            { id: 'a', label: 'Account', href: '/setup/a', state: 'done' },
+            { id: 'b', label: 'Billing', state: 'current' },
+          ]}
+        />
+        <Disclosure summary="More options" defaultOpen>
+          <p>Folded content.</p>
+        </Disclosure>
+        <Matrix
+          label="Coverage"
+          rows={[{ id: 'r', label: 'Row' }]}
+          columns={[{ id: 'c', label: 'Column' }]}
+          value={() => 2}
+        />
+        <p>
+          Press <Kbd>Esc</Kbd> to close. <VisuallyHidden>Closes the dialog.</VisuallyHidden>
+        </p>
+        <SkipLink href="#public-website-title" />
         <Avatar name="Sample team" />
         <LinkCard href="/billing/history" title="Invoice history" description="Public fixture." />
         <LinkButton href="/billing/new" variant="outline">
