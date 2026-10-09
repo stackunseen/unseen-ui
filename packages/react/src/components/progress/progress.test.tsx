@@ -65,3 +65,32 @@ describe('native measured progress', () => {
     expect(screen.queryByText('99%')).not.toBeInTheDocument();
   });
 });
+
+describe('Progress label visibility', () => {
+  it('keeps a hidden label as the accessible name and can drop the visible reading', () => {
+    const { rerender } = render(
+      <Progress
+        label="Series progress"
+        value={3}
+        max={8}
+        valueText="3 of 8 published"
+        labelVisibility="hidden"
+      />,
+    );
+    const meter = screen.getByRole('progressbar', { name: 'Series progress' });
+    expect(meter).toHaveAttribute('aria-valuetext', '3 of 8 published');
+    expect(screen.getByText('Series progress')).toHaveClass(/srOnly/);
+    expect(screen.getByText('3 of 8 published')).toBeVisible();
+    rerender(
+      <Progress
+        label="Series progress"
+        value={3}
+        max={8}
+        labelVisibility="hidden"
+        showReading={false}
+      />,
+    );
+    expect(screen.getByRole('progressbar', { name: 'Series progress' })).toBeInTheDocument();
+    expect(screen.queryByText('37%')).not.toBeInTheDocument();
+  });
+});

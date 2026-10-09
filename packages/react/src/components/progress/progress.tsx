@@ -22,12 +22,18 @@ export interface ProgressProps extends Omit<
   max?: number;
   /** Human-readable measurement, e.g. "3 of 8 files". Also exposed to assistive technology. */
   valueText?: string;
+  /** Hidden keeps the label for assistive technology when the title is already on screen. */
+  labelVisibility?: 'visible' | 'hidden';
+  /** Hide the visible reading when the host prints it elsewhere. */
+  showReading?: boolean;
 }
 export function Progress({
   label,
   value,
   max = 100,
   valueText,
+  labelVisibility = 'visible',
+  showReading = true,
   className = '',
   ...props
 }: ProgressProps) {
@@ -40,11 +46,19 @@ export function Progress({
     valueText ?? (bounded === undefined ? 'In progress' : `${Math.floor((bounded / max) * 100)}%`);
   return (
     <div className={s.progressGroup} data-state={state}>
-      <div className={s.progressLabel}>
-        <span id={labelId}>{label.trim() || 'Progress'}</span>
-        <span className={s.progressReading} aria-hidden="true">
-          {reading}
+      <div
+        className={s.progressLabel}
+        data-label-visibility={labelVisibility}
+        hidden={labelVisibility === 'hidden' && !showReading ? true : undefined}
+      >
+        <span id={labelId} className={labelVisibility === 'hidden' ? s.srOnly : undefined}>
+          {label.trim() || 'Progress'}
         </span>
+        {showReading && (
+          <span className={s.progressReading} aria-hidden="true">
+            {reading}
+          </span>
+        )}
       </div>
       <progress
         {...props}

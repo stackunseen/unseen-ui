@@ -227,8 +227,9 @@ export const websiteCatalog: CatalogEntry[] = [
     group: 'Feedback',
     aliases: ['Progress bar', 'Indeterminate progress'],
     description: 'Named native progress for a measured amount or an explicitly unknown total.',
-    states: ['Default', 'Indeterminate', 'Complete'],
-    contract: 'label: string · value?: number | null · max?: number · valueText?',
+    states: ['Default', 'Indeterminate', 'Complete', 'Hidden label'],
+    contract:
+      'label: string · value?: number | null · max?: number · valueText? · labelVisibility?: visible | hidden · showReading?',
     responsibility:
       'Use a numeric value only for measured work with a known denominator. The interactive example counts local sample steps; it does not claim real upload or AI completion progress.',
     keyboard:

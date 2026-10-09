@@ -1,5 +1,5 @@
 'use client';
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { Button, StatusBadge } from '@stackunseen/ui';
 import { PanelHeader, WorkspaceShell } from '@stackunseen/ui/workspace';
 import { Sidecar } from '@stackunseen/ui/sidecar';
@@ -17,6 +17,8 @@ export function LayoutSpecimen({
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState('Overview');
   const [notice, setNotice] = useState('');
+  const [canvasSelection, setCanvasSelection] = useState<string | null>(null);
+  const inspectorStart = useRef<HTMLDivElement>(null);
   if (name === 'PanelHeader')
     return (
       <div className="generic-demo" data-demo={name}>
@@ -45,6 +47,49 @@ export function LayoutSpecimen({
         </p>
       </div>
     );
+  if (name === 'Sidecar' && state === 'Beside a canvas') {
+    const selected = canvasSelection !== null;
+    return (
+      <div className="generic-demo generic-sidecar-demo" data-demo={name}>
+        <p>
+          Pick a node on the canvas. The inspector opens from that selection, takes focus, closes on
+          Escape from anywhere and stays clear of the header above it.
+        </p>
+        <div className="generic-canvas" role="group" aria-label="Sample canvas">
+          {['Ingest', 'Index', 'Rank'].map((node) => (
+            <button
+              key={node}
+              type="button"
+              className="generic-canvas-node"
+              aria-pressed={canvasSelection === node}
+              onClick={() => setCanvasSelection(canvasSelection === node ? null : node)}
+            >
+              {node}
+            </button>
+          ))}
+        </div>
+        <Sidecar
+          presentation="overlay"
+          open={selected}
+          onOpenChange={(next) => {
+            if (!next) setCanvasSelection(null);
+          }}
+          title={canvasSelection ? `${canvasSelection} node` : 'Node'}
+          description="Details for the selected node."
+          headingLevel={3}
+          inset={{ top: 72, bottom: 16 }}
+          initialFocusRef={inspectorStart}
+          dismissOnInteractOutside={false}
+          bodyLabel="Node details"
+        >
+          <div ref={inspectorStart} tabIndex={-1}>
+            <p>Stage: {canvasSelection}</p>
+            <p>Owner: Platform team</p>
+          </div>
+        </Sidecar>
+      </div>
+    );
+  }
   if (name === 'Sidecar') {
     const mode = presentation === 'drawer' || presentation === 'overlay' ? presentation : 'docked';
     return (

@@ -34,7 +34,7 @@ export function ThemedPrompt({ onSubmit }: { onSubmit: (text: string) => void })
 
 | Option | Allowed values | Applies to |
 | --- | --- | --- |
-| primary / secondary / accent | Opaque six-digit hex | Resolved light/dark brand palette |
+| primary / secondary / accent | Opaque six-digit hex | Resolved light/dark brand palette. A seed within 3:1 of the mode's surface is adjusted for that mode: neutral ink inverts to the text colour, other hues shift in lightness, so filled controls stay visible in both appearances |
 | radius | Integer 0–24px | General panels and floating surfaces |
 | controlRadius / composerRadius | Integer 0–24px | Buttons/fields and composers respectively |
 | borderStrength | subtle / balanced / strong | Field and outline-control boundary colour |

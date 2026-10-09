@@ -160,3 +160,23 @@ describe('theme resolver', () => {
     }
   });
 });
+
+describe('brand fills against the surface', () => {
+  it('inverts a neutral ink primary in dark mode and keeps chromatic primaries visible', () => {
+    const ink = createTheme({ primary: '#0a0a0b', secondary: '#3f3f46', accent: '#3f3f46' });
+    expect(ink.light.primary).toBe('#0a0a0b');
+    expect(ink.dark.primary).toBe('#fafafa');
+    expect(wcagContrast(ink.dark['primary-foreground'], ink.dark.primary)).toBeGreaterThanOrEqual(
+      4.5,
+    );
+    for (const mode of ['light', 'dark'] as const) {
+      expect(wcagContrast(ink[mode].primary, ink[mode].surface)).toBeGreaterThanOrEqual(3);
+      expect(wcagContrast(ink[mode].secondary, ink[mode].surface)).toBeGreaterThanOrEqual(3);
+    }
+    const navy = createTheme({ primary: '#101c3a' });
+    expect(navy.light.primary).toBe('#101c3a');
+    expect(navy.dark.primary).not.toBe('#101c3a');
+    expect(wcagContrast(navy.dark.primary, navy.dark.surface)).toBeGreaterThanOrEqual(3);
+    expect(ink.diagnostics.filter((item) => !item.passes)).toEqual([]);
+  });
+});

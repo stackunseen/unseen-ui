@@ -452,3 +452,93 @@ describe('Sidecar controlled compositions', () => {
     expect(props.onOpenChange).not.toHaveBeenCalled();
   });
 });
+
+describe('Sidecar overlay inspector opened by host state', () => {
+  function Host({
+    initial,
+    closeOnEscape,
+    inset,
+  }: {
+    initial?: boolean;
+    closeOnEscape?: boolean;
+    inset?: number | { top?: number; bottom?: number; inline?: number };
+  }) {
+    const [open, setOpen] = useState(false);
+    const start = useRef<HTMLDivElement>(null);
+    const opener = useRef<HTMLButtonElement>(null);
+    return (
+      <>
+        <Button ref={opener} onClick={() => setOpen(true)}>
+          Inspect node
+        </Button>
+        <Sidecar
+          open={open}
+          onOpenChange={setOpen}
+          title="Node inspector"
+          presentation="overlay"
+          mobileBreakpoint={false}
+          initialFocusRef={initial ? start : undefined}
+          returnFocusRef={opener}
+          closeOnEscape={closeOnEscape}
+          inset={inset}
+        >
+          <div ref={start} tabIndex={-1} data-testid="start">
+            Node details
+          </div>
+        </Sidecar>
+      </>
+    );
+  }
+
+  it('moves focus to initialFocusRef once the portal content mounts', async () => {
+    render(<Host initial />);
+    await userEvent.click(screen.getByRole('button', { name: 'Inspect node' }));
+    await waitFor(() => expect(screen.getByTestId('start')).toHaveFocus());
+  });
+
+  it('focuses the panel itself when no initial target is given', async () => {
+    render(<Host />);
+    await userEvent.click(screen.getByRole('button', { name: 'Inspect node' }));
+    await waitFor(() => expect(screen.getByRole('complementary')).toHaveFocus());
+  });
+
+  it('closes on Escape while focus is outside and returns focus to the opener', async () => {
+    render(
+      <>
+        <Host initial />
+        <Button>Elsewhere</Button>
+      </>,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Inspect node' }));
+    await waitFor(() => expect(screen.getByTestId('start')).toHaveFocus());
+    await userEvent.click(screen.getByRole('button', { name: 'Elsewhere' }));
+    expect(screen.getByRole('button', { name: 'Elsewhere' })).toHaveFocus();
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(screen.queryByRole('complementary')).not.toBeInTheDocument());
+    expect(screen.getByRole('button', { name: 'Inspect node' })).toHaveFocus();
+  });
+
+  it('keeps the inspector open on outside Escape when the host opts out', async () => {
+    render(
+      <>
+        <Host closeOnEscape={false} />
+        <Button>Elsewhere</Button>
+      </>,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Inspect node' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Elsewhere' }));
+    await userEvent.keyboard('{Escape}');
+    expect(screen.getByRole('complementary')).toBeVisible();
+  });
+
+  it('exposes inset values as custom properties for the overlay geometry', async () => {
+    const { rerender } = render(<Host inset={{ top: 74, bottom: 24 }} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Inspect node' }));
+    const panel = await screen.findByRole('complementary');
+    expect(panel.style.getPropertyValue('--ai-sidecar-inset-top')).toBe('74px');
+    expect(panel.style.getPropertyValue('--ai-sidecar-inset-bottom')).toBe('24px');
+    expect(panel.style.getPropertyValue('--ai-sidecar-inset')).toBe('');
+    rerender(<Host inset={20} />);
+    expect(panel.style.getPropertyValue('--ai-sidecar-inset')).toBe('20px');
+  });
+});

@@ -44,17 +44,21 @@
 .root[data-presentation='drawer'][data-side='start'] {
   inset-inline-start: 0;
 }
+/* Hosts clear a sticky header with the inset prop or these custom properties. */
 .root[data-presentation='overlay'] {
-  inset-block: 16px;
-  inline-size: min(var(--ai-sidecar-width, 400px), calc(100vw - 32px));
-  max-inline-size: calc(100vw - 32px);
+  --sidecar-inset-top: var(--ai-sidecar-inset-top, var(--ai-sidecar-inset, 16px));
+  --sidecar-inset-bottom: var(--ai-sidecar-inset-bottom, var(--ai-sidecar-inset, 16px));
+  --sidecar-inset-inline: var(--ai-sidecar-inset, 16px);
+  inset-block: var(--sidecar-inset-top) var(--sidecar-inset-bottom);
+  inline-size: min(var(--ai-sidecar-width, 400px), calc(100vw - 2 * var(--sidecar-inset-inline)));
+  max-inline-size: calc(100vw - 2 * var(--sidecar-inset-inline));
   border-radius: var(--ai-radius, 10px);
 }
 .root[data-presentation='overlay'][data-side='end'] {
-  inset-inline-end: 16px;
+  inset-inline-end: var(--sidecar-inset-inline);
 }
 .root[data-presentation='overlay'][data-side='start'] {
-  inset-inline-start: 16px;
+  inset-inline-start: var(--sidecar-inset-inline);
 }
 .backdrop {
   position: fixed;

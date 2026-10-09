@@ -105,11 +105,13 @@ export function WebsiteFeedbackSpecimen({ name, state }: WebsiteSpecimenProps) {
   if (name === 'Progress')
     return (
       <>
+        {state === 'Hidden label' && <h3 style={{ margin: '0 0 8px' }}>Sample steps completed</h3>}
         <Progress
           label="Sample steps completed"
           value={state === 'Indeterminate' ? null : steps}
           max={10}
           valueText={state === 'Indeterminate' ? undefined : `${steps} of 10 sample steps`}
+          labelVisibility={state === 'Hidden label' ? 'hidden' : 'visible'}
         />
         <p className="generic-demo-status">
           {state === 'Indeterminate'

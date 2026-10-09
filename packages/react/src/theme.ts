@@ -84,12 +84,23 @@ function readable(seed: string, background: string, dark: boolean, minimum = 4.5
   }
   return foreground(background);
 }
+/**
+ * A brand colour too close to the mode's surface (a near-black "ink" primary in dark mode)
+ * would render filled controls invisible. Neutral ink inverts to the mode's text colour;
+ * other hues move in lightness until the fill stands 3:1 from the surface.
+ */
+function distinct(seed: string, surface: string, dark: boolean): string {
+  if (wcagContrast(seed, surface) >= 3) return seed;
+  const chroma = toOklch(seed)!.c;
+  if (chroma < 0.03) return dark ? '#fafafa' : '#18181b';
+  return readable(seed, surface, dark, 3);
+}
 function palette(seeds: Required<ThemeInput>, dark: boolean): ThemeTokens {
   const surface = dark ? '#18181b' : '#ffffff';
   const subtle = dark ? '#27272a' : '#f4f4f5';
-  const primary = seeds.primary;
-  const secondary = seeds.secondary;
-  const accent = seeds.accent;
+  const primary = distinct(seeds.primary, surface, dark);
+  const secondary = distinct(seeds.secondary, surface, dark);
+  const accent = distinct(seeds.accent, surface, dark);
   const p = toOklch(primary)!;
   const s = toOklch(secondary)!;
   return {
@@ -149,6 +160,8 @@ function diagnose(light: ThemeTokens, dark: ThemeTokens): ContrastDiagnostic[] {
     ['warning', 'warning-soft', 4.5],
     ['danger', 'danger-soft', 4.5],
     ['focus', 'surface', 3],
+    ['primary', 'surface', 3],
+    ['secondary', 'surface', 3],
     ['control-border', 'surface', 3],
     ['control-border', 'surface-subtle', 3],
   ];

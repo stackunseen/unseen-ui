@@ -53,7 +53,7 @@ Alert defaults to static content. Set announcement behavior deliberately when a 
 
 Use one ToastProvider and ToastViewport per notification area. The default duration is 10 seconds; `Infinity` keeps a notification until dismissal. The primitive handles its supported interaction pauses. Toast defaults to background/polite delivery, and hosts own open state, notification identities and retained history. ToastAction's `altText` describes another way to perform the action after expiration. F8 moves focus into the viewport. Choose an appropriate viewport label and direction for the application.
 
-Progress takes a required label and a measured `value`/`max`. Missing, null or non-finite measurements remain indeterminate; invalid maxima also remain indeterminate. `valueText` explains units, such as "3 of 8 files". Reaching the maximum describes the supplied measurement, not proof of backend success.
+Progress takes a required label and a measured `value`/`max`. Missing, null or non-finite measurements remain indeterminate; invalid maxima also remain indeterminate. `valueText` explains units, such as "3 of 8 files". Reaching the maximum describes the supplied measurement, not proof of backend success. `labelVisibility="hidden"` keeps the label for assistive technology when a card title already names the work, and `showReading={false}` drops the visible reading when the host prints it elsewhere. The bar fills its container, including flex and grid parents.
 
 EmptyState composes Icon, Title, Description and Actions as separately exported parts. It has no automatic request, retry or empty-data inference.
 

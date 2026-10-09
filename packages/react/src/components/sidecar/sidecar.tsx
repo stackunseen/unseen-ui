@@ -43,6 +43,17 @@ export interface SidecarProps extends Omit<
   /** Drawer pointer dismissal (default true). Non-modal panes stay open during outside work. */
   dismissOnInteractOutside?: boolean;
   onEscapeKeyDown?: ComponentPropsWithoutRef<typeof Dialog.Content>['onEscapeKeyDown'];
+  /**
+   * Overlay only: close on Escape wherever focus is while this is the most recently opened
+   * layer (default true). Nested popups that consume Escape keep the inspector open.
+   */
+  closeOnEscape?: boolean;
+  /**
+   * Overlay only: distance from the viewport edges in pixels, for example to clear a sticky
+   * site header. A number applies to every edge. The same values are available as the CSS
+   * custom properties --ai-sidecar-inset, --ai-sidecar-inset-top and --ai-sidecar-inset-bottom.
+   */
+  inset?: number | { top?: number; bottom?: number; inline?: number };
 }
 
 /** A consistent server snapshot prevents browser-width reads during SSR/hydration. */
@@ -92,6 +103,9 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
     bodyLabel,
     dismissOnInteractOutside,
     onEscapeKeyDown,
+    closeOnEscape = true,
+    inset,
+    style,
     onFocusCapture,
     onBlurCapture,
     onKeyDown,
@@ -114,13 +128,32 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
   // deferred close event must not restore an opener while this panel stays open.
   const openRef = useRef(open);
   openRef.current = open;
+  // Overlay content mounts inside a portal one commit after open turns true, so the
+  // focus move waits for the panel node instead of running against an empty ref.
+  const pendingFocus = useRef(false);
   const setContentRef = useCallback(
     (node: HTMLElement | null) => {
       contentRef.current = node;
       if (typeof forwardedRef === 'function') forwardedRef(node);
       else if (forwardedRef) forwardedRef.current = node;
+      if (node && pendingFocus.current) {
+        pendingFocus.current = false;
+        queueMicrotask(() => {
+          if (!openRef.current || contentRef.current !== node) return;
+          const active = node.ownerDocument.activeElement;
+          if (
+            active instanceof HTMLElement &&
+            active !== node.ownerDocument.body &&
+            !node.contains(active)
+          )
+            previousFocusRef.current = active;
+          const target = initialFocusRef?.current;
+          if (target && node.contains(target)) target.focus();
+          else node.focus();
+        });
+      }
     },
-    [forwardedRef],
+    [forwardedRef, initialFocusRef],
   );
   const restoreFocus = useCallback(
     (wasModal: boolean, unmounted = false) => {
@@ -159,10 +192,50 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
   }, [initialFocusRef]);
   useEffect(() => {
     if (!open || modal) return;
-    if (effectivePresentation === 'overlay' || focusedInside.current || initialFocusRef?.current)
-      focusContent();
-    return () => restoreFocus(false);
+    if (effectivePresentation === 'overlay') {
+      // The panel may already be attached (presentation change) or still waiting on the portal.
+      if (contentRef.current?.isConnected) focusContent();
+      else pendingFocus.current = true;
+    } else if (focusedInside.current || initialFocusRef?.current) focusContent();
+    return () => {
+      pendingFocus.current = false;
+      restoreFocus(false);
+    };
   }, [open, modal, effectivePresentation, initialFocusRef, focusContent, restoreFocus]);
+  // A floating inspector is the top layer: Escape anywhere requests a close, then focus
+  // returns to the explicit return target or the element focused before it opened.
+  useEffect(() => {
+    if (!open || modal || effectivePresentation !== 'overlay' || !closeOnEscape) return;
+    const doc = contentRef.current?.ownerDocument ?? globalThis.document;
+    if (!doc) return;
+    function onDocumentKeyDown(event: KeyboardEvent) {
+      if (event.key !== 'Escape') return;
+      const target = event.target;
+      if (target instanceof Node && contentRef.current?.contains(target)) return;
+      queueMicrotask(() => {
+        if (event.defaultPrevented || !openRef.current) return;
+        if (doc.querySelector('[role="dialog"][aria-modal="true"], [role="listbox"]')) return;
+        onEscapeKeyDown?.(event);
+        if (event.defaultPrevented) return;
+        focusedInside.current = true;
+        onOpenChange(false);
+      });
+    }
+    doc.addEventListener('keydown', onDocumentKeyDown);
+    return () => doc.removeEventListener('keydown', onDocumentKeyDown);
+  }, [open, modal, effectivePresentation, closeOnEscape, onEscapeKeyDown, onOpenChange]);
+  const insetStyle =
+    inset === undefined
+      ? undefined
+      : typeof inset === 'number'
+        ? { '--ai-sidecar-inset': `${inset}px` }
+        : {
+            ...(inset.inline !== undefined ? { '--ai-sidecar-inset': `${inset.inline}px` } : {}),
+            ...(inset.top !== undefined ? { '--ai-sidecar-inset-top': `${inset.top}px` } : {}),
+            ...(inset.bottom !== undefined
+              ? { '--ai-sidecar-inset-bottom': `${inset.bottom}px` }
+              : {}),
+          };
   const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   const PanelElement = modal ? 'div' : 'aside';
   const panel = (
@@ -177,6 +250,7 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
             'aria-describedby': description ? descriptionId : undefined,
           })}
       className={`${s.root} ${className}`}
+      style={insetStyle ? { ...insetStyle, ...style } : style}
       data-sidecar=""
       data-presentation={effectivePresentation}
       data-side={side}

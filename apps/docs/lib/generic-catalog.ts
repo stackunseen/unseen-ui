@@ -103,13 +103,13 @@ export const genericCatalog: CatalogEntry[] = [
     presentations: ['docked', 'drawer', 'overlay'],
     presentationProp: 'presentation',
     importPath: '/sidecar',
-    states: ['Default', 'Start side', 'Long content'],
+    states: ['Default', 'Start side', 'Long content', 'Beside a canvas'],
     contract:
-      'open · onOpenChange · title · children · trigger? · presentation? · side? · mobileBreakpoint?',
+      'open · onOpenChange · title · children · trigger? · presentation? · side? · mobileBreakpoint? · initialFocusRef? · returnFocusRef? · closeOnEscape? · inset?',
     responsibility:
       'Own visibility and drafts. Docked/overlay panels become drawers at the configured viewport breakpoint; moving between parents can remount content.',
     keyboard:
-      'The trigger opens the inspector. Modal drawers contain focus and Escape returns it to the opener. Non-modal panels allow working elsewhere.',
+      'The trigger opens the inspector. Modal drawers contain focus and Escape returns it to the opener. An overlay inspector takes focus when it opens and closes on Escape from anywhere; docked panels allow working elsewhere.',
     code: '<Sidecar open={open} onOpenChange={setOpen} title="Document details" trigger={<Button>Inspect document</Button>}>{details}</Sidecar>',
   },
   {

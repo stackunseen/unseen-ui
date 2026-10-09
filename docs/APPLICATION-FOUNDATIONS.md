@@ -16,6 +16,8 @@ Sidecar accepts controlled `open/onOpenChange`, title/description, `docked`, `dr
 
 Mobile adaptation defaults to 768px and can be disabled. Docked panels are non-modal complementary landmarks; drawers use Radix Dialog for focus containment, Escape and focus return. Keep drafts in the host: switching between inline and portal presentation can remount children.
 
+An overlay inspector is the most recently opened layer. When `open` turns true it moves focus to `initialFocusRef`, or to the panel itself, once its portal content exists, so a host that opens it from its own state (a selected node on a canvas) needs no focus code. Escape closes it wherever focus is and returns focus to `returnFocusRef` or the previously focused element; nested popups that consume Escape keep it open, and `closeOnEscape={false}` opts out. `inset` (a number, or `{ top, bottom, inline }` in pixels) keeps the panel clear of a sticky header; the same values are the CSS custom properties `--ai-sidecar-inset`, `--ai-sidecar-inset-top` and `--ai-sidecar-inset-bottom`.
+
 ## SplitPane
 
 SplitPane accepts named primary/secondary descriptors, a controlled two-number percentage tuple totaling 100, minimum/maximum sizes and optional collapse. `onSizesChange(next, {source:'user', collapsedPanel})` reports completed interaction. Missing callbacks or `disabled` lock resizing.
