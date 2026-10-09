@@ -1,5 +1,42 @@
+/* The trigger reads on the same scale as its items, whatever its parent's type. */
 .trigger {
   gap: var(--ai-field-gap, 8px);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  max-inline-size: 100%;
+}
+.inline > .trigger {
+  inline-size: auto;
+  flex: 1 1 auto;
+}
+.inlineLabel {
+  color: var(--ai-muted, #475569);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.group {
+  padding-block: 2px;
+}
+.group + .group {
+  border-block-start: 1px solid var(--ai-border, #e2e8f0);
+  margin-block-start: 4px;
+  padding-block-start: 6px;
+}
+.groupLabel {
+  padding: 4px 12px;
+  color: var(--ai-muted, #475569);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .option {
   padding-block: var(--ai-field-gap, 8px);

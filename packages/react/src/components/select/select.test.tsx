@@ -73,3 +73,38 @@ describe('Select inside a Field', () => {
     );
   });
 });
+
+describe('Select groups and inline label', () => {
+  it('renders labelled option groups and an inline visible label', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <Select
+        label="Compare"
+        value="next"
+        onValueChange={onValueChange}
+        options={[
+          { label: 'Stacks', options: [{ value: 'next', label: 'Next.js' }] },
+          {
+            label: 'Mixes',
+            options: [
+              { value: 'mix-a', label: 'Mix A' },
+              { value: 'mix-b', label: 'Mix B', disabled: true },
+            ],
+          },
+        ]}
+      />,
+    );
+    const trigger = screen.getByRole('combobox', { name: 'Compare' });
+    expect(screen.getByText('Compare').tagName).toBe('LABEL');
+    expect(screen.getByText('Compare')).toHaveAttribute('for', trigger.getAttribute('id'));
+    await user.click(trigger);
+    expect(screen.getByRole('group', { name: 'Stacks' })).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Mixes' })).toContainElement(
+      screen.getByRole('option', { name: 'Mix A' }),
+    );
+    expect(screen.getByRole('option', { name: 'Mix B' })).toHaveAttribute('data-disabled');
+    await user.click(screen.getByRole('option', { name: 'Mix A' }));
+    expect(onValueChange).toHaveBeenCalledWith('mix-a');
+  });
+});

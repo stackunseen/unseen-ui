@@ -3,7 +3,7 @@
   max-inline-size: 100%;
   padding: var(--ai-panel-padding, 16px);
   border: 1px solid var(--ai-border, #e2e8f0);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius-card, var(--ai-radius, 10px));
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #0f172a);
   overflow-wrap: anywhere;

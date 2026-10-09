@@ -36,7 +36,8 @@ export function ThemedPrompt({ onSubmit }: { onSubmit: (text: string) => void })
 | --- | --- | --- |
 | primary / secondary / accent | Opaque six-digit hex | Resolved light/dark brand palette. A seed within 3:1 of the mode's surface is adjusted for that mode: neutral ink inverts to the text colour, other hues shift in lightness, so filled controls stay visible in both appearances |
 | radius | Integer 0–24px | General panels and floating surfaces |
-| controlRadius / composerRadius | Integer 0–24px | Buttons/fields and composers respectively |
+| controlRadius / composerRadius | Integer 0–24px | Inputs/selects and composers respectively |
+| buttonRadius / pillRadius / cardRadius / tagRadius | Integers; button and card 0–24px, pill and tag 0–999px | Buttons (default controlRadius), chips and segmented controls (default 999), Card/LinkCard/Disclosure surfaces (default radius) and Tag labels (default 999). Emitted as `--ai-button-radius`, `--ai-radius-pill`, `--ai-radius-card` and `--ai-radius-tag` |
 | borderStrength | subtle / balanced / strong | Field and outline-control boundary colour |
 | borderWidth | 1 / 2px | Field/composer/outline-button thickness; decorative dividers stay fine |
 | fieldSurface | plain / tinted | Input/composer/default Select fill; explicit filled/ghost variants retain their own treatment |
@@ -47,6 +48,8 @@ export function ThemedPrompt({ onSubmit }: { onSubmit: (text: string) => void })
 CSS roles include `--ai-control-radius`, `--ai-composer-radius`, `--ai-border-width`, `--ai-field-background`, `--ai-shadow-popover`, `--ai-shadow-dialog`, `--ai-gap`, `--ai-field-gap`, `--ai-panel-padding`, and existing semantic colour variables. Icon selection remains an IconsProvider configuration, not a theme document field.
 
 The default uses the Strong contrast boundary (`#71717a` light / `#a1a1aa` dark). Its token pairs meet 3:1 against both plain and tinted surfaces. Decorative separators retain their subtle border. Explicit Subtle/Balanced choices and imported resolved palettes remain available; diagnostics report shortfalls against both surface roles. A focus outline alone does not fix a low-contrast resting field. Token-pair diagnostics are not a full accessibility audit.
+
+Measured on 2026-10-09 with the default palette: muted text (`#52525b` light, `#a1a1aa` dark) reaches at least 5.8:1 on the surface, subtle and canvas roles in both schemes, so secondary copy passes AA without a host override. Disabled controls use 55% opacity, which leaves disabled body text near 3.9:1 light and 5.9:1 dark and disabled muted text below 3:1; WCAG exempts disabled controls, so keep muted copy out of disabled states rather than relying on it. A host that substitutes its own muted colour must re-measure: a mid-grey such as `#63636b` on a tinted surface falls to about 4.5:1.
 
 Default/compact geometry uses 40/36px control heights, 16/12px panel padding, 12/8px content gaps and 8/4px label gaps. Small buttons remain 32px; coarse-pointer controls and labelled choices use at least 44px. Imported colours stay unchanged; shared geometry follows these density rules.
 

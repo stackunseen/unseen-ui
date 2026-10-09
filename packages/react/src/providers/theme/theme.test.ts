@@ -180,3 +180,25 @@ describe('brand fills against the surface', () => {
     expect(ink.diagnostics.filter((item) => !item.passes)).toEqual([]);
   });
 });
+
+describe('per-role radius seeds', () => {
+  it('emits button, pill, card and tag radii with sensible defaults and validation', () => {
+    const defaults = createTheme();
+    expect(defaults.seeds.buttonRadius).toBe(8);
+    expect(defaults.seeds.pillRadius).toBe(999);
+    expect(defaults.seeds.cardRadius).toBe(10);
+    expect(defaults.seeds.tagRadius).toBe(999);
+    const pills = createTheme({ radius: 12, controlRadius: 10, buttonRadius: 999, cardRadius: 14 });
+    expect(pills.seeds.cardRadius).toBe(14);
+    const css = themeToCSS(pills, 'brand', 'light');
+    expect(css).toContain('--ai-button-radius:999px;');
+    expect(css).toContain('--ai-radius-pill:999px;');
+    expect(css).toContain('--ai-radius-card:14px;');
+    expect(css).toContain('--ai-radius-tag:999px;');
+    expect(css).toContain('--ai-control-radius:10px;');
+    expect(() => createTheme({ cardRadius: 40 })).toThrow();
+    expect(() => createTheme({ pillRadius: 1000 })).toThrow();
+    const roundTrip = importTheme(exportTheme(pills));
+    expect(roundTrip.seeds.buttonRadius).toBe(999);
+  });
+});

@@ -47,7 +47,7 @@
   max-width: 100%;
   padding: 6px 12px;
   border: var(--ai-border-width, 1px) solid transparent;
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-button-radius, var(--ai-control-radius, 8px));
   background: var(--ai-primary, #2563eb);
   color: var(--ai-primary-foreground, #fff);
   font: inherit;
@@ -173,7 +173,7 @@
   color: var(--ai-muted, #475569);
   background: var(--ai-surface-subtle, #f1f5f9);
   padding: 1px 8px;
-  border-radius: 999px;
+  border-radius: var(--ai-radius-tag, 999px);
   font:
     500 12px/1.5 ui-sans-serif,
     system-ui,

@@ -5,10 +5,20 @@ export interface ThemeInput {
   primary?: string;
   secondary?: string;
   accent?: string;
+  /** Panels, menus and dialogs. */
   radius?: number;
   density?: 'comfortable' | 'compact';
+  /** Inputs and selects. */
   controlRadius?: number;
   composerRadius?: number;
+  /** Buttons; defaults to controlRadius. Use 999 for pills. */
+  buttonRadius?: number;
+  /** Chips and segmented controls (default 999). */
+  pillRadius?: number;
+  /** Card, LinkCard and Disclosure surfaces; defaults to radius. */
+  cardRadius?: number;
+  /** Tag labels (default 999). */
+  tagRadius?: number;
   borderStrength?: 'subtle' | 'balanced' | 'strong';
   borderWidth?: 1 | 2;
   fieldSurface?: 'plain' | 'tinted';
@@ -185,6 +195,10 @@ export function createTheme(input: ThemeInput = {}): ResolvedTheme {
           'density',
           'controlRadius',
           'composerRadius',
+          'buttonRadius',
+          'pillRadius',
+          'cardRadius',
+          'tagRadius',
           'borderStrength',
           'borderWidth',
           'fieldSurface',
@@ -202,6 +216,10 @@ export function createTheme(input: ThemeInput = {}): ResolvedTheme {
     density: input.density ?? 'comfortable',
     controlRadius: input.controlRadius ?? 8,
     composerRadius: input.composerRadius ?? 16,
+    buttonRadius: input.buttonRadius ?? input.controlRadius ?? 8,
+    pillRadius: input.pillRadius ?? 999,
+    cardRadius: input.cardRadius ?? input.radius ?? 10,
+    tagRadius: input.tagRadius ?? 999,
     borderStrength: input.borderStrength ?? 'strong',
     borderWidth: input.borderWidth ?? 1,
     fieldSurface: input.fieldSurface ?? 'plain',
@@ -209,8 +227,11 @@ export function createTheme(input: ThemeInput = {}): ResolvedTheme {
     motion: input.motion ?? 'system',
   };
   if (
-    [seeds.radius, seeds.controlRadius, seeds.composerRadius].some(
+    [seeds.radius, seeds.controlRadius, seeds.composerRadius, seeds.cardRadius].some(
       (n) => !Number.isInteger(n) || n < 0 || n > 24,
+    ) ||
+    [seeds.buttonRadius, seeds.pillRadius, seeds.tagRadius].some(
+      (n) => !Number.isInteger(n) || n < 0 || n > 999,
     ) ||
     !['comfortable', 'compact'].includes(seeds.density) ||
     !['subtle', 'balanced', 'strong'].includes(seeds.borderStrength) ||
@@ -270,7 +291,7 @@ export function themeToCSS(
     soft: ['0 4px 16px rgb(0 0 0 / .1)', '0 12px 40px rgb(0 0 0 / .16)'],
     lifted: ['0 8px 28px rgb(0 0 0 / .18)', '0 20px 70px rgb(0 0 0 / .24)'],
   }[s.elevation];
-  const geometry = `--ai-radius:${s.radius}px;--ai-control-radius:${s.controlRadius}px;--ai-composer-radius:${s.composerRadius}px;--ai-border-width:${s.borderWidth}px;--ai-field-background:var(--ai-${s.fieldSurface === 'tinted' ? 'surface-subtle' : 'surface'});--ai-shadow-popover:${shadows[0]};--ai-shadow-dialog:${shadows[1]};--ai-control-height:${s.density === 'compact' ? 32 : 36}px;`;
+  const geometry = `--ai-radius:${s.radius}px;--ai-control-radius:${s.controlRadius}px;--ai-composer-radius:${s.composerRadius}px;--ai-button-radius:${s.buttonRadius}px;--ai-radius-pill:${s.pillRadius}px;--ai-radius-card:${s.cardRadius}px;--ai-radius-tag:${s.tagRadius}px;--ai-border-width:${s.borderWidth}px;--ai-field-background:var(--ai-${s.fieldSurface === 'tinted' ? 'surface-subtle' : 'surface'});--ai-shadow-popover:${shadows[0]};--ai-shadow-dialog:${shadows[1]};--ai-control-height:${s.density === 'compact' ? 32 : 36}px;`;
   const spacing = `--ai-gap:${s.density === 'compact' ? 8 : 12}px;--ai-field-gap:${s.density === 'compact' ? 4 : 8}px;--ai-panel-padding:${s.density === 'compact' ? 12 : 16}px;`;
   const block = (mode: 'light' | 'dark') =>
     `${selector}{${tokenNames.map((key) => `--ai-${key}:${checked[mode][key]};`).join('')}${geometry}${spacing}color-scheme:${mode};}`;

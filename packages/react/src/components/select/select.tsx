@@ -1,6 +1,6 @@
 'use client';
-import { useMemo } from 'react';
-import type { ComponentProps } from 'react';
+import { useId, useMemo } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { ThemeSurface } from '../../providers/theme/theme-provider.js';
 import { AIIcon } from '../../providers/icons/icons.js';
@@ -14,6 +14,15 @@ export interface SelectOption {
   label: string;
   disabled?: boolean;
 }
+/** A labelled group of options, such as "Stacks" and "Mixes" in one control. */
+export interface SelectOptionGroup {
+  label: string;
+  options: readonly SelectOption[];
+}
+export type SelectChoice = SelectOption | SelectOptionGroup;
+function isGroup(choice: SelectChoice): choice is SelectOptionGroup {
+  return 'options' in choice;
+}
 
 export interface SelectProps
   extends
@@ -24,8 +33,10 @@ export interface SelectProps
     > {
   value: string;
   onValueChange: (value: string) => void;
-  /** Immutable choices; replace the array when labels or availability change. */
-  options: readonly SelectOption[];
+  /** Immutable choices or groups; replace the array when labels or availability change. */
+  options: readonly SelectChoice[];
+  /** An inline visible label before the trigger, when the control is not inside a Field. */
+  label?: ReactNode;
   placeholder?: string;
   name?: string;
   required?: boolean;
@@ -39,6 +50,7 @@ export function Select({
   value,
   onValueChange,
   options,
+  label,
   placeholder = 'Select an option',
   name,
   required,
@@ -50,29 +62,40 @@ export function Select({
 }: SelectProps) {
   // Inside a Field the trigger takes the field's id, label and description like other controls.
   const field = useFieldControl({ ...props, disabled, required });
+  const inlineId = useId();
+  const triggerId = field.id ?? (label ? `${inlineId}-trigger` : undefined);
+  const labelId = `${inlineId}-label`;
   // Reuse option elements during unrelated host updates; replace the readonly array
   // when labels, availability or choices change. Radix still owns item interaction.
-  const optionItems = useMemo(
-    () =>
-      options.map((option) => (
-        <SelectPrimitive.Item
-          key={option.value}
-          value={option.value}
-          disabled={option.disabled}
-          textValue={option.label}
-          className={`${s.selectItem} ${selectStyles.option}`}
-        >
-          <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
-          <SelectPrimitive.ItemIndicator
-            className={`${s.selectIndicator} ${selectStyles.indicator}`}
-          >
-            <AIIcon name="check" />
-          </SelectPrimitive.ItemIndicator>
-        </SelectPrimitive.Item>
-      )),
-    [options],
-  );
-  return (
+  const optionItems = useMemo(() => {
+    const item = (option: SelectOption) => (
+      <SelectPrimitive.Item
+        key={option.value}
+        value={option.value}
+        disabled={option.disabled}
+        textValue={option.label}
+        className={`${s.selectItem} ${selectStyles.option}`}
+      >
+        <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
+        <SelectPrimitive.ItemIndicator className={`${s.selectIndicator} ${selectStyles.indicator}`}>
+          <AIIcon name="check" />
+        </SelectPrimitive.ItemIndicator>
+      </SelectPrimitive.Item>
+    );
+    return options.map((choice, index) =>
+      isGroup(choice) ? (
+        <SelectPrimitive.Group key={`group-${index}`} className={selectStyles.group}>
+          <SelectPrimitive.Label className={selectStyles.groupLabel}>
+            {choice.label}
+          </SelectPrimitive.Label>
+          {choice.options.map(item)}
+        </SelectPrimitive.Group>
+      ) : (
+        item(choice)
+      ),
+    );
+  }, [options]);
+  const control = (
     <SelectPrimitive.Root
       value={value}
       onValueChange={onValueChange}
@@ -83,8 +106,8 @@ export function Select({
     >
       <SelectPrimitive.Trigger
         {...props}
-        id={field.id}
-        aria-labelledby={field['aria-labelledby']}
+        id={triggerId}
+        aria-labelledby={field['aria-labelledby'] ?? (label ? labelId : undefined)}
         aria-describedby={field['aria-describedby']}
         aria-invalid={field['aria-invalid']}
         data-variant={variant}
@@ -117,5 +140,14 @@ export function Select({
         </ThemeSurface>
       </SelectPrimitive.Portal>
     </SelectPrimitive.Root>
+  );
+  if (!label) return control;
+  return (
+    <div className={selectStyles.inline} data-part="select-inline">
+      <label id={labelId} htmlFor={triggerId} className={selectStyles.inlineLabel}>
+        {label}
+      </label>
+      {control}
+    </div>
   );
 }
