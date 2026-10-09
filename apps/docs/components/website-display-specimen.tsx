@@ -84,7 +84,7 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
           </>
         ) : state === 'With icon' ? (
           <Tag tone="primary" icon={<Sparkles size={12} />}>
-            New in alpha.2
+            New in alpha.3
           </Tag>
         ) : state === 'Custom hue' ? (
           <>
@@ -92,7 +92,7 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
             <Tag hue="hsl(200 70% 45%)">Retrieval</Tag>
           </>
         ) : state === 'Mono' ? (
-          <Tag mono>v0.1.0-alpha.2</Tag>
+          <Tag mono>v0.1.0-alpha.3</Tag>
         ) : (
           <>
             <Tag size={state === 'Small' ? 'sm' : 'default'}>Recommended</Tag>
