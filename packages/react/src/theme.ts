@@ -1,4 +1,4 @@
-import { clampRgb, converter, formatHex, wcagContrast } from 'culori';
+import { clampRgb, converter, formatHex, interpolate, wcagContrast } from 'culori';
 
 export type Appearance = 'light' | 'dark' | 'system';
 export interface ThemeInput {
@@ -275,6 +275,20 @@ export function updateTheme(theme: ResolvedTheme, input: ThemeInput): ResolvedTh
   }
   return next;
 }
+/**
+ * The Matrix fill level at which the primary foreground reads better than body text on the
+ * primary fill over the subtle surface. The fill ramps from 8% to 100% primary across levels.
+ */
+function matrixFlip(tokens: ThemeTokens): number {
+  const fill = interpolate([tokens['surface-subtle'], tokens.primary], 'rgb');
+  for (let step = 0; step <= 100; step++) {
+    const level = step / 100;
+    const colour = formatHex(fill(0.08 + level * 0.92));
+    if (wcagContrast(tokens['primary-foreground'], colour) >= wcagContrast(tokens.text, colour))
+      return level;
+  }
+  return 2;
+}
 export function themeToCSS(
   theme: ResolvedTheme,
   scope = 'brand',
@@ -294,7 +308,7 @@ export function themeToCSS(
   const geometry = `--ai-radius:${s.radius}px;--ai-control-radius:${s.controlRadius}px;--ai-composer-radius:${s.composerRadius}px;--ai-button-radius:${s.buttonRadius}px;--ai-radius-pill:${s.pillRadius}px;--ai-radius-card:${s.cardRadius}px;--ai-radius-tag:${s.tagRadius}px;--ai-border-width:${s.borderWidth}px;--ai-field-background:var(--ai-${s.fieldSurface === 'tinted' ? 'surface-subtle' : 'surface'});--ai-shadow-popover:${shadows[0]};--ai-shadow-dialog:${shadows[1]};--ai-control-height:${s.density === 'compact' ? 32 : 36}px;`;
   const spacing = `--ai-gap:${s.density === 'compact' ? 8 : 12}px;--ai-field-gap:${s.density === 'compact' ? 4 : 8}px;--ai-panel-padding:${s.density === 'compact' ? 12 : 16}px;`;
   const block = (mode: 'light' | 'dark') =>
-    `${selector}{${tokenNames.map((key) => `--ai-${key}:${checked[mode][key]};`).join('')}${geometry}${spacing}color-scheme:${mode};}`;
+    `${selector}{${tokenNames.map((key) => `--ai-${key}:${checked[mode][key]};`).join('')}${geometry}${spacing}--ai-matrix-flip:${matrixFlip(checked[mode])};color-scheme:${mode};}`;
   const css =
     appearance === 'system'
       ? `${block('light')}\n@media(prefers-color-scheme:dark){${block('dark')}}`

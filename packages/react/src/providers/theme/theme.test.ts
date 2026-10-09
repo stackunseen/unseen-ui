@@ -181,6 +181,24 @@ describe('brand fills against the surface', () => {
   });
 });
 
+describe('matrix flip level', () => {
+  it('emits the level where the primary foreground beats body text, per scheme', () => {
+    const blue = themeToCSS(createTheme(), 'flip');
+    const ink = themeToCSS(createTheme({ primary: '#18181b' }), 'flip');
+    const flip = (css: string) =>
+      [...css.matchAll(/--ai-matrix-flip:([\d.]+)/g)].map((match) => Number(match[1]));
+    const [blueLight, blueDark] = flip(blue);
+    const [inkLight, inkDark] = flip(ink);
+    expect(blueLight).toBeGreaterThan(0.8);
+    expect(blueLight).toBeLessThanOrEqual(1);
+    expect(blueDark).toBe(0); // white foreground and near-white text tie from the first level
+    expect(inkLight).toBeGreaterThan(0.4);
+    expect(inkLight).toBeLessThan(0.65);
+    expect(inkDark).toBeGreaterThan(0.3);
+    expect(inkDark).toBeLessThan(0.55);
+  });
+});
+
 describe('per-role radius seeds', () => {
   it('emits button, pill, card and tag radii with sensible defaults and validation', () => {
     const defaults = createTheme();

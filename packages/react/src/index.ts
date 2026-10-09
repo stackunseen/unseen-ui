@@ -447,6 +447,8 @@ export {
   CardFooter,
 } from './components/card/card.js';
 export { LinkButton } from './components/link-button/link-button.js';
+export { LinkProvider, useLinkComponent } from './shared/link.js';
+export type { LinkProviderProps, LinkComponent, LinkComponentProps } from './shared/link.js';
 export type { LinkButtonProps } from './components/link-button/link-button.js';
 export { ToggleGroup } from './components/toggle-group/toggle-group.js';
 export type {

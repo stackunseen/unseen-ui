@@ -7,6 +7,8 @@ import { ThemeSurface } from '../../providers/theme/theme-provider.js';
 import s from './sidecar.module.css';
 
 export type SidecarPresentation = 'docked' | 'drawer' | 'overlay';
+/** What a docked or overlay panel becomes below mobileBreakpoint. */
+export type SidecarNarrowPresentation = 'drawer' | 'sheet';
 export interface SidecarProps extends Omit<
   ComponentPropsWithoutRef<'aside'>,
   | 'title'
@@ -25,8 +27,15 @@ export interface SidecarProps extends Omit<
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   presentation?: SidecarPresentation;
   side?: 'start' | 'end';
-  /** Docked and overlay panels become modal drawers at this viewport width. */
+  /** Docked and overlay panels change presentation at this viewport width. */
   mobileBreakpoint?: number | false;
+  /**
+   * Below the breakpoint a docked or overlay panel becomes a modal drawer, or with `sheet` a
+   * non-modal bottom sheet (--ai-sidecar-sheet-height, 46vh) that leaves the content above it
+   * visible and scrollable: the page body is padded by the sheet height while it is open and
+   * `data-ai-sidecar-sheet` is set on the root element.
+   */
+  narrowPresentation?: SidecarNarrowPresentation;
   /** A single focusable element, such as the shared Button or IconButton. */
   trigger?: ReactElement;
   /** Optional initial target inside the panel; otherwise drawers focus the panel. */
@@ -92,6 +101,7 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
     presentation = 'docked',
     side = 'end',
     mobileBreakpoint = 768,
+    narrowPresentation = 'drawer',
     trigger,
     initialFocusRef,
     returnFocusRef,
@@ -115,8 +125,15 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
   forwardedRef,
 ) {
   const narrow = useNarrowViewport(mobileBreakpoint);
-  const effectivePresentation = narrow ? 'drawer' : presentation;
+  const effectivePresentation: SidecarPresentation | 'sheet' = narrow
+    ? narrowPresentation === 'sheet' && presentation !== 'drawer'
+      ? 'sheet'
+      : 'drawer'
+    : presentation;
   const modal = effectivePresentation === 'drawer';
+  // Overlay and sheet float over the page without a focus trap, so they share focus and
+  // Escape handling.
+  const floating = effectivePresentation === 'overlay' || effectivePresentation === 'sheet';
   const titleId = useId();
   const descriptionId = useId();
   const contentRef = useRef<HTMLElement | null>(null);
@@ -192,7 +209,7 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
   }, [initialFocusRef]);
   useEffect(() => {
     if (!open || modal) return;
-    if (effectivePresentation === 'overlay') {
+    if (floating) {
       // The panel may already be attached (presentation change) or still waiting on the portal.
       if (contentRef.current?.isConnected) focusContent();
       else pendingFocus.current = true;
@@ -201,11 +218,11 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
       pendingFocus.current = false;
       restoreFocus(false);
     };
-  }, [open, modal, effectivePresentation, initialFocusRef, focusContent, restoreFocus]);
+  }, [open, modal, floating, initialFocusRef, focusContent, restoreFocus]);
   // A floating inspector is the top layer: Escape anywhere requests a close, then focus
   // returns to the explicit return target or the element focused before it opened.
   useEffect(() => {
-    if (!open || modal || effectivePresentation !== 'overlay' || !closeOnEscape) return;
+    if (!open || modal || !floating || !closeOnEscape) return;
     const doc = contentRef.current?.ownerDocument ?? globalThis.document;
     if (!doc) return;
     function onDocumentKeyDown(event: KeyboardEvent) {
@@ -223,7 +240,21 @@ export const Sidecar = forwardRef<HTMLElement, SidecarProps>(function Sidecar(
     }
     doc.addEventListener('keydown', onDocumentKeyDown);
     return () => doc.removeEventListener('keydown', onDocumentKeyDown);
-  }, [open, modal, effectivePresentation, closeOnEscape, onEscapeKeyDown, onOpenChange]);
+  }, [open, modal, floating, closeOnEscape, onEscapeKeyDown, onOpenChange]);
+  // A sheet covers the bottom of the viewport, so the page gets matching end padding and the
+  // content the sheet describes can still scroll into view above it.
+  useEffect(() => {
+    if (!open || effectivePresentation !== 'sheet') return;
+    const doc = contentRef.current?.ownerDocument ?? globalThis.document;
+    if (!doc) return;
+    const previous = doc.body.style.paddingBlockEnd;
+    doc.body.style.paddingBlockEnd = 'var(--ai-sidecar-sheet-height, 46vh)';
+    doc.documentElement.setAttribute('data-ai-sidecar-sheet', '');
+    return () => {
+      doc.body.style.paddingBlockEnd = previous;
+      doc.documentElement.removeAttribute('data-ai-sidecar-sheet');
+    };
+  }, [open, effectivePresentation]);
   const insetStyle =
     inset === undefined
       ? undefined

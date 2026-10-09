@@ -6,7 +6,10 @@ import { Field } from '../field/field.js';
 import { Input } from '../input/input.js';
 import { Select } from '../select/select.js';
 import { AlertDialog } from '../alert-dialog/alert-dialog.js';
-import type { SelectOption } from '../select/select.js';
+import { Chip, ChipGroup } from '../chip/chip.js';
+import { SegmentedControl } from '../segmented-control/segmented-control.js';
+import type { SegmentedOption } from '../segmented-control/segmented-control.js';
+import type { SelectChoice, SelectOption } from '../select/select.js';
 import s from './application-patterns.module.css';
 
 export interface PageHeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> {
@@ -265,5 +268,191 @@ export function UnsavedGuard({
         </AlertDialog.Actions>
       </AlertDialog.Content>
     </AlertDialog>
+  );
+}
+
+export interface FilterBarFacetOption {
+  value: string;
+  label: ReactNode;
+  /** Shown after the label as a muted count. */
+  count?: number;
+  /** URL-driven facets render link chips; omit it for toggle chips. */
+  href?: string;
+  swatch?: string;
+}
+export interface FilterBarFacet {
+  label: string;
+  options: readonly FilterBarFacetOption[];
+  selected: readonly string[];
+  /** Required for toggle chips; link chips navigate instead. */
+  onToggle?: (value: string) => void;
+  overflow?: 'wrap' | 'scroll';
+}
+export interface FilterBarOrder {
+  label: string;
+  options: readonly SegmentedOption[];
+  value: string;
+  onValueChange?: (value: string) => void;
+  /** Links render anchors for URL-driven views. */
+  mode?: 'buttons' | 'links';
+}
+export interface FilterBarSelect {
+  name: string;
+  label: string;
+  /** null means any value; the first option says so. */
+  value: string | null;
+  options: readonly SelectChoice[];
+  onValueChange: (value: string | null) => void;
+  /** Defaults to "Any" plus the lower-cased label. */
+  anyLabel?: string;
+}
+export interface FilterBarProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
+  /** Names the region; defaults to "Filters". */
+  label?: string;
+  searchLabel: string;
+  search: string;
+  onSearchChange: (value: string) => void;
+  /** Called on Enter or the search form's submit; omit it to filter as the host types. */
+  onSearchSubmit?: () => void;
+  searchPlaceholder?: string;
+  /** A single-choice order or view switch, as buttons or links. */
+  order?: FilterBarOrder;
+  /** The main facet as a chip row. */
+  facet?: FilterBarFacet;
+  /** Secondary facets as selects with an "Any" option. */
+  selects?: readonly FilterBarSelect[];
+  /** Shown when some filter is active. */
+  onClear?: () => void;
+  clearLabel?: string;
+  summary?: ReactNode;
+  disabled?: boolean;
+}
+
+const ANY = '__any';
+
+/**
+ * One compact bar above a filtered list: search and order, the main facet as chips, the rest
+ * as selects with an "Any" option. The host owns every value, usually in the URL; link mode
+ * on the order and facet renders anchors, which a LinkProvider turns into router links.
+ */
+export function FilterBar({
+  label = 'Filters',
+  searchLabel,
+  search,
+  onSearchChange,
+  onSearchSubmit,
+  searchPlaceholder,
+  order,
+  facet,
+  selects,
+  onClear,
+  clearLabel = 'Clear filters',
+  summary,
+  disabled,
+  className = '',
+  ...props
+}: FilterBarProps) {
+  const active =
+    search !== '' ||
+    (facet?.selected.length ?? 0) > 0 ||
+    (selects?.some((select) => select.value !== null) ?? false);
+  return (
+    <div {...props} role="region" aria-label={label} className={`${s.filterBar} ${className}`}>
+      <div className={s.toolbarRow}>
+        <form
+          role="search"
+          className={s.search}
+          onSubmit={(event) => {
+            event.preventDefault();
+            onSearchSubmit?.();
+          }}
+        >
+          <Field label={searchLabel}>
+            <Input
+              type="search"
+              value={search}
+              onChange={(event) => onSearchChange(event.currentTarget.value)}
+              placeholder={searchPlaceholder}
+              disabled={disabled}
+            />
+          </Field>
+        </form>
+        {order && (
+          <SegmentedControl
+            label={order.label}
+            options={order.options}
+            value={order.value}
+            onValueChange={order.onValueChange}
+            mode={order.mode}
+            disabled={disabled}
+            className={s.order}
+          />
+        )}
+      </div>
+      {facet && (
+        <ChipGroup label={facet.label} overflow={facet.overflow}>
+          {facet.options.map((option) => {
+            const selected = facet.selected.includes(option.value);
+            const text = (
+              <>
+                {option.label}
+                {option.count !== undefined && (
+                  <span className={s.facetCount}>{` ${option.count}`}</span>
+                )}
+              </>
+            );
+            return option.href ? (
+              <Chip
+                key={option.value}
+                href={option.href}
+                active={selected}
+                swatch={option.swatch}
+                disabled={disabled}
+              >
+                {text}
+              </Chip>
+            ) : (
+              <Chip
+                key={option.value}
+                pressed={selected}
+                onPressedChange={() => facet.onToggle?.(option.value)}
+                swatch={option.swatch}
+                disabled={disabled}
+              >
+                {text}
+              </Chip>
+            );
+          })}
+        </ChipGroup>
+      )}
+      {((selects && selects.length > 0) || (onClear && active)) && (
+        <div className={s.filters}>
+          {selects?.map((select) => (
+            <Select
+              key={select.name}
+              name={select.name}
+              label={select.label}
+              value={select.value ?? ANY}
+              onValueChange={(value) => select.onValueChange(value === ANY ? null : value)}
+              options={[
+                { value: ANY, label: select.anyLabel ?? `Any ${select.label.toLowerCase()}` },
+                ...select.options,
+              ]}
+              disabled={disabled}
+            />
+          ))}
+          {onClear && active && (
+            <Button variant="ghost" size="sm" onClick={onClear} disabled={disabled}>
+              {clearLabel}
+            </Button>
+          )}
+        </div>
+      )}
+      {summary !== undefined && (
+        <p role="status" className={s.summary}>
+          {summary}
+        </p>
+      )}
+    </div>
   );
 }

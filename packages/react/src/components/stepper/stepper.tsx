@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
+import { Anchor } from '../../shared/link.js';
 import d from '../../shared/styles/display.module.css';
 
 export type StepState = 'done' | 'current' | 'upcoming' | 'planned';
@@ -24,6 +25,8 @@ export interface StepperProps extends Omit<ComponentProps<'nav'>, 'children'> {
   next?: StepperLink;
   /** Prints "Step 2 of 9" from the current step; pass a string to override the words. */
   reading?: boolean | ((current: number, total: number) => ReactNode);
+  /** Dots only: shows the step label above the dot on hover and keyboard focus. */
+  tooltip?: boolean;
 }
 
 const stateWords: Record<StepState, string> = {
@@ -33,7 +36,7 @@ const stateWords: Record<StepState, string> = {
   planned: 'planned',
 };
 
-/** A step indicator for series and multi-step paths. Renders on the server; no state. */
+/** A step indicator for series and multi-step paths. Renders on the server; no state. Links use the LinkProvider's component when one is set. */
 export function Stepper({
   label,
   steps,
@@ -41,6 +44,7 @@ export function Stepper({
   previous,
   next,
   reading = false,
+  tooltip = false,
   className = '',
   ...props
 }: StepperProps) {
@@ -71,6 +75,11 @@ export function Stepper({
                   {step.label}
                   {`, ${stateWords[state]}`}
                 </VisuallyHidden>
+                {tooltip && (
+                  <span className={d.stepperTip} aria-hidden="true">
+                    {step.label}
+                  </span>
+                )}
               </>
             ) : (
               <>
@@ -82,13 +91,13 @@ export function Stepper({
           return (
             <li key={step.id} className={d.stepperItem} data-state={state}>
               {step.href && state !== 'planned' ? (
-                <a
+                <Anchor
                   href={step.href}
                   className={d.stepperStep}
                   aria-current={state === 'current' ? 'step' : undefined}
                 >
                   {content}
-                </a>
+                </Anchor>
               ) : (
                 <span
                   className={d.stepperStep}
@@ -104,14 +113,14 @@ export function Stepper({
       {(previous || next) && (
         <div className={d.stepperNav}>
           {previous && (
-            <a href={previous.href} rel="prev" className={d.stepperNavLink}>
+            <Anchor href={previous.href} rel="prev" className={d.stepperNavLink}>
               {previous.label ?? 'Previous'}
-            </a>
+            </Anchor>
           )}
           {next && (
-            <a href={next.href} rel="next" className={d.stepperNavLink} data-direction="next">
+            <Anchor href={next.href} rel="next" className={d.stepperNavLink} data-direction="next">
               {next.label ?? 'Next'}
-            </a>
+            </Anchor>
           )}
         </div>
       )}

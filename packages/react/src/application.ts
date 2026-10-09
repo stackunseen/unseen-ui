@@ -31,6 +31,7 @@ export {
   MasterDetail,
   SettingsSaveCancel,
   UnsavedGuard,
+  FilterBar,
 } from './components/application-patterns/application-patterns.js';
 export type {
   PageHeaderProps,
@@ -40,4 +41,9 @@ export type {
   SettingsSaveCancelProps,
   SettingsSaveState,
   UnsavedGuardProps,
+  FilterBarProps,
+  FilterBarFacet,
+  FilterBarFacetOption,
+  FilterBarOrder,
+  FilterBarSelect,
 } from './components/application-patterns/application-patterns.js';

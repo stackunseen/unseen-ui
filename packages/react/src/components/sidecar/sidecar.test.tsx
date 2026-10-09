@@ -282,6 +282,33 @@ describe('Sidecar controlled compositions', () => {
     unmount();
     expect(media.listeners.size).toBe(0);
   });
+  it('becomes a non-modal bottom sheet on narrow viewports when asked, padding the page', async () => {
+    mediaState(true);
+    const onOpenChange = vi.fn();
+    const { unmount } = render(
+      <Sidecar
+        open
+        onOpenChange={onOpenChange}
+        title="Node inspector"
+        presentation="overlay"
+        narrowPresentation="sheet"
+      >
+        <p>Details</p>
+      </Sidecar>,
+    );
+    const panel = screen.getByRole('complementary', { name: 'Node inspector' });
+    expect(panel).toHaveAttribute('data-presentation', 'sheet');
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.body.style.paddingBlockEnd).toBe('var(--ai-sidecar-sheet-height, 46vh)');
+    expect(document.documentElement).toHaveAttribute('data-ai-sidecar-sheet');
+    await waitFor(() => expect(panel).toHaveFocus());
+    document.body.focus();
+    await userEvent.keyboard('{Escape}');
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+    unmount();
+    expect(document.body.style.paddingBlockEnd).toBe('');
+    expect(document.documentElement).not.toHaveAttribute('data-ai-sidecar-sheet');
+  });
   it('uses a deterministic docked server snapshot without invoking matchMedia', () => {
     mediaState(true);
     const html = renderToString(

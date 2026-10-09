@@ -1,6 +1,10 @@
 /** Application foundations. SplitPane requires the optional resizing peer. */
 export { Sidecar } from './components/sidecar/sidecar.js';
-export type { SidecarProps, SidecarPresentation } from './components/sidecar/sidecar.js';
+export type {
+  SidecarProps,
+  SidecarPresentation,
+  SidecarNarrowPresentation,
+} from './components/sidecar/sidecar.js';
 export { WorkspaceShell, PanelHeader } from './components/workspace-shell/workspace-shell.js';
 export type {
   WorkspaceShellProps,

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { AITheme } from '../../providers/theme/theme-provider';
 import {
+  FilterBar,
   ListToolbar,
   MasterDetail,
   PageHeader,
@@ -120,5 +121,100 @@ describe('controlled application patterns', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Discard draft' }));
     expect(discard).toHaveBeenCalledOnce();
     expect(screen.getByRole('alertdialog')).toBeInTheDocument();
+  });
+});
+
+describe('FilterBar', () => {
+  const facet = {
+    label: 'Discipline',
+    options: [
+      { value: 'rag', label: 'RAG', count: 12, swatch: 'var(--hue-rag)' },
+      { value: 'agents', label: 'Agents', count: 7 },
+    ],
+  };
+  it('composes search, order, chips, selects and a clear action from host state', async () => {
+    const onSearchChange = vi.fn();
+    const onSearchSubmit = vi.fn();
+    const onToggle = vi.fn();
+    const onOrder = vi.fn();
+    const onClear = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <FilterBar
+        searchLabel="Search the journal"
+        search="evals"
+        onSearchChange={onSearchChange}
+        onSearchSubmit={onSearchSubmit}
+        order={{
+          label: 'Order',
+          value: 'latest',
+          onValueChange: onOrder,
+          options: [
+            { value: 'latest', label: 'Latest' },
+            { value: 'grouped', label: 'By discipline' },
+          ],
+        }}
+        facet={{ ...facet, selected: ['agents'], onToggle }}
+        selects={[
+          {
+            name: 'kind',
+            label: 'Kind',
+            value: null,
+            onValueChange: vi.fn(),
+            options: [{ value: 'guide', label: 'Guides' }],
+          },
+        ]}
+        onClear={onClear}
+        summary="7 of 19 entries"
+      />,
+    );
+    expect(screen.getByRole('region', { name: 'Filters' })).toBeInTheDocument();
+    const search = screen.getByRole('searchbox', { name: 'Search the journal' });
+    expect(search).toHaveValue('evals');
+    await user.type(search, '{Enter}');
+    expect(onSearchSubmit).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('radio', { name: 'Latest' })).toHaveAttribute('aria-checked', 'true');
+    await user.click(screen.getByRole('radio', { name: 'By discipline' }));
+    expect(onOrder).toHaveBeenCalledWith('grouped');
+    const agents = screen.getByRole('button', { name: 'Agents 7' });
+    expect(agents).toHaveAttribute('aria-pressed', 'true');
+    await user.click(screen.getByRole('button', { name: 'RAG 12' }));
+    expect(onToggle).toHaveBeenCalledWith('rag');
+    expect(screen.getByRole('combobox', { name: 'Kind' })).toHaveTextContent('Any kind');
+    await user.click(screen.getByRole('button', { name: 'Clear filters' }));
+    expect(onClear).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('status')).toHaveTextContent('7 of 19 entries');
+  });
+
+  it('renders URL-driven facets and order as links and hides Clear when nothing is active', () => {
+    render(
+      <FilterBar
+        searchLabel="Search"
+        search=""
+        onSearchChange={vi.fn()}
+        order={{
+          label: 'View',
+          value: 'latest',
+          mode: 'links',
+          options: [
+            { value: 'latest', label: 'Latest', href: '/journal/' },
+            { value: 'grouped', label: 'By discipline', href: '/journal/?view=grouped' },
+          ],
+        }}
+        facet={{
+          ...facet,
+          selected: [],
+          options: facet.options.map((option) => ({
+            ...option,
+            href: `/journal/?d=${option.value}`,
+          })),
+        }}
+        onClear={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole('link', { name: 'Latest' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'RAG 12' })).toHaveAttribute('href', '/journal/?d=rag');
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).toBeNull();
+    expect(screen.queryByRole('status')).toBeNull();
   });
 });

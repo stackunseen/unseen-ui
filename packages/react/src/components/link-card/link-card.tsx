@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { AIIcon } from '../../providers/icons/icons.js';
+import { Anchor } from '../../shared/link.js';
 import type { VariantProps } from '../../shared/variants.js';
 import d from '../../shared/styles/display.module.css';
 
@@ -15,7 +16,7 @@ export interface LinkCardProps
   external?: boolean;
 }
 
-/** A plain link presented as a card or row. The whole surface is one native anchor. */
+/** A plain link presented as a card or row. The whole surface is one anchor: the LinkProvider's router link, else native. */
 export function LinkCard({
   variant = 'card',
   title,
@@ -29,7 +30,7 @@ export function LinkCard({
   ...props
 }: LinkCardProps) {
   return (
-    <a
+    <Anchor
       {...props}
       target={target ?? (external ? '_blank' : undefined)}
       rel={rel ?? (external ? 'noreferrer' : undefined)}
@@ -50,6 +51,6 @@ export function LinkCard({
         {description && <span className={d.linkCardDescription}>{description}</span>}
         {meta && <span className={d.linkCardMeta}>{meta}</span>}
       </span>
-    </a>
+    </Anchor>
   );
 }

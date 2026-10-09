@@ -1,10 +1,13 @@
 import type { ComponentProps, CSSProperties, ReactNode } from 'react';
+import { Anchor } from '../../shared/link.js';
 import d from '../../shared/styles/display.module.css';
 
 export interface MatrixAxisItem {
   id: string;
   label: ReactNode;
   href?: string;
+  /** A colour or CSS custom property reference, shown as a dot before the label. */
+  swatch?: string;
 }
 export interface MatrixProps extends Omit<ComponentProps<'table'>, 'children'> {
   /** Names the table. */
@@ -21,12 +24,17 @@ export interface MatrixProps extends Omit<ComponentProps<'table'>, 'children'> {
   format?: (value: number) => ReactNode;
   /** Names the keyboard-scrollable region. */
   scrollLabel?: string;
+  /** Angled headers rotate the column labels so many narrow columns stay readable. */
+  columnHeader?: 'horizontal' | 'angled';
+  /** Printed in empty cells, for example a middle dot; empty cells are otherwise blank. */
+  zero?: ReactNode;
 }
 
 /**
  * A heatmap table. Every cell prints its number; the single-hue fill from the primary token
- * only reinforces it. Row and column headers may be links, and the table scrolls inside a
- * labelled, focusable region.
+ * only reinforces it, and the text switches to the primary foreground once the fill is dark
+ * enough (the theme computes that level as --ai-matrix-flip). Row and column headers may be
+ * links, and the table scrolls inside a labelled, focusable region.
  */
 export function Matrix({
   label,
@@ -38,6 +46,8 @@ export function Matrix({
   max,
   format = (count) => count,
   scrollLabel,
+  columnHeader = 'horizontal',
+  zero,
   className = '',
   ...props
 }: MatrixProps) {
@@ -47,14 +57,23 @@ export function Matrix({
     values.flat().reduce<number>((top, item) => (item !== null && item > top ? item : top), 0);
   const level = (count: number | null) =>
     count === null || count <= 0 || largest <= 0 ? 0 : Math.min(1, count / largest);
-  const axis = (item: MatrixAxisItem) =>
-    item.href ? (
-      <a href={item.href} className={d.matrixAxisLink}>
+  const axis = (item: MatrixAxisItem) => {
+    const label = (
+      <span className={d.matrixAxis}>
+        {item.swatch && (
+          <span className={d.matrixSwatch} aria-hidden="true" style={{ background: item.swatch }} />
+        )}
         {item.label}
-      </a>
-    ) : (
-      item.label
+      </span>
     );
+    return item.href ? (
+      <Anchor href={item.href} className={d.matrixAxisLink}>
+        {label}
+      </Anchor>
+    ) : (
+      label
+    );
+  };
   return (
     <div
       className={d.matrixScroll}
@@ -66,6 +85,7 @@ export function Matrix({
         {...props}
         aria-label={label}
         data-part="matrix"
+        data-column-header={columnHeader}
         className={`${d.matrix} ${className}`}
       >
         {caption && <caption className={d.matrixCaption}>{caption}</caption>}
@@ -74,7 +94,11 @@ export function Matrix({
             <td />
             {columns.map((column) => (
               <th key={column.id} scope="col">
-                {axis(column)}
+                {columnHeader === 'angled' ? (
+                  <span className={d.matrixAngled}>{axis(column)}</span>
+                ) : (
+                  axis(column)
+                )}
               </th>
             ))}
           </tr>
@@ -87,13 +111,24 @@ export function Matrix({
                 const count = values[rowIndex]![columnIndex]!;
                 const cellHref = count === null ? undefined : href?.(row, column);
                 const style = { '--matrix-level': level(count) } as CSSProperties;
-                const text = count === null ? '' : format(count);
+                const text =
+                  count === null ? (
+                    zero === undefined ? (
+                      ''
+                    ) : (
+                      <span className={d.matrixZero} aria-hidden="true">
+                        {zero}
+                      </span>
+                    )
+                  ) : (
+                    format(count)
+                  );
                 return (
                   <td key={column.id} style={style} data-empty={count === null || undefined}>
                     {cellHref ? (
-                      <a href={cellHref} className={d.matrixCell}>
+                      <Anchor href={cellHref} className={d.matrixCell}>
                         {text}
-                      </a>
+                      </Anchor>
                     ) : (
                       <span className={d.matrixCell}>{text}</span>
                     )}

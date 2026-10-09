@@ -52,6 +52,15 @@ describe('Stepper', () => {
     render(<Stepper label="Path" steps={steps} presentation="list" />);
     expect(screen.getByText('Scoring')).toBeVisible();
   });
+
+  it('adds a visible tooltip to dots without changing their accessible names', () => {
+    render(<Stepper label="Series parts" steps={steps} tooltip />);
+    const link = screen.getByRole('link', { name: 'Datasets, current' });
+    const tip = link.querySelector('[aria-hidden="true"]:not(:empty)');
+    expect(tip).toHaveTextContent('Datasets');
+    expect(tip).toHaveAttribute('aria-hidden', 'true');
+    expect(link).toHaveAccessibleName('Datasets, current');
+  });
 });
 
 describe('Disclosure', () => {
@@ -139,6 +148,31 @@ describe('Matrix', () => {
     expect(empty).toBeDefined();
     expect(within(empty!).queryByRole('link')).toBeNull();
     expect(within(table).getByText('Entries per discipline and kind').tagName).toBe('CAPTION');
+  });
+
+  it('angles column headers, prints a zero glyph and shows row swatches', () => {
+    render(
+      <Matrix
+        label="Coverage"
+        rows={rows.map((row) => ({ ...row, swatch: `var(--hue-${row.id})` }))}
+        columns={columns}
+        value={(row, column) => counts[`${row.id}:${column.id}`] ?? null}
+        columnHeader="angled"
+        zero="·"
+      />,
+    );
+    const table = screen.getByRole('table', { name: 'Coverage' });
+    expect(table).toHaveAttribute('data-column-header', 'angled');
+    expect(within(table).getByRole('columnheader', { name: 'Guides' })).toContainElement(
+      within(table).getByRole('link', { name: 'Guides' }),
+    );
+    const rag = within(table).getByRole('rowheader', { name: 'RAG' });
+    expect(rag.querySelector('[aria-hidden="true"]')).toHaveStyle({ background: 'var(--hue-rag)' });
+    const empty = within(table)
+      .getAllByRole('cell')
+      .find((cell) => cell.hasAttribute('data-empty'))!;
+    expect(empty).toHaveTextContent('·');
+    expect(empty.querySelector('[aria-hidden="true"]')).toHaveTextContent('·');
   });
 });
 

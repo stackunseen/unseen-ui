@@ -63,9 +63,14 @@ describe('SegmentedControl', () => {
     expect(current).toHaveAttribute('href', '/journal/?view=discipline');
     expect(screen.getByRole('link', { name: 'Latest' })).not.toHaveAttribute('aria-current');
     expect(screen.getByText('Archive').closest('a')).not.toHaveAttribute('href');
+    // Navigation links are each a tab stop; arrow keys are left to the browser.
+    await userEvent.tab();
+    expect(screen.getByRole('link', { name: 'Latest' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowRight}');
+    expect(screen.getByRole('link', { name: 'Latest' })).toHaveFocus();
     await userEvent.tab();
     expect(current).toHaveFocus();
-    await userEvent.keyboard('{ArrowLeft}');
-    expect(screen.getByRole('link', { name: 'Latest' })).toHaveFocus();
+    await userEvent.tab();
+    expect(screen.getByRole('link', { name: 'Enterprise Needs an account' })).toHaveFocus();
   });
 });

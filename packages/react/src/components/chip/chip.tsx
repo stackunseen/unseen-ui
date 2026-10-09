@@ -1,6 +1,7 @@
 'use client';
 import type { ComponentProps, CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import { AIIcon } from '../../providers/icons/icons.js';
+import { Anchor } from '../../shared/link.js';
 import d from '../../shared/styles/display.module.css';
 
 interface ChipBaseProps {
@@ -91,22 +92,31 @@ export function Chip(props: ChipProps) {
     );
   }
   if ('href' in props && props.href) {
-    return (
-      <a
-        href={disabled ? undefined : props.href}
-        target={props.target}
-        rel={props.rel}
-        aria-current={props.active ? 'page' : undefined}
-        aria-disabled={disabled || undefined}
-        className={base}
-        style={style}
-        data-part="chip"
-        data-size={size}
-        data-active={props.active || undefined}
-      >
+    const linkProps = {
+      target: props.target,
+      rel: props.rel,
+      'aria-current': props.active ? ('page' as const) : undefined,
+      className: base,
+      style,
+      'data-part': 'chip',
+      'data-size': size,
+      'data-active': props.active || undefined,
+    };
+    const label = (
+      <>
         <Swatch swatch={swatch} />
         <span className={d.chipLabel}>{children}</span>
+      </>
+    );
+    // A disabled link keeps its place but has no destination, so it stays a plain anchor.
+    return disabled ? (
+      <a {...linkProps} aria-disabled="true">
+        {label}
       </a>
+    ) : (
+      <Anchor {...linkProps} href={props.href}>
+        {label}
+      </Anchor>
     );
   }
   if ('pressed' in props && typeof props.pressed === 'boolean') {

@@ -1,6 +1,7 @@
 'use client';
 import { useRef } from 'react';
 import type { ComponentProps, KeyboardEvent, ReactNode } from 'react';
+import { Anchor } from '../../shared/link.js';
 import { rovingTarget } from '../../shared/roving-focus.js';
 import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
 import d from '../../shared/styles/display.module.css';
@@ -26,8 +27,10 @@ export interface SegmentedControlProps extends Omit<
   /** Required in button mode. Link mode navigates instead and may omit it. */
   onValueChange?: (value: string) => void;
   /**
-   * Buttons use radio semantics. Links render anchors with aria-current for URL-driven views,
-   * so a server-rendered filter works before hydration; every option then needs an href.
+   * Buttons use radio semantics with one tab stop. Links render anchors with aria-current for
+   * URL-driven views, each in the tab order like any navigation, so a server-rendered filter
+   * works before hydration; every option then needs an href. A LinkProvider swaps in the
+   * host's router link.
    */
   mode?: 'buttons' | 'links';
   size?: 'default' | 'sm';
@@ -53,14 +56,13 @@ export function SegmentedControl({
   const tabStop = enabled.find((option) => option.value === value)?.value ?? enabled[0]?.value;
 
   function navigate(event: KeyboardEvent<HTMLDivElement>) {
-    const items = [...(group.current?.querySelectorAll<HTMLElement>('[data-value]') ?? [])];
-    const target = rovingTarget(event, items, (item) =>
-      links ? item.getAttribute('aria-disabled') === 'true' : (item as HTMLButtonElement).disabled,
-    );
+    if (links) return;
+    const items = [...(group.current?.querySelectorAll<HTMLButtonElement>('[data-value]') ?? [])];
+    const target = rovingTarget(event, items, (item) => item.disabled);
     if (!target) return;
     target.focus();
     const next = target.dataset.value;
-    if (!links && next !== undefined && next !== value) onValueChange?.(next);
+    if (next !== undefined && next !== value) onValueChange?.(next);
   }
 
   return (
@@ -87,20 +89,22 @@ export function SegmentedControl({
             {option.description && <VisuallyHidden>{` ${option.description}`}</VisuallyHidden>}
           </>
         );
-        if (links)
-          return (
-            <a
-              key={option.value}
-              href={unavailable ? undefined : option.href}
-              aria-current={current ? 'page' : undefined}
-              aria-disabled={unavailable ? true : undefined}
-              tabIndex={unavailable ? -1 : option.value === tabStop ? 0 : -1}
-              data-value={option.value}
-              className={d.segment}
-            >
+        if (links) {
+          const linkProps = {
+            'aria-current': current ? ('page' as const) : undefined,
+            'data-value': option.value,
+            className: d.segment,
+          };
+          return unavailable || !option.href ? (
+            <a key={option.value} {...linkProps} aria-disabled="true" tabIndex={-1}>
               {content}
             </a>
+          ) : (
+            <Anchor key={option.value} {...linkProps} href={option.href}>
+              {content}
+            </Anchor>
           );
+        }
         return (
           <button
             key={option.value}

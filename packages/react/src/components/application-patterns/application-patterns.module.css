@@ -55,9 +55,29 @@
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
-.listToolbar {
+.listToolbar,
+.filterBar {
   display: grid;
   gap: 12px;
+}
+.filterBar {
+  min-inline-size: 0;
+}
+.filterBar .toolbarRow {
+  align-items: center;
+}
+.filterBar .search {
+  max-inline-size: 480px;
+}
+.filterBar .filters {
+  align-items: center;
+}
+.order {
+  flex: 0 0 auto;
+}
+.facetCount {
+  color: var(--ai-muted);
+  font-variant-numeric: tabular-nums;
 }
 .masterDetail {
   display: grid;

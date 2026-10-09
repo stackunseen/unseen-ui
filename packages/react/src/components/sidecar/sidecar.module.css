@@ -60,6 +60,19 @@
 .root[data-presentation='overlay'][data-side='start'] {
   inset-inline-start: var(--sidecar-inset-inline);
 }
+/* A bottom sheet keeps the canvas above it visible; the body is padded by the same height. */
+.root[data-presentation='sheet'] {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 101;
+  inline-size: 100%;
+  max-inline-size: 100vw;
+  block-size: var(--ai-sidecar-sheet-height, 46vh);
+  border-block-end: 0;
+  border-radius: var(--ai-radius, 10px) var(--ai-radius, 10px) 0 0;
+  box-shadow: 0 -12px 32px -16px rgb(0 0 0 / 0.25);
+}
 .backdrop {
   position: fixed;
   inset: 0;
