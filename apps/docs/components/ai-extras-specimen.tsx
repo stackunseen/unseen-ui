@@ -17,12 +17,47 @@ import {
   EnvironmentVariables,
   PackageInfo,
   SchemaDisplay,
+  CodeTabs,
   Snippet,
   StackTrace,
   WebPreview,
 } from '@stackunseen/ui/devtools';
 import { AudioPlayer, Image, Persona, Transcription, VoiceSelector } from '@stackunseen/ui/media';
 import type { PersonaState } from '@stackunseen/ui/media';
+import type { CodeFile, CodeTourStop } from '@stackunseen/ui/devtools';
+
+const codeFiles: CodeFile[] = [
+  {
+    file: 'app.py',
+    language: 'python',
+    label: 'Entry point',
+    code: 'import os\nfrom tools import run\n\n\ndef main() -> None:\n    mode = os.environ.get("MODE", "dev")\n    run(mode)\n\n\nif __name__ == "__main__":\n    main()\n',
+  },
+  {
+    file: 'tools.py',
+    language: 'python',
+    label: 'Helpers',
+    code: 'def run(mode: str) -> int:\n    print(f"running in {mode}")\n    return 0\n',
+  },
+  { file: 'README.md', language: 'markdown', code: '# Example\n\nRun `python app.py`.\n' },
+];
+const codeTour: CodeTourStop[] = [
+  {
+    file: 'app.py',
+    start: 5,
+    end: 7,
+    title: 'The entry point',
+    note: 'Reads the mode and hands it to the helper.',
+  },
+  {
+    file: 'tools.py',
+    start: 1,
+    end: 3,
+    title: 'The helper',
+    note: 'Prints the mode and returns an exit code.',
+  },
+  { file: 'app.py', start: 10, end: 11, title: 'Running it', note: 'The usual guard.' },
+];
 import '@stackunseen/ui/assistant.css';
 import '@stackunseen/ui/devtools.css';
 import '@stackunseen/ui/media.css';
@@ -191,6 +226,17 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
       break;
     case 'Snippet':
       content = <Snippet prefix="$" code="pnpm add @stackunseen/ui" label="Install command" />;
+      break;
+    case 'CodeTabs':
+      content = (
+        <CodeTabs
+          key={state}
+          files={state === 'Single file' ? [codeFiles[2]!] : codeFiles}
+          label="Example files"
+          tour={state === 'With tour' ? codeTour : undefined}
+          copy
+        />
+      );
       break;
     case 'Commit':
       content = (

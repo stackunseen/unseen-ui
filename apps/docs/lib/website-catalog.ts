@@ -534,6 +534,110 @@ export const websiteCatalog: CatalogEntry[] = [
     keyboard: 'Inert content; it adds no tab stop.',
     code: '<VisuallyHidden>Opens in a new tab</VisuallyHidden>',
   }),
+  entry({
+    name: 'CopyButton',
+    group: 'Actions',
+    aliases: ['Copy to clipboard', 'Copy link'],
+    description: 'Copies a value and reports the real outcome.',
+    states: ['Default', 'Icon only', 'Primary'],
+    contract:
+      'value · label? · copiedLabel? · failedLabel? · iconOnly? · onCopy?(ok) · resetMs? · variant? · size?',
+    responsibility:
+      'The outcome is announced in a polite live region and shown by the icon; the accessible name never changes mid-press. A failed copy says to copy by hand. Snippet uses it, so the library has one copy behaviour.',
+    keyboard:
+      'A button: Enter or Space copies. The icon-only form has a tooltip and an accessible name.',
+    relatedImports: ['useCopy'],
+    code: '<CopyButton value={url} label="Copy link" onCopy={(ok) => track(ok)} />',
+  }),
+  entry({
+    name: 'InputGroup',
+    group: 'Forms',
+    aliases: ['Input with button', 'Sign-up field', 'Search field'],
+    description: 'One bordered control that holds an input and its action.',
+    states: ['Default', 'Inset', 'Search', 'Invalid'],
+    contract:
+      'attach?: flush | inset · size?: default | touch · shape?: control | pill · invalid? · disabled? · InputGroupAddon · InputGroupButton',
+    responsibility:
+      'The group draws the one border, radius and focus ring through :focus-within; the input gives up its own, and the button keeps an inner keyboard ring. Field supplies the label, description, error and disabled state; it works in a native form.',
+    keyboard: 'Tab moves from the input to the button; Enter in the input submits the form.',
+    relatedImports: ['Field', 'Input'],
+    code: '<Field label="Email address">\n  <InputGroup shape="pill" size="touch">\n    <Input type="email" />\n    <InputGroupButton type="submit">Subscribe</InputGroupButton>\n  </InputGroup>\n</Field>',
+  }),
+  entry({
+    name: 'ProgressRing',
+    group: 'Feedback',
+    aliases: ['Circular progress', 'Ring'],
+    description: 'The circular sibling of Progress, with the same inputs and semantics.',
+    states: ['Default', 'Complete', 'Indeterminate', 'Small', 'Large'],
+    contract:
+      'label · value? · max? · valueText? · labelVisibility?: visible | hidden · showReading? · size?: sm | default | lg',
+    responsibility:
+      'A measured value only; unknown work stays indeterminate. The SVG ring draws with tokens and animates only when reduced motion is off.',
+    keyboard: 'Inert; it adds no tab stop.',
+    relatedImports: ['Progress'],
+    code: '<ProgressRing label="Checklist" value={3} max={9} valueText="3 of 9" />',
+  }),
+  entry({
+    name: 'AppearanceToggle',
+    group: 'Actions',
+    aliases: ['Theme toggle', 'Dark mode switch', 'Light dark system'],
+    description: 'A light, dark or system choice that drives the theme provider.',
+    states: ['Default', 'Segmented', 'Stored'],
+    contract:
+      'value · onValueChange · variant?: cycle | segmented · labels? · label? · size? · useStoredAppearance({ storageKey }) · useResolvedAppearance(value) · appearanceInitScript({ storageKey })',
+    responsibility:
+      'Pass the value to AITheme. useStoredAppearance keeps it in this browser and follows other tabs; appearanceInitScript applies it before paint through a root attribute your stylesheet reads. Until hydration the cycle button shows a neutral mark.',
+    keyboard:
+      'The cycle button names the current mode and what a press switches to; the segmented form is a radiogroup.',
+    relatedImports: ['AITheme'],
+    code: '<AppearanceToggle value={appearance} onValueChange={setAppearance} />',
+  }),
+  entry({
+    name: 'CommandPalette',
+    group: 'Navigation',
+    aliases: ['Command menu', 'Search dialog', 'Cmd K', 'Ctrl K'],
+    importPath: '/navigation',
+    description: 'A Ctrl/Cmd+K menu for jumping to places and searching, with results in groups.',
+    states: ['Default', 'Async results'],
+    contract:
+      'open? · defaultOpen? · onOpenChange? · items · search?(query, signal) · debounceMs? · onSelect · shortcut?: "mod+k" | false · label? · placeholder? · emptyState? · footerHints? · trailingAction?(query) · useCommandPalette() · markMatches(text, query)',
+    responsibility:
+      'Static items filter locally by every word; async results are debounced, cancelled through the signal and never shown for an older query. With a LinkProvider, items with an href are that router link. Excerpts are plain text; markMatches marks them safely.',
+    keyboard:
+      'Up and Down move and wrap, Home and End jump, Enter selects, Escape and the backdrop close. Enter does nothing during IME composition. Focus returns to the opener.',
+    relatedImports: ['Button', 'Kbd'],
+    code: '<CommandPalette items={jumps} search={searchSite} onSelect={(item) => router.push(item.href)} />',
+  }),
+  entry({
+    name: 'TableOfContents',
+    group: 'Navigation',
+    aliases: ['On this page', 'Toc', 'Page outline'],
+    importPath: '/navigation',
+    description: 'An "On this page" rail that marks the section being read.',
+    states: ['Default', 'Collapsible', 'Plain'],
+    contract:
+      'items: { id, title, items? }[] · label? · numbered? · showReading? · collapsible?: narrow | never | always · readingLine? · minItems? · activeId? · onActiveChange? · useActiveHeading(ids)',
+    responsibility:
+      'Links are plain in-page anchors; nothing hijacks scrolling. The active heading is the last one past the reading line, tracked with an IntersectionObserver and a passive scroll listener. Below minItems it renders nothing.',
+    keyboard:
+      'Ordinary links in a navigation landmark; the active one carries aria-current="location".',
+    code: '<TableOfContents items={outline} numbered showReading />',
+  }),
+  entry({
+    name: 'ShareMenu',
+    group: 'Navigation',
+    aliases: ['Share buttons', 'Share sheet', 'Social share'],
+    importPath: '/navigation',
+    description: 'Copy link, the device share sheet when there is one, and configurable targets.',
+    states: ['Default', 'Menu', 'Custom targets'],
+    contract:
+      'url · title · text? · targets?: (copy | native | linkedin | x | email | { id, label, href })[] · presentation?: inline | menu · label? · onShare?(target)',
+    responsibility:
+      'Native share support is decided on the client only, so server and first client render agree. A dismissed share is not an error. External targets open in a new tab with rel="noopener noreferrer"; no tracking parameters are added.',
+    keyboard: 'Buttons and links in a labelled group, or a menu with arrow keys.',
+    relatedImports: ['CopyButton'],
+    code: "<ShareMenu url={pageUrl} title={pageTitle} targets={['copy', 'native', 'linkedin', 'x']} />",
+  }),
 ];
 
 export const websiteNames = new Set<string>(websiteCatalog.map((item) => item.name));

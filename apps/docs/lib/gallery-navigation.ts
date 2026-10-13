@@ -43,6 +43,7 @@ const applicationPlacement: Record<string, (typeof applicationGroups)[number]> =
   FilterBar: 'Organizations & lists',
   SettingsSaveCancel: 'Saving & navigation',
   UnsavedGuard: 'Saving & navigation',
+  Checklist: 'Checklists & progress',
 };
 export function componentSection(entry: CatalogEntry): ComponentSection {
   const group = catalogGroup(entry);

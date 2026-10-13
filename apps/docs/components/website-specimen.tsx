@@ -39,6 +39,10 @@ const ControlSpecimen = dynamic(
   () => import('./website-control-specimen').then((m) => m.WebsiteControlSpecimen),
   { loading: ExampleLoading },
 );
+const UtilitySpecimen = dynamic(
+  () => import('./website-utility-specimen').then((m) => m.WebsiteUtilitySpecimen),
+  { loading: ExampleLoading },
+);
 
 export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
   const { name } = props;
@@ -73,7 +77,17 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
                     'VisuallyHidden',
                   ].includes(name)
                 ? ControlSpecimen
-                : SurfaceSpecimen;
+                : [
+                      'CopyButton',
+                      'InputGroup',
+                      'ProgressRing',
+                      'AppearanceToggle',
+                      'CommandPalette',
+                      'TableOfContents',
+                      'ShareMenu',
+                    ].includes(name)
+                  ? UtilitySpecimen
+                  : SurfaceSpecimen;
   return (
     <div className="generic-demo" data-demo={name}>
       <Component {...props} />

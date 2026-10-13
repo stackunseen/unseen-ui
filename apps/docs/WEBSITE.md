@@ -17,7 +17,7 @@ The site-only preview serves `apps/docs/out` at `http://127.0.0.1:4175/`. `PORT`
 ## Content and routes
 
 - `/`: a component showcase first: eight real components (PromptInput, ApprovalCard, Message, ToolCall, AgentSteps, Field controls, DataTable) on tinted tiles that link to their detail pages, with primary-colour swatches that retheme the whole page; then component search and starter links, the light/dark SaaS admin screenshot and setup links.
-- `/components/` and `/components/[slug]/`: all 148 entries across UI components (60), AI components (73), application patterns (7) and marketing blocks (8), with global search, actual specimens, visible usage and props, and stable direct links. Application controls and marketing blocks show their optional import and CSS paths.
+- `/components/` and `/components/[slug]/`: all 157 entries across UI components (67), AI components (74), application patterns (8) and marketing blocks (8), with global search, actual specimens, visible usage and props, and stable direct links. Application controls and marketing blocks show their optional import and CSS paths.
 - `/docs/`, `/getting-started/`, `/docs/customization/`, `/docs/integration/`: local setup, theming, custom headers and footers, and state/callback examples.
 - `/templates/`: Agent Workbench, Coding Studio, SaaS Admin, Marketing and Relay.
 - `/templates/saas-admin/`: a local dashboard with customer creation, editing and deletion, members and roles, organization settings and illustrative billing. Draft guards, validation and original receipt recovery keep uncertain saves explicit.

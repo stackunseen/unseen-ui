@@ -133,6 +133,22 @@ export const applicationCatalog: CatalogEntry[] = [
     relatedImports: ['Chip', 'SegmentedControl', 'Select'],
   }),
   application({
+    name: 'Checklist',
+    group: 'Application patterns',
+    category: 'Application patterns',
+    description:
+      'A tick-off list whose state the host owns, with progress, groups, reset and Markdown export.',
+    states: ['Default', 'Row toggle', 'Stored in this browser'],
+    contract:
+      'items: { id, title, detail?, eyebrow?, group? }[] · label · value · onValueChange · ordered? · rowToggle? · showProgress? · actions?: { copyMarkdown?, reset? } · useStoredChecklist(storageKey) · checklistToMarkdown(label, items, checked)',
+    responsibility:
+      'The host owns the checked ids; useStoredChecklist is the opt-in way to keep them in this browser. Reset offers Undo and both are announced. Copy as Markdown appears only when every title is plain text.',
+    keyboard:
+      'Each row is a labelled checkbox. With rowToggle a click anywhere on the row ticks it, except on links, buttons, labels and the box.',
+    code: '<Checklist items={steps} label="Launch checklist" value={checked} onValueChange={setChecked}\n  rowToggle actions={{ copyMarkdown: true, reset: true }} />',
+    relatedImports: ['Progress', 'Checkbox', 'CopyButton'],
+  }),
+  application({
     name: 'MasterDetail',
     group: 'Application patterns',
     category: 'Application patterns',

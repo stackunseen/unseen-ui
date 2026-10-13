@@ -3,11 +3,13 @@ import { useId, useRef, useState } from 'react';
 import { Button, Field, Input } from '@stackunseen/ui';
 import {
   Calendar,
+  Checklist,
   Combobox,
   DataGrid,
   DateRangePicker,
   FilterBar,
   ListToolbar,
+  useStoredChecklist,
   MasterDetail,
   MultiSelect,
   OrgSwitcher,
@@ -134,6 +136,29 @@ function FilterBarExample({ state }: { state: string }) {
         setLevel(null);
       }}
       summary={`${shown} of 32 entries${applied ? ` matching "${applied}"` : ''}`}
+    />
+  );
+}
+
+const checklistItems = [
+  { id: 'scope', title: 'Write the scope', group: 'Plan', eyebrow: 'Step 1' },
+  { id: 'owner', title: 'Name an owner', group: 'Plan', detail: 'One person, not a team.' },
+  { id: 'eval', title: 'Pick an eval set', group: 'Build', eyebrow: 'Step 3' },
+  { id: 'trace', title: 'Trace every run', group: 'Build' },
+  { id: 'ship', title: 'Ship behind a flag', group: 'Launch' },
+];
+function ChecklistExample({ state }: { state: string }) {
+  const [local, setLocal] = useState<string[]>(['scope']);
+  const [stored, setStored] = useStoredChecklist('unseen-ui-example-checklist');
+  const persistent = state === 'Stored in this browser';
+  return (
+    <Checklist
+      items={checklistItems}
+      label="Launch checklist"
+      value={persistent ? stored : local}
+      onValueChange={persistent ? setStored : setLocal}
+      rowToggle={state === 'Row toggle'}
+      actions={{ copyMarkdown: true, reset: true }}
     />
   );
 }
@@ -337,6 +362,7 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
       />
     );
   else if (name === 'FilterBar') content = <FilterBarExample state={state} />;
+  else if (name === 'Checklist') content = <ChecklistExample state={state} />;
   else if (name === 'MasterDetail')
     content = (
       <MasterDetail

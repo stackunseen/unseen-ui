@@ -109,6 +109,20 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     code: '<OpenInChat query={query} destinations={destinations} />',
   }),
   devtools({
+    name: 'CodeTabs',
+    category: 'Coding workspace',
+    aliases: ['Code viewer', 'File tabs', 'Code tour'],
+    description: 'A code viewer for the files of one example, with optional numbered tour stops.',
+    states: ['Default', 'With tour', 'Single file'],
+    contract:
+      'files: { file, language, code, label? }[] · label · value? · onValueChange? · tour?: { file, start, end, title, note }[] · stop? · onStopChange? · hashLinks? · copy? · codeBlock?',
+    responsibility:
+      'Files are keyed by name. A stop selects its file, marks its lines and scrolls the first one into view inside the pane, never the page; #tour-n links open their stop. Pass HighlightedCodeBlock as codeBlock for tokens; the plain block is the default.',
+    keyboard:
+      'The file list is a tablist with arrow keys, Home and End. Stop buttons carry aria-current="step" and the open stop is announced in a polite live region.',
+    code: '<CodeTabs files={files} label="Example files" tour={tour} hashLinks="tour-" copy />',
+  }),
+  devtools({
     name: 'Snippet',
     category: 'Coding workspace',
     aliases: ['Command', 'Install command'],

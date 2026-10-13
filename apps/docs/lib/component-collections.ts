@@ -48,6 +48,7 @@ export const applicationGroups = [
   'Page structure',
   'Organizations & lists',
   'Saving & navigation',
+  'Checklists & progress',
 ] as const;
 export const marketingGroups = ['Site navigation', 'Website sections'] as const;
 export function sectionGroups(section: GallerySection): readonly string[] {

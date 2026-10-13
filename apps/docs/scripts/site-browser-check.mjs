@@ -107,7 +107,7 @@ async function journeys(page, { origin, output }, audit) {
       'Homepage search explains its empty state',
     );
     await finder.fill('');
-    await page.getByRole('button', { name: 'UI · 60', exact: true }).click();
+    await page.getByRole('button', { name: 'UI · 67', exact: true }).click();
     assert(
       await page.locator('.home-found-components a[href="/components/input/"]').isVisible(),
       'Homepage collection filters show relevant starter components',

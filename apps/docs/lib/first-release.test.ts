@@ -7,13 +7,13 @@ import { componentHref, legacyDestination } from './site-paths';
 describe('first-release discovery and saved routes', () => {
   it('counts UI and AI controls while retaining every composition in the full catalog', () => {
     expect(releaseSections).toEqual(['ui', 'ai']);
-    expect(releaseCatalog).toHaveLength(133);
+    expect(releaseCatalog).toHaveLength(141);
     expect(
       releaseSections.map(
         (section) => releaseCatalog.filter((entry) => componentSection(entry) === section).length,
       ),
-    ).toEqual([60, 73]);
-    expect(compositionCatalog).toHaveLength(15);
+    ).toEqual([67, 74]);
+    expect(compositionCatalog).toHaveLength(16);
     expect([...releaseCatalog, ...compositionCatalog]).toHaveLength(catalog.length);
     expect(releaseCatalog.some((entry) => entry.name === 'DataGrid')).toBe(true);
   });

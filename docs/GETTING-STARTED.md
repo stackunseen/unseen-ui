@@ -126,11 +126,12 @@ Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (
 | `@stackunseen/ui/sidecar`, `/workspace`, `/upload` | Independent application compositions | No additional optional peer |
 | `@stackunseen/ui/application` | DataGrid, searchable selection, date controls and application patterns | No additional peer; import application.css alongside styles.css |
 | `@stackunseen/ui/marketing` | Website navigation, hero, features, pricing, FAQ, contact and article blocks | No additional peer; import marketing.css alongside styles.css |
+| `@stackunseen/ui/navigation` | CommandPalette, TableOfContents and ShareMenu for a site shell | No additional peer; import navigation.css alongside styles.css |
 | `@stackunseen/ui/editor` | Controlled CodeMirror editing, selection, diagnostics and text proposals | @codemirror/state, @codemirror/view, @codemirror/commands, @codemirror/language, @codemirror/lint, @codemirror/lang-javascript; import editor.css |
 | `@stackunseen/ui/artifact-editor` | Draft preview/edit/diff, save/export requests and receipt recovery | No additional peer; import artifact-editor.css. Compose CodeEditor through renderEditor when needed |
 | `@stackunseen/ui/conversation-flow` | Exact message edit-to-branch and regenerate-to-attempt intents | No additional peer; import conversation-flow.css |
 | `@stackunseen/ui/assistant` | Reasoning summary, ChainOfThought, Plan, Task, Checkpoint, Shimmer, Sources, ModelSelector, OpenInChat | No additional peer; import assistant.css |
-| `@stackunseen/ui/devtools` | Snippet, Commit, EnvironmentVariables, PackageInfo, SchemaDisplay, StackTrace, sandboxed WebPreview | No additional peer; import devtools.css |
+| `@stackunseen/ui/devtools` | Snippet, Commit, EnvironmentVariables, PackageInfo, SchemaDisplay, StackTrace, sandboxed WebPreview, CodeTabs | No additional peer; import devtools.css |
 | `@stackunseen/ui/media` | AudioPlayer, Transcription, VoiceSelector, Persona, Image | No additional peer; import media.css |
 | `@stackunseen/ui-core/editing` | Pure document identities, UTF-16 ranges and bounded atomic text edits | None |
 

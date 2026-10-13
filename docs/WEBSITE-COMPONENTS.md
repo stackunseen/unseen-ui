@@ -34,6 +34,12 @@ Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available.
 
 `Tag` also takes `hue` (any CSS colour mixed into its surface and text; mid-lightness hues keep AA text contrast in both schemes, very light hues need darkening by the host) and `mono` for identifiers. `Select` accepts option groups (`{ label, options }`) and an inline `label`; its trigger uses the same 13px scale as its items regardless of the parent's type. Per-role corner radii (`buttonRadius`, `pillRadius`, `cardRadius`, `tagRadius`) are theme seeds; see [Theming](THEMING.md).
 
+### Copying and appearance
+
+`CopyButton` copies a value and reports what happened: the icon switches to a check or stays put, a polite live region announces the copied or failed message, and the button's accessible name never changes mid-press. A failed copy says to copy by hand. `iconOnly` adds a tooltip and keeps the name. `Snippet` uses it, so the library has one copy behaviour; `useCopy` is exported for hosts that render their own control.
+
+`AppearanceToggle` is the light, dark or system choice: a `cycle` icon button whose name states the current mode and what a press switches to, or a `segmented` radiogroup. Pass the value to `AITheme`. `useStoredAppearance({ storageKey })` keeps the choice in this browser through `useSyncExternalStore` with a `system` server snapshot, follows other tabs through the storage event and survives blocked storage. `useResolvedAppearance` resolves `system` through `matchMedia` and follows changes live. `appearanceInitScript({ storageKey })` returns an inline script for the document head that sets `data-appearance` on the root element before paint, so the host's own stylesheet shows the stored choice without a flash; the provider itself follows after hydration. Until hydration the cycle button shows a neutral mark.
+
 ### Filter bars
 
 `FilterBar` in `@stackunseen/ui/application` composes the journal-style toolbar: a search form (`onSearchSubmit` on Enter), an `order` SegmentedControl in button or link mode, the main `facet` as toggle or link chips with counts and swatches, secondary `selects` with an "Any" option that maps to `null`, a Clear action that appears only while something is active, and a `summary` status line. Every value belongs to the host, usually the URL; with a `LinkProvider` the link modes become router links.
@@ -56,6 +62,8 @@ Input and Textarea retain native value/change/name/required/disabled behavior. C
 
 Use AIForm for schema-driven questions, repeatable groups, steps and versioned submission receipts. Use these primitives when the application owns the form structure. Read [form contracts](FORMS.md) before replacing one with the other.
 
+`InputGroup` is one bordered control holding an input and its action, for sign-up fields, search with a button or a value with a copy action. The group draws the single border, radius (`shape="control"` or `"pill"`) and focus ring through `:focus-within`; the `Input` inside gives up its own border and ring, and `InputGroupButton` keeps an inner keyboard ring. `attach="flush"` fills the end cap with the button; `"inset"` keeps an even gap. `size="touch"` gives a 44px target. Inside `Field` it takes the label, description, error and disabled state, and it works in a native form without JavaScript.
+
 ## Overlays and menus
 
 Popover, Tooltip and AlertDialog expose compound Trigger/Content parts. Tooltip needs TooltipProvider and supplements an existing accessible name; it must not hold essential or interactive content. Popover.Content takes a title or another accessible-name relationship. Use `asChild` only on parts that expose it, with one child that forwards the needed props/ref.
@@ -76,7 +84,19 @@ Progress takes a required label and a measured `value`/`max`. Missing, null or n
 
 EmptyState composes Icon, Title, Description and Actions as separately exported parts. It has no automatic request, retry or empty-data inference.
 
+`ProgressRing` is the circular sibling of `Progress` with the same inputs and semantics: a labelled `progressbar`, a bounded measured value, `valueText`, `labelVisibility` and `showReading`, plus `size`. Unknown work stays indeterminate. The SVG ring draws with tokens and animates only when reduced motion is off.
+
 ## Navigation and surfaces
+
+### The navigation entry
+
+`@stackunseen/ui/navigation` (with `navigation.css`) holds three site-level pieces that need the root's providers and controls but not the base stylesheet's size: `CommandPalette`, `TableOfContents` and `ShareMenu`.
+
+`CommandPalette` is a Ctrl/Cmd+K dialog for jumping to places and searching. Static `items` filter locally (every word must match the label, hint, group or keywords); `search(query, signal)` returns async results, debounced and cancelled through the signal, and results for an older query are never shown. Items sit in labelled groups under a combobox with `aria-activedescendant`; a polite live region announces the count; the key hints are decorative. Up and Down wrap, Home and End jump, Enter selects (and does nothing during IME composition), Escape and the backdrop close, and focus returns to the element that opened it. `useCommandPalette()` opens it from anywhere, replacing window events; `markMatches(text, query)` marks matches in plain text without parsing HTML. With a `LinkProvider`, items with an `href` are that router link. Below 640px it is a full-height sheet.
+
+`TableOfContents` is an "On this page" rail. The active heading is the last one whose top has passed the reading line, tracked with an IntersectionObserver and a passive scroll listener, both cleaned up; sections before it are marked read and only the active section's sub-items show. Links are plain in-page anchors, so nothing hijacks scrolling; set `scroll-behavior: smooth` on the root yourself under `prefers-reduced-motion: no-preference`. `numbered`, `showReading`, `collapsible` and `minItems` shape the rail; `activeId` controls it; `useActiveHeading(ids)` is the headless hook.
+
+`ShareMenu` shares the current page: copy link through `CopyButton`, the device's own share sheet when `navigator.share` exists (decided on the client only, so server and first client render agree; a dismissed sheet is not an error), and LinkedIn, X, email or custom targets built with `encodeURIComponent`, opened in a new tab with `rel="noopener noreferrer"`. No tracking parameters are added. `presentation="menu"` puts the targets in a `DropdownMenu`.
 
 Breadcrumb accepts host items with stable IDs, labels and destinations; the current item remains explicit. Sidebar supplies a labelled navigation region with Group and Link parts. Disabled links do not offer navigation. Icons and group content are application content slots.
 

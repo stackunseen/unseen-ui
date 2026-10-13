@@ -8,6 +8,7 @@ import type {
   OrgSwitcherProps,
   ListToolbarProps,
   FilterBarProps,
+  ChecklistProps,
   MasterDetailProps,
   SettingsSaveCancelProps,
   UnsavedGuardProps,
@@ -34,6 +35,7 @@ type APIs = {
   OrgSwitcher: OrgSwitcherProps;
   ListToolbar: ListToolbarProps;
   FilterBar: FilterBarProps;
+  Checklist: ChecklistProps;
   MasterDetail: MasterDetailProps;
   SettingsSaveCancel: SettingsSaveCancelProps;
   UnsavedGuard: UnsavedGuardProps;
@@ -383,6 +385,45 @@ const guides = {
         name: 'summary',
         type: 'ReactNode (optional)',
         description: 'Result summary announced as status text.',
+      },
+    ],
+  },
+  Checklist: {
+    use: 'A tick-off list whose checked ids the host owns. Progress sits at the top and consecutive items with the same group share a heading.',
+    keyboard:
+      'Each row is a labelled checkbox. With rowToggle a click anywhere on the row ticks it, except on links, buttons, labels and the box.',
+    props: [
+      {
+        name: 'items',
+        type: '{ id, title, detail?, eyebrow?, group? }[]',
+        description: 'The steps, in order.',
+      },
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Names the list and heads the Markdown export.',
+      },
+      { name: 'value', type: 'string[]', description: 'The checked ids.' },
+      {
+        name: 'onValueChange',
+        type: '(ids: string[]) => void',
+        description: 'Receives the next checked ids.',
+      },
+      {
+        name: 'rowToggle',
+        type: 'boolean (optional)',
+        description: 'Tick from anywhere on the row.',
+      },
+      {
+        name: 'actions',
+        type: '{ copyMarkdown?, reset? } (optional)',
+        description: 'Copy as Markdown appears for plain-text titles; Reset offers Undo.',
+      },
+      {
+        name: 'showProgress',
+        type: 'boolean (optional)',
+        description:
+          'The Progress bar at the top; useStoredChecklist(storageKey) is the opt-in way to persist the ids.',
       },
     ],
   },
