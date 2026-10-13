@@ -447,7 +447,35 @@ export {
   CardFooter,
 } from './components/card/card.js';
 export { LinkButton } from './components/link-button/link-button.js';
-export { LinkProvider, useLinkComponent } from './shared/link.js';
+export { LinkProvider, useLinkComponent, Anchor } from './shared/link.js';
+export { useCopy } from './shared/copy.js';
+export type { CopyStatus } from './shared/copy.js';
+export { CopyButton } from './components/copy-button/copy-button.js';
+export type { CopyButtonProps } from './components/copy-button/copy-button.js';
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+} from './components/input-group/input-group.js';
+export type {
+  InputGroupProps,
+  InputGroupAddonProps,
+  InputGroupButtonProps,
+} from './components/input-group/input-group.js';
+export { ProgressRing } from './components/progress-ring/progress-ring.js';
+export type { ProgressRingProps } from './components/progress-ring/progress-ring.js';
+export { AppearanceToggle } from './components/appearance-toggle/appearance-toggle.js';
+export type { AppearanceToggleProps } from './components/appearance-toggle/appearance-toggle.js';
+export {
+  useStoredAppearance,
+  useResolvedAppearance,
+  appearanceInitScript,
+} from './components/appearance-toggle/use-stored-appearance.js';
+export type {
+  StoredAppearanceOptions,
+  AppearanceInitScriptOptions,
+} from './components/appearance-toggle/use-stored-appearance.js';
+export type { Appearance } from './theme.js';
 export type { LinkProviderProps, LinkComponent, LinkComponentProps } from './shared/link.js';
 export type { LinkButtonProps } from './components/link-button/link-button.js';
 export { ToggleGroup } from './components/toggle-group/toggle-group.js';

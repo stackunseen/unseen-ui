@@ -47,3 +47,10 @@ export type {
   FilterBarOrder,
   FilterBarSelect,
 } from './components/application-patterns/application-patterns.js';
+export { Checklist, checklistToMarkdown } from './components/checklist/checklist.js';
+export type {
+  ChecklistProps,
+  ChecklistItem,
+  ChecklistActions,
+} from './components/checklist/checklist.js';
+export { useStoredChecklist } from './components/checklist/use-stored-checklist.js';

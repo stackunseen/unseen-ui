@@ -1,0 +1,90 @@
+/* ProgressRing: an SVG ring drawn with tokens; it animates only when reduced motion is off. */
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-inline-size: 0;
+  color: var(--ai-text, #0f172a);
+  font-family: var(--ai-font-family, ui-sans-serif, system-ui, sans-serif);
+  font-size: var(--ai-font-size-meta, 13px);
+  line-height: 1.5;
+}
+.ring {
+  flex-shrink: 0;
+  inline-size: 28px;
+  block-size: 28px;
+}
+.root[data-size='sm'] .ring {
+  inline-size: 20px;
+  block-size: 20px;
+}
+.root[data-size='lg'] .ring {
+  inline-size: 44px;
+  block-size: 44px;
+}
+.ring svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+.track,
+.value {
+  fill: none;
+  stroke-width: 3;
+}
+.track {
+  stroke: var(--ai-surface-subtle, #f1f5f9);
+}
+.value {
+  stroke: var(--ai-primary, #2563eb);
+  stroke-linecap: round;
+}
+.root[data-state='complete'] .value {
+  stroke: var(--ai-success, #166534);
+}
+.root[data-state='indeterminate'] .value {
+  stroke: var(--ai-muted, #475569);
+}
+.text {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  min-inline-size: 0;
+}
+.reading {
+  color: var(--ai-muted, #475569);
+  font-variant-numeric: tabular-nums;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .value {
+    transition: stroke-dashoffset 320ms ease;
+  }
+  .root[data-state='indeterminate'] svg {
+    animation: ring-turn 1.2s linear infinite;
+  }
+}
+@keyframes ring-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (forced-colors: active) {
+  .track {
+    stroke: GrayText;
+  }
+  .value {
+    stroke: Highlight;
+  }
+}

@@ -1,0 +1,104 @@
+'use client';
+import { useSyncExternalStore } from 'react';
+import type { ComponentProps, SVGProps } from 'react';
+import { DesktopIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import { Button } from '../button/button.js';
+import { SegmentedControl } from '../segmented-control/segmented-control.js';
+import { AIIcon } from '../../providers/icons/icons.js';
+import type { Appearance } from '../../theme.js';
+import s from './appearance-toggle.module.css';
+
+export interface AppearanceToggleProps extends Omit<ComponentProps<'div'>, 'onChange'> {
+  value: Appearance;
+  onValueChange: (next: Appearance) => void;
+  /** One button that cycles light, dark and system, or three joined segments. */
+  variant?: 'cycle' | 'segmented';
+  labels?: Partial<Record<Appearance, string>>;
+  /** Names the segmented group. */
+  label?: string;
+  size?: 'default' | 'sm';
+}
+
+const order: readonly Appearance[] = ['light', 'dark', 'system'];
+const defaultLabels: Record<Appearance, string> = {
+  light: 'Light',
+  dark: 'Dark',
+  system: 'System',
+};
+const glyphs = { light: SunIcon, dark: MoonIcon, system: DesktopIcon } as const;
+const names = { light: 'sun', dark: 'moon', system: 'monitor' } as const;
+const subscribeNever = () => () => {};
+
+/** A neutral mark for the first paint, before the stored choice is known. */
+function NeutralGlyph(props: Omit<SVGProps<SVGSVGElement>, 'children'>) {
+  return (
+    <svg viewBox="0 0 15 15" fill="none" {...props}>
+      <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" />
+      <path d="M7.5 2a5.5 5.5 0 0 1 0 11z" fill="currentColor" />
+    </svg>
+  );
+}
+
+/**
+ * A light, dark or system choice that drives the theme provider's appearance. The host owns
+ * the value, usually through useStoredAppearance. Until hydration it shows a neutral mark, so
+ * the first paint never shows the wrong icon.
+ */
+export function AppearanceToggle({
+  value,
+  onValueChange,
+  variant = 'cycle',
+  labels,
+  label = 'Appearance',
+  size = 'default',
+  className = '',
+  ...props
+}: AppearanceToggleProps) {
+  const hydrated = useSyncExternalStore(
+    subscribeNever,
+    () => true,
+    () => false,
+  );
+  const words = { ...defaultLabels, ...labels };
+  if (variant === 'segmented')
+    return (
+      <div {...props} className={`${s.root} ${className}`} data-part="appearance-toggle">
+        <SegmentedControl
+          label={label}
+          size={size === 'sm' ? 'sm' : 'default'}
+          value={value}
+          onValueChange={(next) => onValueChange(next as Appearance)}
+          options={order.map((appearance) => ({
+            value: appearance,
+            label: (
+              <span className={s.segment}>
+                <AIIcon name={names[appearance]} fallbackIcon={glyphs[appearance]} size={14} />
+                {words[appearance]}
+              </span>
+            ),
+          }))}
+        />
+      </div>
+    );
+  const next = order[(order.indexOf(value) + 1) % order.length]!;
+  return (
+    <div {...props} className={`${s.root} ${className}`} data-part="appearance-toggle">
+      <Button
+        variant="ghost"
+        size={size}
+        className={s.cycle}
+        aria-label={
+          hydrated ? `${words[value]} mode. Switch to ${words[next].toLowerCase()} mode` : label
+        }
+        data-appearance={hydrated ? value : undefined}
+        onClick={() => onValueChange(next)}
+      >
+        {hydrated ? (
+          <AIIcon name={names[value]} fallbackIcon={glyphs[value]} size={18} />
+        ) : (
+          <AIIcon name="monitor" icon={NeutralGlyph} size={18} />
+        )}
+      </Button>
+    </div>
+  );
+}

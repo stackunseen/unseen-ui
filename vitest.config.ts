@@ -18,6 +18,9 @@ export default defineConfig({
       '@stackunseen/ui/devtools': fileURLToPath(
         new URL('./packages/react/src/devtools.ts', import.meta.url),
       ),
+      '@stackunseen/ui/navigation': fileURLToPath(
+        new URL('./packages/react/src/navigation.ts', import.meta.url),
+      ),
       '@stackunseen/ui/media': fileURLToPath(
         new URL('./packages/react/src/media.ts', import.meta.url),
       ),

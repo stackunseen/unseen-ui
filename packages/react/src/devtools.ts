@@ -22,3 +22,10 @@ export { StackTrace } from './components/stack-trace/stack-trace.js';
 export type { StackTraceProps, StackFrame } from './components/stack-trace/stack-trace.js';
 export { WebPreview } from './components/web-preview/web-preview.js';
 export type { WebPreviewProps } from './components/web-preview/web-preview.js';
+export { CodeTabs } from './components/code-tabs/code-tabs.js';
+export type {
+  CodeTabsProps,
+  CodeFile,
+  CodeTourStop,
+  CodeTabsCodeBlockProps,
+} from './components/code-tabs/code-tabs.js';

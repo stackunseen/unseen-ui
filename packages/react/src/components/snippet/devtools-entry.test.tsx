@@ -18,7 +18,7 @@ describe('devtools entry', () => {
     render(<Snippet code="npm install @stackunseen/ui" prefix="$" />);
     await userEvent.click(screen.getByRole('button', { name: 'Copy command' }));
     expect(writeText).toHaveBeenCalledWith('npm install @stackunseen/ui');
-    expect(await screen.findByText('Copy unavailable')).toBeVisible();
+    expect(await screen.findByText(/Copy unavailable/)).toBeInTheDocument();
   });
 
   it('shows commit subject, short hash and toggles files', async () => {

@@ -1,0 +1,103 @@
+/* Checklist: progress, grouped rows and host-owned ticks. */
+.root {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-inline-size: 0;
+  color: var(--ai-text, #0f172a);
+  font-size: var(--ai-font-size, 14px);
+  line-height: 1.5;
+}
+.head {
+  display: grid;
+  gap: 8px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.status {
+  min-block-size: 1.5em;
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.group {
+  display: grid;
+  gap: 4px;
+}
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 8px 2px;
+  border-block-end: var(--ai-border-width, 1px) solid var(--ai-border, #e2e8f0);
+}
+.groupTitle {
+  margin: 0;
+  font-size: var(--ai-font-size, 14px);
+  font-weight: 650;
+}
+.groupCount {
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size-meta, 13px);
+  font-variant-numeric: tabular-nums;
+}
+.list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  padding: 8px 6px;
+  border-radius: var(--ai-control-radius, 8px);
+}
+.row[data-row-toggle] {
+  cursor: pointer;
+}
+.row[data-row-toggle]:hover {
+  background: var(--ai-surface-subtle, #f1f5f9);
+}
+.check {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  padding-block-start: 2px;
+}
+.body {
+  display: grid;
+  gap: 2px;
+  min-inline-size: 0;
+}
+.body p {
+  margin: 0;
+}
+.eyebrow {
+  color: var(--ai-muted, #475569);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.title {
+  font-weight: 500;
+}
+.row[data-done] .title {
+  color: var(--ai-muted, #475569);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+}
+.detail {
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .row {
+    transition: background-color 120ms ease;
+  }
+}

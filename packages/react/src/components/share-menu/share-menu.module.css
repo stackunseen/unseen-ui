@@ -1,0 +1,21 @@
+/* ShareMenu: a row of share actions, or one button with a menu. The status line keeps its height. */
+.root {
+  display: grid;
+  gap: 4px;
+  min-inline-size: 0;
+  color: var(--ai-text, #0f172a);
+  font-family: var(--ai-font-family, ui-sans-serif, system-ui, sans-serif);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.status {
+  min-block-size: 1.5em;
+  margin: 0;
+  color: var(--ai-muted, #475569);
+  font-size: var(--ai-font-size-meta, 13px);
+  line-height: 1.5;
+}

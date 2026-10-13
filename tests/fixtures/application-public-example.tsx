@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { AITheme, Button } from '@stackunseen/ui';
 import {
   Calendar,
+  Checklist,
   Combobox,
   DataGrid,
   DateRangePicker,
@@ -33,6 +34,7 @@ export function ApplicationPublicExample() {
   const [open, setOpen] = useState(false);
   const [guard, setGuard] = useState(false);
   const [org, setOrg] = useState('team');
+  const [checked, setChecked] = useState<string[]>(['scope']);
   return (
     <AITheme appearance="dark" config={{ primary: '#7c3aed' }}>
       <PageHeader
@@ -41,6 +43,16 @@ export function ApplicationPublicExample() {
         actions={<Button onClick={() => setGuard(true)}>Leave draft</Button>}
       />
       <OrgSwitcher value={org} organizations={options} onValueChange={setOrg} />
+      <Checklist
+        label="Public checklist"
+        items={[
+          { id: 'scope', title: 'Write the scope', group: 'Plan' },
+          { id: 'ship', title: 'Ship behind a flag' },
+        ]}
+        value={checked}
+        onValueChange={setChecked}
+        actions={{ reset: true }}
+      />
       <ListToolbar
         searchLabel="Find records"
         search={query}

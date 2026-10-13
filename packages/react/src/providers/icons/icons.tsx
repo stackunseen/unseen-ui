@@ -60,7 +60,10 @@ export type IconName =
   | 'moveDown'
   | 'helpful'
   | 'unhelpful'
-  | 'microphone';
+  | 'microphone'
+  | 'sun'
+  | 'moon'
+  | 'monitor';
 export type IconComponent = ComponentType<Omit<SVGProps<SVGSVGElement>, 'children'>>;
 export type IconOverrides = Partial<Record<IconName, IconComponent | null>>;
 const IconContext = createContext<{ icons: IconOverrides; size: number }>({ icons: {}, size: 16 });

@@ -1,0 +1,24 @@
+/* AppearanceToggle: an icon button that cycles, or three joined segments. */
+.root {
+  display: inline-flex;
+  vertical-align: middle;
+}
+.cycle {
+  inline-size: var(--ai-control-height, 36px);
+  padding-inline: 0;
+  color: var(--ai-text, #0f172a);
+}
+.cycle[data-size='sm'] {
+  inline-size: 32px;
+}
+.segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+@media (any-pointer: coarse) {
+  .cycle,
+  .cycle[data-size='sm'] {
+    inline-size: 44px;
+  }
+}

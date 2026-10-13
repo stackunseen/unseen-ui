@@ -18,6 +18,20 @@ const sharedPublicModules = new Set([
   'components/textarea/textarea',
   'providers/theme/theme-provider',
   'providers/icons/icons',
+  // Controls and helpers that optional entries render through the installed root, so one
+  // LinkProvider, one copy hook and one stylesheet serve every entry.
+  'components/chip/chip',
+  'components/segmented-control/segmented-control',
+  'components/kbd/kbd',
+  'components/loading-indicator/loading-indicator',
+  'components/dropdown-menu/dropdown-menu',
+  'components/tooltip/tooltip',
+  'components/icon-button/icon-button',
+  'components/progress/progress',
+  'components/link-button/link-button',
+  'components/copy-button/copy-button',
+  'shared/link',
+  'shared/copy',
 ]);
 
 // Short, deterministic CSS Module names: the class name plus a per-file suffix.
@@ -39,6 +53,7 @@ export default defineConfig(({ mode }) => {
     'assistant',
     'devtools',
     'media',
+    'navigation',
   ].includes(mode);
   return {
     css: { modules: { generateScopedName: scopedName } },

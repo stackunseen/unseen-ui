@@ -1,0 +1,98 @@
+/* InputGroup: one border, one radius, one focus ring around an input and its action. */
+.group {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--ai-control-height, 36px);
+  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #64748b);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-field-background, var(--ai-surface, #fff));
+  overflow: hidden;
+}
+.group[data-shape='pill'] {
+  border-radius: var(--ai-radius-pill, 999px);
+}
+.group:focus-within {
+  border-color: var(--ai-focus, #2563eb);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #2563eb) 22%, transparent);
+}
+.group[data-invalid] {
+  border-color: var(--ai-danger, #991b1b);
+}
+.group[data-disabled] {
+  opacity: 0.55;
+}
+/* The input gives up its own border and ring; the group draws both. */
+.group input {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  min-block-size: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.group input:focus,
+.group input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.addon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding-inline-start: 12px;
+  color: var(--ai-muted, #475569);
+}
+.addon + input {
+  padding-inline-start: 8px;
+}
+.button {
+  flex: 0 0 auto;
+  align-self: stretch;
+  min-block-size: 0;
+  border-radius: 0;
+}
+.group[data-attach='flush'] .button {
+  margin: calc(-1 * var(--ai-border-width, 1px));
+  margin-inline-start: 0;
+}
+.group[data-attach='inset'] {
+  padding: 4px;
+}
+.group[data-attach='inset'] .button {
+  border-radius: calc(var(--ai-control-radius, 8px) - 4px);
+}
+.group[data-attach='inset'][data-shape='pill'] .button {
+  border-radius: var(--ai-radius-pill, 999px);
+}
+.group[data-size='touch'] {
+  min-block-size: 44px;
+}
+.group[data-size='touch'] input,
+.group[data-size='touch'] .button {
+  min-block-size: 44px;
+}
+/* The button's keyboard focus sits inside the group's ring. */
+.button:focus-visible {
+  outline: 2px solid var(--ai-primary-foreground, #fff);
+  outline-offset: -4px;
+}
+.button[data-variant='outline']:focus-visible,
+.button[data-variant='ghost']:focus-visible {
+  outline-color: var(--ai-focus, #2563eb);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .group {
+    transition:
+      border-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+}
+@media (forced-colors: active) {
+  .group:focus-within {
+    outline: 2px solid Highlight;
+  }
+}

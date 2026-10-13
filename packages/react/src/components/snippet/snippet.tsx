@@ -1,6 +1,5 @@
 'use client';
-import { CopyIcon } from '@radix-ui/react-icons';
-import { useCopy } from '../../shared/copy.js';
+import { CopyButton } from '../copy-button/copy-button.js';
 import s from '../../shared/styles/devtools.module.css';
 
 export interface SnippetProps {
@@ -14,8 +13,6 @@ export interface SnippetProps {
 
 /** An inline command with a copy button. */
 export function Snippet({ code, prefix, label = 'Command', className = '' }: SnippetProps) {
-  const { copy, message } = useCopy();
-  const status = message(code);
   return (
     <div
       className={`${s.snippet} ${className}`}
@@ -27,17 +24,13 @@ export function Snippet({ code, prefix, label = 'Command', className = '' }: Sni
         {prefix && <span aria-hidden="true">{prefix} </span>}
         {code}
       </code>
-      <button
-        type="button"
-        className={s.iconButton}
-        aria-label={`Copy ${label.toLocaleLowerCase()}`}
-        onClick={() => void copy(code)}
-      >
-        <CopyIcon aria-hidden="true" />
-      </button>
-      <span role="status" className={status ? s.meta : s.srOnly}>
-        {status}
-      </span>
+      <CopyButton
+        value={code}
+        label={`Copy ${label.toLocaleLowerCase()}`}
+        iconOnly
+        variant="ghost"
+        size="sm"
+      />
     </div>
   );
 }
