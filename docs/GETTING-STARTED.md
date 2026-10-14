@@ -1,14 +1,14 @@
 # Getting started
 
-Unseen UI by Stack Unseen is an experimental React component library, published on npm under the `alpha` tag as `@stackunseen/ui` (with `@stackunseen/ui-core` as its dependency). The source repository is private.
+Unseen UI by Stack Unseen is an experimental React component library, published on npm as `@stackunseen/ui` (`latest` points at the current prerelease) (with `@stackunseen/ui-core` as its dependency). The source repository is private.
 
 ## Install from npm
 
 ```sh
-npm install @stackunseen/ui@alpha react@^19.3.0 react-dom@^19.3.0
+npm install @stackunseen/ui react@^19.3.0 react-dom@^19.3.0
 ```
 
-Pin the exact version in your lockfile; the `alpha` tag moves with each prerelease.
+Pin the exact version in your lockfile. Every prerelease is also published under the `alpha` tag, which moves with each release; `latest` is moved by hand until a stable 0.1.0.
 
 ## Start with a local build
 

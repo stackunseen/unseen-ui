@@ -9,7 +9,7 @@ Experimental alpha, published on npm under the `alpha` tag. MIT licensed.
 Install the current alpha:
 
 ```sh
-npm install @stackunseen/ui@alpha react@^19.3.0 react-dom@^19.3.0
+npm install @stackunseen/ui react@^19.3.0 react-dom@^19.3.0
 ```
 
 Core installs as a dependency. Import the stylesheet once before application CSS, then wrap the components in `AITheme`:

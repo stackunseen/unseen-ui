@@ -1,8 +1,8 @@
 # @stackunseen/ui-core
 
-Framework-independent contracts and state projection for **Unseen UI by Stack Unseen**. Experimental alpha, published on npm under the `alpha` tag. MIT licensed.
+Framework-independent contracts and state projection for **Unseen UI by Stack Unseen**. Experimental alpha, published on npm; `latest` points at the current prerelease and the `alpha` tag moves with each release. MIT licensed.
 
-Install it with `npm install @stackunseen/ui-core@alpha`. It also installs automatically with `@stackunseen/ui`.
+Install it with `npm install @stackunseen/ui-core`. It also installs automatically with `@stackunseen/ui`.
 
 ```ts
 import { canTransition } from '@stackunseen/ui-core';

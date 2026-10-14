@@ -175,12 +175,12 @@ export function WebsiteUtilitySpecimen({ name, state }: WebsiteSpecimenProps) {
     return (
       <div className="generic-demo-actions" style={{ justifyContent: 'flex-start', margin: 0 }}>
         <CopyButton
-          value="npm install @stackunseen/ui@alpha"
+          value="npm install @stackunseen/ui"
           label={state === 'Icon only' ? 'Copy install command' : 'Copy install command'}
           iconOnly={state === 'Icon only'}
           variant={state === 'Primary' ? 'primary' : state === 'Icon only' ? 'ghost' : 'outline'}
         />
-        <code>npm install @stackunseen/ui@alpha</code>
+        <code>npm install @stackunseen/ui</code>
       </div>
     );
   if (name === 'InputGroup')

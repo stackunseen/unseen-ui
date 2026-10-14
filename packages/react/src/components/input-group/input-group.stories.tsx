@@ -53,8 +53,8 @@ export const SearchWithButton: Story = {
 export const ValueWithCopy: Story = {
   render: () => (
     <InputGroup style={{ maxWidth: 420 }}>
-      <Input readOnly value="npm install @stackunseen/ui@alpha" aria-label="Install command" />
-      <CopyButton value="npm install @stackunseen/ui@alpha" label="Copy" variant="ghost" />
+      <Input readOnly value="npm install @stackunseen/ui" aria-label="Install command" />
+      <CopyButton value="npm install @stackunseen/ui" label="Copy" variant="ghost" />
     </InputGroup>
   ),
 };
