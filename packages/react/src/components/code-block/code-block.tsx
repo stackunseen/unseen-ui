@@ -99,7 +99,14 @@ export const CodeBlockView = forwardRef<
           label={`Copy ${label} code`}
         />
       </div>
-      <pre ref={pre} className={s.code} role="group" aria-label={`${label} code`} tabIndex={0}>
+      <pre
+        ref={pre}
+        className={s.code}
+        role="group"
+        aria-label={`${label} code`}
+        tabIndex={0}
+        data-marked={highlightLines && highlightLines.length > 0 ? '' : undefined}
+      >
         <code>
           {lines || variant === 'numbered' || highlightLines || scrollToLine !== undefined
             ? sourceLines.map((line, index) => (

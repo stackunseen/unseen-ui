@@ -79,6 +79,38 @@
   color: var(--ai-muted);
   font-variant-numeric: tabular-nums;
 }
+.filtersTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.filtersTrigger[data-active] {
+  border-color: var(--ai-primary, #2563eb);
+}
+.filtersCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 20px;
+  block-size: 20px;
+  padding-inline: 6px;
+  border-radius: var(--ai-radius-pill, 999px);
+  background: var(--ai-primary, #2563eb);
+  color: var(--ai-primary-foreground, #fff);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.filtersPopover {
+  inline-size: min(420px, calc(100vw - 24px));
+}
+.filtersBody {
+  display: grid;
+  gap: 12px;
+}
+.tokens {
+  min-inline-size: 0;
+}
 .masterDetail {
   display: grid;
   grid-template-columns: minmax(230px, 0.85fr) minmax(0, 1.4fr);

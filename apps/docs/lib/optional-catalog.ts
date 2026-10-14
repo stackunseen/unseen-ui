@@ -122,9 +122,9 @@ export const applicationCatalog: CatalogEntry[] = [
     category: 'Application patterns',
     description:
       'Search, an order switch, a chip row for the main facet and selects for the rest, driven by host or URL state.',
-    states: ['Default', 'URL links', 'Disabled'],
+    states: ['Default', 'URL links', 'Popover', 'Disabled'],
     contract:
-      'searchLabel · search · onSearchChange · onSearchSubmit? · order? · facet? · selects? · onClear? · summary? · disabled?',
+      'searchLabel · search · onSearchChange · onSearchSubmit? · order? · facet? · selects? · onClear? · summary? · disabled? · presentation?: open | popover · filtersLabel?',
     responsibility:
       'Keep every value in the host, usually the URL. Link mode on order and facet renders anchors; a LinkProvider makes them router links. The bar never filters data itself.',
     keyboard:

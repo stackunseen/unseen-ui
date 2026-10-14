@@ -5,10 +5,15 @@
 .codeLine {
   white-space: pre;
 }
-/* A marked range, such as a tour stop: a tint behind the text and a bar in the gutter. */
+/* A marked range, such as a tour stop: lines become bands across the pane with an edge bar. */
+.code[data-marked] .codeLine {
+  display: block;
+  margin-inline: calc(-1 * var(--ai-panel-padding, 16px));
+  padding-inline: var(--ai-panel-padding, 16px);
+}
 .codeLine[data-highlighted] {
   background: color-mix(in srgb, var(--ai-primary, #2563eb) 14%, transparent);
-  box-shadow: -4px 0 0 color-mix(in srgb, var(--ai-primary, #2563eb) 14%, transparent);
+  box-shadow: inset 3px 0 0 var(--ai-primary, #2563eb);
 }
 .codeLine[data-highlighted] .lineNumber {
   color: var(--ai-primary-text, #1d4ed8);

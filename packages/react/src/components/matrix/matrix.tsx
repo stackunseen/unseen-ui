@@ -28,6 +28,10 @@ export interface MatrixProps extends Omit<ComponentProps<'table'>, 'children'> {
   columnHeader?: 'horizontal' | 'angled';
   /** Printed in empty cells, for example a middle dot; empty cells are otherwise blank. */
   zero?: ReactNode;
+  /** Row totals as a trailing column, column totals as a trailing row, or both. Totals print but stay out of the fill scale. */
+  totals?: 'rows' | 'columns' | 'both';
+  /** Heads the totals column and row. */
+  totalsLabel?: ReactNode;
 }
 
 /**
@@ -48,10 +52,22 @@ export function Matrix({
   scrollLabel,
   columnHeader = 'horizontal',
   zero,
+  totals,
+  totalsLabel = 'All',
   className = '',
   ...props
 }: MatrixProps) {
   const values = rows.map((row) => columns.map((column) => value(row, column)));
+  const rowTotals = totals === 'rows' || totals === 'both';
+  const columnTotals = totals === 'columns' || totals === 'both';
+  const sum = (items: readonly (number | null)[]) =>
+    items.reduce<number>((total, item) => total + (item ?? 0), 0);
+  const columnSums = columns.map((_, index) => sum(values.map((row) => row[index] ?? null)));
+  const total = (count: number) => (
+    <td className={d.matrixTotal} data-total="">
+      <span className={d.matrixCell}>{format(count)}</span>
+    </td>
+  );
   const largest =
     max ??
     values.flat().reduce<number>((top, item) => (item !== null && item > top ? item : top), 0);
@@ -101,6 +117,15 @@ export function Matrix({
                 )}
               </th>
             ))}
+            {rowTotals && (
+              <th scope="col" className={d.matrixTotalHead}>
+                {columnHeader === 'angled' ? (
+                  <span className={d.matrixAngled}>{totalsLabel}</span>
+                ) : (
+                  totalsLabel
+                )}
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -135,8 +160,22 @@ export function Matrix({
                   </td>
                 );
               })}
+              {rowTotals && total(sum(values[rowIndex]!))}
             </tr>
           ))}
+          {columnTotals && (
+            <tr className={d.matrixTotalRow}>
+              <th scope="row" className={d.matrixTotalHead}>
+                {totalsLabel}
+              </th>
+              {columnSums.map((count, index) => (
+                <td key={columns[index]!.id} className={d.matrixTotal} data-total="">
+                  <span className={d.matrixCell}>{format(count)}</span>
+                </td>
+              ))}
+              {rowTotals && total(sum(columnSums))}
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

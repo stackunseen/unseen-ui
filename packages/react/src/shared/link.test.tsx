@@ -75,7 +75,7 @@ describe('LinkProvider', () => {
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(11);
     for (const link of links) expect(link).toHaveAttribute('data-router');
-    expect(screen.getByRole('link', { name: 'Agents' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'Agents' })).toHaveAttribute('aria-current', 'true');
     expect(screen.getByRole('link', { name: 'Latest' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'Two, current' })).toHaveAttribute(
       'aria-current',

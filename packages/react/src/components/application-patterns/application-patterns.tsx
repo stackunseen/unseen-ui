@@ -7,6 +7,7 @@ import { Input } from '../input/input.js';
 import { Select } from '../select/select.js';
 import { AlertDialog } from '../alert-dialog/alert-dialog.js';
 import { Chip, ChipGroup } from '../chip/chip.js';
+import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover.js';
 import { SegmentedControl } from '../segmented-control/segmented-control.js';
 import type { SegmentedOption } from '../segmented-control/segmented-control.js';
 import type { SelectChoice, SelectOption } from '../select/select.js';
@@ -326,6 +327,14 @@ export interface FilterBarProps extends Omit<ComponentPropsWithoutRef<'div'>, 'o
   clearLabel?: string;
   summary?: ReactNode;
   disabled?: boolean;
+  /**
+   * open shows every facet in the bar. popover keeps the facet chips and selects behind a
+   * Filters button that counts the active ones, and shows each active filter as a removable
+   * token; toggle facets and selects can be removed from a token, link facets show as current.
+   */
+  presentation?: 'open' | 'popover';
+  /** Names the popover trigger and its heading. */
+  filtersLabel?: string;
 }
 
 const ANY = '__any';
@@ -349,13 +358,174 @@ export function FilterBar({
   clearLabel = 'Clear filters',
   summary,
   disabled,
+  presentation = 'open',
+  filtersLabel = 'Filters',
   className = '',
   ...props
 }: FilterBarProps) {
-  const active =
-    search !== '' ||
-    (facet?.selected.length ?? 0) > 0 ||
-    (selects?.some((select) => select.value !== null) ?? false);
+  const activeCount =
+    (facet?.selected.length ?? 0) +
+    (selects?.filter((select) => select.value !== null).length ?? 0);
+  const active = search !== '' || activeCount > 0;
+  const chips = facet && (
+    <ChipGroup label={facet.label} overflow={facet.overflow}>
+      {facet.options.map((option) => {
+        const selected = facet.selected.includes(option.value);
+        const text = (
+          <>
+            {option.label}
+            {option.count !== undefined && (
+              <span className={s.facetCount}>{` ${option.count}`}</span>
+            )}
+          </>
+        );
+        return option.href ? (
+          <Chip
+            key={option.value}
+            href={option.href}
+            active={selected}
+            swatch={option.swatch}
+            disabled={disabled}
+          >
+            {text}
+          </Chip>
+        ) : (
+          <Chip
+            key={option.value}
+            pressed={selected}
+            onPressedChange={() => facet.onToggle?.(option.value)}
+            swatch={option.swatch}
+            disabled={disabled}
+          >
+            {text}
+          </Chip>
+        );
+      })}
+    </ChipGroup>
+  );
+  const selectControls = selects?.map((select) => (
+    <Select
+      key={select.name}
+      name={select.name}
+      label={select.label}
+      value={select.value ?? ANY}
+      onValueChange={(value) => select.onValueChange(value === ANY ? null : value)}
+      options={[
+        { value: ANY, label: select.anyLabel ?? `Any ${select.label.toLowerCase()}` },
+        ...select.options,
+      ]}
+      disabled={disabled}
+    />
+  ));
+  const clear = onClear && active && (
+    <Button variant="ghost" size="sm" onClick={onClear} disabled={disabled}>
+      {clearLabel}
+    </Button>
+  );
+  const optionLabel = (choices: readonly SelectChoice[], value: string): ReactNode =>
+    choices
+      .flatMap((choice) => ('options' in choice ? choice.options : [choice]))
+      .find((option) => option.value === value)?.label ?? value;
+  const tokens = presentation === 'popover' && activeCount > 0 && (
+    <ChipGroup label="Active filters" className={s.tokens}>
+      {facet?.selected.map((value) => {
+        const option = facet.options.find((entry) => entry.value === value);
+        const text = option?.label ?? value;
+        return option?.href ? (
+          <Chip key={`facet-${value}`} href={option.href} active swatch={option.swatch} size="sm">
+            {text}
+          </Chip>
+        ) : (
+          <Chip
+            key={`facet-${value}`}
+            onRemove={() => facet.onToggle?.(value)}
+            removeLabel={`Remove ${typeof text === 'string' ? text : value}`}
+            swatch={option?.swatch}
+            size="sm"
+            disabled={disabled}
+          >
+            {text}
+          </Chip>
+        );
+      })}
+      {selects
+        ?.filter((select) => select.value !== null)
+        .map((select) => (
+          <Chip
+            key={`select-${select.name}`}
+            onRemove={() => select.onValueChange(null)}
+            removeLabel={`Remove ${select.label} filter`}
+            size="sm"
+            disabled={disabled}
+          >
+            {select.label}: {optionLabel(select.options, select.value!)}
+          </Chip>
+        ))}
+    </ChipGroup>
+  );
+  if (presentation === 'popover')
+    return (
+      <div {...props} role="region" aria-label={label} className={`${s.filterBar} ${className}`}>
+        <div className={s.toolbarRow}>
+          <form
+            role="search"
+            className={s.search}
+            onSubmit={(event) => {
+              event.preventDefault();
+              onSearchSubmit?.();
+            }}
+          >
+            <Field label={searchLabel}>
+              <Input
+                type="search"
+                value={search}
+                onChange={(event) => onSearchChange(event.currentTarget.value)}
+                placeholder={searchPlaceholder}
+                disabled={disabled}
+              />
+            </Field>
+          </form>
+          {order && (
+            <SegmentedControl
+              label={order.label}
+              options={order.options}
+              value={order.value}
+              onValueChange={order.onValueChange}
+              mode={order.mode}
+              disabled={disabled}
+              className={s.order}
+            />
+          )}
+          {(facet || (selects && selects.length > 0)) && (
+            <Popover>
+              <PopoverTrigger
+                className={s.filtersTrigger}
+                disabled={disabled}
+                data-active={activeCount > 0 || undefined}
+              >
+                {filtersLabel}
+                {activeCount > 0 && <span className={s.filtersCount}>{activeCount}</span>}
+              </PopoverTrigger>
+              <PopoverContent title={filtersLabel} headingLevel={3} className={s.filtersPopover}>
+                <div className={s.filtersBody}>
+                  {chips}
+                  {selectControls && selectControls.length > 0 && (
+                    <div className={s.filters}>{selectControls}</div>
+                  )}
+                  {clear}
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
+        </div>
+        {tokens}
+        {summary !== undefined && (
+          <p role="status" className={s.summary}>
+            {summary}
+          </p>
+        )}
+      </div>
+    );
   return (
     <div {...props} role="region" aria-label={label} className={`${s.filterBar} ${className}`}>
       <div className={s.toolbarRow}>
@@ -389,63 +559,11 @@ export function FilterBar({
           />
         )}
       </div>
-      {facet && (
-        <ChipGroup label={facet.label} overflow={facet.overflow}>
-          {facet.options.map((option) => {
-            const selected = facet.selected.includes(option.value);
-            const text = (
-              <>
-                {option.label}
-                {option.count !== undefined && (
-                  <span className={s.facetCount}>{` ${option.count}`}</span>
-                )}
-              </>
-            );
-            return option.href ? (
-              <Chip
-                key={option.value}
-                href={option.href}
-                active={selected}
-                swatch={option.swatch}
-                disabled={disabled}
-              >
-                {text}
-              </Chip>
-            ) : (
-              <Chip
-                key={option.value}
-                pressed={selected}
-                onPressedChange={() => facet.onToggle?.(option.value)}
-                swatch={option.swatch}
-                disabled={disabled}
-              >
-                {text}
-              </Chip>
-            );
-          })}
-        </ChipGroup>
-      )}
+      {chips}
       {((selects && selects.length > 0) || (onClear && active)) && (
         <div className={s.filters}>
-          {selects?.map((select) => (
-            <Select
-              key={select.name}
-              name={select.name}
-              label={select.label}
-              value={select.value ?? ANY}
-              onValueChange={(value) => select.onValueChange(value === ANY ? null : value)}
-              options={[
-                { value: ANY, label: select.anyLabel ?? `Any ${select.label.toLowerCase()}` },
-                ...select.options,
-              ]}
-              disabled={disabled}
-            />
-          ))}
-          {onClear && active && (
-            <Button variant="ghost" size="sm" onClick={onClear} disabled={disabled}>
-              {clearLabel}
-            </Button>
-          )}
+          {selectControls}
+          {clear}
         </div>
       )}
       {summary !== undefined && (

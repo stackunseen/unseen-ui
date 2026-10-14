@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { AITheme } from '../../providers/theme/theme-provider';
@@ -216,5 +216,55 @@ describe('FilterBar', () => {
     expect(screen.getByRole('link', { name: 'RAG 12' })).toHaveAttribute('href', '/journal/?d=rag');
     expect(screen.queryByRole('button', { name: 'Clear filters' })).toBeNull();
     expect(screen.queryByRole('status')).toBeNull();
+  });
+});
+
+describe('FilterBar popover presentation', () => {
+  it('keeps facets behind a counted Filters button and shows active filters as removable tokens', async () => {
+    const onToggle = vi.fn();
+    const onKind = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <FilterBar
+        presentation="popover"
+        searchLabel="Search"
+        search=""
+        onSearchChange={vi.fn()}
+        facet={{
+          label: 'Discipline',
+          options: [
+            { value: 'rag', label: 'RAG', count: 12 },
+            { value: 'agents', label: 'Agents', count: 7 },
+          ],
+          selected: ['agents'],
+          onToggle,
+        }}
+        selects={[
+          {
+            name: 'kind',
+            label: 'Kind',
+            value: 'guide',
+            onValueChange: onKind,
+            options: [{ label: 'Writing', options: [{ value: 'guide', label: 'Guides' }] }],
+          },
+        ]}
+        onClear={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole('button', { name: /RAG/ })).toBeNull();
+    const trigger = screen.getByRole('button', { name: 'Filters 2' });
+    const tokens = screen.getByRole('group', { name: 'Active filters' });
+    expect(within(tokens).getByText('Agents')).toBeInTheDocument();
+    expect(within(tokens).getByText('Kind: Guides')).toBeInTheDocument();
+    await user.click(within(tokens).getByRole('button', { name: 'Remove Kind filter' }));
+    expect(onKind).toHaveBeenCalledWith(null);
+    await user.click(within(tokens).getByRole('button', { name: 'Remove Agents' }));
+    expect(onToggle).toHaveBeenCalledWith('agents');
+    await user.click(trigger);
+    const dialog = await screen.findByRole('dialog', { name: 'Filters' });
+    await user.click(within(dialog).getByRole('button', { name: 'RAG 12' }));
+    expect(onToggle).toHaveBeenLastCalledWith('rag');
+    expect(within(dialog).getByRole('combobox', { name: 'Kind' })).toBeInTheDocument();
+    expect(within(dialog).getByRole('button', { name: 'Clear filters' })).toBeInTheDocument();
   });
 });

@@ -128,8 +128,10 @@ export function CodeTabs({
         location.hash,
       );
       const index = match ? Number(match[1]) - 1 : -1;
-      if (index < 0 || index >= tourLength || index === stopRef.current) return;
-      goRef.current(index, true);
+      if (index < 0 || index >= tourLength) return;
+      if (index !== stopRef.current) goRef.current(index, true);
+      // Nothing on the page carries the hash id, so bring the tour into view ourselves.
+      tourBox.current?.scrollIntoView({ block: 'start' });
     };
     open();
     window.addEventListener('hashchange', open);
@@ -138,6 +140,7 @@ export function CodeTabs({
 
   const narrow = useNarrow(narrowBreakpoint);
   const tabs = useRef<HTMLDivElement>(null);
+  const tourBox = useRef<HTMLDivElement>(null);
   const block = useRef<CodeBlockHandle>(null);
   const active = tour[current ?? -1];
   const selected = files.find((entry) => entry.file === file) ?? files[0];
@@ -162,7 +165,7 @@ export function CodeTabs({
   };
 
   const tourBar = tourLength > 0 && (
-    <div className={s.tour} data-part="code-tour">
+    <div ref={tourBox} className={s.tour} data-part="code-tour">
       <div className={s.tourHead}>
         <p className={s.kicker}>Code tour · {tourLength} stops</p>
         <ol className={s.stops} aria-label="Tour stops">

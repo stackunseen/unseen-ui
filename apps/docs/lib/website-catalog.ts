@@ -445,7 +445,7 @@ export const websiteCatalog: CatalogEntry[] = [
       'A compact label that toggles, links or can be removed, with a group that wraps or scrolls.',
     states: ['Default', 'Links', 'Removable', 'Scrolling group'],
     contract:
-      'children · pressed/onPressedChange | href/active | onRemove/removeLabel · swatch? · size?: default | sm · disabled? · ChipGroup: label · overflow?: wrap | scroll',
+      'children · pressed/onPressedChange | href/active/current? + anchor props | onRemove/removeLabel · swatch? · size?: default | sm · disabled? · ChipGroup: label · overflow?: wrap | scroll',
     responsibility:
       'Chips report intents; the host applies the filter. Link chips render the LinkProvider link when one is set. Active fills use --ai-chip-active-background and --ai-chip-active-color so labels keep their contrast.',
     keyboard:
@@ -461,7 +461,7 @@ export const websiteCatalog: CatalogEntry[] = [
       'A step indicator for series and multi-step paths, as dots or a list, with optional links.',
     states: ['Default', 'List', 'With navigation', 'Tooltips'],
     contract:
-      'label · steps: { id, label, href?, state?: done | current | upcoming | planned }[] · presentation?: dots | list · previous? · next? · reading? · tooltip?',
+      'label · steps: { id, label, href?, state?: done | current | upcoming | planned | available }[] · presentation?: dots | list · previous? · next? · reading? · tooltip? · as?: nav | div',
     responsibility:
       'Supply the current step from routing or host state. Planned steps have no destination; the reading prints "Step 2 of 9" from the current step.',
     keyboard:
@@ -489,9 +489,9 @@ export const websiteCatalog: CatalogEntry[] = [
     aliases: ['Heatmap', 'Coverage matrix', 'Grid of counts'],
     description:
       'A heatmap table of counts with a single-hue fill, linked headers and linked cells.',
-    states: ['Default', 'Linked cells', 'Angled headers'],
+    states: ['Default', 'Linked cells', 'Angled headers', 'Totals'],
     contract:
-      'label · rows: { id, label, href?, swatch? }[] · columns · value(row, column) · href?(row, column) · max? · format? · caption? · scrollLabel? · columnHeader?: horizontal | angled · zero?',
+      'label · rows: { id, label, href?, swatch? }[] · columns · value(row, column) · href?(row, column) · max? · format? · caption? · scrollLabel? · columnHeader?: horizontal | angled · zero? · totals?: rows | columns | both · totalsLabel?',
     responsibility:
       'Every cell prints its number; the fill from the primary token only reinforces it and the text flips to the primary foreground at the level the theme measured. Supply counts and destinations from the host.',
     keyboard:
@@ -600,7 +600,7 @@ export const websiteCatalog: CatalogEntry[] = [
     description: 'A Ctrl/Cmd+K menu for jumping to places and searching, with results in groups.',
     states: ['Default', 'Async results'],
     contract:
-      'open? · defaultOpen? · onOpenChange? · items · search?(query, signal) · debounceMs? · onSelect · shortcut?: "mod+k" | false · label? · placeholder? · emptyState? · footerHints? · trailingAction?(query) · useCommandPalette() · markMatches(text, query)',
+      'open? · defaultOpen? · onOpenChange? · items · search?(query, signal) · debounceMs? · onSelect · shortcut?: "mod+k" | false · label? · placeholder? · emptyState? · footerHints? · trailingAction?(query) · highlight?(text, query) | false · cancelLabel? · useCommandPalette() · markMatches(text, query)',
     responsibility:
       'Static items filter locally by every word; async results are debounced, cancelled through the signal and never shown for an older query. With a LinkProvider, items with an href are that router link. Excerpts are plain text; markMatches marks them safely.',
     keyboard:

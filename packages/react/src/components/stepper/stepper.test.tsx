@@ -189,3 +189,71 @@ describe('Tag hue and mono', () => {
     expect(tag.style.getPropertyValue('--tag-hue')).toBe('var(--hue-rag)');
   });
 });
+
+describe('Stepper follow-ups', () => {
+  it('leaves available steps without a state suffix and can render as a plain list', () => {
+    render(
+      <Stepper
+        as="div"
+        label="Series parts"
+        steps={[
+          { id: '1', label: 'Why evals', href: '/1', state: 'available' },
+          { id: '2', label: 'Datasets', href: '/2', state: 'current' },
+          { id: '3', label: 'Scoring', href: '/3' },
+        ]}
+      />,
+    );
+    expect(screen.queryByRole('navigation')).toBeNull();
+    expect(screen.getByRole('list', { name: 'Series parts' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Why evals' })).toHaveAttribute('href', '/1');
+    expect(screen.getByRole('link', { name: 'Datasets, current' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Scoring, upcoming' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Why evals' }).closest('li')).toHaveAttribute(
+      'data-state',
+      'available',
+    );
+  });
+});
+
+describe('Matrix totals', () => {
+  it('prints row and column totals outside the fill scale', () => {
+    render(
+      <Matrix
+        label="Coverage"
+        rows={[
+          { id: 'rag', label: 'RAG' },
+          { id: 'evals', label: 'Evals' },
+        ]}
+        columns={[
+          { id: 'guide', label: 'Guides' },
+          { id: 'tool', label: 'Tools' },
+        ]}
+        value={(row, column) =>
+          (
+            ({ 'rag:guide': 4, 'rag:tool': 1, 'evals:guide': null, 'evals:tool': 2 }) as Record<
+              string,
+              number | null
+            >
+          )[`${row.id}:${column.id}`] ?? null
+        }
+        totals="both"
+      />,
+    );
+    const table = screen.getByRole('table', { name: 'Coverage' });
+    expect(within(table).getByRole('columnheader', { name: 'All' })).toBeInTheDocument();
+    expect(within(table).getByRole('rowheader', { name: 'All' })).toBeInTheDocument();
+    const totals = within(table)
+      .getAllByRole('cell')
+      .filter((cell) => cell.hasAttribute('data-total'))
+      .map((cell) => cell.textContent);
+    expect(totals).toEqual(['5', '2', '4', '3', '7']);
+    for (const cell of within(table).getAllByRole('cell'))
+      if (cell.hasAttribute('data-total'))
+        expect(cell.style.getPropertyValue('--matrix-level')).toBe('');
+    const strongest = within(table)
+      .getAllByText('4')
+      .map((node) => node.closest('td')!)
+      .find((cell) => !cell.hasAttribute('data-total'))!;
+    expect(strongest.style.getPropertyValue('--matrix-level')).toBe('1');
+  });
+});

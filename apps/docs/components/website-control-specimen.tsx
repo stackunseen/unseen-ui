@@ -187,7 +187,16 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
       </Disclosure>
     );
   if (name === 'Matrix')
-    return state === 'Angled headers' ? (
+    return state === 'Totals' ? (
+      <Matrix
+        label="Coverage with totals"
+        rows={rows}
+        columns={columns}
+        value={(row, column) => coverage[`${row.id}:${column.id}`] ?? null}
+        totals="both"
+        zero="·"
+      />
+    ) : state === 'Angled headers' ? (
       <Matrix
         label="Coverage by kind"
         caption="Twelve kinds across four disciplines"

@@ -35,7 +35,7 @@ describe('Chip', () => {
     );
     const group = screen.getByRole('group', { name: 'Disciplines' });
     expect(group).toHaveAttribute('data-overflow', 'scroll');
-    expect(screen.getByRole('link', { name: 'RAG' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'RAG' })).toHaveAttribute('aria-current', 'true');
     expect(screen.getByRole('link', { name: 'Evals' })).not.toHaveAttribute('aria-current');
   });
 
@@ -84,5 +84,28 @@ describe('small primitives', () => {
     expect(screen.getByText('Extra context')).toHaveClass(/srOnly/);
     await userEvent.tab();
     expect(skip).toHaveFocus();
+  });
+});
+
+describe('Chip link props', () => {
+  it('passes anchor props through, defaults aria-current to true and lets the host choose', () => {
+    const onClick = vi.fn((event: { preventDefault: () => void }) => event.preventDefault());
+    const { rerender } = render(
+      <Chip href="/lens/agents" active title="Why agents?" onClick={onClick} data-scroll="false">
+        Agents
+      </Chip>,
+    );
+    const link = screen.getByRole('link', { name: 'Agents' });
+    expect(link).toHaveAttribute('title', 'Why agents?');
+    expect(link).toHaveAttribute('aria-current', 'true');
+    expect(link).toHaveAttribute('data-scroll', 'false');
+    link.click();
+    expect(onClick).toHaveBeenCalledTimes(1);
+    rerender(
+      <Chip href="/journal/" active current="page">
+        Journal
+      </Chip>,
+    );
+    expect(screen.getByRole('link', { name: 'Journal' })).toHaveAttribute('aria-current', 'page');
   });
 });

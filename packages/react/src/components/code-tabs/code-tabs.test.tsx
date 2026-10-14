@@ -143,3 +143,28 @@ describe('code block line marking', () => {
     expect(scrolls).toEqual([176, 176]);
   });
 });
+
+describe('CodeTabs follow-ups', () => {
+  it('marks ranges as block bands and brings the tour into view for a hash link', async () => {
+    const scrolls = vi.mocked(Element.prototype.scrollIntoView);
+    scrolls.mockClear();
+    history.replaceState(null, '', '#tour-1');
+    const { container } = render(
+      <CodeTabs files={files} label="Example files" tour={tour} hashLinks="tour-" />,
+    );
+    expect(container.querySelector('[data-part="code-tour"]')).toBeInTheDocument();
+    expect(scrolls).toHaveBeenCalled();
+    expect(container.querySelector('pre[data-marked]')).toBeInTheDocument();
+    expect(
+      container.querySelector('[role="status"][aria-label="Tour stop"]'),
+    ).not.toBeEmptyDOMElement();
+  });
+
+  it('collapses the stop note while nothing is open', () => {
+    const { container } = render(<CodeTabs files={files} label="Example files" tour={tour} />);
+    expect(
+      container.querySelector('[role="status"][aria-label="Tour stop"]'),
+    ).toBeEmptyDOMElement();
+    expect(container.querySelector('pre[data-marked]')).toBeNull();
+  });
+});

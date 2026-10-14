@@ -19,15 +19,33 @@ export interface ToggleChipProps extends ChipBaseProps {
   href?: never;
   onRemove?: never;
 }
-export interface LinkChipProps extends ChipBaseProps {
+export interface LinkChipProps
+  extends
+    ChipBaseProps,
+    Omit<ComponentProps<'a'>, 'href' | 'children' | 'className' | 'style' | 'aria-current'> {
   href: string;
   /** Marks the chip as the current filter with aria-current. */
   active?: boolean;
-  target?: string;
-  rel?: string;
+  /** The aria-current token for an active chip; "true" suits a filter, "page" a destination. */
+  current?: 'true' | 'page' | 'step' | 'location' | 'date' | 'time';
   pressed?: never;
   onRemove?: never;
 }
+const chipOwnKeys = [
+  'children',
+  'swatch',
+  'size',
+  'className',
+  'style',
+  'disabled',
+  'href',
+  'active',
+  'current',
+  'pressed',
+  'onPressedChange',
+  'onRemove',
+  'removeLabel',
+] as const;
 export interface RemovableChipProps extends ChipBaseProps {
   onRemove: () => void;
   /** Accessible name of the remove control; defaults to "Remove" plus the chip text. */
@@ -92,10 +110,12 @@ export function Chip(props: ChipProps) {
     );
   }
   if ('href' in props && props.href) {
+    // Every other anchor prop (title, Next's scroll, onClick) reaches the link component.
+    const anchorProps: Record<string, unknown> = { ...props };
+    for (const key of chipOwnKeys) delete anchorProps[key];
     const linkProps = {
-      target: props.target,
-      rel: props.rel,
-      'aria-current': props.active ? ('page' as const) : undefined,
+      ...(anchorProps as Omit<ComponentProps<'a'>, 'href'>),
+      'aria-current': props.active ? (props.current ?? 'true') : undefined,
       className: base,
       style,
       'data-part': 'chip',

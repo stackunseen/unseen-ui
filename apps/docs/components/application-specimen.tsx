@@ -81,6 +81,7 @@ function FilterBarExample({ state }: { state: string }) {
   const [kind, setKind] = useState<string | null>(null);
   const [level, setLevel] = useState<string | null>(null);
   const links = state === 'URL links';
+  const popover = state === 'Popover';
   const shown = disciplines
     .filter((item) => selected.length === 0 || selected.includes(item.value))
     .reduce((sum, item) => sum + item.count, 0);
@@ -92,6 +93,7 @@ function FilterBarExample({ state }: { state: string }) {
       onSearchChange={setSearch}
       onSearchSubmit={() => setApplied(search.trim())}
       disabled={state === 'Disabled'}
+      presentation={popover ? 'popover' : 'open'}
       order={{
         label: 'Order',
         value: view,

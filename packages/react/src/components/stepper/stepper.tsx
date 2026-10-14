@@ -3,7 +3,8 @@ import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
 import { Anchor } from '../../shared/link.js';
 import d from '../../shared/styles/display.module.css';
 
-export type StepState = 'done' | 'current' | 'upcoming' | 'planned';
+/** available: reachable with no progress claim, such as the parts of a series before the one being read. */
+export type StepState = 'done' | 'current' | 'upcoming' | 'planned' | 'available';
 export interface StepperStep {
   id: string;
   label: ReactNode;
@@ -25,6 +26,8 @@ export interface StepperProps extends Omit<ComponentProps<'nav'>, 'children'> {
   next?: StepperLink;
   /** Prints "Step 2 of 9" from the current step; pass a string to override the words. */
   reading?: boolean | ((current: number, total: number) => ReactNode);
+  /** A navigation landmark, or a plain list for hosts that already sit inside one. */
+  as?: 'nav' | 'div';
   /** Dots only: shows the step label above the dot on hover and keyboard focus. */
   tooltip?: boolean;
 }
@@ -34,7 +37,9 @@ const stateWords: Record<StepState, string> = {
   current: 'current',
   upcoming: 'upcoming',
   planned: 'planned',
+  available: '',
 };
+const suffix = (state: StepState) => (stateWords[state] ? `, ${stateWords[state]}` : '');
 
 /** A step indicator for series and multi-step paths. Renders on the server; no state. Links use the LinkProvider's component when one is set. */
 export function Stepper({
@@ -45,9 +50,12 @@ export function Stepper({
   next,
   reading = false,
   tooltip = false,
+  as = 'nav',
   className = '',
   ...props
 }: StepperProps) {
+  // Both elements take the same props; the string tag only changes the landmark.
+  const Root = (as === 'div' ? 'div' : 'nav') as 'nav';
   const currentIndex = steps.findIndex((step) => step.state === 'current');
   const text =
     reading && currentIndex >= 0
@@ -56,15 +64,15 @@ export function Stepper({
         : `Step ${currentIndex + 1} of ${steps.length}`
       : null;
   return (
-    <nav
+    <Root
       {...props}
-      aria-label={label}
+      aria-label={Root === 'nav' ? label : undefined}
       data-part="stepper"
       data-presentation={presentation}
       className={`${d.stepper} ${className}`}
     >
       {text && <p className={d.stepperReading}>{text}</p>}
-      <ol className={d.stepperList}>
+      <ol className={d.stepperList} aria-label={Root === 'nav' ? undefined : label}>
         {steps.map((step) => {
           const state = step.state ?? 'upcoming';
           const content =
@@ -73,7 +81,7 @@ export function Stepper({
                 <span className={d.stepperDot} aria-hidden="true" />
                 <VisuallyHidden>
                   {step.label}
-                  {`, ${stateWords[state]}`}
+                  {suffix(state)}
                 </VisuallyHidden>
                 {tooltip && (
                   <span className={d.stepperTip} aria-hidden="true">
@@ -85,7 +93,7 @@ export function Stepper({
               <>
                 <span className={d.stepperDot} aria-hidden="true" />
                 <span className={d.stepperLabel}>{step.label}</span>
-                <VisuallyHidden>{`, ${stateWords[state]}`}</VisuallyHidden>
+                {suffix(state) && <VisuallyHidden>{suffix(state)}</VisuallyHidden>}
               </>
             );
           return (
@@ -124,6 +132,6 @@ export function Stepper({
           )}
         </div>
       )}
-    </nav>
+    </Root>
   );
 }

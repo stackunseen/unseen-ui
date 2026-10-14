@@ -50,6 +50,9 @@ export interface CommandPaletteProps {
   /** How many static items to keep while a query is typed. */
   staticLimit?: number;
   searchingLabel?: string;
+  /** Marks matches in labels; defaults to whole-word markMatches. false leaves labels plain. */
+  highlight?: ((text: string, query: string) => ReactNode) | false;
+  cancelLabel?: string;
 }
 
 const DEFAULT_HINTS = (
@@ -129,6 +132,8 @@ export function CommandPalette({
   trailingAction,
   staticLimit = 8,
   searchingLabel = 'Searching…',
+  highlight = markMatches,
+  cancelLabel = 'Cancel',
 }: CommandPaletteProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = open ?? internalOpen;
@@ -146,6 +151,14 @@ export function CommandPalette({
   );
   const [query, setQuery] = useState('');
   const trimmed = query.trim();
+  const mark = highlight === false ? (text: string) => text : highlight;
+  // cmdk keeps whatever row was selected when results land, which can leave the selection on
+  // a trailing action below the fold. Until the user moves it, the first option is selected.
+  const [active, setActive] = useState<string | undefined>(undefined);
+  const moved = useRef(false);
+  useEffect(() => {
+    moved.current = false;
+  }, [trimmed]);
   const inputRef = useRef<HTMLInputElement>(null);
   const observer = useRef<MutationObserver | null>(null);
   // cmdk reports the active option through aria-activedescendant only after its own
@@ -263,6 +276,10 @@ export function CommandPalette({
     return result;
   }, [items, trimmed, staticLimit, hits, trailingAction]);
 
+  useEffect(() => {
+    if (!moved.current && options[0]) setActive(options[0].id);
+  }, [options]);
+
   const groups = useMemo(() => {
     const out: { name: string; items: CommandPaletteItem[] }[] = [];
     for (const item of options) {
@@ -281,6 +298,8 @@ export function CommandPalette({
   // Enter while composing does nothing. With a router link, Enter clicks the active option's
   // link so the router navigates; cmdk then reports the selection through onSelect.
   const onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (['ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key))
+      moved.current = true;
     if (event.key !== 'Enter') return;
     if (event.nativeEvent.isComposing) {
       event.preventDefault();
@@ -316,7 +335,14 @@ export function CommandPalette({
             }}
           >
             <Dialog.Title className={s.srOnly}>{label}</Dialog.Title>
-            <Command label={label} shouldFilter={false} loop className={s.command}>
+            <Command
+              label={label}
+              shouldFilter={false}
+              loop
+              className={s.command}
+              value={active ?? ''}
+              onValueChange={setActive}
+            >
               <div className={s.field}>
                 <AIIcon name="search" fallbackIcon={SearchGlyph} className={s.fieldIcon} />
                 <Command.Input
@@ -332,8 +358,20 @@ export function CommandPalette({
                 <Kbd className={s.fieldKey} aria-hidden="true">
                   Esc
                 </Kbd>
+                <Dialog.Close asChild>
+                  <button type="button" className={s.cancel}>
+                    {cancelLabel}
+                  </button>
+                </Dialog.Close>
               </div>
-              <Command.List ref={setListRef} className={s.list} label="Results">
+              <Command.List
+                ref={setListRef}
+                className={s.list}
+                label="Results"
+                onPointerMove={() => {
+                  moved.current = true;
+                }}
+              >
                 {searching && (
                   <Command.Loading>
                     <div className={s.note}>
@@ -351,7 +389,7 @@ export function CommandPalette({
                       const content = (
                         <>
                           <span className={s.itemRow}>
-                            <span className={s.itemLabel}>{markMatches(item.label, trimmed)}</span>
+                            <span className={s.itemLabel}>{mark(item.label, trimmed)}</span>
                             {item.hint && <span className={s.itemHint}>{item.hint}</span>}
                           </span>
                           {(item.description || reason) && (

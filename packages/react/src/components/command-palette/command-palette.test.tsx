@@ -216,10 +216,117 @@ describe('CommandPalette', () => {
 
   it('renders nothing on the server while closed and marks matches safely', () => {
     expect(renderToString(<CommandPalette items={items} />)).toBe('');
-    const marked = renderToString(<>{markMatches('Retrieval <b>pipelines</b>', 'val <b>')}</>);
-    expect(marked).toContain('<mark>val</mark>');
-    expect(marked).toContain('&lt;b&gt;');
-    expect(marked).toContain('<mark>&lt;b&gt;</mark>');
+    const marked = renderToString(<>{markMatches('Retrieval <b>pipelines</b>', 'retrieval b')}</>);
+    expect(marked).toContain('<mark>Retrieval</mark>');
+    expect(marked).toContain('&lt;<mark>b</mark>&gt;pipelines&lt;/<mark>b</mark>&gt;');
     expect(markMatches('Plain', '')).toBe('Plain');
+    // Whole words only: "ai" does not light up inside "maintain" or "chain".
+    const words = renderToString(<>{markMatches('Maintain the AI chain', 'ai')}</>);
+    expect(words).toBe('Maintain the <mark>AI</mark> chain');
+  });
+});
+
+describe('CommandPalette follow-ups', () => {
+  it('selects the first result when async results land unless the user moved the selection', async () => {
+    const resolvers: ((items: CommandPaletteItem[]) => void)[] = [];
+    const search = vi.fn(
+      () =>
+        new Promise<CommandPaletteItem[]>((resolve) => {
+          resolvers.push((found) => resolve(found));
+        }),
+    );
+    const onSelect = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <CommandPalette
+        defaultOpen
+        items={[]}
+        search={search}
+        debounceMs={20}
+        onSelect={onSelect}
+        trailingAction={(query) => ({
+          id: 'all',
+          label: `Search everything for "${query}"`,
+          group: 'Search',
+        })}
+      />,
+    );
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'evals');
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+    // Only the trailing row exists while the search runs, so it is selected.
+    await waitFor(() =>
+      expect(screen.getByRole('option', { name: /Search everything/ })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      ),
+    );
+    await act(async () => {
+      resolvers[0]!([
+        { id: 'a', label: 'Evals guide', group: 'Pages' },
+        { id: 'b', label: 'Evals datasets', group: 'Pages' },
+      ]);
+    });
+    await waitFor(() =>
+      expect(screen.getByRole('option', { name: 'Evals guide' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      ),
+    );
+    await user.keyboard('{Enter}');
+    expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ id: 'a' }));
+  });
+
+  it('keeps a moved selection when results land', async () => {
+    const resolvers: ((items: CommandPaletteItem[]) => void)[] = [];
+    const search = vi.fn(
+      () =>
+        new Promise<CommandPaletteItem[]>((resolve) => {
+          resolvers.push((found) => resolve(found));
+        }),
+    );
+    const user = userEvent.setup();
+    render(
+      <CommandPalette
+        defaultOpen
+        items={[
+          { id: 'one', label: 'Evals one', group: 'Pages' },
+          { id: 'two', label: 'Evals two', group: 'Pages' },
+        ]}
+        search={search}
+        debounceMs={20}
+      />,
+    );
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'evals');
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+    await user.keyboard('{ArrowDown}');
+    await waitFor(() =>
+      expect(screen.getByRole('option', { name: 'Evals two' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      ),
+    );
+    await act(async () => {
+      resolvers[0]!([{ id: 'three', label: 'Evals three', group: 'Pages' }]);
+    });
+    expect(screen.getByRole('option', { name: 'Evals two' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+  });
+
+  it('offers a Cancel control and lets the host replace or drop label marking', async () => {
+    const user = userEvent.setup();
+    const highlight = vi.fn((text: string) => <em>{text}</em>);
+    const { rerender } = render(<CommandPalette defaultOpen items={items} highlight={highlight} />);
+    await screen.findByRole('dialog');
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+    expect(highlight).toHaveBeenCalledWith('Journal', '');
+    rerender(<CommandPalette open items={items} highlight={false} />);
+    const input = await screen.findByRole('combobox');
+    await user.type(input, 'journal');
+    expect(screen.getByRole('option', { name: /Journal/ }).querySelector('mark')).toBeNull();
   });
 });

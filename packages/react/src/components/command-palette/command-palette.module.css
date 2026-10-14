@@ -63,6 +63,23 @@
 .fieldKey {
   flex-shrink: 0;
 }
+/* Phones have no Escape key: a visible Cancel replaces the key chip and the hints. */
+.cancel {
+  display: none;
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: var(--ai-control-radius, 8px);
+  background: transparent;
+  color: var(--ai-primary-text, #1d4ed8);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cancel:focus-visible {
+  outline: 2px solid var(--ai-focus, #2563eb);
+  outline-offset: -2px;
+}
 .list {
   min-block-size: 0;
   max-block-size: 50vh;
@@ -173,6 +190,22 @@
   .list {
     max-block-size: none;
     flex: 1 1 auto;
+  }
+  .cancel {
+    display: inline-flex;
+  }
+  .fieldKey,
+  .footer {
+    display: none;
+  }
+}
+@media (any-pointer: coarse) {
+  .cancel {
+    display: inline-flex;
+  }
+  .fieldKey,
+  .footer {
+    display: none;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
