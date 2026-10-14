@@ -22,7 +22,7 @@
   border-color: var(--ai-danger, #991b1b);
 }
 .group[data-disabled] {
-  opacity: 0.55;
+  opacity: var(--ai-disabled-opacity, 0.62);
 }
 /* The input gives up its own border and ring; the group draws both. */
 .group input {

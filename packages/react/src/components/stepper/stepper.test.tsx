@@ -257,3 +257,86 @@ describe('Matrix totals', () => {
     expect(strongest.style.getPropertyValue('--matrix-level')).toBe('1');
   });
 });
+
+describe('Matrix plain data, corner, names and angled padding', () => {
+  const rows = [
+    { id: 'rag', label: 'RAG' },
+    { id: 'evals', label: 'Evals' },
+  ];
+  const columns = [
+    { id: 'guide', label: 'Guides' },
+    { id: 'tool', label: 'Tools' },
+  ];
+  it('takes values, hrefs and cell names as grids and names cells for hover and assistive technology', () => {
+    render(
+      <Matrix
+        label="Coverage"
+        rows={rows}
+        columns={columns}
+        values={{ rag: { guide: 6, tool: 1 }, evals: { tool: 2 } }}
+        hrefs={{ rag: { guide: '/j/?d=rag&k=guide' } }}
+        cellLabels={{ rag: { guide: 'RAG × Guides: 6 entries' } }}
+        cellLabel={(row, column, value) => `${row.id} × ${column.id}: ${value ?? 'none'}`}
+      />,
+    );
+    const table = screen.getByRole('table', { name: 'Coverage' });
+    const named = within(table).getByRole('link', { name: 'RAG × Guides: 6 entries' });
+    expect(named).toHaveAttribute('href', '/j/?d=rag&k=guide');
+    expect(named).toHaveAttribute('title', 'RAG × Guides: 6 entries');
+    expect(within(table).getByText('1').closest('span')).toHaveAttribute('title', 'rag × tool: 1');
+    const empty = within(table).getAllByRole('cell').find((cell) => cell.hasAttribute('data-empty'))!;
+    expect(empty.querySelector('[title]')).toHaveAttribute('title', 'evals × guide: none');
+    const corner = table.querySelector('thead td')!;
+    expect(corner.className).toContain('matrixCorner');
+    expect(corner).not.toHaveAttribute('style');
+  });
+
+  it('sizes the angled end padding from the last label', () => {
+    const { rerender } = render(
+      <Matrix label="Coverage" rows={rows} columns={columns} values={{}} columnHeader="angled" />,
+    );
+    expect(screen.getByRole('table').style.getPropertyValue('--matrix-end-padding')).toBe('2em');
+    rerender(
+      <Matrix
+        label="Coverage"
+        rows={rows}
+        columns={[...columns, { id: 'long', label: 'Observability and tracing' }]}
+        values={{}}
+        columnHeader="angled"
+      />,
+    );
+    expect(screen.getByRole('table').style.getPropertyValue('--matrix-end-padding')).toBe('8.5em');
+    rerender(
+      <Matrix label="Coverage" rows={rows} columns={columns} values={{}} columnHeader="angled" totals="rows" totalsLabel="All" />,
+    );
+    expect(screen.getByRole('table').style.getPropertyValue('--matrix-end-padding')).toBe('2em');
+    rerender(<Matrix label="Coverage" rows={rows} columns={columns} values={{}} />);
+    expect(screen.getByRole('table').style.getPropertyValue('--matrix-end-padding')).toBe('');
+  });
+});
+
+describe('Stepper segments', () => {
+  it('draws equal-width bars with the same states, links and labels', () => {
+    render(
+      <Stepper
+        label="Series parts"
+        presentation="segments"
+        tooltip
+        steps={[
+          { id: '1', label: 'Why evals', href: '/1', state: 'done' },
+          { id: '2', label: 'Datasets', href: '/2', state: 'current' },
+          { id: '3', label: 'Scoring', href: '/3', state: 'available' },
+          { id: '4', label: 'Reporting', state: 'planned' },
+        ]}
+      />,
+    );
+    const nav = screen.getByRole('navigation', { name: 'Series parts' });
+    expect(nav).toHaveAttribute('data-presentation', 'segments');
+    expect(nav.querySelector('[class*="stepperDot"]')).toBeNull();
+    expect(within(nav).getByRole('link', { name: 'Datasets, current' })).toHaveAttribute('aria-current', 'step');
+    expect(within(nav).getByRole('link', { name: 'Scoring' })).toHaveAttribute('href', '/3');
+    expect(within(nav).getByText('Reporting, planned').closest('li')).toHaveAttribute('data-state', 'planned');
+    expect(within(nav).getAllByRole('listitem')).toHaveLength(4);
+    expect(within(nav).getByRole('link', { name: 'Why evals, completed' }).querySelector('[aria-hidden="true"]')).toHaveTextContent('Why evals');
+  });
+});

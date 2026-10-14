@@ -79,7 +79,7 @@
 .switch:disabled,
 .radioOption:has(input:disabled),
 .slider[data-disabled] {
-  opacity: 0.6;
+  opacity: var(--ai-disabled-opacity, 0.62);
   cursor: not-allowed;
 }
 .checkbox {

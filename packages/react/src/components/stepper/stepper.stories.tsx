@@ -23,6 +23,9 @@ export const Dots: Story = {
   args: { reading: true, previous: { href: '#1' }, next: { href: '#3', label: 'Scoring' } },
 };
 export const List: Story = { args: { presentation: 'list' } };
+export const Segments: Story = {
+  args: { presentation: 'segments', tooltip: true, reading: true },
+};
 
 function ControlledDisclosure() {
   const [open, setOpen] = useState(false);

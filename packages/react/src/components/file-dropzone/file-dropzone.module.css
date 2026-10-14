@@ -1,0 +1,75 @@
+.zone {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-gap, 12px);
+  min-width: 0;
+  padding: var(--ai-panel-padding, 16px);
+  border: 2px dashed var(--ai-border, #e2e8f0);
+  border-radius: var(--ai-control-radius, 8px);
+  background: var(--ai-surface, #fff);
+  color: var(--ai-text, #0f172a);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+.zone:not([data-disabled]) {
+  cursor: pointer;
+}
+.zone:not([data-disabled]):hover {
+  border-color: var(--ai-control-border, #64748b);
+}
+.zone[data-dragging] {
+  border-color: var(--ai-primary, #2563eb);
+  background: var(--ai-primary-soft, #eff6ff);
+}
+/* Locked zones keep readable text: only the glyph dims and the surface changes. */
+.zone[data-disabled] {
+  background: var(--ai-surface-subtle, #f1f5f9);
+  cursor: not-allowed;
+}
+.zone[data-disabled] .icon {
+  opacity: var(--ai-disabled-opacity, 0.62);
+}
+.zone:has(button:focus-visible) {
+  border-color: var(--ai-focus, #2563eb);
+}
+.icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--ai-muted, #475569);
+}
+.zone[data-dragging] .icon {
+  color: var(--ai-primary-text, #1d4ed8);
+}
+.body {
+  display: grid;
+  gap: var(--ai-field-gap, 8px);
+  min-width: 0;
+  flex: 1;
+  justify-items: start;
+}
+.body > [role='status']:empty {
+  display: none;
+}
+.label,
+.hint {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.label {
+  font-weight: 600;
+  line-height: 1.5;
+}
+.hint {
+  font-size: var(--ai-font-size-meta, 13px);
+  line-height: 1.5;
+}
+.rejections {
+  margin: 0;
+  padding-inline-start: 20px;
+  font-size: 12px;
+  color: var(--ai-danger, #991b1b);
+  overflow-wrap: anywhere;
+}

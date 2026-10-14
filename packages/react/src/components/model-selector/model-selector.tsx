@@ -1,6 +1,6 @@
 'use client';
 import { useId, useMemo, useState } from 'react';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { CheckIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover.js';
 import s from '../../shared/styles/assistant.module.css';
 
@@ -74,8 +74,13 @@ export function ModelSelector({
           <fieldset key={provider} className={s.picker}>
             <legend>{provider}</legend>
             {options.map((model) => (
-              <label key={model.id} className={s.option}>
+              <label
+                key={model.id}
+                className={s.option}
+                data-checked={model.id === value || undefined}
+              >
                 <input
+                  className={s.optionInput}
                   type="radio"
                   name={`${id}-model`}
                   value={model.id}
@@ -86,6 +91,9 @@ export function ModelSelector({
                     setOpen(false);
                   }}
                 />
+                <span className={s.optionMark} aria-hidden="true">
+                  {model.id === value && <CheckIcon />}
+                </span>
                 <span className={s.label}>{model.name}</span>
                 {(model.description || model.disabledReason) && (
                   <span className={s.meta}>{model.disabledReason ?? model.description}</span>

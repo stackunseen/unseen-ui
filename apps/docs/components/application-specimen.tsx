@@ -94,6 +94,8 @@ function FilterBarExample({ state }: { state: string }) {
       onSearchSubmit={() => setApplied(search.trim())}
       disabled={state === 'Disabled'}
       presentation={popover ? 'popover' : 'open'}
+      searchLabelVisibility={popover ? 'hidden' : 'visible'}
+      searchIcon={popover ? <span aria-hidden="true">🔍</span> : undefined}
       order={{
         label: 'Order',
         value: view,
@@ -107,7 +109,11 @@ function FilterBarExample({ state }: { state: string }) {
       facet={{
         label: 'Discipline',
         options: links
-          ? disciplines.map((item) => ({ ...item, href: `#discipline-${item.value}` }))
+          ? disciplines.map((item) => ({
+              ...item,
+              href: `#discipline-${item.value}`,
+              removeHref: '#discipline-all',
+            }))
           : disciplines,
         selected,
         onToggle: (value) =>

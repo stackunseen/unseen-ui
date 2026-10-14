@@ -10,6 +10,15 @@ import { Modal } from '../modal/modal.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
+import {
+  byteCount,
+  partitionFiles,
+  rejectionReasonText,
+  selectionLocked,
+  selectionNotice,
+} from './file-selection.js';
+import type { AttachmentRejection, FileSelectionLimits } from './file-selection.js';
+export type { AttachmentRejection, FileSelectionLimits } from './file-selection.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import a from './attachment.module.css';
@@ -60,9 +69,6 @@ function allowedSource(value: string): string | undefined {
   if (value.startsWith('/') && !value.startsWith('//')) return value;
   if (value.startsWith('blob:')) return safeUrl(value.slice(5)) ? value : undefined;
   return safeUrl(value);
-}
-function byteCount(value: number | undefined): value is number {
-  return value !== undefined && Number.isSafeInteger(value) && value >= 0;
 }
 function formatSize(value: number) {
   if (value < 1024) return `${value} B`;
@@ -456,18 +462,9 @@ export function AttachmentGroup({
   );
 }
 
-export interface AttachmentRejection {
-  file: File;
-  reason: 'type' | 'size' | 'count';
-}
-export interface AttachmentPickerProps {
+export interface AttachmentPickerProps extends FileSelectionLimits {
   onFilesSelected: (files: File[]) => void;
   onReject?: (rejections: AttachmentRejection[]) => void;
-  /** Comma-separated MIME types, MIME wildcards, or file extensions. Still validate on the host. */
-  accept?: string;
-  maxFileBytes?: number;
-  /** Available slots, including existing attachments; host updates this value. */
-  remainingSlots?: number;
   disabled?: boolean;
   label?: string;
 }
@@ -485,20 +482,7 @@ export function AttachmentPicker({
   const [rejectedNames, setRejectedNames] = useState<
     { name: string; reason: AttachmentRejection['reason'] }[]
   >([]);
-  const slots =
-    Number.isSafeInteger(remainingSlots) && remainingSlots >= 0 ? Math.min(remainingSlots, 100) : 0;
-  const validSize = maxFileBytes === undefined || (byteCount(maxFileBytes) && maxFileBytes > 0);
-  const locked = disabled || slots === 0 || !validSize;
-  const accepts = (file: File) =>
-    !accept ||
-    accept.split(',').some((part) => {
-      const rule = part.trim().toLowerCase();
-      return rule.startsWith('.')
-        ? file.name.toLowerCase().endsWith(rule)
-        : rule.endsWith('/*')
-          ? file.type.toLowerCase().startsWith(rule.slice(0, -1))
-          : file.type.toLowerCase() === rule;
-    });
+  const locked = selectionLocked({ disabled, maxFileBytes, remainingSlots });
   return (
     <div className={a.picker}>
       <input
@@ -512,29 +496,15 @@ export function AttachmentPicker({
           const incoming = Array.from(event.currentTarget.files ?? []);
           event.currentTarget.value = '';
           if (locked) return;
-          const accepted: File[] = [],
-            rejected: AttachmentRejection[] = [];
-          for (const file of incoming) {
-            const reason = !accepts(file)
-              ? 'type'
-              : maxFileBytes !== undefined && file.size > maxFileBytes
-                ? 'size'
-                : accepted.length >= slots
-                  ? 'count'
-                  : undefined;
-            if (reason) rejected.push({ file, reason });
-            else accepted.push(file);
-          }
+          const { accepted, rejected } = partitionFiles(incoming, {
+            accept,
+            maxFileBytes,
+            remainingSlots,
+          });
           setRejectedNames(
             rejected.slice(0, 10).map(({ file, reason }) => ({ name: file.name, reason })),
           );
-          setNotice(
-            rejected.length
-              ? `${rejected.length} file${rejected.length === 1 ? '' : 's'} not added. Check file type, size and available slots.`
-              : accepted.length
-                ? `${accepted.length} file${accepted.length === 1 ? '' : 's'} selected.`
-                : '',
-          );
+          setNotice(selectionNotice(accepted.length, rejected.length));
           if (rejected.length) onReject?.(rejected);
           if (accepted.length) onFilesSelected(accepted);
         }}
@@ -550,13 +520,7 @@ export function AttachmentPicker({
         <ul className={a.rejections} aria-label="Files not added">
           {rejectedNames.map((file, index) => (
             <li key={`${index}:${file.name}`}>
-              {file.name}:{' '}
-              {file.reason === 'type'
-                ? 'File type not accepted'
-                : file.reason === 'size'
-                  ? 'File exceeds the size limit'
-                  : 'No attachment slots available'}
-              .
+              {file.name}: {rejectionReasonText(file.reason)}.
             </li>
           ))}
         </ul>

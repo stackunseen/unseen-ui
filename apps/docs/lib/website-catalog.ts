@@ -459,9 +459,9 @@ export const websiteCatalog: CatalogEntry[] = [
     aliases: ['Step indicator', 'Series dots', 'Path steps'],
     description:
       'A step indicator for series and multi-step paths, as dots or a list, with optional links.',
-    states: ['Default', 'List', 'With navigation', 'Tooltips'],
+    states: ['Default', 'List', 'Segments', 'With navigation', 'Tooltips'],
     contract:
-      'label · steps: { id, label, href?, state?: done | current | upcoming | planned | available }[] · presentation?: dots | list · previous? · next? · reading? · tooltip? · as?: nav | div',
+      'label · steps: { id, label, href?, state?: done | current | upcoming | planned | available }[] · presentation?: dots | list | segments · previous? · next? · reading? · tooltip? · as?: nav | div',
     responsibility:
       'Supply the current step from routing or host state. Planned steps have no destination; the reading prints "Step 2 of 9" from the current step.',
     keyboard:
@@ -489,9 +489,9 @@ export const websiteCatalog: CatalogEntry[] = [
     aliases: ['Heatmap', 'Coverage matrix', 'Grid of counts'],
     description:
       'A heatmap table of counts with a single-hue fill, linked headers and linked cells.',
-    states: ['Default', 'Linked cells', 'Angled headers', 'Totals'],
+    states: ['Default', 'Linked cells', 'Angled headers', 'Totals', 'Plain data'],
     contract:
-      'label · rows: { id, label, href?, swatch? }[] · columns · value(row, column) · href?(row, column) · max? · format? · caption? · scrollLabel? · columnHeader?: horizontal | angled · zero? · totals?: rows | columns | both · totalsLabel?',
+      'label · rows: { id, label, href?, swatch? }[] · columns · value?(row, column) | values · href?(row, column) | hrefs · cellLabel?(row, column, value) | cellLabels · max? · format? · caption? · scrollLabel? · columnHeader?: horizontal | angled · zero? · totals?: rows | columns | both · totalsLabel?',
     responsibility:
       'Every cell prints its number; the fill from the primary token only reinforces it and the text flips to the primary foreground at the level the theme measured. Supply counts and destinations from the host.',
     keyboard:

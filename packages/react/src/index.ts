@@ -232,6 +232,9 @@ export type {
   AttachmentPickerProps,
   AttachmentRejection,
 } from './components/attachment/attachment.js';
+export { FileDropzone } from './components/file-dropzone/file-dropzone.js';
+export type { FileDropzoneProps } from './components/file-dropzone/file-dropzone.js';
+export type { FileSelectionLimits } from './components/attachment/file-selection.js';
 export type { PromptInputProps } from './components/prompt-input/prompt-input.js';
 export type { MessageProps } from './components/message/message.js';
 export type { StreamingResponseProps } from './components/streaming-response/streaming-response.js';

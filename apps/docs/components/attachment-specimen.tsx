@@ -4,6 +4,7 @@ import {
   Attachment,
   AttachmentGroup,
   AttachmentPicker,
+  FileDropzone,
   PromptInput,
   resolveVariant,
 } from '@stackunseen/ui';
@@ -301,5 +302,64 @@ export function AttachmentComposer({ variant }: { variant: ComponentVariant<'Pro
         integration.
       </p>
     </div>
+  );
+}
+
+export function FileDropzoneSpecimen({
+  state,
+  onNotice,
+}: {
+  state: string;
+  onNotice: (text: string) => void;
+}) {
+  const [files, setFiles] = useState<{ id: string; file: File }[]>([]);
+  const single = state === 'Single file';
+  const limit = single ? 1 : 3;
+  const remaining = state === 'Full' ? 0 : limit - files.length;
+  return (
+    <FileDropzone
+      accept={state === 'Rejected' ? '.txt' : 'image/*,.txt,.csv,.pdf'}
+      maxFileBytes={state === 'Rejected' ? 1024 : 5 * 1024 * 1024}
+      remainingSlots={remaining}
+      multiple={!single}
+      disabled={state === 'Disabled'}
+      label={single ? 'Add a cover image' : 'Drop files here'}
+      hint={
+        state === 'Rejected'
+          ? 'Only .txt files up to 1 KiB are accepted in this example; drop anything else to see the rejection list.'
+          : state === 'Full'
+            ? 'All attachment slots are in use. Remove a file to add another.'
+            : `${single ? 'One image' : 'Images, text, CSV or PDF'}, up to 5 MiB each · ${remaining} of ${limit} slots left`
+      }
+      onFilesSelected={(picked) => {
+        setFiles((previous) => [
+          ...previous,
+          ...picked.map((file) => ({ id: crypto.randomUUID(), file })),
+        ]);
+        onNotice(
+          `${picked.length} local file${picked.length === 1 ? '' : 's'} selected. Nothing was uploaded.`,
+        );
+      }}
+      onReject={(rejections) =>
+        onNotice(`${rejections.length} file${rejections.length === 1 ? '' : 's'} rejected.`)
+      }
+    >
+      {files.length > 0 && (
+        <AttachmentGroup label="Chosen files" variant="inline">
+          {files.map((item) => (
+            <Attachment
+              key={item.id}
+              variant="compact"
+              name={item.file.name}
+              state="selected"
+              sizeBytes={item.file.size}
+              mediaType={item.file.type}
+              detail="Local file · not uploaded"
+              onRemove={() => setFiles((previous) => previous.filter((f) => f.id !== item.id))}
+            />
+          ))}
+        </AttachmentGroup>
+      )}
+    </FileDropzone>
   );
 }

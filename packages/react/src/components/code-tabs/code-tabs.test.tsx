@@ -168,3 +168,29 @@ describe('CodeTabs follow-ups', () => {
     expect(container.querySelector('pre[data-marked]')).toBeNull();
   });
 });
+
+describe('CodeTabs reveal', () => {
+  it('moves the page only when the marked range sits outside the viewport', async () => {
+    const scrolls = vi.mocked(Element.prototype.scrollIntoView);
+    scrolls.mockClear();
+    const user = userEvent.setup();
+    const { container } = render(<CodeTabs files={files} label="Example files" tour={tour} />);
+    await user.click(screen.getByRole('button', { name: 'Start the tour' }));
+    // jsdom lays nothing out: everything is at 0, inside the viewport, so nothing scrolls.
+    expect(scrolls).not.toHaveBeenCalled();
+    expect(container.querySelectorAll('[data-highlighted]').length).toBeGreaterThan(0);
+    // Marked lines below the fold: the next stop's range reports a bottom past innerHeight.
+    const original = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      return this.hasAttribute('data-highlighted')
+        ? ({ top: 900, bottom: 940 } as DOMRect)
+        : original.call(this);
+    };
+    try {
+      await user.click(screen.getByRole('button', { name: 'Next' }));
+      expect(scrolls).toHaveBeenCalledWith({ block: 'nearest' });
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = original;
+    }
+  });
+});

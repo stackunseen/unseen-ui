@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { CSSProperties } from 'react';
 import {
   Chip,
   ChipGroup,
@@ -72,6 +73,14 @@ const wide: Record<string, number | null> = Object.fromEntries(
     ]),
   ),
 );
+type Axis = { id: string; label: string };
+const grid = <T,>(cell: (row: Axis, column: Axis) => T) =>
+  Object.fromEntries(
+    rows.map((row) => [
+      row.id,
+      Object.fromEntries(columns.map((column) => [column.id, cell(row, column)])),
+    ]),
+  );
 const coverage: Record<string, number | null> = {
   'rag:guides': 6,
   'rag:tools': 2,
@@ -165,9 +174,9 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
       <Stepper
         label="Series parts"
         steps={steps}
-        presentation={state === 'List' ? 'list' : 'dots'}
+        presentation={state === 'List' ? 'list' : state === 'Segments' ? 'segments' : 'dots'}
         reading={state !== 'List'}
-        tooltip={state === 'Tooltips'}
+        tooltip={state === 'Tooltips' || state === 'Segments'}
         previous={state === 'With navigation' ? { href: '#part-1' } : undefined}
         next={state === 'With navigation' ? { href: '#part-3', label: 'Scoring' } : undefined}
       />
@@ -187,7 +196,24 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
       </Disclosure>
     );
   if (name === 'Matrix')
-    return state === 'Totals' ? (
+    return state === 'Plain data' ? (
+      <div style={{ '--ai-matrix-max-level': 0.6 } as CSSProperties}>
+        <Matrix
+          label="Coverage from plain data"
+          caption="Counts, links and cell names as grids; fill capped at 60%"
+          rows={rows}
+          columns={columns}
+          values={grid((row, column) => coverage[`${row.id}:${column.id}`] ?? null)}
+          hrefs={grid((row, column) => `#${row.id}-${column.id}`)}
+          cellLabels={grid(
+            (row, column) =>
+              `${row.label} × ${column.label}: ${coverage[`${row.id}:${column.id}`] ?? 0} entries`,
+          )}
+          totals="rows"
+          zero="·"
+        />
+      </div>
+    ) : state === 'Totals' ? (
       <Matrix
         label="Coverage with totals"
         rows={rows}

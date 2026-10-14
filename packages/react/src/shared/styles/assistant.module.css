@@ -50,6 +50,21 @@
   padding: 0;
   list-style: none;
 }
+.list.content {
+  gap: var(--ai-activity-gap, var(--ai-gap, 12px));
+  padding-block: 4px 2px;
+}
+.list.content > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.list.content > li > .meta {
+  flex-basis: 100%;
+}
 .step {
   position: relative;
   display: grid;
@@ -239,28 +254,51 @@ a.chip:hover {
   font-size: 12px;
 }
 .option {
+  position: relative;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 16px minmax(0, 1fr);
   gap: 0 10px;
   align-items: start;
   padding: 6px 8px;
   border-radius: 8px;
   cursor: pointer;
 }
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--ai-focus, #2563eb);
+  outline-offset: -2px;
+}
 .option:hover,
 .option:has(input:checked) {
   background: var(--ai-surface-subtle, #f1f5f9);
 }
 .option:has(input:disabled) {
-  opacity: 0.55;
+  opacity: var(--ai-disabled-opacity, 0.62);
   cursor: not-allowed;
 }
 .option > .meta {
   grid-column: 2;
 }
-.option input {
-  margin: 4px 0 0;
-  accent-color: var(--ai-primary, #2563eb);
+/* The radio keeps its semantics and arrow-key movement; the mark shows the choice. */
+.optionInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.optionMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  color: var(--ai-primary-text, #1d4ed8);
+}
+.optionMark svg {
+  width: 16px;
+  height: 16px;
 }
 .search {
   box-sizing: border-box;

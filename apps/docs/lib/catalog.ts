@@ -98,6 +98,7 @@ export type GenericComponent =
   | 'Shimmer'
   | 'Sources'
   | 'ModelSelector'
+  | 'FileDropzone'
   | 'OpenInChat'
   | 'Snippet'
   | 'Commit'
@@ -362,6 +363,21 @@ export const catalog: CatalogEntry[] = [
     responsibility:
       'The host validates, authorizes, uploads and stores files; owns object URLs and confirms state changes. UI checks are not file-content validation.',
     code: '<Attachment name="brief.pdf" state="ready" onRemove={remove} />',
+  },
+  {
+    name: 'FileDropzone',
+    category: 'Conversation',
+    presentations: ['default'],
+    presentationProp: null,
+    description:
+      'A drop target for local files with a browse button and type, size and slot checks.',
+    states: ['Default', 'Single file', 'Rejected', 'Disabled', 'Full'],
+    contract:
+      'onFilesSelected · onReject? · accept? · maxFileBytes? · remainingSlots? · multiple? · disabled? · label? · browseLabel? · hint?',
+    responsibility:
+      'Dropped or chosen files are local File objects. The host validates content, uploads, stores and owns any object URLs.',
+    keyboard: 'Tab reaches the browse button; Enter or Space opens the file chooser.',
+    code: '<FileDropzone accept="image/*,.pdf" maxFileBytes={5 * 1024 * 1024} onFilesSelected={add} />',
   },
   {
     name: 'AgentSteps',

@@ -152,8 +152,19 @@ export function CodeTabs({
     [active, selected],
   );
   // Re-scroll when the same stop is opened again or the file changes under it.
+  const pane = useRef<HTMLDivElement>(null);
+  // The pane scrolls the first marked line to its top; when the range still sits outside the
+  // viewport (a stop near the end of a short file), the page moves just enough to show it.
   useEffect(() => {
-    if (marked) block.current?.scrollToLine(marked[0][0]);
+    if (!marked) return;
+    block.current?.scrollToLine(marked[0][0]);
+    const lines = pane.current?.querySelectorAll<HTMLElement>('[data-highlighted]');
+    const last = lines?.[lines.length - 1];
+    const first = lines?.[0];
+    if (!last || !first || typeof window === 'undefined') return;
+    const bottom = last.getBoundingClientRect().bottom;
+    const top = first.getBoundingClientRect().top;
+    if (bottom > window.innerHeight || top < 0) last.scrollIntoView({ block: 'nearest' });
   }, [marked, current, selected?.file]);
 
   const onTabKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -244,7 +255,7 @@ export function CodeTabs({
     return (
       <div {...props} className={`${s.root} ${className}`} data-part="code-tabs">
         {tourBar}
-        <figure className={s.figure}>
+        <figure ref={pane} className={s.figure}>
           <figcaption className={s.caption}>
             <span>{selected.file}</span>
             {toolbar}
@@ -294,6 +305,7 @@ export function CodeTabs({
           })}
         </div>
         <div
+          ref={pane}
           role="tabpanel"
           id={`${id}-panel`}
           aria-labelledby={`${id}-tab-${selected.file}`}

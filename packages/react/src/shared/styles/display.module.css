@@ -174,7 +174,7 @@
   background: var(--ai-primary-soft, #dbeafe);
 }
 .toggle:disabled {
-  opacity: 0.55;
+  opacity: var(--ai-disabled-opacity, 0.62);
   cursor: not-allowed;
 }
 .toggleGroup[data-variant='segmented'] .toggle {
@@ -201,7 +201,6 @@
 .toggle[aria-pressed='true'] .toggleCount,
 .toggle[aria-checked='true'] .toggleCount {
   color: inherit;
-  opacity: 0.8;
 }
 @media (any-pointer: coarse) {
   .toggle,
@@ -257,7 +256,7 @@
 }
 .segment:disabled,
 .segment[aria-disabled='true'] {
-  opacity: 0.55;
+  opacity: var(--ai-disabled-opacity, 0.62);
   cursor: not-allowed;
 }
 .segment:focus-visible {
@@ -308,7 +307,7 @@ button.chip:hover:not(:disabled) {
 .chip:disabled,
 .chip[aria-disabled='true'],
 .chip[data-disabled] {
-  opacity: 0.55;
+  opacity: var(--ai-disabled-opacity, 0.62);
   cursor: not-allowed;
 }
 .chip[data-size='sm'] {
@@ -500,6 +499,50 @@ a.stepperStep:hover {
 .stepperItem[data-state='planned'] .stepperStep {
   font-style: italic;
 }
+/* Segments: equal-width bars that share the row, the current one darkest, planned ones thinner. */
+.stepper[data-presentation='segments'] .stepperList {
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--ai-stepper-segment-gap, 6px);
+}
+.stepper[data-presentation='segments'] .stepperItem {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.stepper[data-presentation='segments'] .stepperStep {
+  display: block;
+  min-height: 0;
+  height: var(--ai-stepper-segment-height, 8px);
+  padding: 0;
+  border-radius: var(--ai-radius-pill, 999px);
+  background: color-mix(in srgb, var(--ai-control-border, #64748b) 45%, var(--ai-surface, #fff));
+}
+.stepper[data-presentation='segments'] a.stepperStep:hover {
+  background: var(--ai-muted, #475569);
+}
+.stepper[data-presentation='segments'] .stepperItem[data-state='done'] .stepperStep {
+  background: var(--ai-muted, #475569);
+}
+.stepper[data-presentation='segments'] .stepperItem[data-state='current'] .stepperStep {
+  background: var(--ai-text, #0f172a);
+}
+.stepper[data-presentation='segments'] .stepperItem[data-state='planned'] .stepperStep {
+  height: calc(var(--ai-stepper-segment-height, 8px) - 2px);
+  background: var(--ai-border, #e2e8f0);
+}
+.stepper[data-presentation='segments'] .stepperStep:focus-visible {
+  outline: 2px solid var(--ai-focus, #2563eb);
+  outline-offset: 3px;
+}
+.stepper[data-presentation='segments'] .stepperItem:first-child .stepperTip {
+  inset-inline-start: 0;
+  transform: none;
+}
+.stepper[data-presentation='segments'] .stepperItem:last-child .stepperTip {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  transform: none;
+}
 /* Dot tooltips repeat the hidden label for sighted pointer and keyboard users. */
 .stepperItem {
   position: relative;
@@ -660,9 +703,17 @@ a.stepperStep:hover {
   height: 8px;
   border-radius: 50%;
 }
-/* Angled headers: a fixed-height row with each label rotated up from its column centre. */
+/* The corner stays blank; it is not a cell of the grid. */
+.matrix td.matrixCorner {
+  background: transparent;
+}
+/* Angled headers: a fixed-height row with each label rotated up from its column centre. The
+   end padding comes from the last label's length, or from the token when it is not plain text. */
 .matrix[data-column-header='angled'] {
-  padding-inline-end: var(--ai-matrix-header-height, 96px);
+  padding-inline-end: var(
+    --matrix-end-padding,
+    var(--ai-matrix-end-padding, var(--ai-matrix-header-height, 96px))
+  );
 }
 .matrix[data-column-header='angled'] thead th {
   position: relative;
@@ -685,12 +736,15 @@ a.stepperStep:hover {
   color: var(--ai-primary-text, #1d4ed8);
   text-decoration: underline;
 }
+/* The fill ramps from 8% to --ai-matrix-max-level (1 = solid primary; 0.6 keeps the darkest
+   cell inside the table). */
 .matrix td {
   padding: 0;
   border-radius: 6px;
   background: color-mix(
     in srgb,
-    var(--ai-primary, #2563eb) calc(8% + var(--matrix-level, 0) * 92%),
+    var(--ai-primary, #2563eb)
+      calc(8% + var(--matrix-level, 0) * var(--ai-matrix-max-level, 1) * 92%),
     var(--ai-surface-subtle, #f1f5f9)
   );
 }
@@ -702,7 +756,15 @@ a.stepperStep:hover {
   color: color-mix(
     in srgb,
     var(--ai-primary-foreground, #fff)
-      calc(clamp(0, (var(--matrix-level, 0) - var(--ai-matrix-flip, 0.75)) * 1000 + 1, 1) * 100%),
+      calc(
+        clamp(
+            0,
+            (var(--matrix-level, 0) * var(--ai-matrix-max-level, 1) - var(--ai-matrix-flip, 0.75)) *
+              1000 + 1,
+            1
+          ) *
+          100%
+      ),
     var(--ai-text, #0f172a)
   );
 }
@@ -728,8 +790,8 @@ a.stepperStep:hover {
 .matrixCell {
   display: grid;
   place-items: center;
-  min-width: 44px;
-  min-height: 36px;
+  min-width: var(--ai-matrix-cell-width, 44px);
+  min-height: var(--ai-matrix-cell-height, 36px);
   padding: 4px 8px;
   border-radius: inherit;
   color: var(--ai-text, #0f172a);

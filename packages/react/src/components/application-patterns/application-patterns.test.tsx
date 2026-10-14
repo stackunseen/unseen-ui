@@ -265,6 +265,61 @@ describe('FilterBar popover presentation', () => {
     await user.click(within(dialog).getByRole('button', { name: 'RAG 12' }));
     expect(onToggle).toHaveBeenLastCalledWith('rag');
     expect(within(dialog).getByRole('combobox', { name: 'Kind' })).toBeInTheDocument();
-    expect(within(dialog).getByRole('button', { name: 'Clear filters' })).toBeInTheDocument();
+    expect(within(dialog).queryByRole('button', { name: 'Clear filters' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Clear filters' })).toBeInTheDocument();
+  });
+});
+
+describe('FilterBar search row, clear beside the summary, and removable link tokens', () => {
+  it('hides the search label visually, keeps the name, and shows a leading icon', () => {
+    render(
+      <FilterBar
+        searchLabel="Search the journal"
+        searchLabelVisibility="hidden"
+        searchIcon={<span data-testid="icon" />}
+        search=""
+        onSearchChange={vi.fn()}
+      />,
+    );
+    const input = screen.getByRole('searchbox', { name: 'Search the journal' });
+    expect(screen.queryByText('Search the journal')).toBeNull();
+    expect(input.closest('[data-part="input-group"]')).toContainElement(screen.getByTestId('icon'));
+  });
+
+  it('puts Clear beside the summary in popover mode and removes link facets through removeHref', async () => {
+    const onClear = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <FilterBar
+        presentation="popover"
+        searchLabel="Search"
+        search=""
+        onSearchChange={vi.fn()}
+        facet={{
+          label: 'Discipline',
+          options: [
+            { value: 'rag', label: 'RAG', href: '/j/?d=rag', removeHref: '/j/' },
+            { value: 'agents', label: 'Agents', href: '/j/?d=agents', removeHref: '/j/' },
+          ],
+          selected: ['agents'],
+        }}
+        onClear={onClear}
+        summary="6 of 121"
+      />,
+    );
+    const status = screen.getByRole('status');
+    expect(status).toHaveTextContent('6 of 121');
+    const clear = screen.getByRole('button', { name: 'Clear filters' });
+    expect(clear.compareDocumentPosition(status) & Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy();
+    await user.click(clear);
+    expect(onClear).toHaveBeenCalledTimes(1);
+    const token = within(screen.getByRole('group', { name: 'Active filters' })).getByRole('link', {
+      name: 'Remove Agents',
+    });
+    expect(token).toHaveAttribute('href', '/j/');
+    expect(token).toHaveAttribute('aria-current', 'true');
+    await user.click(screen.getByRole('button', { name: 'Filters 1' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Filters' });
+    expect(within(dialog).queryByRole('button', { name: 'Clear filters' })).toBeNull();
   });
 });

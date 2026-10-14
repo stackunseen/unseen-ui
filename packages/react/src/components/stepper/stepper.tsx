@@ -20,8 +20,8 @@ export interface StepperProps extends Omit<ComponentProps<'nav'>, 'children'> {
   /** Names the navigation landmark, for example "Series parts". */
   label: string;
   steps: readonly StepperStep[];
-  /** Dots keep labels for assistive technology; list prints them. */
-  presentation?: 'dots' | 'list';
+  /** Dots keep labels for assistive technology; list prints them; segments are equal-width bars that share the row. */
+  presentation?: 'dots' | 'list' | 'segments';
   previous?: StepperLink;
   next?: StepperLink;
   /** Prints "Step 2 of 9" from the current step; pass a string to override the words. */
@@ -76,9 +76,9 @@ export function Stepper({
         {steps.map((step) => {
           const state = step.state ?? 'upcoming';
           const content =
-            presentation === 'dots' ? (
+            presentation === 'dots' || presentation === 'segments' ? (
               <>
-                <span className={d.stepperDot} aria-hidden="true" />
+                {presentation === 'dots' && <span className={d.stepperDot} aria-hidden="true" />}
                 <VisuallyHidden>
                   {step.label}
                   {suffix(state)}

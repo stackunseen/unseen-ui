@@ -111,6 +111,18 @@
 .tokens {
   min-inline-size: 0;
 }
+.summaryRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+}
+.summaryDot {
+  color: var(--ai-muted);
+}
+.filterBar .search [data-part='input-group'] {
+  max-inline-size: none;
+}
 .masterDetail {
   display: grid;
   grid-template-columns: minmax(230px, 0.85fr) minmax(0, 1.4fr);

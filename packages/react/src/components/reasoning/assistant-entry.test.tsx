@@ -129,8 +129,36 @@ describe('assistant entry', () => {
     );
     await userEvent.click(screen.getByRole('button', { name: 'Model: Fast' }));
     expect(screen.getByRole('radio', { name: /Old/ })).toBeDisabled();
-    await userEvent.click(screen.getByRole('radio', { name: /Deep/ }));
+    // The native radio stays for semantics and arrow keys but is not drawn; a mark shows the choice.
+    const fast = screen.getByRole('radio', { name: /Fast/ });
+    expect(fast).toBeChecked();
+    expect(fast.className).toContain('optionInput');
+    expect(fast.closest('label')).toHaveAttribute('data-checked');
+    expect(fast.closest('label')!.querySelector('[aria-hidden="true"] svg')).not.toBeNull();
+    const deep = screen.getByRole('radio', { name: /Deep/ });
+    expect(deep.closest('label')).not.toHaveAttribute('data-checked');
+    expect(deep.closest('label')!.querySelector('[aria-hidden="true"] svg')).toBeNull();
+    await userEvent.click(deep);
     expect(onValueChange).toHaveBeenCalledWith('deep');
+  });
+
+  it('lays task activity out as spaced rows with the file chip beside its text', () => {
+    render(
+      <Task
+        title="Found project files"
+        items={[
+          { id: '1', text: 'Searching "app/page.tsx"' },
+          { id: '2', text: 'Read', file: 'page.tsx' },
+        ]}
+      />,
+    );
+    const list = screen.getByRole('list');
+    expect(list.className).toContain('list');
+    expect(list.className).toContain('content');
+    const rows = screen.getAllByRole('listitem');
+    expect(rows).toHaveLength(2);
+    expect(rows[1]).toHaveTextContent('Read page.tsx');
+    expect(rows[1]!.querySelector('[class*="chip"]')).toHaveTextContent('page.tsx');
   });
 
   it('only offers http destinations for open in chat', async () => {

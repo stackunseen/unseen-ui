@@ -7,6 +7,8 @@ import { Input } from '../input/input.js';
 import { Select } from '../select/select.js';
 import { AlertDialog } from '../alert-dialog/alert-dialog.js';
 import { Chip, ChipGroup } from '../chip/chip.js';
+import { InputGroup, InputGroupAddon } from '../input-group/input-group.js';
+import { AIIcon } from '../../providers/icons/icons.js';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover.js';
 import { SegmentedControl } from '../segmented-control/segmented-control.js';
 import type { SegmentedOption } from '../segmented-control/segmented-control.js';
@@ -279,6 +281,8 @@ export interface FilterBarFacetOption {
   count?: number;
   /** URL-driven facets render link chips; omit it for toggle chips. */
   href?: string;
+  /** For URL-driven facets: the destination that removes this value, so its token can be removed. */
+  removeHref?: string;
   swatch?: string;
 }
 export interface FilterBarFacet {
@@ -311,6 +315,10 @@ export interface FilterBarProps extends Omit<ComponentPropsWithoutRef<'div'>, 'o
   /** Names the region; defaults to "Filters". */
   label?: string;
   searchLabel: string;
+  /** Hidden keeps the label as the accessible name only, so the search is one row. */
+  searchLabelVisibility?: 'visible' | 'hidden';
+  /** A leading icon inside the search field. */
+  searchIcon?: ReactNode;
   search: string;
   onSearchChange: (value: string) => void;
   /** Called on Enter or the search form's submit; omit it to filter as the host types. */
@@ -347,6 +355,8 @@ const ANY = '__any';
 export function FilterBar({
   label = 'Filters',
   searchLabel,
+  searchLabelVisibility = 'visible',
+  searchIcon,
   search,
   onSearchChange,
   onSearchSubmit,
@@ -367,6 +377,48 @@ export function FilterBar({
     (facet?.selected.length ?? 0) +
     (selects?.filter((select) => select.value !== null).length ?? 0);
   const active = search !== '' || activeCount > 0;
+  const searchInput = (
+    <Input
+      type="search"
+      value={search}
+      onChange={(event) => onSearchChange(event.currentTarget.value)}
+      placeholder={searchPlaceholder}
+      disabled={disabled}
+      aria-label={searchLabelVisibility === 'hidden' ? searchLabel : undefined}
+    />
+  );
+  const searchForm = (
+    <form
+      role="search"
+      className={s.search}
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSearchSubmit?.();
+      }}
+    >
+      {searchLabelVisibility === 'hidden' ? (
+        searchIcon ? (
+          <InputGroup disabled={disabled}>
+            <InputGroupAddon>{searchIcon}</InputGroupAddon>
+            {searchInput}
+          </InputGroup>
+        ) : (
+          searchInput
+        )
+      ) : (
+        <Field label={searchLabel}>
+          {searchIcon ? (
+            <InputGroup disabled={disabled}>
+              <InputGroupAddon>{searchIcon}</InputGroupAddon>
+              {searchInput}
+            </InputGroup>
+          ) : (
+            searchInput
+          )}
+        </Field>
+      )}
+    </form>
+  );
   const chips = facet && (
     <ChipGroup label={facet.label} overflow={facet.overflow}>
       {facet.options.map((option) => {
@@ -431,6 +483,22 @@ export function FilterBar({
       {facet?.selected.map((value) => {
         const option = facet.options.find((entry) => entry.value === value);
         const text = option?.label ?? value;
+        const name = typeof text === 'string' ? text : value;
+        if (option?.removeHref)
+          return (
+            <Chip
+              key={`facet-${value}`}
+              href={option.removeHref}
+              active
+              swatch={option.swatch}
+              size="sm"
+              aria-label={`Remove ${name}`}
+              rel="nofollow"
+            >
+              {text}
+              <AIIcon name="close" size={12} />
+            </Chip>
+          );
         return option?.href ? (
           <Chip key={`facet-${value}`} href={option.href} active swatch={option.swatch} size="sm">
             {text}
@@ -467,24 +535,7 @@ export function FilterBar({
     return (
       <div {...props} role="region" aria-label={label} className={`${s.filterBar} ${className}`}>
         <div className={s.toolbarRow}>
-          <form
-            role="search"
-            className={s.search}
-            onSubmit={(event) => {
-              event.preventDefault();
-              onSearchSubmit?.();
-            }}
-          >
-            <Field label={searchLabel}>
-              <Input
-                type="search"
-                value={search}
-                onChange={(event) => onSearchChange(event.currentTarget.value)}
-                placeholder={searchPlaceholder}
-                disabled={disabled}
-              />
-            </Field>
-          </form>
+          {searchForm}
           {order && (
             <SegmentedControl
               label={order.label}
@@ -512,41 +563,33 @@ export function FilterBar({
                   {selectControls && selectControls.length > 0 && (
                     <div className={s.filters}>{selectControls}</div>
                   )}
-                  {clear}
                 </div>
               </PopoverContent>
             </Popover>
           )}
         </div>
         {tokens}
-        {summary !== undefined && (
-          <p role="status" className={s.summary}>
-            {summary}
-          </p>
+        {(summary !== undefined || clear) && (
+          <div className={s.summaryRow}>
+            {summary !== undefined && (
+              <p role="status" className={s.summary}>
+                {summary}
+              </p>
+            )}
+            {clear && summary !== undefined && (
+              <span className={s.summaryDot} aria-hidden="true">
+                ·
+              </span>
+            )}
+            {clear}
+          </div>
         )}
       </div>
     );
   return (
     <div {...props} role="region" aria-label={label} className={`${s.filterBar} ${className}`}>
       <div className={s.toolbarRow}>
-        <form
-          role="search"
-          className={s.search}
-          onSubmit={(event) => {
-            event.preventDefault();
-            onSearchSubmit?.();
-          }}
-        >
-          <Field label={searchLabel}>
-            <Input
-              type="search"
-              value={search}
-              onChange={(event) => onSearchChange(event.currentTarget.value)}
-              placeholder={searchPlaceholder}
-              disabled={disabled}
-            />
-          </Field>
-        </form>
+        {searchForm}
         {order && (
           <SegmentedControl
             label={order.label}

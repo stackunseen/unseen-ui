@@ -117,7 +117,7 @@
   color: var(--ai-primary-text, #1d4ed8);
 }
 .item[aria-disabled='true'] {
-  opacity: 0.6;
+  opacity: var(--ai-disabled-opacity, 0.62);
   cursor: default;
 }
 .itemRow {
@@ -145,7 +145,6 @@
 .item[data-selected='true'] .itemHint,
 .item[data-selected='true'] .itemDescription {
   color: inherit;
-  opacity: 0.85;
 }
 .itemDescription {
   display: block;
