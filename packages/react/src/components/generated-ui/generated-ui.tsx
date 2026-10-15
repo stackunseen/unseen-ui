@@ -82,6 +82,8 @@ export interface GeneratedUIProps extends VariantProps<'GeneratedUI'> {
   forms?: Record<string, GeneratedFormSnapshot>;
   onFormChange?: (request: GeneratedFormRequest) => void;
   error?: string;
+  /** Statements a streaming parser could not show; listed under the result, never hidden. */
+  problems?: readonly { line: number; code: string; message: string }[];
 }
 function matches(snapshot: SurfaceIdentity, surface: GeneratedSurface) {
   return snapshot.surfaceId === surface.id && snapshot.version === surface.version;
@@ -157,6 +159,7 @@ export function GeneratedUI({
   forms = {},
   onFormChange,
   error,
+  problems,
   variant = 'stack',
 }: GeneratedUIProps) {
   const prefix = useId();
@@ -490,6 +493,24 @@ export function GeneratedUI({
       ) : (
         <div className={variant === 'cards' ? g.cards : s.options}>
           {renderNodes(surface.nodes, 0)}
+        </div>
+      )}
+
+      {Array.isArray(problems) && problems.length > 0 && (
+        <div className={css.problems} role="status" data-part="generated-problems">
+          <p className={s.muted}>
+            {problems.length === 1
+              ? '1 statement could not be shown.'
+              : `${Math.min(problems.length, 999)} statements could not be shown.`}
+          </p>
+          <ul className={css.problemList}>
+            {problems.slice(0, 5).map((item, index) => (
+              <li key={`${item.line}:${index}`}>
+                Line {item.line}: {String(item.message).slice(0, 200)}
+              </li>
+            ))}
+            {problems.length > 5 && <li>and {problems.length - 5} more.</li>}
+          </ul>
         </div>
       )}
     </div>

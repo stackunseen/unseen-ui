@@ -22,6 +22,25 @@ Unknown types/properties, invalid form dependencies/steps, duplicate identities,
 
 Legacy flat surfaces remain supported within stricter ID/nonblank-label bounds. Existing button requests retain `{surfaceId, version, actionId}` without extra properties. Missing `onAction` disables buttons with an explicit notice. Clicking does not locally imply pending/completion.
 
+## Streaming line format
+
+A model can write the same vocabulary one statement per line so the interface appears while the text arrives:
+
+```text
+root = [summary, open, tickets]
+summary = text("Three tickets are still open.")
+open = metric("Open tickets", "3")
+tickets = table("Open tickets", [{id: "title", label: "Title"}], [{id: "t1", cells: {title: "Login fails"}}])
+```
+
+`name = node(args)` with positional arguments in the documented order; `root` lists the top-level node names and must appear exactly once; the name becomes the node id; strings use JSON quoting; lists use `[ ]`, records `{ }`; a node name is allowed only in `root` and in a section's `nodes` list. Comments start with `#`.
+
+`createSurfaceParser({ surfaceId, version })` from `@stackunseen/ui-core` returns `push(chunk)`, `finish()` and `state()`. Each call returns `{ surface, pending, problems, statements, complete }`: `surface` is the `{ id, version, nodes }` snapshot built from the complete lines so far (null until `root` arrives), `pending` lists names referenced but not yet defined, and `problems` lists dropped lines with a line number and a code (`syntax`, `unknown-node`, `bad-arity`, `bad-reference`, `duplicate`, `limit`, `no-root`). Only complete lines are read; call `finish()` when the stream ends. `parseSurfaceProgram(text, options)` does both in one call. The parser evaluates nothing and validates nothing beyond shape and arity; pass its `surface` to GeneratedUI, which runs the full validation, and its `problems` to the new `problems` prop, which lists what could not be shown under the result. Every split of a program settles to the same snapshot, which the tests check for each character position.
+
+Limits: 256 statements, 20,000 characters per line, 200,000 per program, values nested at most 8 deep, names of at most 80 characters. The surface limits (64 nodes, 3 section levels, table and chart bounds) still apply at validation.
+
+`describeSurfaceVocabulary()` returns plain text with the rules, the limits, every node signature and an example, derived from the same table the parser reads, so prompt and parser cannot drift. Paste it into a system prompt; set `examples: false` to leave the example out. The example program itself is exported as `surfaceExampleProgram`.
+
 ## Action placement and host emphasis
 
 Adjacent standalone action nodes share one wrapping action rail in each presentation, retaining supplied order, node IDs and feedback beneath their own action. A text, metric, table, form or section ends that rail; actions inside a section stay local to that section. Cards give the whole rail one card surface, instead of adding a card around every button. Default buttons use the shared small outlined presentation. Button labels never imply danger, permission or priority.

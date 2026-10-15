@@ -23,3 +23,20 @@
     outline-color: Highlight;
   }
 }
+.problems {
+  display: grid;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px dashed var(--ai-border, #e2e8f0);
+  border-radius: var(--ai-control-radius, 8px);
+}
+.problems > p {
+  margin: 0;
+}
+.problemList {
+  margin: 0;
+  padding-inline-start: 18px;
+  color: var(--ai-muted, #475569);
+  font-size: 12px;
+  line-height: 1.5;
+}

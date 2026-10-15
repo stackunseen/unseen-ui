@@ -346,8 +346,10 @@ export const expandedCatalog: CatalogEntry[] = [
       'Bounds',
       'Live versions',
       'Long labels',
+      'Streamed program',
     ],
-    contract: 'surface: unknown · state · forms / onFormChange · actionStates / onAction',
+    contract:
+      'surface: unknown · state · forms / onFormChange · actionStates / onAction · problems?',
     responsibility:
       'Authorize surface/version/action IDs, control version-bound form drafts and acknowledgements, and reconcile unknown outcomes. Generated data never provides callbacks.',
     code: '<GeneratedUI surface={surface} state="ready" onAction={requestAction} />',

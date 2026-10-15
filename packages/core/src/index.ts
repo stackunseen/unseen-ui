@@ -13,6 +13,15 @@ export {
 export { createRuntime, canTransition } from './runtime.js';
 export { validateApprovalDecision, safeUrl } from './approval.js';
 export type * from './measurement.js';
+export type * from './surface-lang.js';
+export {
+  createSurfaceParser,
+  parseSurfaceProgram,
+  describeSurfaceVocabulary,
+  surfaceVocabulary,
+  surfaceLimits,
+  surfaceExampleProgram,
+} from './surface-lang.js';
 export {
   measured,
   estimated,

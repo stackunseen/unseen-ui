@@ -1,6 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, GeneratedUI, resolveVariant } from '@stackunseen/ui';
+import { createSurfaceParser, surfaceExampleProgram } from '@stackunseen/ui-core';
+import type { SurfaceParseState } from '@stackunseen/ui-core';
 import type {
   GeneratedSurface,
   GeneratedActionRequest,
@@ -162,6 +164,8 @@ export function GeneratedSpecimen({
         { id: 'discard', type: 'action', label: 'Discard draft', actionId: 'discard' },
       ],
     };
+  if (state === 'Streamed program')
+    return <StreamedProgram presentation={presentation} onEvent={onEvent} />;
   if (state === 'Unsupported')
     surface = { id: 's', version: '1', nodes: [{ id: 'x', type: 'script', text: 'alert(1)' }] };
   if (state === 'Invalid schema')
@@ -345,6 +349,66 @@ export function GeneratedSpecimen({
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+const streamedProgram = `${surfaceExampleProgram.replace('root = [summary, open, tickets, next]', 'root = [summary, open, tickets, chart, next]')}
+chart = chart("Tickets by week", "tickets", "Local sample", [{label: "W1", value: 4}, {label: "W2", value: 7}, {label: "W3", value: 3}])
+broken = metric("Only one argument")
+root = [again]`;
+
+function StreamedProgram({
+  presentation,
+  onEvent,
+}: {
+  presentation?: string;
+  onEvent: (message: string) => void;
+}) {
+  const [parse, setParse] = useState<SurfaceParseState | null>(null);
+  const [round, setRound] = useState(0);
+  useEffect(() => {
+    const parser = createSurfaceParser({ surfaceId: 'surface-stream', version: String(round + 1) });
+    const lines = streamedProgram.split('\n');
+    let index = 0;
+    setParse(parser.state());
+    const timer = window.setInterval(() => {
+      if (index < lines.length) {
+        setParse(parser.push(`${lines[index]}\n`));
+        index++;
+      } else {
+        setParse(parser.finish());
+        window.clearInterval(timer);
+      }
+    }, 450);
+    return () => window.clearInterval(timer);
+  }, [round]);
+  const problems = parse?.problems ?? [];
+  return (
+    <div className={styles.root}>
+      <p>
+        Synthetic stream · one line every 450 ms from the vocabulary's own example, plus a chart,
+        one broken line and a duplicate root
+      </p>
+      <div className={styles.controls}>
+        <Button variant="outline" onClick={() => setRound((value) => value + 1)}>
+          Stream again
+        </Button>
+        <span>
+          {parse?.complete
+            ? `Finished: ${parse.statements} statements, ${problems.length} problems.`
+            : `Streaming: ${parse?.statements ?? 0} statements, waiting for ${parse?.pending.length ?? 0}.`}
+        </span>
+      </div>
+      <GeneratedUI
+        variant={resolveVariant('GeneratedUI', presentation)}
+        surface={parse?.surface ?? { id: 'surface-stream', version: String(round + 1), nodes: [] }}
+        state={parse?.complete ? 'ready' : 'streaming'}
+        problems={problems}
+        onAction={(request) =>
+          onEvent(`${request.actionId} requested for surface ${request.version}`)
+        }
+      />
     </div>
   );
 }
