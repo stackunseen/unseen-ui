@@ -12,3 +12,11 @@ export {
 } from './inspection.js';
 export { createRuntime, canTransition } from './runtime.js';
 export { validateApprovalDecision, safeUrl } from './approval.js';
+export type * from './measurement.js';
+export {
+  measured,
+  estimated,
+  unknownMeasurement,
+  measurementValue,
+  heartbeatState,
+} from './measurement.js';

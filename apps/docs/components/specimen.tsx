@@ -61,6 +61,9 @@ const AttachmentComposer = dynamic(
   () => import('./attachment-specimen').then((m) => m.AttachmentComposer),
   { loading: ExampleLoading },
 );
+const RunsSpecimen = dynamic(() => import('./runs-specimen').then((m) => m.RunsSpecimen), {
+  loading: ExampleLoading,
+});
 const FileDropzoneSpecimen = dynamic(
   () => import('./attachment-specimen').then((m) => m.FileDropzoneSpecimen),
   { loading: ExampleLoading },
@@ -375,6 +378,20 @@ export function Specimen({
       break;
     case 'FileDropzone':
       preview = <FileDropzoneSpecimen key={variant} state={variant} onNotice={setResult} />;
+      break;
+    case 'RunBoard':
+    case 'AttentionQueue':
+    case 'RunSummaryCard':
+    case 'BackgroundStatus':
+      preview = (
+        <RunsSpecimen
+          key={`${name}:${variant}`}
+          name={name}
+          state={variant}
+          presentation={presentation}
+          onNotice={setResult}
+        />
+      );
       break;
     case 'AgentSteps':
       preview = (

@@ -398,6 +398,61 @@ export const catalog: CatalogEntry[] = [
     code: '<ExecutionTimeline entries={events} />',
   },
   {
+    name: 'RunBoard',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Run board', 'Agent runs', 'Task board'],
+    description:
+      'Runs across threads as a board, grouped by what they need, with host filters and actions.',
+    states: ['Default', 'Stale heartbeat', 'Failed', 'Filtered', 'Empty'],
+    contract:
+      'runs: RunCard[] · filter? · onFilterChange? · selectedId? · onSelect? · onAction? · receipts? · staleAfterMs? · now? · label?',
+    responsibility:
+      'Lifecycle, timestamps and heartbeats come from the host. A running run with no recent heartbeat is marked, never guessed finished. Actions are requests until a receipt arrives.',
+    keyboard:
+      'Arrow keys move between cards and columns; Home and End jump within a column; Enter opens a run.',
+    code: '<RunBoard runs={runs} now={clock} onAction={request} />',
+  },
+  {
+    name: 'AttentionQueue',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Agent inbox', 'Needs attention'],
+    description:
+      'The ordered list of approvals, questions, handoffs and failures waiting on a person.',
+    states: ['Default', 'Unknown count', 'Empty'],
+    contract: 'items: AttentionItem[] · count? · onOpen · onDismiss? · label?',
+    responsibility:
+      'Rows only; opening an item mounts its own decision control. The count is host-supplied and shows as unavailable when unknown.',
+    keyboard: 'Arrow keys move between items; Enter opens; Dismiss is a separate button.',
+    code: '<AttentionQueue items={items} count={count} onOpen={open} />',
+  },
+  {
+    name: 'RunSummaryCard',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Run summary', 'Run report'],
+    description:
+      'What a run did, read afterwards: goal, outcome, effects with receipts, and what was left undone.',
+    states: ['Succeeded', 'Partial', 'Failed', 'Unknown outcome'],
+    contract: 'summary: RunSummary · receipts? · onOpenEffect? · actions?',
+    responsibility:
+      'An effect is confirmed only by an acknowledged receipt. Unknown outcomes are stated, not hidden. Duration and cost carry their meaning.',
+    code: '<RunSummaryCard summary={summary} receipts={receipts} />',
+  },
+  {
+    name: 'BackgroundStatus',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Background runs', 'Run indicator'],
+    description: 'A small persistent indicator for runs still going while the person is elsewhere.',
+    states: ['Running', 'Waiting', 'Stale', 'Idle'],
+    contract: 'running · waiting · lastHeartbeatAt? · staleAfterMs? · now? · onOpen?',
+    responsibility:
+      'The host updates the counts; the indicator never polls. A silent host shows as no recent update.',
+    code: '<BackgroundStatus running={running} waiting={waiting} onOpen={openBoard} />',
+  },
+  {
     name: 'ToolCall',
     category: 'Tools',
     description: 'A tool request with its input, result, failure and duration.',

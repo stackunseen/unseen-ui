@@ -17,3 +17,25 @@ export type {
   ConversationActionReceipt,
   ConversationActionState,
 } from './components/conversation-flow/contracts.js';
+export { RunBoard, emptyRunBoardFilter } from './components/runs/run-board.js';
+export type {
+  RunBoardProps,
+  RunCard,
+  RunBoardFilter,
+  RunBoardGroup,
+  RunAction,
+  RunActionRequest,
+} from './components/runs/run-board.js';
+export { AttentionQueue } from './components/runs/attention-queue.js';
+export type { AttentionQueueProps, AttentionItem } from './components/runs/attention-queue.js';
+export { RunSummaryCard } from './components/runs/run-summary-card.js';
+export type {
+  RunSummaryCardProps,
+  RunSummary,
+  RunEffect,
+  RunOutcome,
+} from './components/runs/run-summary-card.js';
+export { BackgroundStatus } from './components/runs/background-status.js';
+export type { BackgroundStatusProps } from './components/runs/background-status.js';
+export type { RunParty, Money } from './components/runs/shared.js';
+export type { CommandReceipt, Measurement, HeartbeatState } from '@stackunseen/ui-core';

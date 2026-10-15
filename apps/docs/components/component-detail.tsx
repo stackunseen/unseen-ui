@@ -88,7 +88,10 @@ export function ComponentDetail({
     module === '/rich-markdown' ||
     (module === '/mermaid' && ['Math labels', 'Sequence math'].includes(variant));
   const optionalStyles =
-    module === '/application' || module === '/marketing' || module === '/navigation'
+    module === '/application' ||
+    module === '/marketing' ||
+    module === '/navigation' ||
+    module === '/conversation-flow'
       ? `import '@stackunseen/ui${module}.css';\n`
       : '';
   const peers = rendererPeers[rich || structured ? '/markdown' : module];

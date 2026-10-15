@@ -303,6 +303,20 @@
 .home-tile .message-exchange {
   gap: 0;
 }
+/* The composer fills its tile instead of floating in the middle of it. */
+.home-tile-stage > form {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  height: 100%;
+}
+.home-tile-stage > form > textarea {
+  flex: 1;
+}
+/* A three-column sample table fits a phone without a horizontal scroll. */
+.home-tile [data-part='data-table'] th {
+  min-width: 0;
+}
 .home-form-tile {
   display: grid;
   gap: 12px;

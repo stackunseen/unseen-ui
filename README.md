@@ -6,7 +6,7 @@ React and TypeScript components for AI interfaces and everyday application contr
 
 ## Run locally
 
-Use Node **24.13.0** and pnpm **11.5.0**. With access to this private repository:
+Use Node **24.13.0** and pnpm **11.5.0**:
 
 ```sh
 git clone https://github.com/stackunseen/unseen-ui.git
@@ -22,7 +22,7 @@ The library targets React **19.3**. The gallery uses Next.js **16.3.6** and MDX;
 
 ## Explore
 
-The gallery has **93 component entries**: 44 under UI Components and 49 under AI Components. It includes forms, menus, overlays, tables, chat, streaming responses, tools, approvals and host-state inspectors. Optional entries provide Markdown, math, diagrams, highlighting, terminal views and application layouts.
+The gallery has **162 component entries**: 67 under UI Components, 79 under AI Components, and 16 application and marketing compositions. It includes forms, menus, overlays, tables, chat, streaming responses, tools, approvals and host-state inspectors. Optional entries provide Markdown, math, diagrams, highlighting, terminal views and application layouts.
 
 Patterns contains the simulated Agent workbench, Coding studio and the **Relay** dashboard/assistant template. Customize contains Theme Studio and design foundations.
 

@@ -65,6 +65,10 @@ export const componentVariants = {
   PolicyStatus: ['list', 'cards', 'accordion'],
   ToggleGroup: ['pills', 'segmented'],
   LinkCard: ['card', 'row'],
+  RunBoard: ['board', 'list', 'compact'],
+  AttentionQueue: ['list', 'compact'],
+  RunSummaryCard: ['card', 'inline'],
+  BackgroundStatus: ['pill', 'banner'],
 } as const;
 export type VariantComponent = keyof typeof componentVariants;
 export type ComponentVariant<K extends VariantComponent> = (typeof componentVariants)[K][number];
