@@ -69,6 +69,8 @@ export const componentVariants = {
   AttentionQueue: ['list', 'compact'],
   RunSummaryCard: ['card', 'inline'],
   BackgroundStatus: ['pill', 'banner'],
+  RunCompare: ['columns', 'stacked'],
+  SubagentTree: ['tree', 'compact'],
 } as const;
 export type VariantComponent = keyof typeof componentVariants;
 export type ComponentVariant<K extends VariantComponent> = (typeof componentVariants)[K][number];

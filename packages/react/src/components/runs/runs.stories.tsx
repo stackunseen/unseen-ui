@@ -5,6 +5,8 @@ import type { RunBoardFilter, RunCard } from './run-board.js';
 import { AttentionQueue } from './attention-queue.js';
 import { RunSummaryCard } from './run-summary-card.js';
 import { BackgroundStatus } from './background-status.js';
+import { RunCompare } from './run-compare.js';
+import { SubagentTree } from './subagent-tree.js';
 import { proposal } from '../../../../../apps/docs/lib/fixtures';
 
 const now = '2026-10-15T10:10:00Z';
@@ -120,6 +122,64 @@ export const Background: Story = {
       lastHeartbeatAt="2026-10-15T10:09:00Z"
       now={now}
       onOpen={() => {}}
+    />
+  ),
+};
+export const Compare: Story = {
+  render: () => (
+    <RunCompare
+      left={{
+        label: 'Attempt 1',
+        summary: {
+          run: { id: 'r4', attemptId: 'a1', threadId: 't4', version: 1, lifecycle: 'failed' },
+          goal: 'Weekly digest',
+          outcome: 'partial',
+          summary: 'Sent 11 of 12.',
+          effects: [{ id: 'e1', kind: 'message', label: '11 emails sent', receiptId: 'cmd-1' }],
+          duration: { kind: 'measured', value: 95_000 },
+        },
+        receipts: [{ commandId: 'cmd-1', status: 'acknowledged' }],
+      }}
+      right={{
+        label: 'Attempt 2',
+        summary: {
+          run: { id: 'r4', attemptId: 'a2', threadId: 't4', version: 1, lifecycle: 'succeeded' },
+          goal: 'Weekly digest',
+          outcome: 'succeeded',
+          summary: 'Sent 12.',
+          effects: [{ id: 'e1', kind: 'message', label: '12 emails sent', receiptId: 'cmd-2' }],
+          duration: { kind: 'measured', value: 140_000 },
+        },
+        receipts: [{ commandId: 'cmd-2', status: 'acknowledged' }],
+      }}
+    />
+  ),
+};
+export const Tree: Story = {
+  render: () => (
+    <SubagentTree
+      now={now}
+      root={{
+        run: { id: 'root', attemptId: 'a1', threadId: 't1', version: 2, lifecycle: 'running' },
+        title: 'Plan the launch event',
+        heartbeatAt: '2026-10-15T10:09:30Z',
+        children: [
+          {
+            run: { id: 'c1', attemptId: 'a1', threadId: 't2', version: 1, lifecycle: 'succeeded' },
+            title: 'Draft the announcement',
+            spawnedBy: { messageId: 'm1', excerpt: 'Write a short announcement' },
+            children: [],
+          },
+          {
+            run: { id: 'c2', attemptId: 'a1', threadId: 't3', version: 1, lifecycle: 'running' },
+            title: 'Book the venue',
+            heartbeatAt: '2026-10-15T09:30:00Z',
+            children: [],
+            hasMore: true,
+          },
+        ],
+      }}
+      onLoadMore={() => {}}
     />
   ),
 };

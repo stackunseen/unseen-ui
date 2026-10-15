@@ -32,6 +32,7 @@ const sharedPublicModules = new Set([
   'components/copy-button/copy-button',
   'components/input-group/input-group',
   'components/status-badge/status-badge',
+  'components/execution-timeline/execution-timeline',
   'shared/link',
   'shared/copy',
 ]);

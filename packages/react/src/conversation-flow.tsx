@@ -39,3 +39,7 @@ export { BackgroundStatus } from './components/runs/background-status.js';
 export type { BackgroundStatusProps } from './components/runs/background-status.js';
 export type { RunParty, Money } from './components/runs/shared.js';
 export type { CommandReceipt, Measurement, HeartbeatState } from '@stackunseen/ui-core';
+export { RunCompare } from './components/runs/run-compare.js';
+export type { RunCompareProps, RunCompareSide } from './components/runs/run-compare.js';
+export { SubagentTree } from './components/runs/subagent-tree.js';
+export type { SubagentTreeProps, RunNode } from './components/runs/subagent-tree.js';

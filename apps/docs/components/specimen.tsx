@@ -383,6 +383,8 @@ export function Specimen({
     case 'AttentionQueue':
     case 'RunSummaryCard':
     case 'BackgroundStatus':
+    case 'RunCompare':
+    case 'SubagentTree':
       preview = (
         <RunsSpecimen
           key={`${name}:${variant}`}

@@ -453,6 +453,35 @@ export const catalog: CatalogEntry[] = [
     code: '<BackgroundStatus running={running} waiting={waiting} onOpen={openBoard} />',
   },
   {
+    name: 'RunCompare',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Compare runs', 'Attempt comparison'],
+    description:
+      'Two runs or checkpoints side by side: outcome, measurements, effects and timelines.',
+    states: ['Default', 'Only differences', 'With timelines', 'Identical'],
+    contract:
+      'left · right: { label, summary, timeline?, receipts? } · onlyDifferences? · onOnlyDifferencesChange? · artifacts?',
+    responsibility:
+      "Rows compare host data only. An effect is confirmed on a side only by that side's acknowledged receipt. Artifact comparison is supplied by the host.",
+    code: '<RunCompare left={{ label: "Attempt 1", summary: a }} right={{ label: "Attempt 2", summary: b }} />',
+  },
+  {
+    name: 'SubagentTree',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Agent tree', 'Fleet view', 'Child runs'],
+    description: 'Parent and child runs as a tree with the message that spawned each child.',
+    states: ['Default', 'Stale child', 'Depth limit', 'More to load'],
+    contract:
+      'root: RunNode · selectedId? · onSelect? · onLoadMore? · maxDepth? · expandedIds? · onExpandedChange? · now?',
+    responsibility:
+      'The host sends the tree and any missing children on request. Depth is bounded; deeper runs are counted and loaded through the host.',
+    keyboard:
+      'Arrow keys move and expand or collapse; Home and End jump; typing a letter jumps to the next matching run; Enter selects.',
+    code: '<SubagentTree root={tree} onSelect={open} onLoadMore={load} />',
+  },
+  {
     name: 'ToolCall',
     category: 'Tools',
     description: 'A tool request with its input, result, failure and duration.',

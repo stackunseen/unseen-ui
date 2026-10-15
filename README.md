@@ -22,7 +22,7 @@ The library targets React **19.3**. The gallery uses Next.js **16.3.6** and MDX;
 
 ## Explore
 
-The gallery has **162 component entries**: 67 under UI Components, 79 under AI Components, and 16 application and marketing compositions. It includes forms, menus, overlays, tables, chat, streaming responses, tools, approvals and host-state inspectors. Optional entries provide Markdown, math, diagrams, highlighting, terminal views and application layouts.
+The gallery has **164 component entries**: 67 under UI Components, 81 under AI Components, and 16 application and marketing compositions. It includes forms, menus, overlays, tables, chat, streaming responses, tools, approvals and host-state inspectors. Optional entries provide Markdown, math, diagrams, highlighting, terminal views and application layouts.
 
 Patterns contains the simulated Agent workbench, Coding studio and the **Relay** dashboard/assistant template. Customize contains Theme Studio and design foundations.
 
