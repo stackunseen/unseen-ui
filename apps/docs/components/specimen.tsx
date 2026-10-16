@@ -65,6 +65,10 @@ const AttachmentComposer = dynamic(
 const MCPAppSpecimen = dynamic(() => import('./mcp-app-specimen').then((m) => m.MCPAppSpecimen), {
   loading: ExampleLoading,
 });
+const GovernanceSpecimen = dynamic(
+  () => import('./governance-specimen').then((m) => m.GovernanceSpecimen),
+  { loading: ExampleLoading },
+);
 const RunsSpecimen = dynamic(() => import('./runs-specimen').then((m) => m.RunsSpecimen), {
   loading: ExampleLoading,
 });
@@ -387,6 +391,19 @@ export function Specimen({
       preview = (
         <MCPAppSpecimen
           key={variant}
+          state={variant}
+          presentation={presentation}
+          onNotice={setResult}
+        />
+      );
+      break;
+    case 'ScopeGrant':
+    case 'DryRunPreview':
+    case 'ApprovalBatch':
+      preview = (
+        <GovernanceSpecimen
+          key={`${name}:${variant}`}
+          name={name}
           state={variant}
           presentation={presentation}
           onNotice={setResult}

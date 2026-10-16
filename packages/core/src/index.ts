@@ -16,6 +16,16 @@ export type * from './measurement.js';
 export type * from './surface-lang.js';
 export type * from './a2ui.js';
 export type * from './app-bridge.js';
+export type * from './hitl-adapters.js';
+export {
+  fieldsFromSchema,
+  coerceFieldValues,
+  readAgUiInterrupts,
+  fromAgUiInterrupt,
+  toAgUiResume,
+  fromMcpElicitation,
+  toMcpElicitationResult,
+} from './hitl-adapters.js';
 export {
   createAppBridge,
   buildAppCsp,

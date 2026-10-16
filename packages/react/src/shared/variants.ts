@@ -72,6 +72,9 @@ export const componentVariants = {
   RunCompare: ['columns', 'stacked'],
   SubagentTree: ['tree', 'compact'],
   MCPAppFrame: ['card', 'plain'],
+  ScopeGrant: ['list', 'compact'],
+  DryRunPreview: ['card', 'inline'],
+  ApprovalBatch: ['card', 'inline'],
 } as const;
 export type VariantComponent = keyof typeof componentVariants;
 export type ComponentVariant<K extends VariantComponent> = (typeof componentVariants)[K][number];

@@ -43,3 +43,23 @@ export { RunCompare } from './components/runs/run-compare.js';
 export type { RunCompareProps, RunCompareSide } from './components/runs/run-compare.js';
 export { SubagentTree } from './components/runs/subagent-tree.js';
 export type { SubagentTreeProps, RunNode } from './components/runs/subagent-tree.js';
+export { ScopeGrantList } from './components/governance/scope-grant-list.js';
+export type {
+  ScopeGrantListProps,
+  ScopeGrant,
+  ScopeGrantStatus,
+  ScopeGrantRevokeRequest,
+} from './components/governance/scope-grant-list.js';
+export { DryRunPreview } from './components/governance/dry-run-preview.js';
+export type {
+  DryRunPreviewProps,
+  DryRunPlan,
+  DryRunEffect,
+  DryRunDecision,
+} from './components/governance/dry-run-preview.js';
+export { ApprovalBatch } from './components/governance/approval-batch.js';
+export type {
+  ApprovalBatchProps,
+  ApprovalBatchItem,
+  ApprovalBatchDecision,
+} from './components/governance/approval-batch.js';

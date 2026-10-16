@@ -555,6 +555,48 @@ export const catalog: CatalogEntry[] = [
     code: '<PermissionRequest value={request} commandId={commandId} submission={submission} onDecision={sendDecision} onReconcile={lookupOriginal} />',
   },
   {
+    name: 'ScopeGrant',
+    category: 'Human review',
+    importPath: '/conversation-flow',
+    aliases: ['Standing permission', 'Grants', 'Session allow'],
+    description:
+      'Standing permissions with their scope, expiry, use count and a host-acknowledged revoke.',
+    states: ['Default', 'Empty'],
+    contract: 'grants: ScopeGrant[] · onRevoke? · receipts? · now? · label?',
+    responsibility:
+      'Grants are host records. Expiry is derived from the host clock; revoking is a request until the receipt arrives.',
+    code: '<ScopeGrantList grants={grants} now={clock} onRevoke={revoke} />',
+  },
+  {
+    name: 'DryRunPreview',
+    category: 'Human review',
+    importPath: '/conversation-flow',
+    aliases: ['Dry run', 'Plan preview', 'Effects preview'],
+    description:
+      "The agent's declared effects before anything runs, with a veto per line and one versioned decision.",
+    states: ['Default', 'Some skipped', 'Sending', 'Acknowledged', 'Plan changed'],
+    contract:
+      'plan: DryRunPlan · skippedIds · onSkippedChange · onDecision · submission? · receipt? · stale?',
+    responsibility:
+      'Nothing runs in the interface. The decision carries the plan version and the skipped effects; the host re-plans and executes.',
+    keyboard: 'Each effect is a checkbox; Run and Cancel are buttons.',
+    code: '<DryRunPreview plan={plan} skippedIds={skipped} onSkippedChange={setSkipped} onDecision={decide} />',
+  },
+  {
+    name: 'ApprovalBatch',
+    category: 'Human review',
+    importPath: '/conversation-flow',
+    aliases: ['Batch approval', 'Approve all'],
+    description:
+      'Several same-scope proposals under one acknowledged decision, each one still opt-out-able.',
+    states: ['Default', 'One superseded', 'Mixed scopes', 'Acknowledged'],
+    contract:
+      'proposals · excludedIds · onExcludedChange · onDecision · submission? · receipt? · now?',
+    responsibility:
+      'Only pending, unexpired, included proposals with one shared target and scope are covered; the decision names each by id, version and digest, and the receipt says which ones the host applied.',
+    code: '<ApprovalBatch proposals={proposals} excludedIds={excluded} onExcludedChange={setExcluded} onDecision={decide} />',
+  },
+  {
     name: 'ClarificationRequest',
     category: 'AI forms',
     description: 'A question the assistant asks before it continues.',
