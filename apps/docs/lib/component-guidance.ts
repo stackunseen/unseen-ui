@@ -133,7 +133,7 @@ const guides = {
       },
       {
         name: 'variant',
-        type: "'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' (optional)",
+        type: "'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link' (optional)",
         description: 'Visual emphasis. Defaults to primary; danger suits a destructive action.',
       },
       {

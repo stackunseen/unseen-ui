@@ -12,7 +12,7 @@ export default function Page() {
       title="Approval and action receipts"
       description="Follow a reviewed action through host acceptance and a reported result."
       backHref="/patterns/"
-      backLabel="All AI recipes"
+      backLabel="All patterns"
     >
       <ActionReceiptRecipe />
     </ExamplePage>

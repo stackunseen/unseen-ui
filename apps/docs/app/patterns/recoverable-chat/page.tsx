@@ -12,7 +12,7 @@ export default function Page() {
       title="Recoverable chat"
       description="Keep the local draft while you resolve connection and submission state."
       backHref="/patterns/"
-      backLabel="All AI recipes"
+      backLabel="All patterns"
     >
       <RecoveryRecipe />
     </ExamplePage>

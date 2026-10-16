@@ -8,6 +8,7 @@ import s from './data-grid.module.css';
 type TableProps<Row> = Pick<
   DataGridProps<Row>,
   | 'caption'
+  | 'captionVisibility'
   | 'columns'
   | 'rows'
   | 'getRowId'
@@ -24,6 +25,7 @@ type TableProps<Row> = Pick<
 
 export function DataGridTable<Row>({
   caption,
+  captionVisibility = 'visible',
   columns,
   rows,
   getRowId,
@@ -45,7 +47,9 @@ export function DataGridTable<Row>({
   const span = Math.max(1, columns.length + Number(selection));
   return (
     <table className={s.table} aria-busy={loading || undefined}>
-      <caption className={s.caption}>{caption}</caption>
+      <caption className={s.caption} data-visibility={captionVisibility}>
+        {caption}
+      </caption>
       <thead>
         <tr>
           {selection && columns.length > 0 && (

@@ -126,16 +126,18 @@ export function ApprovalCard({
             <Button variant="ghost" size="sm" {...details.triggerProps}>
               {details.open ? 'Hide details' : 'Details'}
             </Button>
-            <Button
-              variant="outline"
-              disabled={unavailable}
-              onClick={() => onDecision('reject', proposal)}
-            >
-              Reject
-            </Button>
-            <Button disabled={unavailable} onClick={() => onDecision('approve', proposal)}>
-              Approve action
-            </Button>
+            <div className={a.decisions}>
+              <Button
+                variant="outline"
+                disabled={unavailable}
+                onClick={() => onDecision('reject', proposal)}
+              >
+                Reject
+              </Button>
+              <Button disabled={unavailable} onClick={() => onDecision('approve', proposal)}>
+                Approve action
+              </Button>
+            </div>
           </div>
           <p className={s.muted} role="status">
             {submission === 'submitting'

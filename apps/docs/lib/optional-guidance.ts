@@ -61,6 +61,12 @@ const guides = {
         description: 'The native table caption and scroll-region name.',
       },
       {
+        name: 'captionVisibility',
+        type: "'visible' | 'hidden' (optional)",
+        description:
+          'Hide the caption on screen when a surrounding card already shows the same heading; screen readers still announce it.',
+      },
+      {
         name: 'columns',
         type: 'readonly DataGridColumn<Row>[]',
         description:

@@ -68,6 +68,12 @@ describe('DataGrid application contract', () => {
     );
   });
 
+  it('keeps a hidden caption as the table name for a grid inside a titled card', () => {
+    render(<DataGrid {...base} caption="Recent customers" captionVisibility="hidden" />);
+    const table = screen.getByRole('table', { name: 'Recent customers' });
+    expect(table.querySelector('caption')).toHaveAttribute('data-visibility', 'hidden');
+  });
+
   it('requests a three-step sort and waits for host acknowledgement', async () => {
     const change = vi.fn();
     const { rerender } = render(<DataGrid {...base} onSortChange={change} />);

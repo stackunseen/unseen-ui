@@ -6,6 +6,8 @@ import s from './saas-admin.module.css';
 
 /** Customer projection of the public DataGrid. The demo host owns filtering/sorting/paging. */
 export function CustomerTable({
+  caption = 'Customer records',
+  captionVisibility,
   customers,
   selectedId,
   compact = false,
@@ -16,6 +18,8 @@ export function CustomerTable({
   onPageChange,
   disabled = false,
 }: {
+  caption?: string;
+  captionVisibility?: 'visible' | 'hidden';
   customers: readonly Customer[];
   selectedId?: string;
   compact?: boolean;
@@ -36,8 +40,7 @@ export function CustomerTable({
       cell: (customer) => (
         <>
           <Button
-            variant="ghost"
-            className={s.recordButton}
+            variant="link"
             aria-label={`View ${customer.name}`}
             aria-current={selectedId === customer.id ? 'true' : undefined}
             disabled={disabled}
@@ -82,7 +85,8 @@ export function CustomerTable({
   ];
   return (
     <DataGrid
-      caption="Customer records"
+      caption={caption}
+      captionVisibility={captionVisibility}
       columns={columns}
       rows={customers}
       getRowId={(customer) => customer.id}

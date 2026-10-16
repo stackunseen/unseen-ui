@@ -137,6 +137,10 @@ export function Chat(props: ChatProps) {
     () => new Map((approvals ?? []).map((approval) => [approval.toolCallId, approval])),
     [approvals],
   );
+  // Copy and regenerate wait until every approval is answered: the reply is not finished yet.
+  const awaitingDecision = (approvals ?? []).some(
+    (approval) => approval.proposal.status === 'pending' || approval.submission === 'submitting',
+  );
   const renderTool = useCallback(
     (tool: ToolCallData) => {
       const custom = customTool?.(tool);
@@ -238,6 +242,7 @@ export function Chat(props: ChatProps) {
             >
               {message.role === 'assistant' &&
                 message.state === 'complete' &&
+                !awaitingDecision &&
                 index === messages.length - 1 && (
                   <MessageActions
                     variant="compact"

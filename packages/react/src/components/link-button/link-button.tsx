@@ -3,7 +3,7 @@ import { Anchor } from '../../shared/link.js';
 import s from '../../shared/styles/styles.module.css';
 
 export interface LinkButtonProps extends ComponentProps<'a'> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link';
   size?: 'default' | 'sm';
 }
 

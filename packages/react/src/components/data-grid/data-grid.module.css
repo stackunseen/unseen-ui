@@ -36,6 +36,7 @@
   margin-inline-start: auto;
 }
 .scroll {
+  position: relative;
   min-inline-size: 0;
   max-inline-size: 100%;
   overflow: auto;
@@ -60,13 +61,24 @@
   font-size: var(--ai-font-size-heading, 16px);
   color: var(--ai-text, #18181b);
 }
+/* Still names the table for assistive technology. */
+.caption[data-visibility='hidden'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .table th,
 .table td {
   padding: var(--ai-field-gap, 8px) var(--ai-gap, 12px);
   border-block-start: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
   vertical-align: middle;
   min-inline-size: 120px;
-  overflow-wrap: anywhere;
+  /* Words stay whole; the labelled region scrolls instead of splitting an email or ID mid-word. */
+  overflow-wrap: break-word;
 }
 .table thead th {
   background: var(--ai-surface-subtle, #f4f4f5);

@@ -83,6 +83,8 @@ describe('Chat on an AI SDK chat', () => {
     expect(card).toBeTruthy();
     expect(card).toHaveTextContent('Two accounts become read-only.');
     expect(card).toHaveTextContent('Risk not assessed');
+    // The reply waits on the decision, so copy and regenerate are held back.
+    expect(screen.queryByRole('button', { name: 'Regenerate' })).toBeNull();
     await user.click(within(card).getByRole('button', { name: /approve/i }));
     expect(captured!.addToolApprovalResponse).toHaveBeenCalledExactlyOnceWith({
       id: 'approval-1',

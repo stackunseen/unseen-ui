@@ -11,6 +11,16 @@
   flex: 0 1 auto;
   max-width: 100%;
 }
+/* A decision pair wraps as one unit, so the primary action never ends up alone on a row. */
+.decisions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: max(8px, var(--ai-field-gap, 8px));
+  margin-inline-start: auto;
+  min-width: 0;
+  max-width: 100%;
+}
 /* Local add/generated actions keep their content width inside grid parents. */
 .local,
 .local > button {

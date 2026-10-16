@@ -334,7 +334,7 @@ export const websiteCatalog: CatalogEntry[] = [
     description: 'A native link with Button styling, for calls to action that navigate.',
     states: ['Default', 'Outline', 'Small', 'External'],
     contract:
-      'Native anchor props · href · variant?: primary | secondary | outline | ghost | danger · size?: default | sm',
+      'Native anchor props · href · variant?: primary | secondary | outline | ghost | danger | link · size?: default | sm',
     responsibility:
       'Use LinkButton for navigation and Button for actions. With a LinkProvider at the root it renders the router link; Button with asChild remains for a one-off link component.',
     keyboard:

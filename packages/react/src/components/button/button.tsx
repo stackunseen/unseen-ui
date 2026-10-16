@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 import s from '../../shared/styles/styles.module.css';
 
 export interface ButtonProps extends ComponentProps<'button'> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'link';
   size?: 'default' | 'sm';
   /**
    * Render the single child element instead of a button, passing it the button's presentation.

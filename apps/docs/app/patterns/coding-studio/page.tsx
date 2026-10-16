@@ -15,8 +15,8 @@ export default function Page() {
     <ExamplePage
       title="Coding Studio"
       description="Edit sample files, stage changes and apply a reviewed patch in a local workspace."
-      backHref="/templates/"
-      backLabel="All templates"
+      backHref="/patterns/"
+      backLabel="All patterns"
       workspace
     >
       <CodingStudio showIntroduction={false} />

@@ -694,9 +694,15 @@
   .headerActions {
     gap: 8px;
   }
+  /* The status takes its own row at its own width; the buttons sit together below it. */
+  .headerActions {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    justify-items: start;
+  }
   .headerActions > :first-child {
-    flex-basis: 100%;
-    width: fit-content;
+    grid-column: 1 / -1;
+    justify-self: start;
   }
   .composer {
     padding: 12px;

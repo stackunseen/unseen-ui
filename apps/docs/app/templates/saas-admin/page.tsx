@@ -11,8 +11,8 @@ export const metadata = pageMetadata(
 export default function Page() {
   return (
     <main id="main-content" className="template-workspace template-app-mode" tabIndex={-1}>
-      <a className="web-text-link template-workspace-back" href="/components/">
-        Component catalog
+      <a className="web-text-link template-workspace-back" href="/patterns/">
+        All patterns
       </a>
       <header className="template-workspace-heading">
         <h1>SaaS admin</h1>

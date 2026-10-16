@@ -9,6 +9,7 @@ import s from './data-grid.module.css';
 /** Optional application table. The host owns rows and all data operations. */
 export function DataGrid<Row>({
   caption,
+  captionVisibility,
   columns,
   rows,
   getRowId,
@@ -104,6 +105,7 @@ export function DataGrid<Row>({
       >
         <DataGridTable
           caption={caption}
+          captionVisibility={captionVisibility}
           columns={valid ? shownColumns : []}
           rows={valid ? rows : []}
           getRowId={getRowId}

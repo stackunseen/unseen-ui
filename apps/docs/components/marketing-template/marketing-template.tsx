@@ -33,8 +33,8 @@ export function MarketingTemplate() {
   return (
     <div className={s.template} id="folio-top">
       <div className={s.templateBar}>
-        <a href="/templates/">
-          <ArrowLeft size={14} aria-hidden="true" /> All templates
+        <a href="/patterns/">
+          <ArrowLeft size={14} aria-hidden="true" /> All patterns
         </a>
         <span>Fictional product · interactive local example</span>
       </div>

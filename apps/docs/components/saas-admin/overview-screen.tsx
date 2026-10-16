@@ -72,6 +72,8 @@ export function OverviewScreen({
           </Button>
         </div>
         <CustomerTable
+          caption="Recent customers"
+          captionVisibility="hidden"
           customers={[...organization.customers]
             .sort((a, b) => b.created.localeCompare(a.created))
             .slice(0, 4)}

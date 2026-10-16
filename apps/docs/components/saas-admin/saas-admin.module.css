@@ -150,7 +150,7 @@
   display: block;
   color: var(--ai-muted);
   font-size: 0.8125rem;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 .muted {
   color: var(--ai-muted);
@@ -162,18 +162,6 @@
 }
 .table tr[data-selected] {
   background: var(--ai-primary-soft);
-}
-.recordButton {
-  font-weight: 600;
-  padding-inline: 0 !important;
-  text-align: start;
-  justify-content: flex-start;
-  block-size: auto !important;
-  min-block-size: 32px;
-  white-space: normal;
-}
-.recordButton:hover {
-  text-decoration: underline;
 }
 .health {
   margin: 16px 0 0;
@@ -264,13 +252,16 @@
   .sidebar > :first-child {
     max-inline-size: 320px;
   }
+  /* Tabs keep their own width and wrap from the start edge, so no row stretches unevenly. */
   .navigation {
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 4px;
   }
   .navigation button {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     min-block-size: 44px;
+    white-space: nowrap;
   }
   .navigation button[aria-current='page'] {
     box-shadow: inset 0 -3px 0 var(--ai-primary);
@@ -310,10 +301,5 @@
   .facts > div {
     grid-template-columns: minmax(0, 1fr);
     gap: 4px;
-  }
-}
-@media (pointer: coarse) {
-  .recordButton {
-    min-block-size: 44px;
   }
 }

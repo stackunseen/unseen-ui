@@ -40,6 +40,11 @@ export interface DataGridProps<Row> extends Omit<
 > {
   dir?: 'ltr' | 'rtl';
   caption: string;
+  /**
+   * `hidden` keeps the caption for assistive technology but not on screen. Use it when a
+   * surrounding card or section already shows the same heading.
+   */
+  captionVisibility?: 'visible' | 'hidden';
   columns: readonly DataGridColumn<Row>[];
   /** An application-owned page/window. No implicit sorting, filtering or truncation. */
   rows: readonly Row[];

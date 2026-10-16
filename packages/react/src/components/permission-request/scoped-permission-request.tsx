@@ -170,12 +170,14 @@ export function ScopedPermissionRequest({
             {details.open ? 'Hide details' : 'Details'}
           </Button>
         )}
-        <Button variant="outline" disabled={!canDecide} onClick={() => decide('deny')}>
-          Deny access
-        </Button>
-        <Button disabled={!canDecide} onClick={() => decide('allow')}>
-          Allow access
-        </Button>
+        <div className={a.decisions}>
+          <Button variant="outline" disabled={!canDecide} onClick={() => decide('deny')}>
+            Deny access
+          </Button>
+          <Button disabled={!canDecide} onClick={() => decide('allow')}>
+            Allow access
+          </Button>
+        </div>
       </div>
       <p className={s.muted}>Access permission does not approve later actions.</p>
       {original &&

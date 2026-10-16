@@ -12,7 +12,7 @@ export default function Page() {
       title="Research answers"
       description="Read an answer with the evidence supplied for each claim."
       backHref="/patterns/"
-      backLabel="All AI recipes"
+      backLabel="All patterns"
     >
       <ResearchRecipe />
     </ExamplePage>

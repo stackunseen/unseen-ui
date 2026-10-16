@@ -11,8 +11,8 @@ export default function Page() {
     <ExamplePage
       title="Agent Workbench"
       description="Review sample accounts and decide on actions in a local customer-operations workspace."
-      backHref="/templates/"
-      backLabel="All templates"
+      backHref="/patterns/"
+      backLabel="All patterns"
       workspace
     >
       <Workbench />

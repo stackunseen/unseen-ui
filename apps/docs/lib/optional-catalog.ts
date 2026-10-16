@@ -23,7 +23,8 @@ export const applicationCatalog: CatalogEntry[] = [
     description: 'A native table with controlled sorting, paging, selection and column visibility.',
     aliases: ['Data grid', 'Customer table'],
     states: ['Default', 'Loading', 'Empty', 'Error'],
-    contract: 'caption · columns · rows · getRowId · sort? · pagination? · selectedRowIds?',
+    contract:
+      'caption · captionVisibility? · columns · rows · getRowId · sort? · pagination? · selectedRowIds?',
     responsibility:
       'Filter, sort and page rows in your host before passing the current window. Selection never grants permission to act on a record.',
     keyboard:
