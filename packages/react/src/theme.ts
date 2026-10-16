@@ -262,7 +262,21 @@ export const defaultTheme = createTheme();
 /** Geometry edits preserve resolved colour overrides; brand edits intentionally regenerate the palette. */
 export function updateTheme(theme: ResolvedTheme, input: ThemeInput): ResolvedTheme {
   const current = importTheme(JSON.stringify(theme));
-  const next = createTheme({ ...current.seeds, ...input });
+  const seeds: ThemeInput = { ...current.seeds, ...input };
+  // A per-role radius keeps following its base radius until it is set on its own.
+  if (
+    input.controlRadius !== undefined &&
+    input.buttonRadius === undefined &&
+    current.seeds.buttonRadius === current.seeds.controlRadius
+  )
+    seeds.buttonRadius = input.controlRadius;
+  if (
+    input.radius !== undefined &&
+    input.cardRadius === undefined &&
+    current.seeds.cardRadius === current.seeds.radius
+  )
+    seeds.cardRadius = input.radius;
+  const next = createTheme(seeds);
   if (
     !(['primary', 'secondary', 'accent'] as const).some(
       (key) => input[key] !== undefined && input[key] !== current.seeds[key],

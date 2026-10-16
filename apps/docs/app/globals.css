@@ -824,6 +824,36 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   margin: 0 0 20px;
   font-size: 15px;
 }
+.theme-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+.theme-actions h2 {
+  margin: 0;
+}
+.theme-status {
+  min-height: 18px;
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+.theme-group-title {
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--ai-border);
+  font-size: 14px;
+  font-weight: 600;
+}
+.theme-group-title + .theme-note,
+.theme-group-title + .editor-label {
+  margin-top: 12px;
+}
+.theme-group-title + div {
+  margin-top: 8px;
+}
 .colour-field {
   display: grid;
   gap: 6px;

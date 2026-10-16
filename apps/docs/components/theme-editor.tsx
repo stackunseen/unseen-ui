@@ -82,6 +82,7 @@ export function ThemeEditor({
     { theme: ResolvedTheme; appearance: Appearance; iconSet: 'default' | 'lucide' }[]
   >([]);
   const [notice, setNotice] = useState('');
+  const [settingsNotice, setSettingsNotice] = useState('');
   const [json, setJson] = useState('');
   const [copyFallback, setCopyFallback] = useState<{ label: string; text: string } | null>(null);
   const [revision, setRevision] = useState(0);
@@ -141,7 +142,44 @@ export function ThemeEditor({
       </div>
       <div className="theme-editor-grid">
         <section className="theme-controls" aria-label="Theme settings">
-          <h2>Brand colours</h2>
+          <div className="theme-actions">
+            <h2>Theme settings</h2>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={!history.length}
+                onClick={() => {
+                  const previous = history.at(-1);
+                  if (previous) {
+                    onChange(previous.theme);
+                    onAppearanceChange(previous.appearance);
+                    onIconSetChange(previous.iconSet);
+                    setHistory((h) => h.slice(0, -1));
+                    setSettingsNotice('Previous theme restored.');
+                    setRevision((r) => r + 1);
+                  }
+                }}
+              >
+                Undo
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  change(createTheme(), 'light', 'default');
+                  setSettingsNotice('Default theme, appearance and icons restored.');
+                  setRevision((r) => r + 1);
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </div>
+          <p className="theme-status" role="status">
+            {settingsNotice}
+          </p>
+          <h3 className="theme-group-title">Brand colours</h3>
           <p className="theme-note">
             Brand colors update both appearances. Your individual background and text colors stay in
             place. Presets start a fresh palette; Undo restores the previous look.
@@ -165,7 +203,7 @@ export function ThemeEditor({
                 key={name}
                 onClick={() => {
                   change(createTheme({ ...theme.seeds, ...preset }));
-                  setNotice(`${name} palette applied to this showcase.`);
+                  setSettingsNotice(`${name} palette applied to this showcase.`);
                   setRevision((r) => r + 1);
                 }}
               >
@@ -173,6 +211,7 @@ export function ThemeEditor({
               </Button>
             ))}
           </div>
+          <h3 className="theme-group-title">Appearance and density</h3>
           <label className="editor-label">
             Appearance
             <Select
@@ -185,8 +224,6 @@ export function ThemeEditor({
               ]}
             />
           </label>
-          <ThemeOptions seeds={theme.seeds} onChange={update} />
-          <SurfaceThemeControls theme={theme} onChange={change} />
           <label className="editor-label">
             Density
             <Select
@@ -210,38 +247,11 @@ export function ThemeEditor({
             />
           </label>
           <p className="theme-note">
-            Configure IconsProvider in your app to use these icons. Theme exports do not include
-            icon settings.
+            Icons come from IconsProvider in your app and are not part of the theme export.
           </p>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              disabled={!history.length}
-              onClick={() => {
-                const previous = history.at(-1);
-                if (previous) {
-                  onChange(previous.theme);
-                  onAppearanceChange(previous.appearance);
-                  onIconSetChange(previous.iconSet);
-                  setHistory((h) => h.slice(0, -1));
-                  setNotice('Previous theme restored.');
-                  setRevision((r) => r + 1);
-                }
-              }}
-            >
-              Undo
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                change(createTheme(), 'light', 'default');
-                setNotice('Default theme, appearance and icons restored.');
-                setRevision((r) => r + 1);
-              }}
-            >
-              Reset
-            </Button>
-          </div>
+          <h3 className="theme-group-title">Fine tuning</h3>
+          <ThemeOptions seeds={theme.seeds} onChange={update} />
+          <SurfaceThemeControls theme={theme} onChange={change} />
         </section>
         <section className="theme-preview" aria-label="Theme preview">
           <h2 className="sr-only">Theme preview</h2>

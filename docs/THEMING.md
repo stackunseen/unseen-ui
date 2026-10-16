@@ -37,7 +37,7 @@ export function ThemedPrompt({ onSubmit }: { onSubmit: (text: string) => void })
 | primary / secondary / accent | Opaque six-digit hex | Resolved light/dark brand palette. A seed within 3:1 of the mode's surface is adjusted for that mode: neutral ink inverts to the text colour, other hues shift in lightness, so filled controls stay visible in both appearances |
 | radius | Integer 0–24px | General panels and floating surfaces |
 | controlRadius / composerRadius | Integer 0–24px | Inputs/selects and composers respectively |
-| buttonRadius / pillRadius / cardRadius / tagRadius | Integers; button and card 0–24px, pill and tag 0–999px | Buttons (default controlRadius), chips and segmented controls (default 999), Card/LinkCard/Disclosure surfaces (default radius) and Tag labels (default 999). Emitted as `--ai-button-radius`, `--ai-radius-pill`, `--ai-radius-card` and `--ai-radius-tag` |
+| buttonRadius / pillRadius / cardRadius / tagRadius | Integers; button and card 0–24px, pill and tag 0–999px | Buttons (default controlRadius, and `updateTheme` keeps following controlRadius until buttonRadius is set on its own), chips and segmented controls (default 999), Card/LinkCard/Disclosure surfaces (default radius) and Tag labels (default 999). Emitted as `--ai-button-radius`, `--ai-radius-pill`, `--ai-radius-card` and `--ai-radius-tag` |
 | borderStrength | subtle / balanced / strong | Field and outline-control boundary colour |
 | borderWidth | 1 / 2px | Field/composer/outline-button thickness; decorative dividers stay fine |
 | fieldSurface | plain / tinted | Input/composer/default Select fill; explicit filled/ghost variants retain their own treatment |

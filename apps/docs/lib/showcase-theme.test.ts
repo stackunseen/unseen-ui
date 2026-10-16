@@ -46,6 +46,7 @@ describe('showcase theme edits', () => {
     expect(next.seeds).toMatchObject({
       density: 'compact',
       controlRadius: 0,
+      buttonRadius: 0,
       radius: 20,
       borderWidth: 2,
     });

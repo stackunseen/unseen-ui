@@ -227,4 +227,15 @@ describe('per-role radius seeds', () => {
     const roundTrip = importTheme(exportTheme(pills));
     expect(roundTrip.seeds.buttonRadius).toBe(999);
   });
+
+  it('keeps button and card radii following their base radius until set on their own', () => {
+    const square = updateTheme(createTheme(), { controlRadius: 0 });
+    expect(square.seeds.buttonRadius).toBe(0);
+    expect(themeToCSS(square, 'brand', 'light')).toContain('--ai-button-radius:0px;');
+    const pills = updateTheme(createTheme({ buttonRadius: 999 }), { controlRadius: 0 });
+    expect(pills.seeds.buttonRadius).toBe(999);
+    const cards = updateTheme(createTheme({ radius: 10 }), { radius: 20 });
+    expect(cards.seeds.cardRadius).toBe(20);
+    expect(updateTheme(createTheme({ cardRadius: 14 }), { radius: 20 }).seeds.cardRadius).toBe(14);
+  });
 });
