@@ -13,6 +13,7 @@ import {
 import type { ComponentSection } from '../lib/component-collections';
 import { directorySearch, groupAnchor, readDirectoryLocation } from '../lib/directory-location';
 import { componentTasks } from '../lib/tasks';
+import { matchesQuery } from '../lib/search';
 export interface DirectoryEntry {
   name: string;
   href: string;
@@ -52,13 +53,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
       update({ collection }, true);
   }, []);
   const filtered = visibleEntries.filter(
-    (entry) =>
-      (section === 'all' || entry.section === section) &&
-      query
-        .trim()
-        .toLowerCase()
-        .split(/\s+/)
-        .every((term) => entry.terms.includes(term)),
+    (entry) => (section === 'all' || entry.section === section) && matchesQuery(entry.terms, query),
   );
   return (
     <>
