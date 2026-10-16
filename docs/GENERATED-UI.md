@@ -17,8 +17,20 @@ Generated data supplies descriptions/schema, never callbacks, JSX, HTML, raw MDX
 | chart | id, type, title, unit, source, points or aligned series, optional asOf/locale; finite values or explicit null series gaps |
 | form | id, type, title, actionId, fields, optional arrays/steps using AIForm definitions |
 | section | id, type, title, optional description/layout, nodes; layout stack or grid |
+| list | id, type, items (1 to 50 inert strings), optional ordered |
+| callout | id, type, tone (`info`, `warning` or `danger`), title, optional text; rendered with Alert, so the tone always has an icon and a title |
+| options | id, type, label, actionId, choices (2 to 12, unique `value`, label, optional description), optional disabledReason |
+| steps | id, type, title, steps (1 to 20, unique id, label, state `done`, `current` or `upcoming`; at most one current); rendered with Stepper |
+| image | id, type, src (http(s), no credentials), alt (required), optional caption |
+| metricGroup | id, type, title, metrics (1 to 8 label/value pairs the host supplied) |
 
 Unknown types/properties, invalid form dependencies/steps, duplicate identities, ambiguous tables and excessive input produce a whole-surface fallback. Sections are named groups, not repeated landmarks. Nested layout cannot override the consumer theme or provide arbitrary styles.
+
+Callouts have no success tone. A generated surface can't report that something worked; that comes from a host receipt, so only notes, warnings and problems can be highlighted.
+
+An **options** node is a single choice. Pressing a choice sends `{surfaceId, version, nodeId, actionId, value}` through `onAction`, and nothing is marked as chosen until the host returns a matching `actionStates` snapshot whose `value` names the choice. The status line then reads, for example, "Host reported completion. Choice: Raj." While a snapshot is pending, complete, denied or unknown, every choice is disabled, the same as an action. Options share the action ID namespace, so an action and an options node can't use the same `actionId`.
+
+An **image** loads only from an origin the host lists in `imageOrigins` (for example `['https://images.example.com']`). Without a matching origin, the node shows its alt text and caption with a notice naming the origin, and the browser makes no request. That keeps a surface from making the browser contact an arbitrary server. The image itself goes through the Image component, which shows a placeholder if it fails to load.
 
 Legacy flat surfaces remain supported within stricter ID/nonblank-label bounds. Existing button requests retain `{surfaceId, version, actionId}` without extra properties. Missing `onAction` disables buttons with an explicit notice. Clicking does not locally imply pending/completion.
 
@@ -37,7 +49,7 @@ tickets = table("Open tickets", [{id: "title", label: "Title"}], [{id: "t1", cel
 
 `createSurfaceParser({ surfaceId, version })` from `@stackunseen/ui-core` returns `push(chunk)`, `finish()` and `state()`. Each call returns `{ surface, pending, problems, statements, complete }`: `surface` is the `{ id, version, nodes }` snapshot built from the complete lines so far (null until `root` arrives), `pending` lists names referenced but not yet defined, and `problems` lists dropped lines with a line number and a code (`syntax`, `unknown-node`, `bad-arity`, `bad-reference`, `duplicate`, `limit`, `no-root`). Only complete lines are read; call `finish()` when the stream ends. `parseSurfaceProgram(text, options)` does both in one call. The parser evaluates nothing and validates nothing beyond shape and arity; pass its `surface` to GeneratedUI, which runs the full validation, and its `problems` to the new `problems` prop, which lists what could not be shown under the result. Every split of a program settles to the same snapshot, which the tests check for each character position.
 
-Limits: 256 statements, 20,000 characters per line, 200,000 per program, values nested at most 8 deep, names of at most 80 characters. The surface limits (64 nodes, 3 section levels, table and chart bounds) still apply at validation.
+Limits: 256 statements, 20,000 characters per line, 200,000 per program, values nested at most 8 deep, names of at most 80 characters. The surface limits (64 nodes, 3 section levels, table and chart bounds, and the list, options, steps and metric group bounds above) still apply at validation.
 
 `describeSurfaceVocabulary()` returns plain text with the rules, the limits, every node signature and an example, derived from the same table the parser reads, so prompt and parser cannot drift. Paste it into a system prompt; set `examples: false` to leave the example out. The example program itself is exported as `surfaceExampleProgram`.
 

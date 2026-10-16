@@ -14,6 +14,8 @@ export { createRuntime, canTransition } from './runtime.js';
 export { validateApprovalDecision, safeUrl } from './approval.js';
 export type * from './measurement.js';
 export type * from './surface-lang.js';
+export type * from './a2ui.js';
+export { createA2UISession, mapA2UIStream, a2uiProtocolVersion } from './a2ui.js';
 export {
   createSurfaceParser,
   parseSurfaceProgram,
