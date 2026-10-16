@@ -33,3 +33,7 @@ The host fetches the resource through `resources/read`, checks `isAppResource`, 
 ## Deviations and limits
 
 The specification asks web hosts to wrap the view in a sandbox proxy on a second origin when the inner frame needs `allow-same-origin`. This frame never grants same-origin, so it embeds the view directly; a host that needs same-origin views must add its own proxy. Display-mode requests are acknowledged but the frame stays inline; `ui/request-display-mode` reaches `onRequest` so the host can answer with the current mode. Host-to-view tool calls (`tools/call` into the app) are not issued by the frame; the bridge's `request` helper exists for hosts that add them.
+
+## Tool results without a view
+
+Most tools return data, not a view. `ToolResult` in the base entry now takes a structured `result` (`{ toolName, mediaType?, data }`) beside `text`. Wrap a tree in `ToolResultRegistryProvider` with `{ match, renderers }`: the host's `match` function returns a renderer key for a result, and the matching host component renders it with the accessible `label`; anything unmatched falls back to the bounded text view (strings as they are, other data as indented JSON). The model never chooses a renderer. While a tool is still returning, pass `partial` with `received` and optional `expected` as host measurements and a `unit`; the result shows a Partial badge, "2 of 40 rows received." or "7 items received so far; total unknown.", and sets `aria-busy`. No percentage is shown without a measured total.

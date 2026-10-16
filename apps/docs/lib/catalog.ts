@@ -506,9 +506,11 @@ export const catalog: CatalogEntry[] = [
     name: 'ToolResult',
     category: 'Tools',
     description: 'Bounded tool output with a safe fallback for unsupported content.',
-    states: ['Default', 'Failed', 'Empty'],
-    contract: 'text? · error? · maxCharacters? · onRetry?',
-    responsibility: 'Redact secrets before passing content to any UI.',
+    states: ['Default', 'Failed', 'Empty', 'Partial', 'Host renderer'],
+    contract:
+      'text? · result? · partial? · error? · maxCharacters? · onRetry? · ToolResultRegistryProvider',
+    responsibility:
+      'Redact secrets before passing content to any UI. Renderers are host code chosen by the host match function; partial counts are host measurements.',
     code: '<ToolResult text={output} error={error} onRetry={retry} />',
   },
   {

@@ -35,6 +35,7 @@ import {
   ToolCall,
   ToolGroup,
   ToolResult,
+  ToolResultRegistryProvider,
   Workflow,
 } from '@stackunseen/ui';
 import { artifact, proposal, source, steps, tool } from '../lib/fixtures';
@@ -493,14 +494,61 @@ export function Specimen({
       );
       break;
     case 'ToolResult':
-      preview = (
-        <ToolResult
-          variant={resolveVariant('ToolResult', presentation)}
-          text={empty ? '' : tool.output}
-          error={failed ? 'The connector timed out.' : undefined}
-          onRetry={() => setResult('Retry requested as a new attempt.')}
-        />
-      );
+      preview =
+        variant === 'Host renderer' ? (
+          <ToolResultRegistryProvider
+            registry={{
+              match: (item) => (item.toolName === 'search_accounts' ? 'accounts' : undefined),
+              renderers: {
+                accounts: ({ result: item, label }) => (
+                  <ul aria-label={label} style={{ margin: 0, paddingInlineStart: 18 }}>
+                    {(item.data as { name: string; days: number }[]).map((row) => (
+                      <li key={row.name}>
+                        {row.name} · inactive {row.days} days
+                      </li>
+                    ))}
+                  </ul>
+                ),
+              },
+            }}
+          >
+            <ToolResult
+              variant={resolveVariant('ToolResult', presentation)}
+              label="search_accounts output"
+              result={{
+                toolName: 'search_accounts',
+                mediaType: 'application/json',
+                data: [
+                  { name: 'Acme Sandbox', days: 120 },
+                  { name: 'Example Studio', days: 97 },
+                  { name: 'Demo Works', days: 91 },
+                ],
+              }}
+            />
+          </ToolResultRegistryProvider>
+        ) : (
+          <ToolResult
+            variant={resolveVariant('ToolResult', presentation)}
+            text={
+              empty
+                ? ''
+                : variant === 'Partial'
+                  ? '3 inactive accounts found\nAcme Sandbox'
+                  : tool.output
+            }
+            partial={
+              variant === 'Partial'
+                ? {
+                    received: { kind: 'measured', value: 1 },
+                    expected: { kind: 'measured', value: 3 },
+                    unit: 'accounts',
+                  }
+                : undefined
+            }
+            error={failed ? 'The connector timed out.' : undefined}
+            onRetry={() => setResult('Retry requested as a new attempt.')}
+          />
+        );
       break;
     case 'ToolGroup':
       preview = (

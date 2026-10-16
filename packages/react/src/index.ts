@@ -251,7 +251,17 @@ export { ExecutionTimeline } from './components/execution-timeline/execution-tim
 export { Workflow } from './components/workflow/workflow.js';
 export type { TimelineEntry } from './components/execution-timeline/execution-timeline.js';
 export { ToolCall } from './components/tool-call/tool-call.js';
-export { ToolResult } from './components/tool-result/tool-result.js';
+export {
+  ToolResult,
+  ToolResultRegistryProvider,
+  useToolResultRegistry,
+} from './components/tool-result/tool-result.js';
+export type {
+  ToolResultData,
+  ToolResultRenderer,
+  ToolResultRegistry,
+  ToolResultPartial,
+} from './components/tool-result/tool-result.js';
 export { ToolGroup } from './components/tool-group/tool-group.js';
 export { ApprovalCard } from './components/approval-card/approval-card.js';
 export { PermissionRequest } from './components/permission-request/permission-request.js';
