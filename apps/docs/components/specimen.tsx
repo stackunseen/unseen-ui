@@ -69,6 +69,9 @@ const GovernanceSpecimen = dynamic(
   () => import('./governance-specimen').then((m) => m.GovernanceSpecimen),
   { loading: ExampleLoading },
 );
+const ChatSpecimen = dynamic(() => import('./chat-specimen').then((m) => m.ChatSpecimen), {
+  loading: ExampleLoading,
+});
 const TrustSpecimen = dynamic(() => import('./trust-specimen').then((m) => m.TrustSpecimen), {
   loading: ExampleLoading,
 });
@@ -394,6 +397,16 @@ export function Specimen({
       preview = (
         <MCPAppSpecimen
           key={variant}
+          state={variant}
+          presentation={presentation}
+          onNotice={setResult}
+        />
+      );
+      break;
+    case 'Chat':
+      preview = (
+        <ChatSpecimen
+          key={`${name}:${variant}`}
           state={variant}
           presentation={presentation}
           onNotice={setResult}

@@ -96,7 +96,8 @@ export function ComponentDetail({
     module === '/marketing' ||
     module === '/navigation' ||
     module === '/conversation-flow' ||
-    module === '/mcp-apps'
+    module === '/mcp-apps' ||
+    module === '/chat'
       ? `import '@stackunseen/ui${module}.css';\n`
       : '';
   const peers = rendererPeers[rich || structured ? '/markdown' : module];

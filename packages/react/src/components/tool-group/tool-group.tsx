@@ -1,5 +1,6 @@
 'use client';
-import type { ToolCallData } from '@stackunseen/ui-core';
+import { toolCallFrom } from '@stackunseen/ui-core';
+import type { ToolCallData, ToolCallInput } from '@stackunseen/ui-core';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -7,9 +8,10 @@ import s from '../../shared/styles/styles.module.css';
 import { ToolCall } from '../tool-call/tool-call.js';
 import { ToolContext } from '../tool-call/tool-context.js';
 export function ToolGroup({
-  tools,
+  tools: inputs,
   variant = 'stack',
-}: VariantProps<'ToolGroup'> & { tools: ToolCallData[] }) {
+}: VariantProps<'ToolGroup'> & { tools: readonly (ToolCallData | ToolCallInput)[] }) {
+  const tools = inputs.map(toolCallFrom);
   return (
     <div className={s.toolGroup} data-variant={variant}>
       {!tools.length ? (

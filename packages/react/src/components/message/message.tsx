@@ -1,7 +1,8 @@
 'use client';
+import { messageFrom } from '@stackunseen/ui-core';
 import { useRef, useState } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
-import type { MessageData } from '@stackunseen/ui-core';
+import type { MessageData, MessageInput } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { ThickArrowUpIcon, ThickArrowDownIcon } from '@radix-ui/react-icons';
@@ -14,15 +15,16 @@ import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 
 export interface MessageProps
-  extends ComponentProps<'article'>, VariantProps<'Message'>, MessageContentProps {
-  value: MessageData;
+  extends ComponentProps<'article'>, VariantProps<'Message'>, Omit<MessageContentProps, 'value'> {
+  /** Host data, or the short form `{ role, text }` for prototypes. */
+  value: MessageData | MessageInput;
   /** Replaces only the response body; children remain after it for actions/attachments. */
   renderContent?: (message: MessageData) => ReactNode;
 }
 
 export function Message({
   variant = 'plain',
-  value,
+  value: input,
   renderContent,
   sources,
   tools,
@@ -33,6 +35,7 @@ export function Message({
   className = '',
   ...props
 }: MessageProps) {
+  const value = messageFrom(input);
   return (
     <article
       {...props}

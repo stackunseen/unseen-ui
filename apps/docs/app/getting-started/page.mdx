@@ -85,6 +85,22 @@ export function FirstExample() {
 
 The value and callback stay in your application. To save to a server, replace the local update with your host's validation and receipt handling. Read [Connect to your app](/docs/integration/) before wiring tools, approvals or execution.
 
+### Or start with a whole chat
+
+`@stackunseen/ui/chat` composes the transcript, streaming reply, tool cards, suggestions and composer, and ships a local host that streams deterministic replies so you can see it work before anything is connected. Swap the host for your server when you are ready; see the [Chat guide](/components/chat/).
+
+```tsx
+'use client';
+import { Chat, useLocalHost } from '@stackunseen/ui/chat';
+import '@stackunseen/ui/styles.css';
+import '@stackunseen/ui/chat.css';
+
+export function Demo() {
+  const host = useLocalHost({ suggestions: ['Summarize the plan', 'Search notes for renewals'] });
+  return <Chat host={host} title="Assistant" />;
+}
+```
+
 <h2 id="optional-renderers">3. Add only the entries you need</h2>
 
 Ordinary controls come from `@stackunseen/ui`. DataGrid has a separate entry and stylesheet. Keep the base CSS and `AITheme` from the first example.

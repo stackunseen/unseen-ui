@@ -33,6 +33,10 @@ const sharedPublicModules = new Set([
   'components/input-group/input-group',
   'components/status-badge/status-badge',
   'components/execution-timeline/execution-timeline',
+  'components/message/message',
+  'components/message-content/message-content',
+  'components/prompt-input/prompt-input',
+  'components/suggestions/suggestions',
   'shared/link',
   'shared/copy',
 ]);
@@ -58,6 +62,7 @@ export default defineConfig(({ mode }) => {
     'media',
     'navigation',
     'mcp-apps',
+    'chat',
   ].includes(mode);
   return {
     css: { modules: { generateScopedName: scopedName } },
@@ -106,7 +111,7 @@ export default defineConfig(({ mode }) => {
       lib: {
         entry: optional
           ? {
-              [mode]: `src/${mode}.${['editor', 'artifact-editor', 'conversation-flow', 'mcp-apps'].includes(mode) ? 'tsx' : 'ts'}`,
+              [mode]: `src/${mode}.${['editor', 'artifact-editor', 'conversation-flow', 'mcp-apps', 'chat'].includes(mode) ? 'tsx' : 'ts'}`,
             }
           : {
               index: 'src/index.ts',

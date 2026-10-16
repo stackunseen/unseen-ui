@@ -649,6 +649,22 @@ export const catalog: CatalogEntry[] = [
     code: '<FeedbackCapture target={{ messageId, revision }} value={draft} onValueChange={setDraft} onSubmit={send} submission={submission} receipt={receipt} />',
   },
   {
+    name: 'Chat',
+    category: 'Conversation',
+    importPath: '/chat',
+    aliases: ['Chat window', 'Assistant panel', 'Conversation', 'Thread', 'useLocalHost'],
+    description:
+      'A complete chat surface: transcript, streaming reply, tool cards, suggestions, stop, retry and composer, driven by a host or by controlled props.',
+    states: ['Default', 'Mid conversation', 'Tool call', 'Failed'],
+    contract:
+      'host: ChatHost · or messages · tools? · status · suggestions? · draft · onDraftChange · onSend · onCancel? · onRetry? · title? · starters? · toolbar? · attachments?',
+    responsibility:
+      'The host owns the conversation and answers send, cancel and retry; the surface keeps only the draft text. useLocalHost gives a simulated host for prototypes that never calls a model.',
+    keyboard:
+      'Enter sends and Shift+Enter adds a line; the transcript is a focusable log; suggestions and Retry are buttons.',
+    code: 'const host = useLocalHost();\nreturn <Chat host={host} title="Assistant" />;',
+  },
+  {
     name: 'ClarificationRequest',
     category: 'AI forms',
     description: 'A question the assistant asks before it continues.',

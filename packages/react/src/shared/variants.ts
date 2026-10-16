@@ -79,6 +79,7 @@ export const componentVariants = {
   ProvenanceBadge: ['soft', 'outline', 'plain'],
   ConfidenceNote: ['note', 'inline'],
   FeedbackCapture: ['card', 'inline'],
+  Chat: ['panel', 'plain'],
 } as const;
 export type VariantComponent = keyof typeof componentVariants;
 export type ComponentVariant<K extends VariantComponent> = (typeof componentVariants)[K][number];

@@ -1,7 +1,8 @@
 'use client';
 import { useContext } from 'react';
 import type { ReactNode } from 'react';
-import type { ToolCallData } from '@stackunseen/ui-core';
+import { toolCallFrom } from '@stackunseen/ui-core';
+import type { ToolCallData, ToolCallInput } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';
@@ -114,10 +115,15 @@ function ToolOutput() {
 }
 
 function ToolRoot({
-  value,
+  value: input,
   children,
   variant = 'card',
-}: VariantProps<'ToolCall'> & { value: ToolCallData; children?: ReactNode }) {
+}: VariantProps<'ToolCall'> & {
+  /** Host data, or the short form `{ name }` plus what is known. */
+  value: ToolCallData | ToolCallInput;
+  children?: ReactNode;
+}) {
+  const value = toolCallFrom(input);
   return (
     <ToolContext.Provider value={value}>
       <Panel data-part="tool-call" data-variant={variant} className={s.toolCall}>

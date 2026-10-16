@@ -52,3 +52,13 @@ export {
   measurementValue,
   heartbeatState,
 } from './measurement.js';
+export { toolCallFrom, messageFrom } from './inputs.js';
+export type { ToolCallInput, MessageInput } from './inputs.js';
+export { createLocalHost, defaultLocalReply } from './local-host.js';
+export type {
+  LocalHost,
+  LocalHostOptions,
+  LocalHostSnapshot,
+  LocalHostStatus,
+  LocalReply,
+} from './local-host.js';

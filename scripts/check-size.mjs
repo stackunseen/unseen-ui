@@ -153,6 +153,7 @@ for (const entry of [
   'media',
   'navigation',
   'mcp-apps',
+  'chat',
 ]) {
   const isolated = await build({
     configFile: false,
@@ -186,6 +187,7 @@ for (const entry of [
       'media',
       'navigation',
       'mcp-apps',
+      'chat',
     ].includes(entry)
       ? /[\\/](?:react-markdown|remark-gfm|remend|micromark|mermaid|katex|dompurify|remark-math|shiki|@shikijs)(?:[\\/@]|$)/
       : entry === 'highlight'
@@ -242,6 +244,7 @@ for (const entry of [
   'media',
   'navigation',
   'mcp-apps',
+  'chat',
 ]) {
   const asset = await readFile(`packages/react/dist/${entry}.css`);
   if (!asset.length) throw new Error(`Optional ${entry} stylesheet missing.`);

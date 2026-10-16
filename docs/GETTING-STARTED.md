@@ -113,6 +113,7 @@ Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (
 | --- | --- | --- |
 | `@stackunseen/ui` | AI components, native form controls, overlays, feedback, menus, navigation, Card and Table; UsageMeter, ProvenanceBadge, ConfidenceNote and FeedbackCapture for trust signals | None beyond React/ReactDOM |
 | `@stackunseen/ui/theme` | Pure theme resolution, validation and export | None |
+| `@stackunseen/ui/chat` | Chat surface and `useLocalHost`, a simulated host for prototypes; import chat.css | None |
 | `@stackunseen/ui/status` | StatusBadge entry | None |
 | `@stackunseen/ui/code` | Plain code blocks | None |
 | `@stackunseen/ui/markdown` | GFM responses | react-markdown, remark-gfm, remend |

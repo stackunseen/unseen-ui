@@ -14,6 +14,7 @@ export const componentTasks: readonly ComponentTask[] = [
     label: 'AI chat',
     description: 'A composer, the messages, a streaming reply and the actions on it.',
     components: [
+      'Chat',
       'PromptInput',
       'Message',
       'StreamingResponse',
