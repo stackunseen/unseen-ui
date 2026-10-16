@@ -476,6 +476,28 @@ export type {
   InputGroupAddonProps,
   InputGroupButtonProps,
 } from './components/input-group/input-group.js';
+export { UsageMeter } from './components/trust/usage-meter.js';
+export type { UsageMeterProps, Usage } from './components/trust/usage-meter.js';
+export { ProvenanceBadge } from './components/trust/provenance-badge.js';
+export type {
+  ProvenanceBadgeProps,
+  ProvenanceOrigin,
+  ProvenanceManifest,
+} from './components/trust/provenance-badge.js';
+export { ConfidenceNote } from './components/trust/confidence-note.js';
+export type { ConfidenceNoteProps } from './components/trust/confidence-note.js';
+export {
+  FeedbackCapture,
+  emptyFeedbackDraft,
+  defaultFeedbackReasons,
+} from './components/trust/feedback-capture.js';
+export type {
+  FeedbackCaptureProps,
+  FeedbackDraft,
+  FeedbackSubmission,
+  FeedbackTarget,
+  FeedbackReason,
+} from './components/trust/feedback-capture.js';
 export { ProgressRing } from './components/progress-ring/progress-ring.js';
 export type { ProgressRingProps } from './components/progress-ring/progress-ring.js';
 export { AppearanceToggle } from './components/appearance-toggle/appearance-toggle.js';

@@ -69,6 +69,9 @@ const GovernanceSpecimen = dynamic(
   () => import('./governance-specimen').then((m) => m.GovernanceSpecimen),
   { loading: ExampleLoading },
 );
+const TrustSpecimen = dynamic(() => import('./trust-specimen').then((m) => m.TrustSpecimen), {
+  loading: ExampleLoading,
+});
 const RunsSpecimen = dynamic(() => import('./runs-specimen').then((m) => m.RunsSpecimen), {
   loading: ExampleLoading,
 });
@@ -391,6 +394,20 @@ export function Specimen({
       preview = (
         <MCPAppSpecimen
           key={variant}
+          state={variant}
+          presentation={presentation}
+          onNotice={setResult}
+        />
+      );
+      break;
+    case 'UsageMeter':
+    case 'ProvenanceBadge':
+    case 'ConfidenceNote':
+    case 'FeedbackCapture':
+      preview = (
+        <TrustSpecimen
+          key={`${name}:${variant}`}
+          name={name}
           state={variant}
           presentation={presentation}
           onNotice={setResult}

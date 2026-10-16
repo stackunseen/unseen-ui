@@ -111,7 +111,7 @@ Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (
 
 | Import | Use | Additional optional peers |
 | --- | --- | --- |
-| `@stackunseen/ui` | AI components, native form controls, overlays, feedback, menus, navigation, Card and Table | None beyond React/ReactDOM |
+| `@stackunseen/ui` | AI components, native form controls, overlays, feedback, menus, navigation, Card and Table; UsageMeter, ProvenanceBadge, ConfidenceNote and FeedbackCapture for trust signals | None beyond React/ReactDOM |
 | `@stackunseen/ui/theme` | Pure theme resolution, validation and export | None |
 | `@stackunseen/ui/status` | StatusBadge entry | None |
 | `@stackunseen/ui/code` | Plain code blocks | None |

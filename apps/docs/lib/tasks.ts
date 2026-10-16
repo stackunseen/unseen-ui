@@ -22,6 +22,7 @@ export const componentTasks: readonly ComponentTask[] = [
       'Attachment',
       'FileDropzone',
       'ModelSelector',
+      'FeedbackCapture',
     ],
   },
   {
@@ -37,6 +38,7 @@ export const componentTasks: readonly ComponentTask[] = [
       'RunInspector',
       'Plan',
       'Task',
+      'UsageMeter',
     ],
   },
   {
@@ -77,7 +79,15 @@ export const componentTasks: readonly ComponentTask[] = [
     id: 'sources',
     label: 'Sources and evidence',
     description: 'Where an answer came from and how far it is grounded.',
-    components: ['SourceCard', 'Citation', 'EvidenceGroup', 'GroundingStatus', 'Sources'],
+    components: [
+      'SourceCard',
+      'Citation',
+      'EvidenceGroup',
+      'GroundingStatus',
+      'Sources',
+      'ProvenanceBadge',
+      'ConfidenceNote',
+    ],
   },
   {
     id: 'mcp',

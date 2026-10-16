@@ -597,6 +597,58 @@ export const catalog: CatalogEntry[] = [
     code: '<ApprovalBatch proposals={proposals} excludedIds={excluded} onExcludedChange={setExcluded} onDecision={decide} />',
   },
   {
+    name: 'UsageMeter',
+    category: 'State & status',
+    aliases: ['CostMeter', 'ContextMeter', 'Token usage', 'Budget'],
+    description:
+      'Context or cost usage with the meaning of the number beside it; a percentage only when the host reported a limit.',
+    states: ['Default', 'Near limit', 'No limit', 'Cost', 'Unknown'],
+    contract:
+      'label · value: Measurement<{ used, limit? }> · unit? · currency? · warnAt? · locale?',
+    responsibility:
+      'Measured, estimated and unknown read differently. Without a limit there is no percentage; an unknown measurement shows the host reason, never zero.',
+    code: '<UsageMeter label="Context" value={measured({ used: 12400, limit: 32000 })} />',
+  },
+  {
+    name: 'ProvenanceBadge',
+    category: 'Sources & evidence',
+    aliases: ['Origin', 'Signed content', 'Content provenance'],
+    description:
+      'Where content came from: model, tool, person or imported, and Signed only when the host verified a manifest.',
+    states: ['Default', 'Signed', 'Tool', 'Person', 'Imported'],
+    contract: 'origin · source? · manifest? ({ issuer, verifiedBy: host, at })',
+    responsibility:
+      'The badge never verifies anything. A manifest the host did not verify is reported as unverified.',
+    code: '<ProvenanceBadge origin="tool" source="search_accounts" manifest={manifest} />',
+  },
+  {
+    name: 'ConfidenceNote',
+    category: 'Sources & evidence',
+    aliases: ['Calibration', 'Confidence score', 'Eval score'],
+    description:
+      'A host-supplied calibration with its scope, method and date, or nothing at all. Never a bare number.',
+    states: ['Default', 'Estimated', 'Unknown'],
+    contract: 'score: Measurement<number> · scope · method · at? · locale?',
+    responsibility:
+      'Renders nothing for an unknown or out-of-range score so a page without a calibration makes no confidence claim.',
+    code: '<ConfidenceNote score={measured(0.82)} scope="of claims matched a source" method="eval pass rate over 40 runs" />',
+  },
+  {
+    name: 'FeedbackCapture',
+    category: 'Conversation',
+    aliases: ['Thumbs', 'Rating', 'Correction', 'Message feedback'],
+    description:
+      'Thumbs, reasons and a correction bound to one message revision or run attempt, settled by a host receipt.',
+    states: ['Default', 'Not helpful', 'Sending', 'Acknowledged', 'Failed', 'Outcome unknown'],
+    contract:
+      'target · value: FeedbackDraft · onValueChange · onSubmit · reasons? · submission? · receipt? · maxLength?',
+    responsibility:
+      'The submission names the exact revision or attempt. The form locks while the host answers; failed and unknown outcomes keep the draft and say what to do.',
+    keyboard:
+      'Helpful and Not helpful are toggle buttons; reasons are checkboxes; Enter in the form sends.',
+    code: '<FeedbackCapture target={{ messageId, revision }} value={draft} onValueChange={setDraft} onSubmit={send} submission={submission} receipt={receipt} />',
+  },
+  {
     name: 'ClarificationRequest',
     category: 'AI forms',
     description: 'A question the assistant asks before it continues.',

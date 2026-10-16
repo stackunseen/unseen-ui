@@ -1,0 +1,48 @@
+'use client';
+import type { Measurement } from '@stackunseen/ui-core';
+import type { VariantProps } from '../../shared/variants.js';
+import s from '../../shared/styles/styles.module.css';
+import { formatStamp, wholePercent } from './shared.js';
+
+export interface ConfidenceNoteProps extends VariantProps<'ConfidenceNote'> {
+  /** A host-supplied calibration in [0, 1]. Unknown or out-of-range renders nothing. */
+  score: Measurement<number>;
+  /** What the score is about, such as "of claims matched a source". */
+  scope: string;
+  /** How the host obtained it, such as "eval pass rate over 40 runs". */
+  method: string;
+  at?: string;
+  locale?: string;
+}
+
+/** A calibration with its scope, method and date, or nothing. Never a bare number. */
+export function ConfidenceNote({
+  score,
+  scope,
+  method,
+  at,
+  locale = 'en-US',
+  variant = 'note',
+}: ConfidenceNoteProps) {
+  if (score.kind === 'unknown') return null;
+  const percent =
+    Number.isFinite(score.value) && score.value >= 0 && score.value <= 1
+      ? wholePercent(score.value)
+      : undefined;
+  if (percent === undefined || !scope.trim() || !method.trim()) return null;
+  const stamp = at ?? score.at;
+  const text = `${score.kind === 'estimated' ? 'About ' : ''}${percent}% ${scope.trim()} · ${method.trim()}${
+    score.kind === 'estimated' ? ` (estimated from ${score.basis})` : ''
+  }${stamp ? ` · ${formatStamp(stamp, locale)}` : ''}`;
+  const Tag = variant === 'inline' ? 'span' : 'p';
+  return (
+    <Tag
+      className={s.muted}
+      data-part="confidence-note"
+      data-variant={variant}
+      data-kind={score.kind}
+    >
+      Confidence: {text}
+    </Tag>
+  );
+}
