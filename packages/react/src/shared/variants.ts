@@ -92,3 +92,12 @@ export function resolveVariant<K extends VariantComponent>(
   const options: readonly string[] = componentVariants[name];
   return (value && options.includes(value) ? value : options[0]) as ComponentVariant<K>;
 }
+
+/**
+ * How much host metadata a component prints beside its content. `compact` (the default) keeps
+ * revisions, durations, sources and ids out of the way; `full` shows them for inspection.
+ */
+export type DetailLevel = 'compact' | 'full';
+export interface DetailProps {
+  detail?: DetailLevel;
+}

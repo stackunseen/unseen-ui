@@ -466,7 +466,8 @@ export const expandedCatalog: CatalogEntry[] = [
       'Stale',
       'Streaming',
     ],
-    contract: 'nodes · edges · selection? · onSelect? · onEdgeSelect? · state · source · version',
+    contract:
+      'nodes · edges · selection? · onSelect? · onEdgeSelect? · state · source · version · detail?',
     responsibility:
       'Supply current bounded positions/state/provenance and acknowledge node/connection inspection. Compact is a traversal outline with cycle/shared references; list shows adjacency. The UI never executes nodes.',
     code: '<WorkflowGraph nodes={nodes} edges={edges} selection={selection} onSelect={inspectNode} onEdgeSelect={inspectConnection} source={source} version={version} />',
@@ -486,7 +487,7 @@ export const expandedCatalog: CatalogEntry[] = [
     category: 'Execution',
     description: 'Inspect public model, tool and agent spans with measured usage.',
     states: ['Default', 'Running', 'Failed', 'Unknown usage', 'Empty'],
-    contract: 'runId · spans · usage? · onSelect?',
+    contract: 'runId · spans · usage? · onSelect? · detail?',
     responsibility:
       'Report public summaries, correlations and measured costs; never provide private chain-of-thought.',
     code: '<RunInspector runId="run-42" spans={spans} usage={usage} onSelect={inspectSpan} />',

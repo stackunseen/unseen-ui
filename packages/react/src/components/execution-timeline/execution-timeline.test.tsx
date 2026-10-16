@@ -112,6 +112,7 @@ describe('ExecutionTimeline controlled presentation', () => {
       render(
         <ExecutionTimeline
           variant={variant}
+          detail="full"
           entries={durations.map((durationMs, index) => ({
             id: String(index),
             label: `Event ${index}`,

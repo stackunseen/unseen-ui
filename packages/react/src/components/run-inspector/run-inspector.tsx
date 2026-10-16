@@ -2,7 +2,7 @@
 import { IconButton } from '../icon-button/icon-button.js';
 import { Accordion } from '../accordion/accordion.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
-import type { VariantProps } from '../../shared/variants.js';
+import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import c from '../../shared/styles/coding.module.css';
 import a from '../../shared/styles/action-layout.module.css';
@@ -17,7 +17,7 @@ export interface RunSpan {
   summary?: string;
 }
 
-export interface RunInspectorProps extends VariantProps<'RunInspector'> {
+export interface RunInspectorProps extends VariantProps<'RunInspector'>, DetailProps {
   runId: string;
   /** A host-owned window of up to 200 spans. Replace the window to inspect later spans. */
   spans: readonly RunSpan[];
@@ -39,21 +39,28 @@ export function RunInspector({
   usage,
   onSelect,
   variant = 'accordion',
+  detail = 'compact',
 }: RunInspectorProps) {
   function body(span: RunSpan) {
     return (
       <div className={s.root}>
-        <p className={s.muted}>
-          {span.kind}
-          {span.parentId ? ` · Parent ${span.parentId}` : ''}
-        </p>
+        {detail === 'full' && (
+          <p className={s.muted}>
+            {span.kind}
+            {span.parentId ? ` · Parent ${span.parentId}` : ''}
+          </p>
+        )}
         <p>{span.summary?.slice(0, 5000) || 'No public summary supplied.'}</p>
-        <p className={s.muted}>
-          Duration:{' '}
-          {span.durationMs !== undefined && Number.isFinite(span.durationMs) && span.durationMs >= 0
-            ? `${span.durationMs}ms`
-            : 'Not measured'}
-        </p>
+        {detail === 'full' && (
+          <p className={s.muted}>
+            Duration:{' '}
+            {span.durationMs !== undefined &&
+            Number.isFinite(span.durationMs) &&
+            span.durationMs >= 0
+              ? `${span.durationMs}ms`
+              : 'Not measured'}
+          </p>
+        )}
         {onSelect && (
           <IconButton
             className={a.local}
@@ -66,7 +73,7 @@ export function RunInspector({
     );
   }
   return (
-    <div className={s.root} data-part="run-inspector" data-variant={variant}>
+    <div className={s.root} data-part="run-inspector" data-variant={variant} data-detail={detail}>
       <strong>
         Run <code>{runId}</code>
       </strong>

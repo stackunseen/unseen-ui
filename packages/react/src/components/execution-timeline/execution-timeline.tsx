@@ -1,7 +1,7 @@
 'use client';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Select } from '../select/select.js';
-import type { VariantProps } from '../../shared/variants.js';
+import type { DetailLevel, DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
@@ -14,10 +14,11 @@ export interface TimelineEntry {
   detail?: string;
 }
 
-function timelineDuration(durationMs: number | undefined): string {
-  return durationMs !== undefined && Number.isFinite(durationMs) && durationMs >= 0
-    ? `Host duration ${durationMs} ms`
-    : 'Host duration unknown';
+function timelineDuration(durationMs: number | undefined, detail: DetailLevel): string | undefined {
+  const measured = durationMs !== undefined && Number.isFinite(durationMs) && durationMs >= 0;
+  if (detail === 'full')
+    return measured ? `Host duration ${durationMs} ms` : 'Host duration unknown';
+  return measured ? `${durationMs} ms` : undefined;
 }
 
 export function ExecutionTimeline({
@@ -25,14 +26,16 @@ export function ExecutionTimeline({
   entries,
   filter = 'all',
   onFilterChange,
-}: VariantProps<'ExecutionTimeline'> & {
-  entries: TimelineEntry[];
-  filter?: 'all' | 'failed';
-  onFilterChange?: (value: 'all' | 'failed') => void;
-}) {
+  detail = 'compact',
+}: VariantProps<'ExecutionTimeline'> &
+  DetailProps & {
+    entries: TimelineEntry[];
+    filter?: 'all' | 'failed';
+    onFilterChange?: (value: 'all' | 'failed') => void;
+  }) {
   const shown = filter === 'failed' ? entries.filter((e) => e.state === 'failed') : entries;
   return (
-    <div className={s.timeline} data-variant={variant}>
+    <div className={s.timeline} data-variant={variant} data-detail={detail}>
       {onFilterChange && (
         <label className={s.field}>
           Show events
@@ -68,7 +71,9 @@ export function ExecutionTimeline({
                   <td>
                     <strong>{e.label}</strong>
                     {e.detail && <p>{e.detail}</p>}
-                    <small>{timelineDuration(e.durationMs)}</small>
+                    {timelineDuration(e.durationMs, detail) && (
+                      <small>{timelineDuration(e.durationMs, detail)}</small>
+                    )}
                   </td>
                   <td>
                     <ObservationTime value={e.timestamp} />
@@ -95,7 +100,9 @@ export function ExecutionTimeline({
                 <strong>{e.label}</strong>
                 <div className={s.muted}>
                   <ObservationTime value={e.timestamp} />
-                  {` · ${timelineDuration(e.durationMs)}`}
+                  {timelineDuration(e.durationMs, detail)
+                    ? ` · ${timelineDuration(e.durationMs, detail)}`
+                    : ''}
                 </div>
                 {e.detail && <p>{e.detail}</p>}
               </div>

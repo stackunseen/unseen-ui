@@ -7,6 +7,7 @@ describe('execution content and contextual actions', () => {
   it('multiple tool previews carry their tool identity and retain input disclosure', async () => {
     render(
       <ToolCall
+        detail="full"
         value={{
           id: 'search',
           name: 'Search documents',
@@ -34,6 +35,7 @@ describe('execution content and contextual actions', () => {
     async (state) => {
       render(
         <ToolCall
+          detail="full"
           variant="compact"
           value={{
             id: 'review',

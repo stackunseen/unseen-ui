@@ -71,20 +71,20 @@ describe('createLocalHost', () => {
     let snap = host.getSnapshot();
     expect(snap.tools).toHaveLength(1);
     expect(snap.tools[0]).toMatchObject({ name: 'search_notes', state: 'running' });
-    expect(snap.messages[1].parts?.[0]).toMatchObject({
+    expect(snap.messages[1]!.parts?.[0]).toMatchObject({
       type: 'tool',
-      toolCallId: snap.tools[0].id,
+      toolCallId: snap.tools[0]!.id,
     });
     clock.run(3);
     host.cancel();
     snap = host.getSnapshot();
     expect(snap.status).toBe('cancelled');
-    expect(snap.tools[0].state).toBe('cancelled');
-    expect(snap.messages[1].state).toBe('interrupted');
+    expect(snap.tools[0]!.state).toBe('cancelled');
+    expect(snap.messages[1]!.state).toBe('interrupted');
     host.retry();
     snap = host.getSnapshot();
     expect(snap.messages).toHaveLength(2);
-    expect(snap.messages[0].text).toBe('search notes for renewals');
+    expect(snap.messages[0]!.text).toBe('search notes for renewals');
     expect(snap.status).toBe('streaming');
     clock.flush();
     snap = host.getSnapshot();
@@ -93,7 +93,7 @@ describe('createLocalHost', () => {
       state: 'succeeded',
       output: expect.stringContaining('3 notes matched'),
     });
-    const text = snap.messages[1].parts?.find((p) => p.type === 'text');
+    const text = snap.messages[1]!.parts?.find((p) => p.type === 'text');
     expect(text && text.type === 'text' ? text.text : '').toContain('simulated reply');
   });
 
@@ -104,9 +104,9 @@ describe('createLocalHost', () => {
     clock.flush();
     const snap = host.getSnapshot();
     expect(snap.status).toBe('failed');
-    expect(snap.messages[1].state).toBe('failed');
-    expect(snap.messages[1].error?.code).toBe('simulated-failure');
-    expect((snap.messages[1].text ?? '').length).toBeGreaterThan(0);
+    expect(snap.messages[1]!.state).toBe('failed');
+    expect(snap.messages[1]!.error?.code).toBe('simulated-failure');
+    expect((snap.messages[1]!.text ?? '').length).toBeGreaterThan(0);
     expect(snap.lastPrompt).toBe('please fail');
   });
 
@@ -123,7 +123,7 @@ describe('createLocalHost', () => {
       clock.flush();
     }
     expect(host.getSnapshot().messages).toHaveLength(4);
-    expect(host.getSnapshot().messages[0].text).toBe('b');
+    expect(host.getSnapshot().messages[0]!.text).toBe('b');
     host.reset();
     expect(host.getSnapshot()).toMatchObject({ messages: [], tools: [], status: 'idle' });
   });

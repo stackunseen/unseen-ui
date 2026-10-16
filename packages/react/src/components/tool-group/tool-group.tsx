@@ -3,17 +3,18 @@ import { toolCallFrom } from '@stackunseen/ui-core';
 import type { ToolCallData, ToolCallInput } from '@stackunseen/ui-core';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';
-import type { VariantProps } from '../../shared/variants.js';
+import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import { ToolCall } from '../tool-call/tool-call.js';
-import { ToolContext } from '../tool-call/tool-context.js';
+import { ToolContext, ToolDetailContext } from '../tool-call/tool-context.js';
 export function ToolGroup({
   tools: inputs,
   variant = 'stack',
-}: VariantProps<'ToolGroup'> & { tools: readonly (ToolCallData | ToolCallInput)[] }) {
+  detail = 'compact',
+}: VariantProps<'ToolGroup'> & DetailProps & { tools: readonly (ToolCallData | ToolCallInput)[] }) {
   const tools = inputs.map(toolCallFrom);
   return (
-    <div className={s.toolGroup} data-variant={variant}>
+    <div className={s.toolGroup} data-variant={variant} data-detail={detail}>
       {!tools.length ? (
         <p className={s.muted}>No tool calls reported.</p>
       ) : (
@@ -36,8 +37,10 @@ export function ToolGroup({
             ),
             content: (
               <ToolContext.Provider value={tool}>
-                <ToolCall.Input />
-                <ToolCall.Result />
+                <ToolDetailContext.Provider value={detail}>
+                  <ToolCall.Input />
+                  <ToolCall.Result />
+                </ToolDetailContext.Provider>
               </ToolContext.Provider>
             ),
           }))}
@@ -45,7 +48,7 @@ export function ToolGroup({
       ) : (
         <div className={s.collection}>
           {tools.map((tool) => (
-            <ToolCall key={tool.id} value={tool} />
+            <ToolCall key={tool.id} value={tool} detail={detail} />
           ))}
         </div>
       )}

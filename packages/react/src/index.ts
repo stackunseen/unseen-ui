@@ -476,6 +476,7 @@ export type {
   InputGroupAddonProps,
   InputGroupButtonProps,
 } from './components/input-group/input-group.js';
+export type { DetailLevel, DetailProps } from './shared/variants.js';
 export { UsageMeter } from './components/trust/usage-meter.js';
 export type { UsageMeterProps, Usage } from './components/trust/usage-meter.js';
 export { ProvenanceBadge } from './components/trust/provenance-badge.js';

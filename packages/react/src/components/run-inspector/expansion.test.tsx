@@ -16,6 +16,7 @@ describe('coding and workflow contracts', () => {
   it('run inspection keeps absent usage and duration unknown', async () => {
     render(
       <RunInspector
+        detail="full"
         runId="r"
         spans={[{ id: 's', name: 'Search', kind: 'tool', state: 'running' }]}
       />,

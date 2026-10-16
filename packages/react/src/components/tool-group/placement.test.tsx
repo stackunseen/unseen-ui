@@ -25,7 +25,7 @@ describe('execution content and contextual actions', () => {
           output: 'Current host result',
         }),
       ];
-      render(<ToolGroup tools={tools} variant={variant} />);
+      render(<ToolGroup tools={tools} variant={variant} detail="full" />);
       expect(screen.getByText('1 of 2 tools complete')).toBeVisible();
       if (variant === 'accordion') {
         for (const name of ['Search documents Complete', 'Compare records Running']) {

@@ -8,14 +8,14 @@ import { StatusBadge } from '../status-badge/status-badge.js';
 import { inspectWorkflow, workflowOutline } from './workflow-model.js';
 import { routeWorkflow, workflowCanvas } from './workflow-routing.js';
 import type { GraphNode, GraphEdge, GraphSelection, WorkflowModel } from './workflow-model.js';
-import type { VariantProps } from '../../shared/variants.js';
+import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import css from './workflow-graph.module.css';
 import g from '../../shared/styles/structured.module.css';
 import c from '../../shared/styles/coding.module.css';
 import s from '../../shared/styles/agent-controls.module.css';
 
 export type { GraphNode, GraphEdge, GraphWaypoint, GraphSelection } from './workflow-model.js';
-export interface WorkflowGraphProps extends VariantProps<'WorkflowGraph'> {
+export interface WorkflowGraphProps extends VariantProps<'WorkflowGraph'>, DetailProps {
   nodes: readonly GraphNode[];
   edges: readonly GraphEdge[];
   /** Legacy controlled node selection; do not combine with selection. */
@@ -40,6 +40,7 @@ export function WorkflowGraph({
   version,
   state = 'ready',
   error,
+  detail = 'compact',
   ...props
 }: WorkflowGraphProps) {
   const root = useRef<HTMLDivElement>(null),
@@ -63,6 +64,7 @@ export function WorkflowGraph({
       data-part="workflow-graph"
       data-variant={props.variant ?? 'graph'}
       data-state={state}
+      data-detail={detail}
       aria-label={heading}
       onFocusCapture={(event) => {
         focused.current = event.target as HTMLElement;
@@ -103,13 +105,15 @@ export function WorkflowGraph({
     );
   return frame(
     <>
-      <p className={s.muted}>
-        {model.nodes.length} nodes · {model.edges.length} connections · Source:{' '}
-        {typeof source === 'string' && source.trim() ? source.slice(0, 2000) : 'Not supplied'}
-        {typeof version === 'string' && version.trim()
-          ? ` · Snapshot: ${version.slice(0, 200)}`
-          : ''}
-      </p>
+      {detail === 'full' && (
+        <p className={s.muted}>
+          {model.nodes.length} nodes · {model.edges.length} connections · Source:{' '}
+          {typeof source === 'string' && source.trim() ? source.slice(0, 2000) : 'Not supplied'}
+          {typeof version === 'string' && version.trim()
+            ? ` · Snapshot: ${version.slice(0, 200)}`
+            : ''}
+        </p>
+      )}
       {state === 'streaming' && (
         <p role="status" className={s.muted}>
           Provisional workflow snapshot. Inspection is paused while it changes.
@@ -120,7 +124,7 @@ export function WorkflowGraph({
           Historical workflow snapshot. Refresh before requesting inspection.
         </p>
       )}
-      <WorkflowView {...props} model={model} interactive={state === 'ready'} />
+      <WorkflowView {...props} detail={detail} model={model} interactive={state === 'ready'} />
     </>,
   );
 }
@@ -131,6 +135,7 @@ function WorkflowView({
   onSelect,
   onEdgeSelect,
   variant = 'graph',
+  detail = 'compact',
   interactive,
 }: Omit<WorkflowGraphProps, 'nodes' | 'edges'> & { model: WorkflowModel; interactive: boolean }) {
   const prefix = `workflow-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
@@ -460,8 +465,9 @@ function WorkflowView({
             </div>
           </div>
           <p className={css.summary}>
-            Focus the diagram to scroll. On nodes, arrows/Home/End move focus; Enter requests
-            inspection. Connection IDs match Connections.
+            {detail === 'full'
+              ? 'Focus the diagram to scroll. On nodes, arrows/Home/End move focus; Enter requests inspection. Connection IDs match Connections.'
+              : 'Arrow keys move between nodes; Enter inspects.'}
           </p>
           <Accordion
             region={false}

@@ -104,6 +104,10 @@ const options = componentVariants.PromptInput;
 
 `ComponentVariant<Name>` and `VariantProps<Name>` are exported TypeScript types. `componentVariants` is the typed registry used by the gallery and Storybook. `resolveVariant` returns the default when a string is missing or unknown. Components expect typed props; the helper is the boundary for untrusted string settings. This is a presentation registry, not a schema for generated executable UI.
 
+## Detail level
+
+Separate from the style, five inspection components take `detail: 'compact' | 'full'`. The default is `compact`: ToolCall and ToolGroup title the input disclosure "Input" and omit the host duration; RunInspector shows a span's summary without its kind, parent or duration lines; WorkflowGraph omits the counts, source and snapshot line and prints a one-line keyboard hint; ExecutionTimeline prints a measured duration as "820 ms" and nothing for an unknown one. `full` restores every line ("Input · revision 2", "Host duration: 820 ms", "tool · Parent s1", "Duration: Not measured", the long hint) for debugging and audit views. The data is unchanged either way; only what is printed beside the content differs.
+
 ## Behavior and accessibility
 
 - All styles keep visible lifecycle text and accessible action names. Compact layouts do not turn consequential actions into unexplained icons.

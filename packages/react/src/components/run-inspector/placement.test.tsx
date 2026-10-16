@@ -15,7 +15,15 @@ describe('execution content and contextual actions', () => {
         kind: 'tool',
         state: 'complete',
       };
-      render(<RunInspector variant={variant} runId="run" spans={[span]} onSelect={inspect} />);
+      render(
+        <RunInspector
+          detail="full"
+          variant={variant}
+          runId="run"
+          spans={[span]}
+          onSelect={inspect}
+        />,
+      );
       if (variant === 'accordion')
         await userEvent.click(
           screen.getByRole('button', { name: /Read the release checklist.*Complete/ }),

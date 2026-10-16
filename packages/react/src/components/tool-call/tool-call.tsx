@@ -9,11 +9,11 @@ import { Accordion } from '../accordion/accordion.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
 import { SummaryHeading } from '../../shared/summary-heading.js';
-import type { VariantProps } from '../../shared/variants.js';
+import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import css from './tools.module.css';
 import { ToolResult } from '../tool-result/tool-result.js';
-import { ToolContext } from './tool-context.js';
+import { ToolContext, ToolDetailContext } from './tool-context.js';
 /** States in which a host duration describes a finished call rather than a stale number. */
 const settledStates = new Set<ToolCallData['state']>([
   'succeeded',
@@ -48,6 +48,7 @@ function ToolSummary() {
 
 function ToolInput() {
   const value = useTool();
+  const detail = useContext(ToolDetailContext);
   return (
     <Accordion
       region={false}
@@ -56,7 +57,7 @@ function ToolInput() {
       items={[
         {
           value: 'input',
-          title: `Input · revision ${value.revision}`,
+          title: detail === 'full' ? `Input · revision ${value.revision}` : 'Input',
           content: (
             <>
               <pre
@@ -80,6 +81,7 @@ function ToolInput() {
 
 function ToolOutput() {
   const value = useTool();
+  const detail = useContext(ToolDetailContext);
   return (
     <div>
       {value.state === 'outcome-unknown' ? (
@@ -107,7 +109,7 @@ function ToolOutput() {
           )}
         </p>
       )}
-      {value.durationMs !== undefined && settledStates.has(value.state) && (
+      {detail === 'full' && value.durationMs !== undefined && settledStates.has(value.state) && (
         <small className={s.muted}>Host duration: {value.durationMs} ms</small>
       )}
     </div>
@@ -118,52 +120,61 @@ function ToolRoot({
   value: input,
   children,
   variant = 'card',
-}: VariantProps<'ToolCall'> & {
-  /** Host data, or the short form `{ name }` plus what is known. */
-  value: ToolCallData | ToolCallInput;
-  children?: ReactNode;
-}) {
+  detail = 'compact',
+}: VariantProps<'ToolCall'> &
+  DetailProps & {
+    /** Host data, or the short form `{ name }` plus what is known. */
+    value: ToolCallData | ToolCallInput;
+    children?: ReactNode;
+  }) {
   const value = toolCallFrom(input);
   return (
     <ToolContext.Provider value={value}>
-      <Panel data-part="tool-call" data-variant={variant} className={s.toolCall}>
-        {children ?? (
-          <>
-            <ToolSummary />
-            {variant === 'compact' ? (
-              <>
-                {(value.error || value.state === 'failed' || value.state === 'outcome-unknown') && (
+      <ToolDetailContext.Provider value={detail}>
+        <Panel
+          data-part="tool-call"
+          data-variant={variant}
+          data-detail={detail}
+          className={s.toolCall}
+        >
+          {children ?? (
+            <>
+              <ToolSummary />
+              {variant === 'compact' ? (
+                <>
+                  {(value.error ||
+                    value.state === 'failed' ||
+                    value.state === 'outcome-unknown') && <ToolOutput />}
+                  <Accordion
+                    region={false}
+                    type="single"
+                    collapsible
+                    items={[
+                      {
+                        value: 'execution',
+                        title: 'Inspect execution',
+                        content: (
+                          <>
+                            <ToolInput />
+                            {!value.error &&
+                              value.state !== 'failed' &&
+                              value.state !== 'outcome-unknown' && <ToolOutput />}
+                          </>
+                        ),
+                      },
+                    ]}
+                  />
+                </>
+              ) : (
+                <>
+                  <ToolInput />
                   <ToolOutput />
-                )}
-                <Accordion
-                  region={false}
-                  type="single"
-                  collapsible
-                  items={[
-                    {
-                      value: 'execution',
-                      title: 'Inspect execution',
-                      content: (
-                        <>
-                          <ToolInput />
-                          {!value.error &&
-                            value.state !== 'failed' &&
-                            value.state !== 'outcome-unknown' && <ToolOutput />}
-                        </>
-                      ),
-                    },
-                  ]}
-                />
-              </>
-            ) : (
-              <>
-                <ToolInput />
-                <ToolOutput />
-              </>
-            )}
-          </>
-        )}
-      </Panel>
+                </>
+              )}
+            </>
+          )}
+        </Panel>
+      </ToolDetailContext.Provider>
     </ToolContext.Provider>
   );
 }
