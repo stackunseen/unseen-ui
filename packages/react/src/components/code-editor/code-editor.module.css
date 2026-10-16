@@ -1,9 +1,9 @@
 .root {
   min-width: 0;
   overflow: hidden;
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   background: var(--ai-surface, #fff);
-  border: var(--ai-border-width, 1px) solid var(--ai-border, #cbd5e1);
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #d4d4d8);
   border-radius: var(--ai-radius, 12px);
   font-size: var(--ai-font-size, 14px);
   line-height: 1.6;
@@ -17,7 +17,7 @@
   justify-content: space-between;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--ai-surface-subtle, #f1f5f9);
+  background: var(--ai-surface-subtle, #f4f4f5);
 }
 .header strong {
   min-width: 0;
@@ -25,7 +25,7 @@
 }
 .header span,
 .notice {
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
 }
 .notice {
   padding: 8px 12px;
@@ -48,7 +48,7 @@
   display: grid;
   gap: 8px;
   padding: 12px;
-  border-top: 1px solid var(--ai-border, #cbd5e1);
+  border-top: 1px solid var(--ai-border, #d4d4d8);
 }
 .proposal .notice {
   padding: 0;
@@ -63,8 +63,8 @@
   overflow: auto;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  background: var(--ai-surface-subtle, #f1f5f9);
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  font-family: var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
 }
 .edit button {
   justify-self: start;

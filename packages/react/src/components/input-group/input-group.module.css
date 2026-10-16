@@ -6,7 +6,7 @@
   inline-size: 100%;
   min-inline-size: 0;
   min-block-size: var(--ai-control-height, 36px);
-  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #64748b);
+  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #71717a);
   border-radius: var(--ai-control-radius, 8px);
   background: var(--ai-field-background, var(--ai-surface, #fff));
   overflow: hidden;
@@ -44,7 +44,7 @@
   flex-shrink: 0;
   align-items: center;
   padding-inline-start: 12px;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
 }
 .addon + input {
   padding-inline-start: 8px;
@@ -87,8 +87,8 @@
 @media (prefers-reduced-motion: no-preference) {
   .group {
     transition:
-      border-color 120ms ease,
-      box-shadow 120ms ease;
+      border-color var(--ai-duration-fast, 120ms) var(--ai-ease, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--ai-duration-fast, 120ms) var(--ai-ease, cubic-bezier(0.2, 0, 0, 1));
   }
 }
 @media (forced-colors: active) {

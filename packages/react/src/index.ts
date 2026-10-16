@@ -131,6 +131,7 @@ export type {
   GeneratedSurface,
   GeneratedNode,
   GeneratedActionPresentation,
+  GeneratedCalloutTone,
 } from './components/generated-ui/generated-model.js';
 export { SlashCommandMenu } from './components/slash-command-menu/slash-command-menu.js';
 export { MentionPicker } from './components/mention-picker/mention-picker.js';

@@ -1,8 +1,8 @@
 .text {
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
 }
 .comment {
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
 }
 .keyword {
   color: var(--ai-primary-text, #1d4ed8);
@@ -11,8 +11,8 @@
   color: var(--ai-secondary-text, #6d28d9);
 }
 .constant {
-  color: var(--ai-text, #0f172a);
-  font-weight: 650;
+  color: var(--ai-text, #18181b);
+  font-weight: 600;
 }
 .italic {
   font-style: italic;

@@ -13,9 +13,9 @@
   max-inline-size: 100%;
   min-block-size: 28px;
   padding-inline: 10px 2px;
-  border: var(--ai-border-width, 1px) solid var(--ai-border, #e2e8f0);
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
   border-radius: 999px;
-  background: var(--ai-surface-subtle, #f1f5f9);
+  background: var(--ai-surface-subtle, #f4f4f5);
   font-size: var(--ai-font-size-meta, 13px);
 }
 .chip > span {
@@ -32,6 +32,6 @@
 }
 .chip small,
 .summary {
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
 }

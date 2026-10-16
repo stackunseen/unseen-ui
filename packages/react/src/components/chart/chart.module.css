@@ -4,7 +4,8 @@
   max-width: none;
 }
 .plot text {
-  font: 12px system-ui;
+  font-family: inherit;
+  font-size: var(--ai-font-size-caption, 12px);
   fill: var(--ai-muted);
 }
 .grid {
@@ -48,6 +49,6 @@
   flex-shrink: 0;
 }
 .summary {
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-muted);
 }

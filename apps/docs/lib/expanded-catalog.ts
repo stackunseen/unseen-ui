@@ -322,7 +322,8 @@ export const expandedCatalog: CatalogEntry[] = [
   {
     name: 'GeneratedUI',
     category: 'Generative UI',
-    description: 'Validated sections, forms, charts, metrics, tables and host-owned actions.',
+    description:
+      'Validated sections, forms, charts, metrics, tables, lists, callouts, steps, images and host-owned actions and choices.',
     states: [
       'Default',
       'Streaming',
@@ -347,9 +348,10 @@ export const expandedCatalog: CatalogEntry[] = [
       'Live versions',
       'Long labels',
       'Streamed program',
+      'Vocabulary',
     ],
     contract:
-      'surface: unknown · state · forms / onFormChange · actionStates / onAction · problems?',
+      'surface: unknown · state · forms / onFormChange · actionStates / onAction · problems? · imageOrigins?',
     responsibility:
       'Authorize surface/version/action IDs, control version-bound form drafts and acknowledgements, and reconcile unknown outcomes. Generated data never provides callbacks.',
     code: '<GeneratedUI surface={surface} state="ready" onAction={requestAction} />',

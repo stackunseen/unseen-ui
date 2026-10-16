@@ -97,6 +97,69 @@ export const surfaceVocabulary: readonly SurfaceNodeSignature[] = [
     ],
   },
   {
+    type: 'list',
+    description: 'A bulleted or numbered list of short inert text items.',
+    args: [
+      { name: 'items', type: '[string]', required: true },
+      { name: 'ordered', type: 'boolean | null', required: false },
+    ],
+  },
+  {
+    type: 'callout',
+    description:
+      'A highlighted note. There is no success tone: only the host can report that something worked.',
+    args: [
+      { name: 'tone', type: '"info" | "warning" | "danger"', required: true },
+      { name: 'title', type: 'string', required: true },
+      { name: 'text', type: 'string | null', required: false },
+    ],
+  },
+  {
+    type: 'options',
+    description:
+      'A single choice; pressing one sends the actionId and the chosen value to the host.',
+    args: [
+      { name: 'label', type: 'string', required: true },
+      { name: 'actionId', type: 'string', required: true },
+      {
+        name: 'choices',
+        type: '[{value: string, label: string, description?: string}]',
+        required: true,
+      },
+      { name: 'disabledReason', type: 'string | null', required: false },
+    ],
+  },
+  {
+    type: 'steps',
+    description: 'Progress through named steps; at most one is current.',
+    args: [
+      { name: 'title', type: 'string', required: true },
+      {
+        name: 'steps',
+        type: '[{id: string, label: string, state: "done" | "current" | "upcoming"}]',
+        required: true,
+      },
+    ],
+  },
+  {
+    type: 'image',
+    description:
+      'An http(s) image with a description. It shows only when the host approves its origin.',
+    args: [
+      { name: 'src', type: 'string', required: true },
+      { name: 'alt', type: 'string', required: true },
+      { name: 'caption', type: 'string | null', required: false },
+    ],
+  },
+  {
+    type: 'metricGroup',
+    description: 'A titled row of labelled values the host supplied.',
+    args: [
+      { name: 'title', type: 'string', required: true },
+      { name: 'metrics', type: '[{label: string, value: string}]', required: true },
+    ],
+  },
+  {
     type: 'section',
     description: 'A titled group of nodes, stacked or in a grid.',
     args: [
@@ -546,7 +609,7 @@ export function describeSurfaceVocabulary(options: { examples?: boolean } = {}):
     '- Strings use double quotes with JSON escapes. Numbers, true, false and null are bare. Lists use [ ], records use { }.',
     '- A node name may appear only inside the `nodes` list of a section or in root. Write each node on its own line.',
     '- Do not write HTML, Markdown, code, styles, scripts or callbacks. Actions are ids the host resolves.',
-    `- Limits: ${surfaceLimits.statements} statements, 64 nodes per surface, sections nested at most 3 deep, tables 20 columns by 100 rows, charts 60 points or 4 series, forms 50 fields.`,
+    `- Limits: ${surfaceLimits.statements} statements, 64 nodes per surface, sections nested at most 3 deep, tables 20 columns by 100 rows, charts 60 points or 4 series, forms 50 fields, lists 50 items, options 2 to 12 choices, steps 20, metric groups 8 metrics.`,
     '',
     'Nodes:',
   ];

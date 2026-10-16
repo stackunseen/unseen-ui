@@ -90,7 +90,7 @@
 }
 .root[data-variant='compact'] {
   gap: 8px;
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .root[data-variant='cards'] > ul {
   display: grid;
@@ -161,7 +161,7 @@
   gap: 8px;
   justify-content: space-between;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-muted);
 }
 .search {
@@ -222,7 +222,7 @@
   display: inline-flex;
   border-radius: 6px;
   padding: 2px 7px;
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   background: var(--ai-surface-subtle);
   color: var(--ai-muted);
 }

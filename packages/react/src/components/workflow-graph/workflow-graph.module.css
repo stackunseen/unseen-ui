@@ -3,7 +3,7 @@
   outline-offset: 2px;
 }
 .root [data-part='status'] {
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .canvas {
   position: relative;
@@ -36,7 +36,8 @@
 }
 .edgeNumber text {
   fill: var(--ai-muted);
-  font: 12px system-ui;
+  font-family: inherit;
+  font-size: var(--ai-font-size-caption, 12px);
   text-anchor: middle;
   dominant-baseline: middle;
 }
@@ -52,7 +53,7 @@
   align-content: center;
   gap: 4px;
   font: inherit;
-  font-size: 13px;
+  font-size: var(--ai-font-size-meta, 13px);
   line-height: 1.4;
   border: var(--ai-border-width, 1px) solid var(--ai-border);
   border-radius: var(--ai-control-radius, 8px);
@@ -137,7 +138,7 @@
   color: var(--ai-muted);
 }
 .summary {
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-muted);
 }
 .description {

@@ -348,8 +348,9 @@
 /* The stage is tinted rather than boxed, so component-owned borders read as the only frame. */
 .preview-canvas {
   min-width: 0;
-  background: color-mix(in srgb, var(--ai-surface-subtle) 55%, var(--ai-canvas));
-  border: var(--ai-border-width, 1px) solid color-mix(in srgb, var(--ai-border) 70%, transparent);
+  /* Surface, as in an app: subtle fills (user turns, code, hover) must stay visible. */
+  background: var(--ai-surface);
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
   border-radius: 12px;
   padding: clamp(16px, 2.5vw, 32px);
   min-height: 140px;

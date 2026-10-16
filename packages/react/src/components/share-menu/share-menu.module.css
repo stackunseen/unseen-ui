@@ -3,7 +3,7 @@
   display: grid;
   gap: 4px;
   min-inline-size: 0;
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   font-family: var(--ai-font-family, ui-sans-serif, system-ui, sans-serif);
 }
 .row {
@@ -15,7 +15,7 @@
 .status {
   min-block-size: 1.5em;
   margin: 0;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
   line-height: 1.5;
 }

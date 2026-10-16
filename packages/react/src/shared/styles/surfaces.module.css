@@ -2,10 +2,10 @@
   min-inline-size: 0;
   max-inline-size: 100%;
   padding: var(--ai-panel-padding, 16px);
-  border: 1px solid var(--ai-border, #e2e8f0);
+  border: 1px solid var(--ai-border, #e4e4e7);
   border-radius: var(--ai-radius-card, var(--ai-radius, 10px));
   background: var(--ai-surface, #fff);
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   overflow-wrap: anywhere;
 }
 .header {
@@ -20,7 +20,7 @@
 }
 .description {
   margin: 0;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size, 14px);
   line-height: 1.6;
 }
@@ -49,7 +49,7 @@
   max-inline-size: 100%;
   min-inline-size: 0;
   overflow: auto;
-  border: 1px solid var(--ai-border, #e2e8f0);
+  border: 1px solid var(--ai-border, #e4e4e7);
   border-radius: var(--ai-control-radius, 8px);
 }
 .tableScroll:focus-visible {
@@ -63,31 +63,31 @@
   font-size: var(--ai-font-size, 14px);
   line-height: 1.6;
   background: var(--ai-surface, #fff);
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
 }
 .table th,
 .table td {
   padding: max(8px, var(--ai-field-gap, 8px)) var(--ai-gap, 12px);
-  border-block-end: 1px solid var(--ai-border, #e2e8f0);
+  border-block-end: 1px solid var(--ai-border, #e4e4e7);
   text-align: start;
   vertical-align: top;
   overflow-wrap: anywhere;
 }
 .table th {
   font-weight: 500;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
 }
 .table thead,
 .table tfoot {
-  background: var(--ai-surface-subtle, #f1f5f9);
+  background: var(--ai-surface-subtle, #f4f4f5);
 }
 .table tbody:last-child tr:last-child > * {
   border-block-end: 0;
 }
 .caption {
   padding: var(--ai-gap, 12px);
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   text-align: start;
   font-size: var(--ai-font-size-meta, 13px);
 }

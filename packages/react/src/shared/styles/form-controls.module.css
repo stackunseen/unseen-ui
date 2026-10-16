@@ -2,7 +2,7 @@
   display: grid;
   gap: var(--ai-field-gap, 8px);
   min-inline-size: 0;
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   font: inherit;
   font-size: var(--ai-font-size, 14px);
   line-height: 1.5;
@@ -30,7 +30,7 @@
 }
 .description {
   display: block;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
 }
 .error {
@@ -42,16 +42,16 @@
   inline-size: 100%;
   min-inline-size: 0;
   min-block-size: var(--ai-control-height, 36px);
-  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #64748b);
+  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #71717a);
   border-radius: var(--ai-control-radius, 8px);
   padding: 8px 12px;
   background: var(--ai-field-background, var(--ai-surface, #fff));
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   font: inherit;
   line-height: 1.5;
 }
 .input::placeholder {
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   opacity: 1;
 }
 .textarea {
@@ -108,7 +108,7 @@
   pointer-events: none;
 }
 .checkbox::before {
-  border: 1px solid var(--ai-control-border, #64748b);
+  border: 1px solid var(--ai-control-border, #71717a);
   border-radius: min(4px, var(--ai-control-radius, 8px));
 }
 .checkbox:checked::before,
@@ -141,7 +141,7 @@
   inline-size: 44px;
   block-size: 26px;
   margin: 0;
-  border: 2px solid var(--ai-control-border, #64748b);
+  border: 2px solid var(--ai-control-border, #71717a);
   border-radius: 999px;
   background: var(--ai-surface, #fff);
   cursor: pointer;
@@ -154,7 +154,7 @@
   inline-size: 16px;
   block-size: 16px;
   border-radius: 50%;
-  background: var(--ai-muted, #475569);
+  background: var(--ai-muted, #52525b);
 }
 .switch:checked {
   background: var(--ai-primary, #2563eb);
@@ -213,7 +213,7 @@
   flex-grow: 1;
   block-size: 6px;
   border-radius: 999px;
-  background: var(--ai-border, #e2e8f0);
+  background: var(--ai-border, #e4e4e7);
 }
 .range {
   position: absolute;

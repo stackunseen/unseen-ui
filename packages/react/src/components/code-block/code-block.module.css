@@ -31,9 +31,9 @@
   min-width: 0;
   margin-block: var(--ai-gap, 12px);
   overflow: hidden;
-  border: var(--ai-border-width, 1px) solid var(--ai-border, #dbe2ea);
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
   border-radius: var(--ai-radius, 10px);
-  background: var(--ai-surface-subtle, #f1f5f9);
+  background: var(--ai-surface-subtle, #f4f4f5);
 }
 .codeHeader {
   display: flex;
@@ -42,9 +42,9 @@
   justify-content: space-between;
   gap: 4px 12px;
   padding: 4px var(--ai-gap, 12px);
-  border-block-end: var(--ai-border-width, 1px) solid var(--ai-border, #dbe2ea);
-  color: var(--ai-muted, #475569);
-  font-size: 12px;
+  border-block-end: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .codeHeader > span {
   min-width: 0;
@@ -66,9 +66,9 @@
   white-space: pre;
   line-height: 1.6;
   tab-size: 2;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-family: var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
   font-size: calc(var(--ai-font-size, 14px) * 0.9);
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
 }
 .code > code {
   font-size: inherit;
@@ -80,8 +80,8 @@
 .codeFeedback {
   display: block;
   padding: 4px var(--ai-gap, 12px) 8px;
-  color: var(--ai-muted, #475569);
-  font-size: 12px;
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .codeFeedback:empty {
   display: none;

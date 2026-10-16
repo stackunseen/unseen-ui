@@ -164,6 +164,24 @@ describe('RunBoard', () => {
     expect(screen.getByRole('button', { name: 'Pause Archive inactive accounts' })).toBeDisabled();
     expect(screen.getByText('Waiting for the host…')).toBeInTheDocument();
   });
+
+  it('groups facets as State and Agent and counts them behind the Filters popover', async () => {
+    const user = userEvent.setup();
+    const onFilterChange = vi.fn();
+    const filter = { states: ['running' as const], agentIds: ['docs'], query: '' };
+    render(<RunBoard runs={cards} now={now} filter={filter} onFilterChange={onFilterChange} />);
+    expect(screen.getByRole('group', { name: 'State' })).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Agent' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Filters, 2 active' }));
+    const popover = screen.getByRole('dialog', { name: 'Filters' });
+    const states = within(popover).getByRole('group', { name: 'State' });
+    expect(within(states).getByRole('button', { name: 'running' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    await user.click(within(states).getByRole('button', { name: 'paused' }));
+    expect(onFilterChange).toHaveBeenLastCalledWith({ ...filter, states: ['running', 'paused'] });
+  });
 });
 
 const items: AttentionItem[] = [

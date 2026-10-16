@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--ai-field-gap, 8px);
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
   overflow-wrap: anywhere;
 }

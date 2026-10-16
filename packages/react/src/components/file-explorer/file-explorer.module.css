@@ -48,7 +48,7 @@
   color: inherit;
   background: transparent;
   font: inherit;
-  font-size: 13px;
+  font-size: var(--ai-font-size-meta, 13px);
   cursor: pointer;
 }
 .file > [data-part='file-name'] {
@@ -84,7 +84,7 @@
   gap: 16px;
 }
 .directory {
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-muted);
   font-weight: 600;
   padding-block: 4px;
@@ -97,7 +97,7 @@
 .search {
   display: grid;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--ai-font-size-meta, 13px);
 }
 .search input {
   box-sizing: border-box;

@@ -62,7 +62,7 @@
   min-width: 0;
 }
 .badge {
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-muted);
 }
 .body,
@@ -125,7 +125,7 @@
   display: grid;
   gap: 4px;
   color: var(--ai-muted);
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .root[data-variant='bar'] .body,
 .root[data-variant='bar'] .level {

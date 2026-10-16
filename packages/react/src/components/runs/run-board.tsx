@@ -4,6 +4,7 @@ import type { KeyboardEvent } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
 import type { CommandReceipt, Measurement, Run, RunLifecycle } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
+import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';
 import { MeasuredText, formatMoney, formatTime } from './shared.js';
@@ -168,6 +169,65 @@ export function RunBoard({
   }
 
   const activeStates = new Set(filter.states);
+  const facetCount = filter.states.length + filter.agentIds.length;
+  // The host owns the filter; these only report the toggled value back.
+  const toggleState = (state: RunLifecycle) =>
+    onFilterChange?.({
+      ...filter,
+      states: activeStates.has(state)
+        ? filter.states.filter((item) => item !== state)
+        : [...filter.states, state],
+    });
+  const toggleAgent = (agentId: string) =>
+    onFilterChange?.({
+      ...filter,
+      agentIds: filter.agentIds.includes(agentId)
+        ? filter.agentIds.filter((item) => item !== agentId)
+        : [...filter.agentIds, agentId],
+    });
+  // Rendered inline on wide boards and inside the Filters popover on narrow ones.
+  const facets = (where: 'inline' | 'popover') => (
+    <div className={r.facets}>
+      <div className={r.facet} role="group" aria-labelledby={`${id}-${where}-state`}>
+        <span id={`${id}-${where}-state`} className={r.facetLabel}>
+          State
+        </span>
+        <div className={r.chips}>
+          {allStates.map((state) => (
+            <button
+              key={state}
+              type="button"
+              className={r.chip}
+              aria-pressed={activeStates.has(state)}
+              onClick={() => toggleState(state)}
+            >
+              {state.replace('-', ' ')}
+            </button>
+          ))}
+        </div>
+      </div>
+      {agents.length > 1 && (
+        <div className={r.facet} role="group" aria-labelledby={`${id}-${where}-agent`}>
+          <span id={`${id}-${where}-agent`} className={r.facetLabel}>
+            Agent
+          </span>
+          <div className={r.chips}>
+            {agents.map((agent) => (
+              <button
+                key={agent.id}
+                type="button"
+                className={r.chip}
+                aria-pressed={filter.agentIds.includes(agent.id)}
+                onClick={() => toggleAgent(agent.id)}
+              >
+                {agent.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
   return (
     <section
       className={r.board}
@@ -189,48 +249,20 @@ export function RunBoard({
               value={filter.query}
               onChange={(event) => onFilterChange({ ...filter, query: event.target.value })}
             />
-            <div className={r.chips} role="group" aria-label="Run states">
-              {allStates.map((state) => (
-                <button
-                  key={state}
-                  type="button"
-                  className={r.chip}
-                  aria-pressed={activeStates.has(state)}
-                  onClick={() =>
-                    onFilterChange({
-                      ...filter,
-                      states: activeStates.has(state)
-                        ? filter.states.filter((item) => item !== state)
-                        : [...filter.states, state],
-                    })
-                  }
-                >
-                  {state.replace('-', ' ')}
-                </button>
-              ))}
-            </div>
-            {agents.length > 1 && (
-              <div className={r.chips} role="group" aria-label="Agents">
-                {agents.map((agent) => (
-                  <button
-                    key={agent.id}
-                    type="button"
-                    className={r.chip}
-                    aria-pressed={filter.agentIds.includes(agent.id)}
-                    onClick={() =>
-                      onFilterChange({
-                        ...filter,
-                        agentIds: filter.agentIds.includes(agent.id)
-                          ? filter.agentIds.filter((item) => item !== agent.id)
-                          : [...filter.agentIds, agent.id],
-                      })
-                    }
-                  >
-                    {agent.name}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div className={r.facetsInline}>{facets('inline')}</div>
+            <Popover>
+              <PopoverTrigger
+                className={r.filtersTrigger}
+                data-active={facetCount > 0 || undefined}
+                aria-label={facetCount > 0 ? `Filters, ${facetCount} active` : undefined}
+              >
+                Filters
+                {facetCount > 0 && <span className={r.filtersCount}>{facetCount}</span>}
+              </PopoverTrigger>
+              <PopoverContent title="Filters" headingLevel={3} className={r.filtersPopover}>
+                {facets('popover')}
+              </PopoverContent>
+            </Popover>
             {(filter.states.length > 0 || filter.agentIds.length > 0 || filter.query) && (
               <Button size="sm" variant="ghost" onClick={() => onFilterChange(emptyRunBoardFilter)}>
                 Clear filters

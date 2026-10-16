@@ -2,7 +2,7 @@
   display: grid;
   gap: var(--ai-field-gap, 8px);
   min-inline-size: 0;
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   font-family: var(--ai-font-family, ui-sans-serif, system-ui, sans-serif);
   font-size: var(--ai-font-size, 14px);
   line-height: 1.5;
@@ -15,7 +15,7 @@
   inline-size: 100%;
   text-align: start;
   /* A field, not an action: match the input and select look. */
-  border-color: var(--ai-control-border, #64748b);
+  border-color: var(--ai-control-border, #71717a);
   font-size: inherit;
   font-weight: 400;
 }
@@ -44,7 +44,7 @@
 .description,
 .error {
   margin: 0;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
   overflow-wrap: anywhere;
 }

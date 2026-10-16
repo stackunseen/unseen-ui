@@ -20,7 +20,7 @@
 }
 .notice {
   color: var(--ai-muted);
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .plain {
   white-space: pre-wrap;
@@ -28,10 +28,7 @@
   max-height: 140px;
   overflow: auto;
   margin: 0;
-  font:
-    13px/1.75 ui-monospace,
-    Consolas,
-    monospace;
+  font: 13px/1.75 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
   border-top: var(--ai-border-width, 1px) solid var(--ai-border);
   padding-top: 8px;
 }

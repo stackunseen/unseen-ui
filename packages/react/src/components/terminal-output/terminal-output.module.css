@@ -12,7 +12,7 @@
 .provenance {
   padding: 8px 16px;
   color: var(--ai-muted);
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .transcript {
   white-space: pre-wrap;
@@ -23,11 +23,7 @@
   max-height: 320px;
   overflow: auto;
   scrollbar-gutter: stable;
-  font:
-    13px/1.75 ui-monospace,
-    SFMono-Regular,
-    Consolas,
-    monospace;
+  font: 13px/1.75 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
   background: var(--ai-surface-subtle);
   color: var(--ai-text);
 }
@@ -61,7 +57,7 @@
 }
 .follow {
   padding: 4px 16px 12px;
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-muted);
 }
 .stop {

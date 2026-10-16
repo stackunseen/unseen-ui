@@ -6,7 +6,7 @@
 .cycle {
   inline-size: var(--ai-control-height, 36px);
   padding-inline: 0;
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
 }
 .cycle[data-size='sm'] {
   inline-size: 32px;

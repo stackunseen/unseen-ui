@@ -4,7 +4,7 @@
 .progressGroup {
   box-sizing: border-box;
   min-inline-size: 0;
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   font-family: var(--ai-font-family, ui-sans-serif, system-ui, sans-serif);
   font-size: var(--ai-font-size, 14px);
   line-height: 1.6;
@@ -15,8 +15,8 @@
   align-items: flex-start;
   gap: var(--ai-gap, 12px);
   padding: var(--ai-panel-padding, 16px);
-  border: 1px solid var(--ai-border, #e2e8f0);
-  border-inline-start: 3px solid var(--ai-control-border, #64748b);
+  border: 1px solid var(--ai-border, #e4e4e7);
+  border-inline-start: 3px solid var(--ai-control-border, #71717a);
   border-radius: var(--ai-radius, 10px);
   background: var(--ai-surface, #fff);
 }
@@ -50,7 +50,7 @@
 .title {
   margin: 0;
   font-size: var(--ai-font-size-heading, 16px);
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.5;
 }
 .description,
@@ -96,11 +96,11 @@
 }
 .emptyIcon {
   display: flex;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
 }
 .emptyDescription {
   max-inline-size: 52ch;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
 }
 .progressGroup {
   display: grid;
@@ -128,7 +128,7 @@
   white-space: nowrap;
 }
 .progressReading {
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-variant-numeric: tabular-nums;
 }
 .progress {
@@ -139,11 +139,11 @@
   overflow: hidden;
   border: 0;
   border-radius: 999px;
-  background: var(--ai-surface-subtle, #f1f5f9);
+  background: var(--ai-surface-subtle, #f4f4f5);
   accent-color: var(--ai-primary, #2563eb);
 }
 .progress::-webkit-progress-bar {
-  background: var(--ai-surface-subtle, #f1f5f9);
+  background: var(--ai-surface-subtle, #f4f4f5);
 }
 .progress::-webkit-progress-value {
   background: var(--ai-primary, #2563eb);
@@ -197,11 +197,11 @@
   align-items: start;
   gap: 8px 12px;
   padding: var(--ai-panel-padding, 16px);
-  border: 1px solid var(--ai-control-border, #64748b);
+  border: 1px solid var(--ai-control-border, #71717a);
   border-inline-start-width: 3px;
   border-radius: var(--ai-radius, 10px);
   background: var(--ai-surface, #fff);
-  box-shadow: var(--ai-shadow-popover, 0 4px 16px #0f172a14);
+  box-shadow: var(--ai-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.1));
 }
 .toast > .title,
 .toast > .description,

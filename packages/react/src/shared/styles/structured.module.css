@@ -20,7 +20,7 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
 }
 .root[data-variant='compact'] {
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   gap: 8px;
 }
 .root[data-variant='compact'] .fields {
@@ -131,12 +131,12 @@
 }
 .error {
   color: var(--ai-danger);
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
 }
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--ai-font-size-meta, 13px);
   text-align: start;
 }
 .table caption {
@@ -153,7 +153,7 @@
 .table th {
   min-width: 120px;
   color: var(--ai-muted);
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   font-weight: 600;
   text-align: start;
   vertical-align: middle;
@@ -206,7 +206,7 @@
 }
 .metric {
   font-size: 26px;
-  font-weight: 650;
+  font-weight: 600;
 }
 .generatedText {
   white-space: pre-wrap;

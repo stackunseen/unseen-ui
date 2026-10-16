@@ -1,7 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Button, GeneratedUI, resolveVariant } from '@stackunseen/ui';
-import { createSurfaceParser, surfaceExampleProgram } from '@stackunseen/ui-core';
+import {
+  createSurfaceParser,
+  parseSurfaceProgram,
+  surfaceExampleProgram,
+} from '@stackunseen/ui-core';
 import type { SurfaceParseState } from '@stackunseen/ui-core';
 import type {
   GeneratedSurface,
@@ -166,6 +170,8 @@ export function GeneratedSpecimen({
     };
   if (state === 'Streamed program')
     return <StreamedProgram presentation={presentation} onEvent={onEvent} />;
+  if (state === 'Vocabulary')
+    return <VocabularySpecimen presentation={presentation} onEvent={onEvent} />;
   if (state === 'Unsupported')
     surface = { id: 's', version: '1', nodes: [{ id: 'x', type: 'script', text: 'alert(1)' }] };
   if (state === 'Invalid schema')
@@ -408,6 +414,79 @@ function StreamedProgram({
         onAction={(request) =>
           onEvent(`${request.actionId} requested for surface ${request.version}`)
         }
+      />
+    </div>
+  );
+}
+
+const vocabularyProgram = (
+  origin: string,
+) => `root = [summary, steps, risk, totals, owner, evidence]
+summary = list(["Three tickets are open", "Two are older than a week", "One affects sign-in"])
+steps = steps("Triage", [{id: "collect", label: "Collect", state: "done"}, {id: "assign", label: "Assign", state: "current"}, {id: "close", label: "Close", state: "upcoming"}])
+risk = callout("warning", "Two tickets are past their target", "Both affect sign-in. The host decides whether to escalate.")
+totals = metricGroup("This week", [{label: "Opened", value: "12"}, {label: "Closed", value: "9"}, {label: "Median age", value: "4 days"}])
+owner = options("Who should take the oldest ticket?", "assign-owner", [{value: "ana", label: "Ana", description: "on call this week"}, {value: "raj", label: "Raj"}, {value: "later", label: "Decide later"}])
+evidence = section("Evidence", [local, remote], "grid")
+local = image("${origin}/fixtures/sample-chart.png", "Sample bar chart of tickets per week", "Served by this site")
+remote = image("https://images.example.com/trend.png", "Open tickets per day", "From a server the host has not approved")`;
+
+function VocabularySpecimen({
+  presentation,
+  onEvent,
+}: {
+  presentation?: string;
+  onEvent: (message: string) => void;
+}) {
+  const [origin, setOrigin] = useState('');
+  const [approved, setApproved] = useState(false);
+  const [choice, setChoice] = useState<GeneratedActionSnapshot>();
+  useEffect(() => setOrigin(window.location.origin), []);
+  if (!origin) return null;
+  const surface = parseSurfaceProgram(vocabularyProgram(origin), {
+    surfaceId: 'surface-vocabulary',
+    version: '1',
+  }).surface;
+  return (
+    <div className={styles.root}>
+      <p>
+        Synthetic surface written in the line format. The images and the choice are controlled by
+        the simulated host below.
+      </p>
+      <div className={styles.controls}>
+        <Button variant="outline" aria-pressed={approved} onClick={() => setApproved(!approved)}>
+          {approved ? 'Revoke this site for images' : 'Approve this site for images'}
+        </Button>
+        {choice?.status === 'pending' && (
+          <Button variant="outline" onClick={() => setChoice({ ...choice, status: 'complete' })}>
+            Confirm choice as host
+          </Button>
+        )}
+        {choice && choice.status !== 'pending' && (
+          <Button variant="ghost" onClick={() => setChoice(undefined)}>
+            Reset choice
+          </Button>
+        )}
+      </div>
+      <GeneratedUI
+        variant={resolveVariant('GeneratedUI', presentation)}
+        surface={surface}
+        state="ready"
+        imageOrigins={approved ? [origin] : []}
+        actionStates={choice ? [choice] : []}
+        onAction={(request) => {
+          if (request.value)
+            setChoice({
+              surfaceId: request.surfaceId,
+              version: request.version,
+              actionId: request.actionId,
+              status: 'pending',
+              value: request.value,
+            });
+          onEvent(
+            `${request.actionId}${request.value ? ` (${request.value})` : ''} requested for surface ${request.version}`,
+          );
+        }}
       />
     </div>
   );

@@ -14,8 +14,14 @@ import { DataTable } from '../data-table/data-table.js';
 import { Chart } from '../chart/chart.js';
 import { Button } from '../button/button.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
+import { Alert, AlertDescription, AlertTitle } from '../alert/alert.js';
+import { Stepper } from '../stepper/stepper.js';
 import { boundedData as boundedGeneratedData } from '../../shared/bounded-data.js';
-import { inspectGeneratedSurface, inspectGeneratedActionPresentations } from './generated-model.js';
+import {
+  approvedImageOrigin,
+  inspectGeneratedSurface,
+  inspectGeneratedActionPresentations,
+} from './generated-model.js';
 import { inspectArrayValues } from '../ai-form/form-model.js';
 import type {
   GeneratedNode,
@@ -31,6 +37,7 @@ export type {
   GeneratedNode,
   GeneratedSurface,
   GeneratedActionPresentation,
+  GeneratedCalloutTone,
 } from './generated-model.js';
 
 interface SurfaceIdentity {
@@ -44,12 +51,16 @@ export interface GeneratedActionRequest extends SurfaceIdentity {
   actionId: string;
   nodeId?: string;
   form?: { values: FormValues; submission: AIFormSubmission };
+  /** The choice pressed on an options node. */
+  value?: string;
 }
 export interface GeneratedActionSnapshot extends SurfaceIdentity {
   actionId: string;
   status: 'pending' | 'complete' | 'error' | 'denied' | 'unknown';
   message?: string;
   submissionId?: string;
+  /** For options nodes, the choice the host recorded. */
+  value?: string;
 }
 export interface GeneratedFormReceipt extends NodeIdentity {
   draftVersion?: string;
@@ -84,6 +95,12 @@ export interface GeneratedUIProps extends VariantProps<'GeneratedUI'> {
   error?: string;
   /** Statements a streaming parser could not show; listed under the result, never hidden. */
   problems?: readonly { line: number; code: string; message: string }[];
+  /**
+   * Origins (`https://images.example.com`) the host allows generated images to load from.
+   * Images from any other origin show a notice instead, so a surface cannot make the browser
+   * contact an arbitrary server.
+   */
+  imageOrigins?: readonly string[];
 }
 function matches(snapshot: SurfaceIdentity, surface: GeneratedSurface) {
   return snapshot.surfaceId === surface.id && snapshot.version === surface.version;
@@ -160,6 +177,7 @@ export function GeneratedUI({
   onFormChange,
   error,
   problems,
+  imageOrigins,
   variant = 'stack',
 }: GeneratedUIProps) {
   const prefix = useId();
@@ -336,9 +354,17 @@ export function GeneratedUI({
       />
     );
   }
-  function renderAction(node: Extract<GeneratedNode, { type: 'action' }>) {
+  const statusLabels = {
+    pending: 'Awaiting host confirmation…',
+    complete: 'Host reported completion.',
+    error: 'The host reported an error. Retry only if permitted.',
+    denied: 'The host denied this action.',
+    unknown: 'The action outcome is unknown. Reconcile with the host before retrying.',
+  };
+  /** Host state for one actionId: why it is disabled, its current snapshot and the status id. */
+  function actionStatus(actionId: string, nodeId: string, disabledReason?: string) {
     const presentations = safePresentations?.filter(
-      (item) => matches(item, surface!) && item.actionId === node.actionId,
+      (item) => matches(item, surface!) && item.actionId === actionId,
     );
     const presentationError = !presentations
       ? 'Action presentation bindings are invalid or unavailable.'
@@ -346,7 +372,7 @@ export function GeneratedUI({
         ? 'Action presentation bindings are ambiguous.'
         : undefined;
     const records: readonly GeneratedActionSnapshot[] | undefined = safeActions?.filter(
-      (item: GeneratedActionSnapshot) => item?.actionId === node.actionId,
+      (item: GeneratedActionSnapshot) => item?.actionId === actionId,
     );
     const current =
       records?.length === 1 && matches(records[0]!, surface!) ? records[0] : undefined;
@@ -356,47 +382,119 @@ export function GeneratedUI({
         (!current ||
           !boundedGeneratedData(current) ||
           !['pending', 'complete', 'error', 'denied', 'unknown'].includes(current.status) ||
-          (current.message !== undefined && typeof current.message !== 'string')));
+          (current.message !== undefined && typeof current.message !== 'string') ||
+          (current.value !== undefined && typeof current.value !== 'string')));
     const reason =
       presentationError ||
-      node.disabledReason ||
+      disabledReason ||
       (invalid
         ? 'Action state is stale or unavailable.'
         : !onAction
           ? 'No host action handler is connected.'
           : undefined);
-    const locked = current && current.status !== 'error';
-    const labels = {
-      pending: 'Awaiting host confirmation…',
-      complete: 'Host reported completion.',
-      error: 'The host reported an error. Retry only if permitted.',
-      denied: 'The host denied this action.',
-      unknown: 'The action outcome is unknown. Reconcile with the host before retrying.',
-    };
-    const statusId = `${prefix}-${encodeURIComponent(node.id)}-status`;
+    return {
+      variant: presentationError ? 'outline' : (presentations?.[0]?.variant ?? 'outline'),
+      reason,
+      current,
+      disabled: state !== 'ready' || Boolean(reason || (current && current.status !== 'error')),
+      statusId: `${prefix}-${encodeURIComponent(nodeId)}-status`,
+    } as const;
+  }
+  function statusText(status: ReturnType<typeof actionStatus>, chosen?: string) {
+    const { reason, current } = status;
+    if (!reason && !current) return null;
+    return (
+      <p id={status.statusId} role="status" className={s.muted}>
+        {reason ||
+          (current && (
+            <>
+              {statusLabels[current.status]}
+              {chosen ? ` Choice: ${chosen}.` : ''}
+              {current.message ? ` ${current.message.slice(0, 2000)}` : ''}
+            </>
+          ))}
+      </p>
+    );
+  }
+  function renderAction(node: Extract<GeneratedNode, { type: 'action' }>) {
+    const status = actionStatus(node.actionId, node.id, node.disabledReason);
     return (
       <div className={`${s.root} ${a.local}`}>
         <Button
           size="sm"
-          variant={presentationError ? 'outline' : (presentations?.[0]?.variant ?? 'outline')}
-          disabled={state !== 'ready' || Boolean(reason || locked)}
-          aria-describedby={reason || current ? statusId : undefined}
+          variant={status.variant}
+          disabled={status.disabled}
+          aria-describedby={status.reason || status.current ? status.statusId : undefined}
           onClick={() => onAction?.({ ...scope, actionId: node.actionId })}
         >
           {node.label}
         </Button>
-        {(reason || current) && (
-          <p id={statusId} role="status" className={s.muted}>
-            {reason ||
-              (current && (
-                <>
-                  {labels[current.status]}
-                  {current.message ? ` ${current.message.slice(0, 2000)}` : ''}
-                </>
-              ))}
-          </p>
-        )}
+        {statusText(status)}
       </div>
+    );
+  }
+  function renderOptions(node: Extract<GeneratedNode, { type: 'options' }>) {
+    const status = actionStatus(node.actionId, node.id, node.disabledReason);
+    // Only the host's snapshot marks a choice as recorded; pressing a button does not.
+    const recorded = status.reason
+      ? undefined
+      : node.choices.find((choice) => choice.value === status.current?.value);
+    const labelId = `${prefix}-${encodeURIComponent(node.id)}-label`;
+    const described = node.choices.filter((choice) => choice.description);
+    return (
+      <div role="group" aria-labelledby={labelId} className={`${s.root} ${a.local}`}>
+        <strong id={labelId}>{node.label}</strong>
+        <div className={css.rail}>
+          {node.choices.map((choice) => (
+            <Button
+              key={choice.value}
+              size="sm"
+              variant="outline"
+              disabled={status.disabled}
+              aria-pressed={recorded ? recorded.value === choice.value : undefined}
+              aria-describedby={status.reason || status.current ? status.statusId : undefined}
+              onClick={() =>
+                onAction?.({
+                  ...scope,
+                  nodeId: node.id,
+                  actionId: node.actionId,
+                  value: choice.value,
+                })
+              }
+            >
+              {choice.label}
+            </Button>
+          ))}
+        </div>
+        {described.length > 0 && (
+          <ul className={css.choiceNotes}>
+            {described.map((choice) => (
+              <li key={choice.value}>
+                {choice.label}: {choice.description}
+              </li>
+            ))}
+          </ul>
+        )}
+        {statusText(status, recorded?.label)}
+      </div>
+    );
+  }
+  function renderImage(node: Extract<GeneratedNode, { type: 'image' }>) {
+    if (approvedImageOrigin(node.src, imageOrigins))
+      // A plain image: the Image component lives in the optional /media entry and its styles.
+      return (
+        <figure className={css.image}>
+          <img src={node.src} alt={node.alt} loading="lazy" referrerPolicy="no-referrer" />
+          {node.caption && <figcaption className={s.muted}>{node.caption}</figcaption>}
+        </figure>
+      );
+    return (
+      <figure className={css.blockedImage}>
+        <p className={s.muted}>
+          Image not loaded: the host has not approved {new URL(node.src).origin.slice(0, 200)}.
+        </p>
+        <figcaption>{node.caption ? `${node.alt}. ${node.caption}` : node.alt}</figcaption>
+      </figure>
     );
   }
   function renderNode(node: GeneratedNode, depth: number, grouped = false) {
@@ -438,6 +536,46 @@ export function GeneratedUI({
           renderForm(node)
         ) : node.type === 'action' ? (
           renderAction(node)
+        ) : node.type === 'options' ? (
+          renderOptions(node)
+        ) : node.type === 'list' ? (
+          node.ordered ? (
+            <ol className={css.list}>
+              {node.items.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ol>
+          ) : (
+            <ul className={css.list}>
+              {node.items.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          )
+        ) : node.type === 'callout' ? (
+          <Alert tone={node.tone}>
+            <AlertTitle>{node.title}</AlertTitle>
+            {node.text && <AlertDescription>{node.text}</AlertDescription>}
+          </Alert>
+        ) : node.type === 'steps' ? (
+          <div className={s.options}>
+            <strong>{node.title}</strong>
+            <Stepper as="div" label={node.title} presentation="list" steps={node.steps} />
+          </div>
+        ) : node.type === 'image' ? (
+          renderImage(node)
+        ) : node.type === 'metricGroup' ? (
+          <div role="group" aria-label={node.title}>
+            <strong>{node.title}</strong>
+            <dl className={css.metrics}>
+              {node.metrics.map((metric, index) => (
+                <div key={index}>
+                  <dt className={s.muted}>{metric.label}</dt>
+                  <dd className={g.metric}>{metric.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         ) : (
           <div role="group" aria-label={node.title} className={g.generatedSection}>
             <strong>{node.title}</strong>

@@ -20,6 +20,26 @@ const label = z
   .max(200)
   .refine((value) => Boolean(value.trim()));
 const text = z.string().max(10000);
+function httpUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return (
+      (url.protocol === 'https:' || url.protocol === 'http:') && !url.username && !url.password
+    );
+  } catch {
+    return false;
+  }
+}
+/** The image's origin, if the host listed it; generated images load from nowhere else. */
+export function approvedImageOrigin(src: string, origins: readonly string[] | undefined) {
+  if (!Array.isArray(origins) || origins.length > 64) return undefined;
+  try {
+    const origin = new URL(src).origin;
+    return origins.some((item) => typeof item === 'string' && item === origin) ? origin : undefined;
+  } catch {
+    return undefined;
+  }
+}
 export type GeneratedNode =
   | { id: string; type: 'text'; text: string }
   | { id: string; type: 'metric'; label: string; value: string }
@@ -51,6 +71,24 @@ export type GeneratedNode =
       arrays?: AIFieldArray[];
       steps?: AIFormStep[];
     }
+  | { id: string; type: 'list'; items: string[]; ordered?: boolean }
+  | { id: string; type: 'callout'; tone: GeneratedCalloutTone; title: string; text?: string }
+  | {
+      id: string;
+      type: 'options';
+      label: string;
+      actionId: string;
+      choices: { value: string; label: string; description?: string }[];
+      disabledReason?: string;
+    }
+  | {
+      id: string;
+      type: 'steps';
+      title: string;
+      steps: { id: string; label: string; state: 'done' | 'current' | 'upcoming' }[];
+    }
+  | { id: string; type: 'image'; src: string; alt: string; caption?: string }
+  | { id: string; type: 'metricGroup'; title: string; metrics: { label: string; value: string }[] }
   | {
       id: string;
       type: 'section';
@@ -59,6 +97,8 @@ export type GeneratedNode =
       layout?: 'stack' | 'grid';
       nodes: GeneratedNode[];
     };
+/** No success tone: a generated surface cannot report an outcome the host has not confirmed. */
+export type GeneratedCalloutTone = 'info' | 'warning' | 'danger';
 export interface GeneratedSurface {
   id: string;
   version: string;
@@ -163,6 +203,87 @@ const nodeSchema: z.ZodType<GeneratedNode> = z.lazy(() =>
     z
       .object({
         id: identifier,
+        type: z.literal('list'),
+        items: z.array(z.string().max(2000)).min(1).max(50),
+        ordered: z.boolean().optional(),
+      })
+      .strict(),
+    z
+      .object({
+        id: identifier,
+        type: z.literal('callout'),
+        tone: z.enum(['info', 'warning', 'danger']),
+        title: label,
+        text: z.string().max(2000).optional(),
+      })
+      .strict(),
+    z
+      .object({
+        id: identifier,
+        type: z.literal('options'),
+        label,
+        actionId: identifier,
+        choices: z
+          .array(
+            z
+              .object({ value: identifier, label, description: z.string().max(500).optional() })
+              .strict(),
+          )
+          .min(2)
+          .max(12)
+          .refine(
+            (choices) => new Set(choices.map((choice) => choice.value)).size === choices.length,
+          ),
+        disabledReason: label.optional(),
+      })
+      .strict(),
+    z
+      .object({
+        id: identifier,
+        type: z.literal('steps'),
+        title: label,
+        steps: z
+          .array(
+            z
+              .object({
+                id: identifier,
+                label,
+                state: z.enum(['done', 'current', 'upcoming']),
+              })
+              .strict(),
+          )
+          .min(1)
+          .max(20)
+          .refine(
+            (steps) =>
+              new Set(steps.map((step) => step.id)).size === steps.length &&
+              steps.filter((step) => step.state === 'current').length <= 1,
+          ),
+      })
+      .strict(),
+    z
+      .object({
+        id: identifier,
+        type: z.literal('image'),
+        src: z.string().max(2000).refine(httpUrl),
+        alt: label,
+        caption: z.string().max(500).optional(),
+      })
+      .strict(),
+    z
+      .object({
+        id: identifier,
+        type: z.literal('metricGroup'),
+        title: label,
+        metrics: z
+          .array(z.object({ label, value: z.string().max(200) }).strict())
+          .min(1)
+          .max(8),
+      })
+      .strict(),
+    z
+      .object({
+        id: identifier,
         type: z.literal('section'),
         title: label,
         description: z.string().max(2000).optional(),
@@ -193,7 +314,7 @@ export function inspectGeneratedSurface(value: unknown): GeneratedSurface | unde
     return items.every((node) => {
       if (++nodes > 64 || ids.has(node.id)) return false;
       ids.add(node.id);
-      if (node.type === 'action' || node.type === 'form') {
+      if (node.type === 'action' || node.type === 'form' || node.type === 'options') {
         if (actions.has(node.actionId)) return false;
         actions.add(node.actionId);
       }

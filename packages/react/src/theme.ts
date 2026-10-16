@@ -113,6 +113,10 @@ function palette(seeds: Required<ThemeInput>, dark: boolean): ThemeTokens {
   const accent = distinct(seeds.accent, surface, dark);
   const p = toOklch(primary)!;
   const s = toOklch(secondary)!;
+  const primarySoft = shade(primary, dark ? 0.26 : 0.96, 0.22);
+  const secondarySoft = shade(secondary, dark ? 0.26 : 0.96, 0.22);
+  // Text tokens sit on the subtle surface and on their own soft fill (selected rows, badges).
+  const onSoft = (seed: string, soft: string) => readable(readable(seed, subtle, dark), soft, dark);
   return {
     canvas: dark ? '#09090b' : '#fafafa',
     surface,
@@ -131,16 +135,16 @@ function palette(seeds: Required<ThemeInput>, dark: boolean): ThemeTokens {
       Math.max(0, Math.min(1, p.l + (foreground(primary) === '#ffffff' ? -0.035 : 0.035))),
     ),
     'primary-foreground': foreground(primary),
-    'primary-soft': shade(primary, dark ? 0.26 : 0.96, 0.22),
-    'primary-text': readable(primary, subtle, dark),
+    'primary-soft': primarySoft,
+    'primary-text': onSoft(primary, primarySoft),
     secondary,
     'secondary-hover': shade(
       secondary,
       Math.max(0, Math.min(1, s.l + (foreground(secondary) === '#ffffff' ? -0.035 : 0.035))),
     ),
     'secondary-foreground': foreground(secondary),
-    'secondary-soft': shade(secondary, dark ? 0.26 : 0.96, 0.22),
-    'secondary-text': readable(secondary, subtle, dark),
+    'secondary-soft': secondarySoft,
+    'secondary-text': onSoft(secondary, secondarySoft),
     accent,
     'accent-foreground': foreground(accent),
     success: dark ? '#86efac' : '#166534',
@@ -165,6 +169,8 @@ function diagnose(light: ThemeTokens, dark: ThemeTokens): ContrastDiagnostic[] {
     ['secondary-text', 'surface', 4.5],
     ['primary-text', 'surface-subtle', 4.5],
     ['secondary-text', 'surface-subtle', 4.5],
+    ['primary-text', 'primary-soft', 4.5],
+    ['secondary-text', 'secondary-soft', 4.5],
     ['focus', 'surface-subtle', 3],
     ['success', 'success-soft', 4.5],
     ['warning', 'warning-soft', 4.5],

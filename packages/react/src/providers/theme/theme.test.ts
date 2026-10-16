@@ -39,19 +39,27 @@ describe('theme resolver', () => {
     expect(next.light['control-border']).toBe('#71717a');
     expect(updateTheme(theme, { primary: '#166534' }).light.surface).toBe('#ffffff');
   });
-  it.each(['#ffff00', '#000000', '#ffffff', '#ff00ff', '#2563eb', '#808080'])(
-    'validates derived pairs for seed %s in both modes',
-    (primary) => {
-      const theme = createTheme({
-        primary,
-        secondary: primary,
-        accent: primary,
-        borderStrength: 'strong',
-      });
-      expect(theme.diagnostics.filter((d) => !d.passes)).toEqual([]);
-      expect(theme.seeds.primary).toBe(primary);
-    },
-  );
+  // Rose, amber and green once put primary-text below 4.5:1 on primary-soft.
+  it.each([
+    '#ffff00',
+    '#000000',
+    '#ffffff',
+    '#ff00ff',
+    '#2563eb',
+    '#808080',
+    '#e11d48',
+    '#ca8a04',
+    '#16a34a',
+  ])('validates derived pairs for seed %s in both modes', (primary) => {
+    const theme = createTheme({
+      primary,
+      secondary: primary,
+      accent: primary,
+      borderStrength: 'strong',
+    });
+    expect(theme.diagnostics.filter((d) => !d.passes)).toEqual([]);
+    expect(theme.seeds.primary).toBe(primary);
+  });
   it('preserves resolved tokens on export/import and recomputes diagnostics', () => {
     const theme = createTheme();
     theme.light['primary-foreground'] = theme.light.primary;

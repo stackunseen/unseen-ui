@@ -47,9 +47,7 @@
   border-radius: var(--ai-control-radius, 8px);
   background: var(--ai-surface-subtle);
   color: var(--ai-text);
-  font:
-    12px/1.7 ui-monospace,
-    monospace;
+  font: 12px/1.7 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
 }
 .diagram[data-variant='minimal'] {
   padding: 8px;
@@ -117,9 +115,7 @@
   margin: 0;
   background: var(--ai-surface-subtle);
   color: var(--ai-text);
-  font:
-    12px/1.8 ui-monospace,
-    monospace;
+  font: 12px/1.8 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
 }
 .muted {
   margin: 0;

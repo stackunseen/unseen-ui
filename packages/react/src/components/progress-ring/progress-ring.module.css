@@ -4,7 +4,7 @@
   align-items: center;
   gap: 8px;
   min-inline-size: 0;
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   font-family: var(--ai-font-family, ui-sans-serif, system-ui, sans-serif);
   font-size: var(--ai-font-size-meta, 13px);
   line-height: 1.5;
@@ -33,7 +33,7 @@
   stroke-width: 3;
 }
 .track {
-  stroke: var(--ai-surface-subtle, #f1f5f9);
+  stroke: var(--ai-surface-subtle, #f4f4f5);
 }
 .value {
   stroke: var(--ai-primary, #2563eb);
@@ -43,7 +43,7 @@
   stroke: var(--ai-success, #166534);
 }
 .root[data-state='indeterminate'] .value {
-  stroke: var(--ai-muted, #475569);
+  stroke: var(--ai-muted, #52525b);
 }
 .text {
   display: inline-flex;
@@ -53,7 +53,7 @@
   min-inline-size: 0;
 }
 .reading {
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-variant-numeric: tabular-nums;
 }
 .srOnly {
@@ -69,7 +69,8 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .value {
-    transition: stroke-dashoffset 320ms ease;
+    transition: stroke-dashoffset var(--ai-duration-base, 200ms)
+      var(--ai-ease, cubic-bezier(0.2, 0, 0, 1));
   }
   .root[data-state='indeterminate'] svg {
     animation: ring-turn 1.2s linear infinite;

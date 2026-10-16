@@ -2,7 +2,7 @@
   min-inline-size: 0;
   display: grid;
   gap: var(--ai-gap, 12px);
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   font-size: var(--ai-font-size, 14px);
   line-height: 1.6;
   overflow-wrap: anywhere;
@@ -11,7 +11,7 @@
   margin: 0;
 }
 .metadata {
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
 }
 .source {
@@ -21,16 +21,16 @@
   overflow: auto;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  border: var(--ai-border-width, 1px) solid var(--ai-border, #64748b);
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #71717a);
   border-radius: var(--ai-control-radius, 8px);
   background: var(--ai-surface, #fff);
-  font-family: var(--ai-font-mono, monospace);
+  font-family: var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
   font-size: inherit;
 }
 .draft {
   min-block-size: 14rem;
   max-block-size: 32rem;
-  font-family: var(--ai-font-mono, monospace);
+  font-family: var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
 }
 .actions {
   display: flex;

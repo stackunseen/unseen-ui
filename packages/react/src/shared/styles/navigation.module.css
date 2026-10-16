@@ -107,13 +107,13 @@
   display: block;
 }
 .threadSelect strong {
-  font-size: 13px;
-  font-weight: 550;
+  font-size: var(--ai-font-size-meta, 13px);
+  font-weight: 500;
   line-height: 1.5;
 }
 .threadSelect[aria-current='true'] strong {
   color: var(--ai-primary-text);
-  font-weight: 650;
+  font-weight: 600;
 }
 .root .threadSelect:focus-visible {
   outline: 2px solid var(--ai-focus);
@@ -153,7 +153,7 @@
 }
 .queueText {
   white-space: pre-wrap;
-  font-size: 13px;
+  font-size: var(--ai-font-size-meta, 13px);
   line-height: 1.6;
   overflow-wrap: anywhere;
   max-height: 240px;
@@ -193,8 +193,8 @@
 .editor label {
   display: grid;
   gap: 6px;
-  font-size: 12px;
-  font-weight: 550;
+  font-size: var(--ai-font-size-caption, 12px);
+  font-weight: 500;
 }
 .editor textarea {
   min-height: 88px;

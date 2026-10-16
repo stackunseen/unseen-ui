@@ -63,7 +63,7 @@
   outline-offset: -2px;
 }
 .badge {
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   border: var(--ai-border-width, 1px) solid var(--ai-border);
   padding: 2px 6px;
   border-radius: 6px;
@@ -93,11 +93,7 @@
 .diff {
   margin: 0;
   padding: 10px 0;
-  font:
-    12px/1.8 ui-monospace,
-    SFMono-Regular,
-    Consolas,
-    monospace;
+  font: 12px/1.8 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
 }
 .diffLine {
   display: grid;
@@ -158,11 +154,7 @@
 .diagnostic {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  font:
-    12px/1.7 ui-monospace,
-    SFMono-Regular,
-    Consolas,
-    monospace;
+  font: 12px/1.7 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
   max-height: 220px;
   overflow: auto;
 }
@@ -178,7 +170,7 @@
   flex: 1 1 140px;
   min-inline-size: 0;
   overflow-wrap: anywhere;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-family: var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
 }
 @media (any-pointer: coarse) {
   .testFile {

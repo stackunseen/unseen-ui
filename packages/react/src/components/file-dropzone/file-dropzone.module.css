@@ -4,19 +4,19 @@
   gap: var(--ai-gap, 12px);
   min-width: 0;
   padding: var(--ai-panel-padding, 16px);
-  border: 2px dashed var(--ai-border, #e2e8f0);
+  border: 2px dashed var(--ai-border, #e4e4e7);
   border-radius: var(--ai-control-radius, 8px);
   background: var(--ai-surface, #fff);
-  color: var(--ai-text, #0f172a);
+  color: var(--ai-text, #18181b);
   transition:
-    border-color 150ms ease,
-    background-color 150ms ease;
+    border-color var(--ai-duration-fast, 120ms) var(--ai-ease, cubic-bezier(0.2, 0, 0, 1)),
+    background-color var(--ai-duration-fast, 120ms) var(--ai-ease, cubic-bezier(0.2, 0, 0, 1));
 }
 .zone:not([data-disabled]) {
   cursor: pointer;
 }
 .zone:not([data-disabled]):hover {
-  border-color: var(--ai-control-border, #64748b);
+  border-color: var(--ai-control-border, #71717a);
 }
 .zone[data-dragging] {
   border-color: var(--ai-primary, #2563eb);
@@ -24,7 +24,7 @@
 }
 /* Locked zones keep readable text: only the glyph dims and the surface changes. */
 .zone[data-disabled] {
-  background: var(--ai-surface-subtle, #f1f5f9);
+  background: var(--ai-surface-subtle, #f4f4f5);
   cursor: not-allowed;
 }
 .zone[data-disabled] .icon {
@@ -38,7 +38,7 @@
   width: 20px;
   height: 20px;
   margin-top: 2px;
-  color: var(--ai-muted, #475569);
+  color: var(--ai-muted, #52525b);
 }
 .zone[data-dragging] .icon {
   color: var(--ai-primary-text, #1d4ed8);
@@ -69,7 +69,7 @@
 .rejections {
   margin: 0;
   padding-inline-start: 20px;
-  font-size: 12px;
+  font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-danger, #991b1b);
   overflow-wrap: anywhere;
 }

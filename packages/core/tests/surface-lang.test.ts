@@ -135,6 +135,45 @@ describe('surface line format', () => {
     expect(many.problems.map((item) => item.code)).toEqual(['limit']);
   });
 
+  it('reads the list, callout, options, steps, image and metricGroup nodes', () => {
+    const result = parseSurfaceProgram(
+      `root = [a, b, c, d, e, f]
+a = list(["One", "Two"], true)
+b = callout("info", "Heads up", null)
+c = options("Pick", "pick", [{value: "x", label: "X"}, {value: "y", label: "Y"}])
+d = steps("Plan", [{id: "s1", label: "Start", state: "current"}])
+e = image("https://example.com/a.png", "A chart")
+f = metricGroup("Totals", [{label: "Open", value: "3"}])`,
+      options,
+    );
+    expect(result.problems).toEqual([]);
+    expect(result.surface?.nodes).toEqual([
+      { id: 'a', type: 'list', items: ['One', 'Two'], ordered: true },
+      { id: 'b', type: 'callout', tone: 'info', title: 'Heads up' },
+      {
+        id: 'c',
+        type: 'options',
+        label: 'Pick',
+        actionId: 'pick',
+        choices: [
+          { value: 'x', label: 'X' },
+          { value: 'y', label: 'Y' },
+        ],
+      },
+      {
+        id: 'd',
+        type: 'steps',
+        title: 'Plan',
+        steps: [{ id: 's1', label: 'Start', state: 'current' }],
+      },
+      { id: 'e', type: 'image', src: 'https://example.com/a.png', alt: 'A chart' },
+      { id: 'f', type: 'metricGroup', title: 'Totals', metrics: [{ label: 'Open', value: '3' }] },
+    ]);
+    expect(parseSurfaceProgram('root = [a]\na = list()', options).problems[0]?.code).toBe(
+      'bad-arity',
+    );
+  });
+
   it('describes the vocabulary from the same table and its example parses clean', () => {
     const text = describeSurfaceVocabulary();
     for (const signature of surfaceVocabulary) expect(text).toContain(`- ${signature.type}(`);
