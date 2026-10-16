@@ -92,3 +92,7 @@
   color: var(--ai-danger, #991b1b);
   font-size: var(--ai-font-size-meta, 13px);
 }
+.toolApproval {
+  display: grid;
+  gap: 8px;
+}

@@ -69,6 +69,10 @@ const GovernanceSpecimen = dynamic(
   () => import('./governance-specimen').then((m) => m.GovernanceSpecimen),
   { loading: ExampleLoading },
 );
+const ChatAiSdkSpecimen = dynamic(
+  () => import('./chat-ai-sdk-specimen').then((m) => m.ChatAiSdkSpecimen),
+  { loading: ExampleLoading },
+);
 const ChatSpecimen = dynamic(() => import('./chat-specimen').then((m) => m.ChatSpecimen), {
   loading: ExampleLoading,
 });
@@ -404,14 +408,21 @@ export function Specimen({
       );
       break;
     case 'Chat':
-      preview = (
-        <ChatSpecimen
-          key={`${name}:${variant}`}
-          state={variant}
-          presentation={presentation}
-          onNotice={setResult}
-        />
-      );
+      preview =
+        variant === 'AI SDK approval' ? (
+          <ChatAiSdkSpecimen
+            key={`${name}:${variant}`}
+            presentation={presentation}
+            onNotice={setResult}
+          />
+        ) : (
+          <ChatSpecimen
+            key={`${name}:${variant}`}
+            state={variant}
+            presentation={presentation}
+            onNotice={setResult}
+          />
+        );
       break;
     case 'UsageMeter':
     case 'ProvenanceBadge':

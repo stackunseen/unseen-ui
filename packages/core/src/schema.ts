@@ -70,7 +70,7 @@ const proposal = z.strictObject({
   scopes: z.array(short).max(50),
   impact: short,
   expiresAt: z.iso.datetime(),
-  risk: z.enum(['low', 'medium', 'high']),
+  risk: z.enum(['low', 'medium', 'high', 'unknown']),
   status: z.enum(['pending', 'approved', 'rejected', 'expired', 'superseded']),
 });
 const source = z.strictObject({

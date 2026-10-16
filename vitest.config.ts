@@ -69,6 +69,9 @@ export default defineConfig({
       '@stackunseen/ui-core/history': fileURLToPath(
         new URL('./packages/core/src/history.ts', import.meta.url),
       ),
+      '@stackunseen/ui-core/ai-sdk': fileURLToPath(
+        new URL('./packages/core/src/ai-sdk.ts', import.meta.url),
+      ),
       '@stackunseen/ui-core/adapter': fileURLToPath(
         new URL('./packages/core/src/adapter.ts', import.meta.url),
       ),

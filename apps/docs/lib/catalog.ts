@@ -652,10 +652,20 @@ export const catalog: CatalogEntry[] = [
     name: 'Chat',
     category: 'Conversation',
     importPath: '/chat',
-    aliases: ['Chat window', 'Assistant panel', 'Conversation', 'Thread', 'useLocalHost'],
+    aliases: [
+      'Chat window',
+      'Assistant panel',
+      'Conversation',
+      'Thread',
+      'useLocalHost',
+      'useAiSdkChat',
+      'useChat',
+      'AI SDK',
+      'Vercel AI SDK',
+    ],
     description:
       'A complete chat surface: transcript, streaming reply, tool cards, suggestions, stop, retry and composer, driven by a host or by controlled props.',
-    states: ['Default', 'Mid conversation', 'Tool call', 'Failed'],
+    states: ['Default', 'Mid conversation', 'Tool call', 'Failed', 'AI SDK approval'],
     contract:
       'host: ChatHost · or messages · tools? · status · suggestions? · draft · onDraftChange · onSend · onCancel? · onRetry? · title? · starters? · toolbar? · attachments?',
     responsibility:

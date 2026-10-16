@@ -171,7 +171,9 @@ export function ApprovalBatch({
                   <span className={g.effectLabel}>{proposal.title}</span>
                   <span className={g.meta}>
                     <span>{proposal.impact}</span>
-                    <span>Risk {proposal.risk}</span>
+                    <span>
+                      {proposal.risk === 'unknown' ? 'Risk not assessed' : `Risk ${proposal.risk}`}
+                    </span>
                     <span>Version {proposal.version}</span>
                     {isDropped && (
                       <span className={g.warn}>

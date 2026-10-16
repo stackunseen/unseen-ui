@@ -10,6 +10,7 @@ export default defineConfig({
         adapter: 'src/adapter.ts',
         uploads: 'src/uploads.ts',
         editing: 'src/editing.ts',
+        'ai-sdk': 'src/ai-sdk.ts',
       },
       formats: ['es'],
     },

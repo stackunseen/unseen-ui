@@ -1,7 +1,10 @@
 'use client';
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { MessageData, Source, ToolCallData } from '@stackunseen/ui-core';
+import type { ChatApprovalDecision, ChatApprovalRequest } from '@stackunseen/ui-core/ai-sdk';
+import { ApprovalCard } from '../approval-card/approval-card.js';
+import { ToolCall } from '../tool-call/tool-call.js';
 import { Button } from '../button/button.js';
 import { Message, MessageActions } from '../message/message.js';
 import { PromptInput } from '../prompt-input/prompt-input.js';
@@ -20,6 +23,10 @@ export interface ChatHostSnapshot {
   status: ChatStatus;
   /** Prompts to offer right now; empty hides them. */
   suggestions?: readonly string[];
+  /** Sources referenced by message parts. */
+  sources?: readonly Source[];
+  /** Tool calls waiting on, or answered by, a person; shown as approval cards under the tool. */
+  approvals?: readonly ChatApprovalRequest[];
 }
 /** The host owns the conversation; the component subscribes and sends intents. */
 export interface ChatHost {
@@ -28,6 +35,8 @@ export interface ChatHost {
   send(text: string): unknown;
   cancel?(): void;
   retry?(): void;
+  /** A person's approve or reject; the host records it and runs or skips the tool. */
+  decide?(decision: ChatApprovalDecision): void;
 }
 
 export interface ChatBaseProps extends VariantProps<'Chat'> {
@@ -40,7 +49,10 @@ export interface ChatBaseProps extends VariantProps<'Chat'> {
   starters?: readonly string[];
   sources?: readonly Source[];
   responseVariant?: MessageContentProps['responseVariant'];
+  /** Pass `renderMarkdownPart` from `@stackunseen/ui/markdown` to format replies. */
   renderTextPart?: MessageContentProps['renderTextPart'];
+  /** Your view for a tool call; return undefined to keep the default card. */
+  renderTool?: MessageContentProps['renderTool'];
   maxPromptLength?: number;
   /** Composition slots for the composer. */
   toolbar?: ReactNode;
@@ -59,6 +71,8 @@ export interface ChatControlledProps extends ChatBaseProps {
   onSend: (text: string) => void;
   onCancel?: () => void;
   onRetry?: () => void;
+  approvals?: readonly ChatApprovalRequest[];
+  onDecision?: (decision: ChatApprovalDecision) => void;
 }
 export interface ChatHostProps extends ChatBaseProps {
   host: ChatHost;
@@ -86,9 +100,10 @@ export function Chat(props: ChatProps) {
     emptyTitle = 'Start a conversation',
     emptyDescription = 'Ask a question or pick a suggestion.',
     starters = [],
-    sources,
+    sources: sourcesProp,
     responseVariant,
     renderTextPart,
+    renderTool: customTool,
     maxPromptLength = 4000,
     toolbar,
     attachments,
@@ -109,6 +124,44 @@ export function Chat(props: ChatProps) {
   const send = controlled ? controlled.onSend : (text: string) => host!.send(text);
   const cancel = controlled ? controlled.onCancel : host?.cancel ? () => host.cancel!() : undefined;
   const retry = controlled ? controlled.onRetry : host?.retry ? () => host.retry!() : undefined;
+  const sources = sourcesProp ?? (controlled ? undefined : live.sources);
+  const approvals = controlled ? controlled.approvals : live.approvals;
+  const onDecision = controlled?.onDecision;
+  const decide = useMemo(
+    () =>
+      onDecision ??
+      (host?.decide ? (decision: ChatApprovalDecision) => host.decide!(decision) : undefined),
+    [onDecision, host],
+  );
+  const approvalFor = useMemo(
+    () => new Map((approvals ?? []).map((approval) => [approval.toolCallId, approval])),
+    [approvals],
+  );
+  const renderTool = useCallback(
+    (tool: ToolCallData) => {
+      const custom = customTool?.(tool);
+      const approval = approvalFor.get(tool.id);
+      if (!approval) return custom;
+      return (
+        <div className={css.toolApproval}>
+          {custom ?? <ToolCall value={tool} variant="compact" />}
+          <ApprovalCard
+            proposal={approval.proposal}
+            submission={approval.submission}
+            expired={approval.proposal.expiresAt === '' ? false : undefined}
+            onDecision={(choice) =>
+              decide?.({
+                approvalId: approval.approvalId,
+                toolCallId: approval.toolCallId,
+                approved: choice === 'approve',
+              })
+            }
+          />
+        </div>
+      );
+    },
+    [approvalFor, customTool, decide],
+  );
 
   const transcript = useRef<HTMLDivElement>(null);
   const textarea = useRef<HTMLTextAreaElement>(null);
@@ -180,6 +233,7 @@ export function Chat(props: ChatProps) {
               sources={sources}
               responseVariant={responseVariant}
               renderTextPart={renderTextPart}
+              renderTool={approvals?.length || customTool ? renderTool : undefined}
               className={css.message}
             >
               {message.role === 'assistant' &&

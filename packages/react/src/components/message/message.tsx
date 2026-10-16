@@ -31,6 +31,7 @@ export function Message({
   attachments,
   responseVariant,
   renderTextPart,
+  renderTool,
   children,
   className = '',
   ...props
@@ -70,6 +71,7 @@ export function Message({
             attachments={attachments}
             responseVariant={responseVariant}
             renderTextPart={renderTextPart}
+            renderTool={renderTool}
           />
         )}
         {children}

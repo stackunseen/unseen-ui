@@ -49,6 +49,10 @@
     "./editing": {
       "types": "./dist/editing.d.ts",
       "import": "./dist/editing.js"
+    },
+    "./ai-sdk": {
+      "types": "./dist/ai-sdk.d.ts",
+      "import": "./dist/ai-sdk.js"
     }
   },
   "scripts": {

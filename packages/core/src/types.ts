@@ -85,7 +85,8 @@ export interface ApprovalProposal {
   scopes: string[];
   impact: string;
   expiresAt: string;
-  risk: 'low' | 'medium' | 'high';
+  /** `unknown` when the host did not assess risk; the card says so instead of guessing. */
+  risk: 'low' | 'medium' | 'high' | 'unknown';
   status: ApprovalState;
 }
 export interface ApprovalDecision {

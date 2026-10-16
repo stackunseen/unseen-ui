@@ -35,6 +35,8 @@ export function ApprovalCard({
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     function update() {
+      // An empty expiry means the host set none; any other unreadable value fails closed.
+      if (proposal.expiresAt === '') return setClockExpired(false);
       const remaining = Date.parse(proposal.expiresAt) - Date.now();
       const ended = !Number.isFinite(remaining) || remaining <= 0;
       setClockExpired(ended);
@@ -79,17 +81,17 @@ export function ApprovalCard({
       <p className={s.approvalSummary}>
         <span>{proposal.target}</span> ·{' '}
         <span>{proposal.scopes.join(', ') || 'No scopes supplied'}</span> ·{' '}
-        <span>{proposal.risk} risk</span>
+        <span>{proposal.risk === 'unknown' ? 'Risk not assessed' : `${proposal.risk} risk`}</span>
       </p>
       <p>{proposal.impact}</p>
       <dl className={s.definition} {...details.contentProps}>
         <dt>Risk / version</dt>
         <dd>
-          {proposal.risk} · v{proposal.version}
+          {proposal.risk === 'unknown' ? 'Not assessed' : proposal.risk} · v{proposal.version}
         </dd>
         <dt>Expires</dt>
         <dd>
-          <ObservationTime value={proposal.expiresAt} />
+          {proposal.expiresAt ? <ObservationTime value={proposal.expiresAt} /> : 'None supplied'}
         </dd>
         <dt>Execution</dt>
         <dd>The host verifies permission and the current proposal before execution.</dd>

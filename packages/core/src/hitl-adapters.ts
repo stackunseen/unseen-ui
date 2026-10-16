@@ -277,7 +277,7 @@ export function fromAgUiInterrupt(
         interrupt.expiresAt && Number.isFinite(Date.parse(interrupt.expiresAt))
           ? interrupt.expiresAt
           : farFuture,
-      risk: 'medium',
+      risk: 'unknown',
       status: 'pending',
     };
     return {

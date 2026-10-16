@@ -37,6 +37,8 @@ export interface MessageContentProps {
     part: TextMessagePart,
     variant: ComponentVariant<'StreamingResponse'>,
   ) => ReactNode;
+  /** Host view for a tool call. Return undefined to keep the default card. Keep it stable. */
+  renderTool?: (tool: ToolCallData) => ReactNode | undefined;
 }
 function unique<T extends { id: string }>(
   items: readonly T[] | undefined,
@@ -53,6 +55,7 @@ const PartView = memo(function PartView({
   citationNumber,
   responseVariant,
   renderTextPart,
+  renderTool,
 }: {
   part: MessagePart;
   source?: Source;
@@ -61,6 +64,7 @@ const PartView = memo(function PartView({
   citationNumber: number;
   responseVariant: ComponentVariant<'StreamingResponse'>;
   renderTextPart?: MessageContentProps['renderTextPart'];
+  renderTool?: MessageContentProps['renderTool'];
 }) {
   let content: ReactNode;
   switch (part.type) {
@@ -78,7 +82,7 @@ const PartView = memo(function PartView({
       break;
     case 'tool':
       content = tool ? (
-        <ToolCall value={tool} variant="compact" />
+        (renderTool?.(tool) ?? <ToolCall value={tool} variant="compact" />)
       ) : (
         <p className={s.unavailable}>
           Tool result unavailable. The host has not resolved this call.
@@ -124,6 +128,7 @@ export function MessageContent({
   attachments,
   responseVariant = 'cursor',
   renderTextPart,
+  renderTool,
 }: MessageContentProps) {
   if (!value.parts)
     return (
@@ -145,6 +150,7 @@ export function MessageContent({
             part={part}
             responseVariant={responseVariant}
             renderTextPart={renderTextPart}
+            renderTool={renderTool}
             citationNumber={part.type === 'source' ? citationNumber : 0}
             source={part.type === 'source' ? unique(sources, part.sourceId) : undefined}
             tool={part.type === 'tool' ? unique(tools, part.toolCallId) : undefined}

@@ -37,6 +37,8 @@ const sharedPublicModules = new Set([
   'components/message-content/message-content',
   'components/prompt-input/prompt-input',
   'components/suggestions/suggestions',
+  'components/approval-card/approval-card',
+  'components/tool-call/tool-call',
   'shared/link',
   'shared/copy',
 ]);
