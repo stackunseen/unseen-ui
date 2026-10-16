@@ -52,7 +52,13 @@ export interface AppHostCapabilities {
 }
 
 export type AppBridgeEvent =
-  | { kind: 'initialize'; id: JsonRpcId; appCapabilities: Record<string, unknown>; appInfo?: unknown; protocolVersion?: string }
+  | {
+      kind: 'initialize';
+      id: JsonRpcId;
+      appCapabilities: Record<string, unknown>;
+      appInfo?: unknown;
+      protocolVersion?: string;
+    }
   | { kind: 'initialized' }
   | { kind: 'size-changed'; width?: number; height?: number }
   | { kind: 'request'; id: JsonRpcId; method: string; params: unknown }
@@ -146,17 +152,23 @@ export function createAppBridge(options: {
             };
           return { kind: 'request', id: data.id, method, params: data.params };
         }
-        if (data.id !== undefined) return { kind: 'invalid', reason: 'Request id must be a string or number' };
+        if (data.id !== undefined)
+          return { kind: 'invalid', reason: 'Request id must be a string or number' };
         if (method === appMethods.initialized) return { kind: 'initialized' };
         if (method === appMethods.sizeChanged)
-          return { kind: 'size-changed', width: finite(params.width), height: finite(params.height) };
+          return {
+            kind: 'size-changed',
+            width: finite(params.width),
+            height: finite(params.height),
+          };
         return { kind: 'notification', method, params: data.params };
       }
       if (isId(data.id) && ('result' in data || 'error' in data)) {
         const error = isRecord(data.error)
           ? {
               code: typeof data.error.code === 'number' ? data.error.code : jsonRpcErrors.internal,
-              message: typeof data.error.message === 'string' ? data.error.message : 'Unknown error',
+              message:
+                typeof data.error.message === 'string' ? data.error.message : 'Unknown error',
               data: data.error.data,
             }
           : undefined;
@@ -196,7 +208,10 @@ export function createAppBridge(options: {
       pending.set(id, method);
       return {
         id,
-        message: params === undefined ? { jsonrpc: '2.0', id, method } : { jsonrpc: '2.0', id, method, params },
+        message:
+          params === undefined
+            ? { jsonrpc: '2.0', id, method }
+            : { jsonrpc: '2.0', id, method, params },
       };
     },
     settle(id) {
@@ -210,7 +225,9 @@ export function createAppBridge(options: {
 
 const originRule = /^(?:https?|wss?):\/\/(?:\*\.)?[A-Za-z0-9.-]+(?::\d{1,5})?$/;
 function origins(list: readonly string[] | undefined): string[] {
-  return (list ?? []).filter((item) => typeof item === 'string' && originRule.test(item)).slice(0, 32);
+  return (list ?? [])
+    .filter((item) => typeof item === 'string' && originRule.test(item))
+    .slice(0, 32);
 }
 /**
  * The Content Security Policy the host enforces for a view, from the resource's declared
@@ -240,9 +257,17 @@ export function buildAppCsp(csp: AppResourceCsp | undefined): string {
 export function injectAppCsp(html: string, csp: string): string {
   const meta = `<meta http-equiv="Content-Security-Policy" content="${csp.replace(/"/g, '&quot;')}">`;
   const head = /<head\b[^>]*>/i.exec(html);
-  if (head) return html.slice(0, head.index + head[0].length) + meta + html.slice(head.index + head[0].length);
+  if (head)
+    return (
+      html.slice(0, head.index + head[0].length) + meta + html.slice(head.index + head[0].length)
+    );
   const open = /<html\b[^>]*>/i.exec(html);
-  if (open) return html.slice(0, open.index + open[0].length) + `<head>${meta}</head>` + html.slice(open.index + open[0].length);
+  if (open)
+    return (
+      html.slice(0, open.index + open[0].length) +
+      `<head>${meta}</head>` +
+      html.slice(open.index + open[0].length)
+    );
   return `<!doctype html><html><head>${meta}</head><body>${html}</body></html>`;
 }
 /** The iframe `allow` attribute for the permissions the host actually granted. */

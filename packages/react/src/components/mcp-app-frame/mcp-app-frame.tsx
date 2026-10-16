@@ -158,16 +158,29 @@ export function MCPAppFrame({
           }
           return;
         case 'size-changed':
-          if (result.height !== undefined) setHeight(Math.min(maxHeight, Math.max(48, result.height)));
+          if (result.height !== undefined)
+            setHeight(Math.min(maxHeight, Math.max(48, result.height)));
           return;
         case 'request': {
           const allowed = requestCapability[result.method];
           if (!allowed) {
-            post(bridge.error(result.id, jsonRpcErrors.methodNotFound, `Method "${result.method}" is not supported by this host`));
+            post(
+              bridge.error(
+                result.id,
+                jsonRpcErrors.methodNotFound,
+                `Method "${result.method}" is not supported by this host`,
+              ),
+            );
             return;
           }
           if (!allowed(latest.current.hostCapabilities) || !latest.current.onRequest) {
-            post(bridge.error(result.id, jsonRpcErrors.denied, `The host did not declare support for ${result.method}`));
+            post(
+              bridge.error(
+                result.id,
+                jsonRpcErrors.denied,
+                `The host did not declare support for ${result.method}`,
+              ),
+            );
             return;
           }
           if (result.method === appMethods.ping) {
@@ -246,13 +259,19 @@ export function MCPAppFrame({
             {title}
           </h3>
           <p className={m.meta}>
-            From {server.name}. This view can see what you do inside it and may send messages to
-            the host.
+            From {server.name}. This view can see what you do inside it and may send messages to the
+            host.
           </p>
         </div>
         <StatusBadge
           state={
-            state === 'ready' && !notice ? (phase === 'initialized' ? 'succeeded' : 'running') : state === 'loading' ? 'queued' : 'blocked'
+            state === 'ready' && !notice
+              ? phase === 'initialized'
+                ? 'succeeded'
+                : 'running'
+              : state === 'loading'
+                ? 'queued'
+                : 'blocked'
           }
           label={
             state === 'ready' && !notice

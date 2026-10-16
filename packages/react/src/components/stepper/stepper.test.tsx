@@ -284,7 +284,9 @@ describe('Matrix plain data, corner, names and angled padding', () => {
     expect(named).toHaveAttribute('href', '/j/?d=rag&k=guide');
     expect(named).toHaveAttribute('title', 'RAG × Guides: 6 entries');
     expect(within(table).getByText('1').closest('span')).toHaveAttribute('title', 'rag × tool: 1');
-    const empty = within(table).getAllByRole('cell').find((cell) => cell.hasAttribute('data-empty'))!;
+    const empty = within(table)
+      .getAllByRole('cell')
+      .find((cell) => cell.hasAttribute('data-empty'))!;
     expect(empty.querySelector('[title]')).toHaveAttribute('title', 'evals × guide: none');
     const corner = table.querySelector('thead td')!;
     expect(corner.className).toContain('matrixCorner');
@@ -307,7 +309,15 @@ describe('Matrix plain data, corner, names and angled padding', () => {
     );
     expect(screen.getByRole('table').style.getPropertyValue('--matrix-end-padding')).toBe('8.5em');
     rerender(
-      <Matrix label="Coverage" rows={rows} columns={columns} values={{}} columnHeader="angled" totals="rows" totalsLabel="All" />,
+      <Matrix
+        label="Coverage"
+        rows={rows}
+        columns={columns}
+        values={{}}
+        columnHeader="angled"
+        totals="rows"
+        totalsLabel="All"
+      />,
     );
     expect(screen.getByRole('table').style.getPropertyValue('--matrix-end-padding')).toBe('2em');
     rerender(<Matrix label="Coverage" rows={rows} columns={columns} values={{}} />);
@@ -333,10 +343,20 @@ describe('Stepper segments', () => {
     const nav = screen.getByRole('navigation', { name: 'Series parts' });
     expect(nav).toHaveAttribute('data-presentation', 'segments');
     expect(nav.querySelector('[class*="stepperDot"]')).toBeNull();
-    expect(within(nav).getByRole('link', { name: 'Datasets, current' })).toHaveAttribute('aria-current', 'step');
+    expect(within(nav).getByRole('link', { name: 'Datasets, current' })).toHaveAttribute(
+      'aria-current',
+      'step',
+    );
     expect(within(nav).getByRole('link', { name: 'Scoring' })).toHaveAttribute('href', '/3');
-    expect(within(nav).getByText('Reporting, planned').closest('li')).toHaveAttribute('data-state', 'planned');
+    expect(within(nav).getByText('Reporting, planned').closest('li')).toHaveAttribute(
+      'data-state',
+      'planned',
+    );
     expect(within(nav).getAllByRole('listitem')).toHaveLength(4);
-    expect(within(nav).getByRole('link', { name: 'Why evals, completed' }).querySelector('[aria-hidden="true"]')).toHaveTextContent('Why evals');
+    expect(
+      within(nav)
+        .getByRole('link', { name: 'Why evals, completed' })
+        .querySelector('[aria-hidden="true"]'),
+    ).toHaveTextContent('Why evals');
   });
 });
