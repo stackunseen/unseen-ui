@@ -15,6 +15,7 @@ export {
   marketingGroups,
   sectionGroups,
 } from './component-collections';
+import { taskTerms } from './tasks';
 export type { ComponentSection, GallerySection } from './component-collections';
 const aiDomains: Record<string, (typeof aiGroups)[number]> = {
   Conversation: 'Conversation',
@@ -82,6 +83,7 @@ export function componentSearchText(entry: CatalogEntry): string {
     sectionLabels[componentSection(entry)],
     ...(entry.aliases ?? []),
     ...(aliases[entry.name] ?? []),
+    ...taskTerms(entry.name),
   ]
     .join(' ')
     .toLowerCase();

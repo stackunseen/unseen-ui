@@ -1362,3 +1362,62 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
     grid-template-areas: 'session' 'controls';
   }
 }
+
+/* Install and import strip on component pages */
+.detail-install {
+  display: grid;
+  gap: 4px;
+  margin: 4px 0 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--ai-border);
+  border-radius: 10px;
+  background: var(--ai-surface-subtle);
+  font-size: 13px;
+}
+.detail-install-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+.detail-install-row > code,
+.detail-install-row > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 12.5px;
+}
+.detail-install-row > code,
+.detail-install-row code {
+  font-family: ui-monospace, monospace;
+}
+.detail-related-group {
+  margin-top: 16px;
+}
+.detail-related-group h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+.detail-related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.detail-related-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--ai-border);
+  border-radius: 999px;
+  color: var(--ai-text);
+  font-size: 13px;
+  text-decoration: none;
+}
+.detail-related-links a:hover {
+  border-color: var(--ai-primary);
+  color: var(--ai-primary-text);
+}

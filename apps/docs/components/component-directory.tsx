@@ -12,6 +12,7 @@ import {
 } from '../lib/component-collections';
 import type { ComponentSection } from '../lib/component-collections';
 import { directorySearch, readDirectoryLocation } from '../lib/directory-location';
+import { componentTasks } from '../lib/tasks';
 export interface DirectoryEntry {
   name: string;
   href: string;
@@ -107,6 +108,27 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
           ))}
         </div>
       </div>
+      {!compositionView && (
+        <div className="directory-tasks" role="group" aria-label="Start by task">
+          <span className="directory-tasks-label">Start by task</span>
+          {componentTasks.map((task) => (
+            <button
+              key={task.id}
+              type="button"
+              aria-pressed={query.trim().toLowerCase() === task.label.toLowerCase()}
+              title={task.description}
+              onClick={() =>
+                update({
+                  query: query.trim().toLowerCase() === task.label.toLowerCase() ? '' : task.label,
+                  collection: 'all',
+                })
+              }
+            >
+              {task.label}
+            </button>
+          ))}
+        </div>
+      )}
       <p className="directory-count" role="status">
         {filtered.length}{' '}
         {compositionView

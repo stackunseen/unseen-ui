@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { RotateCcw } from 'lucide-react';
-import { Button, Tabs, Accordion, Select } from '@stackunseen/ui';
+import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import type { CatalogEntry } from '../lib/catalog';
 import { catalogStyles } from '../lib/catalog';
 import type { GalleryLocation } from '../lib/gallery-location';
@@ -12,6 +12,10 @@ import { partStates } from '../lib/message-parts-fixtures';
 import { emulatorStates } from '../lib/terminal-fixtures';
 import { componentGuidance, rendererPeers } from '../lib/component-guidance';
 import { isReleaseComponent } from '../lib/first-release';
+import { catalog } from '../lib/catalog';
+import { navigationGroup } from '../lib/gallery-navigation';
+import { componentHref } from '../lib/site-paths';
+import { tasksFor } from '../lib/tasks';
 export function ComponentDetail({
   entry,
   location,
@@ -96,6 +100,17 @@ export function ComponentDetail({
       ? `import '@stackunseen/ui${module}.css';\n`
       : '';
   const peers = rendererPeers[rich || structured ? '/markdown' : module];
+  const importLine = `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : entry.name} } from '@stackunseen/ui${module}';`;
+  const installLine = `npm install @stackunseen/ui${peers?.length ? ` ${peers.join(' ')}` : ''}`;
+  const tasks = tasksFor(entry.name);
+  const siblings = catalog
+    .filter(
+      (item) =>
+        item.name !== entry.name &&
+        isReleaseComponent(item) &&
+        navigationGroup(item) === navigationGroup(entry),
+    )
+    .slice(0, 8);
   const usage = `${rich && entry.name === 'StreamingResponse' ? '' : `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : entry.name} } from '@stackunseen/ui${module}';\n`}${entry.relatedImports?.length ? `import { ${entry.relatedImports.join(', ')} } from '@stackunseen/ui';\n` : ''}import '@stackunseen/ui/styles.css';\n${optionalStyles}${emulatedTerminal ? "import '@stackunseen/ui/terminal.css';\n" : ''}${mathStyles ? "import 'katex/dist/katex.min.css';\n" : ''}\n${code}`;
   const [copied, setCopied] = useState<{ usage: string; message: string }>();
   const copyRequest = useRef(0);
@@ -130,6 +145,36 @@ export function ComponentDetail({
             kept here for existing links and is separate from the first-release component catalog.
           </p>
         )}
+      </div>
+      <div className="detail-install" aria-label="Install and import">
+        <div className="detail-install-row">
+          <code>{installLine}</code>
+          <CopyButton
+            size="sm"
+            variant="ghost"
+            value={installLine}
+            label="Copy install command"
+            iconOnly
+          />
+        </div>
+        <div className="detail-install-row">
+          <code>{importLine}</code>
+          <CopyButton size="sm" variant="ghost" value={importLine} label="Copy import" iconOnly />
+        </div>
+        <div className="detail-install-row">
+          <span>
+            Styles: <code>@stackunseen/ui/styles.css</code>
+            {optionalStyles ? (
+              <>
+                {' and '}
+                <code>{`@stackunseen/ui${module}.css`}</code>
+              </>
+            ) : null}
+          </span>
+          <Button size="sm" variant="ghost" onClick={() => void copyUsage()}>
+            Copy usage
+          </Button>
+        </div>
       </div>
       <div className="detail-toolbar">
         <label>
@@ -309,35 +354,62 @@ export function ComponentDetail({
         className="api-section component-anchor"
         aria-labelledby="component-customization-title"
       >
-        <h2 id="component-customization-title">Customize and use with a keyboard</h2>
-        <Accordion
-          type="multiple"
-          headingLevel={3}
-          items={[
-            {
-              value: 'customization',
-              title: 'Customization',
-              content: (
-                <p>
-                  Change shared colors, spacing, corners and icons with the theme. Use the
-                  component's supported props to adapt its content and layout.{' '}
-                  <Link href="/docs/customization/">Customization guide</Link>
-                  {' · '}
-                  <Link href="/customize/">Theme Studio</Link>
-                </p>
-              ),
-            },
-            {
-              value: 'keyboard',
-              title: 'Keyboard',
-              content:
-                entry.keyboard ??
-                guidance?.keyboard ??
-                'Tab reaches controls; Enter or Space activates buttons. Accordions use arrow keys, Home and End. Select menus support arrows and typeahead; Escape closes menus and dialogs and restores focus.',
-            },
-          ]}
-        />
+        <h2 id="component-customization-title">Keyboard and customization</h2>
+        <h3>Keyboard</h3>
+        <p className="component-guidance">
+          {entry.keyboard ??
+            guidance?.keyboard ??
+            'Tab reaches controls; Enter or Space activates buttons. Accordions use arrow keys, Home and End. Select menus support arrows and typeahead; Escape closes menus and dialogs and restores focus.'}
+        </p>
+        <h3>Customization</h3>
+        <p className="component-guidance">
+          Change shared colors, spacing, corners and icons with the theme. Use the component's
+          supported props to adapt its content and layout.{' '}
+          <Link href="/docs/customization/">Customization guide</Link>
+          {' · '}
+          <Link href="/customize/">Theme Studio</Link>
+        </p>
       </section>
+      {(tasks.length > 0 || siblings.length > 0) && (
+        <section
+          id="component-related"
+          className="api-section component-anchor detail-related"
+          aria-labelledby="component-related-title"
+        >
+          <h2 id="component-related-title">Works with</h2>
+          {tasks.map((task) => (
+            <div className="detail-related-group" key={task.id}>
+              <h3>{task.label}</h3>
+              <p className="component-guidance">{task.description}</p>
+              <ul className="detail-related-links">
+                {task.components
+                  .filter((name) => name !== entry.name)
+                  .map((name) => (
+                    <li key={name}>
+                      <Link prefetch={false} href={componentHref(name)}>
+                        {name}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          ))}
+          {siblings.length > 0 && (
+            <div className="detail-related-group">
+              <h3>Same group: {navigationGroup(entry)}</h3>
+              <ul className="detail-related-links">
+                {siblings.map((item) => (
+                  <li key={item.name}>
+                    <Link prefetch={false} href={componentHref(item.name)}>
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
     </div>
   );
 }
