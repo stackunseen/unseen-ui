@@ -20,7 +20,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     category: 'Conversation',
     aliases: ['Thinking', 'Reasoning summary'],
     description: 'A quiet, collapsible public reasoning summary that follows the stream.',
-    states: ['Streaming', 'Complete', 'Unknown duration'],
+    states: ['Complete', 'Streaming', 'Unknown duration'],
     contract: 'summary · state · durationMs? · open? · onOpenChange?',
     responsibility:
       'Pass a public summary only. Duration is shown only when the host measured it; private reasoning is never displayed.',

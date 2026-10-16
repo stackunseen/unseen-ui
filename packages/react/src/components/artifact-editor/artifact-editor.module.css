@@ -22,7 +22,7 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   border: var(--ai-border-width, 1px) solid var(--ai-border, #71717a);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface, #fff);
   font-family: var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
   font-size: inherit;

@@ -16,7 +16,7 @@ describe('controlled interactions', () => {
       act(() => vi.advanceTimersByTime(1001));
       expect(screen.getByText('Proposal expired')).toBeVisible();
       expect(screen.queryByText('Review required')).toBeNull();
-      expect(screen.getByRole('button', { name: 'Approve action' })).toBeDisabled();
+      expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
     } finally {
       vi.useRealTimers();
     }
@@ -29,9 +29,9 @@ describe('controlled interactions', () => {
     const { rerender } = render(
       <ApprovalCard proposal={proposal} submission="idle" stale onDecision={decide} />,
     );
-    expect(screen.getByRole('button', { name: 'Approve action' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
     rerender(<ApprovalCard proposal={proposal} submission="idle" expired onDecision={decide} />);
-    expect(screen.getByRole('button', { name: 'Approve action' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
     rerender(
       <ApprovalCard
         proposal={proposal}
@@ -71,7 +71,7 @@ describe('proposal headings stay aligned with host state', () => {
         screen.getByText('Decision acknowledged. Execution is reported separately.'),
       ).toBeVisible();
       if (status !== 'pending') expect(screen.queryByText('Review required')).toBeNull();
-      expect(screen.getByRole('button', { name: 'Approve action' })).toBeDisabled();
+      expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
     },
   );
 
@@ -113,7 +113,7 @@ describe('proposal headings stay aligned with host state', () => {
       expect(screen.getByText('Proposal changed')).toBeVisible();
       expect(screen.getByText('Changed')).toBeVisible();
       expect(screen.queryByText('Action approved')).toBeNull();
-      expect(screen.getByRole('button', { name: 'Approve action' })).toBeDisabled();
+      expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
     },
   );
 

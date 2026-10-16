@@ -23,7 +23,13 @@ export function ToolGroup({
           {tools.some((t) => t.state === 'failed') ? ' · Contains failures' : ''}
         </div>
       )}
-      {variant === 'accordion' ? (
+      {variant === 'list' ? (
+        <div className={s.toolList}>
+          {tools.map((tool) => (
+            <ToolCall key={tool.id} value={tool} variant="row" detail={detail} />
+          ))}
+        </div>
+      ) : variant === 'accordion' ? (
         <Accordion
           region={false}
           type="multiple"

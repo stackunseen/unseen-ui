@@ -1,5 +1,5 @@
 'use client';
-import { ChevronDownIcon, ListBulletIcon } from '@radix-ui/react-icons';
+import { CheckIcon, ChevronDownIcon, ListBulletIcon } from '@radix-ui/react-icons';
 import { Shimmer } from '../shimmer/shimmer.js';
 import { safeHttpUrl, useDisclosure } from '../../shared/disclosure.js';
 import s from '../../shared/styles/assistant.module.css';
@@ -53,7 +53,9 @@ export function ChainOfThought({
               data-state={step.state}
               aria-current={step.state === 'active' ? 'step' : undefined}
             >
-              <span className={s.dot} aria-hidden="true" />
+              <span className={s.dot} aria-hidden="true">
+                {step.state === 'complete' && <CheckIcon />}
+              </span>
               <span className={s.label}>
                 {step.state === 'active' ? <Shimmer>{step.label}</Shimmer> : step.label}
                 <span className={s.srOnly}> ({step.state})</span>

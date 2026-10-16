@@ -802,9 +802,7 @@ export function ExpandedSpecimen({
           variant={resolveVariant('RunInspector', presentation)}
           runId="run-42"
           usage={
-            state === 'Unknown usage'
-              ? undefined
-              : { tokens: 2840, source: 'Synthetic adapter fixture' }
+            state === 'Unknown usage' ? undefined : { tokens: 2840, source: 'Sample host report' }
           }
           spans={
             empty

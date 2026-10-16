@@ -44,7 +44,7 @@
   text-align: start;
   padding: 8px 10px;
   border: var(--ai-border-width, 1px) solid transparent;
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   color: inherit;
   background: transparent;
   font: inherit;
@@ -73,7 +73,7 @@
   min-width: 0;
   padding: 8px;
   border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   display: grid;
   gap: 8px;
 }
@@ -105,16 +105,16 @@
   min-width: 0;
   min-height: var(--ai-control-height, 36px);
   border: var(--ai-border-width, 1px) solid var(--ai-control-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-field-background, var(--ai-surface));
   color: var(--ai-text);
   font: inherit;
   padding: 8px 12px;
 }
 .search input:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: -1px;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #2563eb) 22%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #18181b) 22%, transparent);
 }
 .actions {
   display: flex;

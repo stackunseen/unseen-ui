@@ -20,7 +20,7 @@
 .root[data-variant='bar'] {
   container-type: inline-size;
   border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
 }
 .content {
   display: grid;

@@ -24,7 +24,7 @@ describe('theme resolver', () => {
     expect(theme.dark.canvas).toBe('#09090b');
     expect(theme.dark.surface).toBe('#18181b');
     expect(theme.light.canvas).toBe('#fafafa');
-    expect(theme.seeds.primary).toBe('#2563eb');
+    expect(theme.seeds.primary).toBe('#171717');
     expect(theme.light.success).toBe('#166534');
     expect(theme.dark.danger).toBe('#fca5a5');
   });
@@ -191,7 +191,7 @@ describe('brand fills against the surface', () => {
 
 describe('matrix flip level', () => {
   it('emits the level where the primary foreground beats body text, per scheme', () => {
-    const blue = themeToCSS(createTheme(), 'flip');
+    const blue = themeToCSS(createTheme({ primary: '#2563eb' }), 'flip');
     const ink = themeToCSS(createTheme({ primary: '#18181b' }), 'flip');
     const flip = (css: string) =>
       [...css.matchAll(/--ai-matrix-flip:([\d.]+)/g)].map((match) => Number(match[1]));
@@ -210,9 +210,9 @@ describe('matrix flip level', () => {
 describe('per-role radius seeds', () => {
   it('emits button, pill, card and tag radii with sensible defaults and validation', () => {
     const defaults = createTheme();
-    expect(defaults.seeds.buttonRadius).toBe(8);
+    expect(defaults.seeds.buttonRadius).toBe(10);
     expect(defaults.seeds.pillRadius).toBe(999);
-    expect(defaults.seeds.cardRadius).toBe(10);
+    expect(defaults.seeds.cardRadius).toBe(12);
     expect(defaults.seeds.tagRadius).toBe(999);
     const pills = createTheme({ radius: 12, controlRadius: 10, buttonRadius: 999, cardRadius: 14 });
     expect(pills.seeds.cardRadius).toBe(14);

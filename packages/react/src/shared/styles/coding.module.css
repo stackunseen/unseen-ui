@@ -147,7 +147,7 @@
 }
 .test {
   border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   padding: 12px;
   min-width: 0;
 }

@@ -148,7 +148,7 @@ export function Chat(props: ChatProps) {
       if (!approval) return custom;
       return (
         <div className={css.toolApproval}>
-          {custom ?? <ToolCall value={tool} variant="compact" />}
+          {custom ?? <ToolCall value={tool} variant="row" />}
           <ApprovalCard
             proposal={approval.proposal}
             submission={approval.submission}

@@ -90,7 +90,7 @@ describe('Chat on an AI SDK chat', () => {
       id: 'approval-1',
       approved: true,
     });
-    expect(within(card).getByRole('button', { name: /approve/i })).toBeDisabled();
+    expect(within(card).queryByRole('button', { name: /approve/i })).toBeNull();
   });
 
   it('sends the draft through sendMessage and stops through stop', async () => {

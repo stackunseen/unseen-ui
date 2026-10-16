@@ -201,7 +201,7 @@ describe('Agent workbench template', () => {
     await ready(user);
     await user.click(screen.getByRole('button', { name: 'Recovery scenarios' }));
     await user.click(screen.getByRole('button', { name: 'Revoke access' }));
-    expect(screen.getByRole('button', { name: 'Approve action' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
     expect(
       screen.getByText('Access was revoked. Start a new authorized review.'),
     ).toBeInTheDocument();

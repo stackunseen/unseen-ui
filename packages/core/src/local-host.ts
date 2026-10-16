@@ -7,6 +7,9 @@ export interface LocalReply {
   text: string;
   tool?: {
     name: string;
+    /** Step label shown in tool rows, such as "Searched notes". */
+    label?: string;
+    target?: string;
     input: string;
     output?: string;
     error?: string;
@@ -69,6 +72,8 @@ export function defaultLocalReply(prompt: string): LocalReply {
     return {
       tool: {
         name: 'search_notes',
+        label: 'Searched notes',
+        target: query || prompt,
         input: JSON.stringify({ query: query || prompt, limit: 5 }, null, 2),
         output: '3 notes matched\nRenewal plan · Owner review · Q3 summary',
         durationMs: 640,
@@ -185,6 +190,8 @@ export function createLocalHost(options: LocalHostOptions = {}): LocalHost {
             {
               id: toolId,
               name: turn.tool.name,
+              ...(turn.tool.label === undefined ? {} : { label: turn.tool.label }),
+              ...(turn.tool.target === undefined ? {} : { target: turn.tool.target }),
               revision: 1,
               state: 'running' as const,
               input: turn.tool.input,

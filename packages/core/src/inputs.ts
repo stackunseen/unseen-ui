@@ -20,6 +20,8 @@ export function toolCallFrom(input: ToolCallInput | ToolCallData): ToolCallData 
   if (input.output !== undefined) call.output = input.output;
   if (input.error !== undefined) call.error = input.error;
   if (input.durationMs !== undefined) call.durationMs = input.durationMs;
+  if (input.label !== undefined) call.label = input.label;
+  if (input.target !== undefined) call.target = input.target;
   return call;
 }
 

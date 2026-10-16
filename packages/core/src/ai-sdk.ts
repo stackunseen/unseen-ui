@@ -75,6 +75,8 @@ export interface AiSdkMappingOptions {
     scopes?: string[];
     risk?: ApprovalProposal['risk'];
   };
+  /** Words for a tool row, such as `{ label: 'Searched accounts', target: input.query }`. */
+  describeTool?: (tool: { name: string; input: unknown }) => { label?: string; target?: string };
   /** Bound on the JSON shown for tool input and output. */
   maxJsonLength?: number;
 }
@@ -209,6 +211,9 @@ export function fromAiSdkChat(
           state,
           input: inputText,
         };
+        const words = options.describeTool?.({ name, input: part.input });
+        if (words?.label) call.label = words.label;
+        if (words?.target) call.target = words.target;
         if (part.state === 'output-available') call.output = json(part.output, limit);
         if (part.state === 'output-error') call.error = part.errorText ?? 'The tool failed.';
         tools.push(call);

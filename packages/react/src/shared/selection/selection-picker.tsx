@@ -30,6 +30,8 @@ export function SelectionPicker<T extends SelectionOption>({
   onSelect,
   inputRef,
   children,
+  displayValue,
+  trailing,
   ...props
 }: SelectionProps<T> & {
   selection: readonly string[];
@@ -37,6 +39,10 @@ export function SelectionPicker<T extends SelectionOption>({
   onSelect: (value: string) => void;
   inputRef: RefObject<HTMLInputElement | null>;
   children: (summaryId: string) => ReactNode;
+  /** Shown in the empty field, in text colour, so the field reads as its current choice. */
+  displayValue?: string;
+  /** Controls inside the field's end edge, such as clear. */
+  trailing?: ReactNode;
 }) {
   const generatedId = useId();
   const controlId = id ?? `selection-${generatedId}`;
@@ -125,34 +131,38 @@ export function SelectionPicker<T extends SelectionOption>({
           if (!disabled) setDisclosed(next);
         }}
       >
-        <Popover.Anchor asChild>
-          <Input
-            ref={inputRef}
-            role="combobox"
-            value={query}
-            required={false}
-            aria-required={required || undefined}
-            aria-autocomplete="list"
-            aria-haspopup="listbox"
-            aria-expanded={open}
-            aria-controls={open ? listId : undefined}
-            aria-activedescendant={
-              open && activeIndex >= 0 ? `${listId}-${activeIndex}` : undefined
-            }
-            aria-describedby={`${controlId}-selection${message ? ` ${controlId}-status` : ''}`}
-            placeholder={placeholder}
-            autoComplete="off"
-            dir={direction}
-            onFocus={() => setDisclosed(true)}
-            onClick={() => setDisclosed(true)}
-            onChange={(event) => {
-              onQueryChange(event.target.value);
-              setHighlighted(undefined);
-              setDisclosed(true);
-            }}
-            onKeyDown={onKeyDown}
-          />
-        </Popover.Anchor>
+        <div className={s.control}>
+          <Popover.Anchor asChild>
+            <Input
+              ref={inputRef}
+              role="combobox"
+              value={query}
+              required={false}
+              aria-required={required || undefined}
+              aria-autocomplete="list"
+              aria-haspopup="listbox"
+              aria-expanded={open}
+              aria-controls={open ? listId : undefined}
+              aria-activedescendant={
+                open && activeIndex >= 0 ? `${listId}-${activeIndex}` : undefined
+              }
+              aria-describedby={`${controlId}-selection${message ? ` ${controlId}-status` : ''}`}
+              placeholder={displayValue ?? placeholder}
+              data-display-value={displayValue === undefined ? undefined : ''}
+              autoComplete="off"
+              dir={direction}
+              onFocus={() => setDisclosed(true)}
+              onClick={() => setDisclosed(true)}
+              onChange={(event) => {
+                onQueryChange(event.target.value);
+                setHighlighted(undefined);
+                setDisclosed(true);
+              }}
+              onKeyDown={onKeyDown}
+            />
+          </Popover.Anchor>
+          {trailing && <span className={s.trailing}>{trailing}</span>}
+        </div>
         <SelectionPopup
           inputRef={inputRef}
           listRef={listRef}

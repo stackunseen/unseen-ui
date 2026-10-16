@@ -17,12 +17,12 @@
   padding: var(--ai-panel-padding, 16px);
   border: 1px solid var(--ai-border, #e4e4e7);
   border-inline-start: 3px solid var(--ai-control-border, #71717a);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
   background: var(--ai-surface, #fff);
 }
 .alert[data-tone='info'],
 .toast[data-tone='info'] {
-  border-inline-start-color: var(--ai-primary, #2563eb);
+  border-inline-start-color: var(--ai-primary, #18181b);
 }
 .alert[data-tone='success'],
 .toast[data-tone='success'] {
@@ -140,16 +140,16 @@
   border: 0;
   border-radius: 999px;
   background: var(--ai-surface-subtle, #f4f4f5);
-  accent-color: var(--ai-primary, #2563eb);
+  accent-color: var(--ai-primary, #18181b);
 }
 .progress::-webkit-progress-bar {
   background: var(--ai-surface-subtle, #f4f4f5);
 }
 .progress::-webkit-progress-value {
-  background: var(--ai-primary, #2563eb);
+  background: var(--ai-primary, #18181b);
 }
 .progress::-moz-progress-bar {
-  background: var(--ai-primary, #2563eb);
+  background: var(--ai-primary, #18181b);
 }
 /* Unknown work is a quiet empty track with explanatory text, not an invented fill. */
 .progress:indeterminate::-webkit-progress-value,
@@ -157,7 +157,7 @@
   background: transparent;
 }
 .progress:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 3px;
 }
 .viewport {
@@ -199,7 +199,7 @@
   padding: var(--ai-panel-padding, 16px);
   border: 1px solid var(--ai-control-border, #71717a);
   border-inline-start-width: 3px;
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
   background: var(--ai-surface, #fff);
   box-shadow: var(--ai-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.1));
 }
@@ -218,7 +218,7 @@
 }
 .toast:focus-visible,
 .viewport:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 2px;
 }
 @media (any-pointer: coarse) {

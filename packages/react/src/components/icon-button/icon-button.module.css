@@ -10,7 +10,7 @@
 }
 .root[data-part='icon-button']:active:not(:disabled):not([data-variant='danger']) {
   background: var(--ai-primary-soft, #eff6ff);
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
 }
 .root[data-part='icon-button'][data-variant='primary'] {
   width: max(36px, var(--ai-control-height, 36px));

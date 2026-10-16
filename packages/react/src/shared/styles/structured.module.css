@@ -101,7 +101,7 @@
   padding: var(--ai-panel-padding, 16px);
   border: var(--ai-border-width, 1px) solid var(--ai-border);
   background: var(--ai-surface-subtle);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
 }
 .rows {
   list-style: none;
@@ -244,7 +244,7 @@
 .root :where(input:not([type='checkbox'], [type='radio'], [type='range']), textarea):focus-visible {
   outline: 2px solid var(--ai-focus);
   outline-offset: -1px;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #2563eb) 22%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #18181b) 22%, transparent);
 }
 @media (any-pointer: coarse) {
   .checkbox {

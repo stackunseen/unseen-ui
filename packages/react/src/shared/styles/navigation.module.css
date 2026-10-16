@@ -53,7 +53,7 @@
   gap: var(--ai-field-gap, 8px);
   padding: min(16px, var(--ai-panel-padding, 16px));
   border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface-subtle);
 }
 .threads,
@@ -70,7 +70,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
   border: var(--ai-border-width, 1px) solid transparent;
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface);
   min-width: 0;
 }
@@ -217,7 +217,7 @@
   max-width: 100%;
   min-width: 0;
   border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface-subtle);
 }
 .branchSegments > button[aria-pressed='true'] {
@@ -232,7 +232,7 @@
 .root[data-variant='cards'] .thread,
 .root[data-variant='cards'] .queueItem {
   border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   box-shadow: var(--ai-shadow-panel, none);
 }
 .root[data-variant='cards'] .thread[data-selected='true'] {

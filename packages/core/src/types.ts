@@ -67,6 +67,10 @@ export interface Step {
 export interface ToolCallData {
   id: string;
   name: string;
+  /** Host-written step label, such as "Searched accounts". Rows show it instead of the name. */
+  label?: string;
+  /** What the step acted on, such as a file, query or record. */
+  target?: string;
   revision: number;
   state: ToolState;
   input: string;

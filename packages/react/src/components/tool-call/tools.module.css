@@ -7,3 +7,59 @@
     outline-color: Highlight;
   }
 }
+/* Row: one line per step, details below on request. */
+.row {
+  min-width: 0;
+}
+.rowTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: var(--ai-control-radius, 10px);
+  background: transparent;
+  color: var(--ai-muted, #52525b);
+  font: inherit;
+  font-size: var(--ai-font-size-meta, 13px);
+  text-align: start;
+  cursor: pointer;
+}
+.rowTrigger:hover {
+  background: var(--ai-surface-subtle, #f4f4f5);
+}
+.rowTrigger > svg:last-child {
+  flex: none;
+  margin-inline-start: auto;
+}
+.rowLabel {
+  color: var(--ai-text, #18181b);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.rowTarget {
+  min-width: 0;
+  overflow: hidden;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  font-family: var(--ai-font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rowMeta {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+.rowBody,
+.row > :not(button) {
+  display: grid;
+  gap: 8px;
+  margin: 4px 0 8px 28px;
+}
+.rowBody[hidden] {
+  display: none;
+}

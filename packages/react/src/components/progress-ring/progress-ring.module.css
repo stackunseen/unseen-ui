@@ -36,7 +36,7 @@
   stroke: var(--ai-surface-subtle, #f4f4f5);
 }
 .value {
-  stroke: var(--ai-primary, #2563eb);
+  stroke: var(--ai-primary, #18181b);
   stroke-linecap: round;
 }
 .root[data-state='complete'] .value {

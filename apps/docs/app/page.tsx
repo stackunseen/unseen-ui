@@ -51,11 +51,15 @@ export default function Page() {
       <main id="main-content" className="web-container home-page" tabIndex={-1}>
         <section className="home-hero" aria-labelledby="home-title">
           <div className="home-intro">
-            <p className="web-eyebrow">Unseen UI / React + TypeScript</p>
-            <h1 id="home-title">Compose an interface.</h1>
+            <p className="home-intro-pill">Experimental alpha · React 19</p>
+            <h1 id="home-title">
+              The hard states, handled.
+              <span>AI interfaces that wait for your server.</span>
+            </h1>
             <p className="home-intro-description">
-              {releaseCatalog.length} React components for forms, layouts and AI workflows, with
-              approvals that wait for your server before anything runs.
+              {releaseCatalog.length} React components for chat, tools, approvals, forms and
+              layouts. Streaming, failures, unknown outcomes and pending decisions each have a
+              state, and nothing runs until your server says so.
             </p>
             <div className="home-intro-actions">
               <Link className="web-button primary" href="/components/">
@@ -66,7 +70,7 @@ export default function Page() {
               </Link>
             </div>
             <p className="home-intro-meta">
-              <span>Experimental alpha · npm install @stackunseen/ui</span>
+              <code>npm install @stackunseen/ui</code>
             </p>
           </div>
           <HomeHeroDemo />
@@ -122,7 +126,7 @@ export default function Page() {
             </li>
           </ul>
           <p className="home-why-evidence">
-            Measured 16 October 2026: 2,131 unit and interaction tests passing · zero automated
+            Measured 17 October 2026: 2,154 unit and interaction tests passing · zero automated
             accessibility (axe) violations on the audited pages · base stylesheet 24 KiB gzip · Chat
             entry under 3 KiB gzip.
           </p>

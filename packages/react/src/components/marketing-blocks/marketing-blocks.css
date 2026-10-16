@@ -181,7 +181,7 @@
   inline-size: 2.75rem;
   block-size: 2.75rem;
   border: 1px solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   color: var(--ai-text);
 }
 .uim-plans {
@@ -195,7 +195,7 @@
   min-inline-size: 0;
   padding: 1.5rem;
   border-color: var(--ai-border);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
   box-shadow: none;
   background: var(--ai-surface);
 }
@@ -217,7 +217,7 @@
 .uim-plan-badge {
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--ai-border);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   color: var(--ai-text);
   font-size: 0.75rem;
   font-weight: 600;

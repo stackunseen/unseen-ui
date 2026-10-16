@@ -18,7 +18,7 @@
 .formula[data-variant='scroll'] {
   padding: max(8px, var(--ai-gap, 12px));
   background: var(--ai-surface-subtle);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
 }
 .diagram {
   min-width: 0;
@@ -44,7 +44,7 @@
   overflow: auto;
   padding: 8px;
   margin-block: 8px;
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface-subtle);
   color: var(--ai-text);
   font: 12px/1.7 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);

@@ -194,6 +194,7 @@ export function ThemeEditor({
           ))}
           <div className="preset-row">
             {[
+              { name: 'Ink', primary: '#171717', secondary: '#7c3aed', accent: '#0f766e' },
               { name: 'Cobalt', primary: '#2563eb', secondary: '#7c3aed', accent: '#0f766e' },
               { name: 'Forest', primary: '#166534', secondary: '#92400e', accent: '#0f766e' },
               { name: 'Graphite', primary: '#1e293b', secondary: '#475569', accent: '#7c3aed' },

@@ -57,6 +57,9 @@ export function ApprovalCard({
     : hasExpired && proposal.status === 'pending'
       ? 'expired'
       : proposal.status;
+  // Once the host settles the decision, or the proposal can no longer be decided, the outcome
+  // replaces the decision buttons.
+  const decided = status !== 'pending' || submission === 'acknowledged';
   const heading = {
     pending: 'Review required',
     approved: 'Action approved',
@@ -126,18 +129,20 @@ export function ApprovalCard({
             <Button variant="ghost" size="sm" {...details.triggerProps}>
               {details.open ? 'Hide details' : 'Details'}
             </Button>
-            <div className={a.decisions}>
-              <Button
-                variant="outline"
-                disabled={unavailable}
-                onClick={() => onDecision('reject', proposal)}
-              >
-                Reject
-              </Button>
-              <Button disabled={unavailable} onClick={() => onDecision('approve', proposal)}>
-                Approve action
-              </Button>
-            </div>
+            {!decided && (
+              <div className={a.decisions}>
+                <Button
+                  variant="outline"
+                  disabled={unavailable}
+                  onClick={() => onDecision('reject', proposal)}
+                >
+                  Reject
+                </Button>
+                <Button disabled={unavailable} onClick={() => onDecision('approve', proposal)}>
+                  Approve action
+                </Button>
+              </div>
+            )}
           </div>
           <p className={s.muted} role="status">
             {submission === 'submitting'

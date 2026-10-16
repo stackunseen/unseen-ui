@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import { RotateCcw } from 'lucide-react';
 import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import type { CatalogEntry } from '../lib/catalog';
@@ -18,14 +19,90 @@ import { componentHref } from '../lib/site-paths';
 import { tasksFor } from '../lib/tasks';
 import { componentImport } from '../lib/component-import';
 import { guidanceFor } from '../lib/usage-guidance';
+import { patternsUsing } from '../lib/pattern-usage';
+
+const managers = [
+  ['pnpm', 'pnpm add'],
+  ['npm', 'npm install'],
+  ['yarn', 'yarn add'],
+  ['bun', 'bun add'],
+] as const;
+type Manager = (typeof managers)[number][0];
+function storedManager(): Manager {
+  try {
+    const value = localStorage.getItem('unseen-ui-package-manager');
+    return managers.some(([name]) => name === value) ? (value as Manager) : 'npm';
+  } catch {
+    return 'npm';
+  }
+}
+
+/**
+ * Centres a preview whose drawn content (text and controls) covers under half the stage, such as
+ * a button or badge; anything wider keeps the full column. Measured once per example.
+ */
+function useFitContent(key: string) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    node.removeAttribute('data-fit');
+    let tries = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const measure = () => {
+      const content = node.querySelector('.specimen-content');
+      if (!content) return;
+      if (content.querySelector('.example-loading')) {
+        if (tries++ < 20) timer = setTimeout(measure, 150);
+        return;
+      }
+      const box = content.getBoundingClientRect();
+      if (!box.width) return;
+      let left = Infinity;
+      let right = -Infinity;
+      const range = document.createRange();
+      const walker = document.createTreeWalker(
+        content,
+        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+      );
+      for (
+        let item = walker.nextNode(), seen = 0;
+        item && seen < 2000;
+        item = walker.nextNode(), seen++
+      ) {
+        let rect: DOMRect | undefined;
+        if (item.nodeType === Node.TEXT_NODE) {
+          if (!item.textContent?.trim()) continue;
+          range.selectNodeContents(item);
+          rect = range.getBoundingClientRect();
+        } else if (
+          (item as Element).matches(
+            'button, input, select, textarea, svg, img, [role="switch"], [role="slider"], [role="progressbar"]',
+          )
+        )
+          rect = (item as Element).getBoundingClientRect();
+        if (!rect?.width) continue;
+        left = Math.min(left, rect.left);
+        right = Math.max(right, rect.right);
+      }
+      if (right > left && right - left < box.width * 0.5) node.setAttribute('data-fit', 'content');
+    };
+    timer = setTimeout(measure, 60);
+    return () => clearTimeout(timer);
+  }, [key]);
+  return ref;
+}
 export function ComponentDetail({
   entry,
   location,
   onChange,
+  pagination,
 }: {
   entry: CatalogEntry;
   location: GalleryLocation;
   onChange: (patch: Partial<GalleryLocation>) => void;
+  /** Previous and next links, shown beside the title. */
+  pagination?: ReactNode;
 }) {
   const styles = catalogStyles(entry);
   const guidance = componentGuidance(entry.name);
@@ -106,7 +183,11 @@ export function ComponentDetail({
       : '';
   const peers = rendererPeers[rich || structured ? '/markdown' : module];
   const importLine = `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : componentImport(entry).exportName} } from '@stackunseen/ui${module}';`;
-  const installLine = `npm install @stackunseen/ui${peers?.length ? ` ${peers.join(' ')}` : ''}`;
+  const [manager, setManager] = useState<Manager>('npm');
+  useEffect(() => setManager(storedManager()), []);
+  const packages = `@stackunseen/ui${peers?.length ? ` ${peers.join(' ')}` : ''}`;
+  const installLine = `${managers.find(([name]) => name === manager)![1]} ${packages}`;
+  const usedIn = patternsUsing(entry.name);
   const tasks = tasksFor(entry.name);
   const siblings = catalog
     .filter(
@@ -135,350 +216,456 @@ export function ComponentDetail({
         setCopied({ usage, message: 'Clipboard unavailable. Select the code to copy.' });
     }
   }
+  const fit = useFitContent(`${entry.name}:${variant}:${presentation}:${reset}`);
+  const pageMarkdown = [
+    `# ${entry.name}`,
+    '',
+    entry.description,
+    '',
+    '## Installation',
+    '',
+    '```bash',
+    installLine,
+    '```',
+    '',
+    '## Usage',
+    '',
+    '```tsx',
+    usage,
+    '```',
+    ...(guidance
+      ? [
+          '',
+          '## Props',
+          '',
+          ...guidance.props.map(
+            (prop) => `- \`${prop.name}\` (\`${prop.type}\`): ${prop.description}`,
+          ),
+        ]
+      : []),
+    '',
+    `Source: https://unseenui.com${componentHref(entry.name)}`,
+  ].join('\n');
+  const sections = [
+    ['component-example', 'Preview'],
+    ['component-install', 'Installation'],
+    ['component-props', 'Usage and props'],
+    ['component-customization', 'Keyboard and customization'],
+    ...(tasks.length > 0 || siblings.length > 0 ? [['component-related', 'Works with']] : []),
+  ];
   return (
-    <div className="detail-page">
-      <div className="detail-heading">
-        <div className="detail-kicker">
-          <span>{isReleaseComponent(entry) ? entry.category : 'Composition example'}</span>
-          <span className="alpha-chip">Experimental alpha</span>
-        </div>
-        <h1>{entry.name}</h1>
-        <p>{entry.description}</p>
-        {when && (
-          <dl className="detail-when" aria-label="When to use it">
-            <div>
-              <dt>Use it for</dt>
-              <dd>{when.use}</dd>
+    <div className="detail-page detail-layout">
+      <div className="detail-main">
+        <div className="detail-heading">
+          <div className="detail-title-row">
+            <h1>{entry.name}</h1>
+            <div className="detail-title-actions">
+              <CopyButton size="sm" variant="outline" value={pageMarkdown} label="Copy page" />
+              {pagination}
             </div>
-            <div>
-              <dt>Not for</dt>
-              <dd>
-                {when.avoid}
-                {when.instead.length > 0 && (
+          </div>
+          <p>{entry.description}</p>
+          {usedIn.length > 0 && (
+            <p className="detail-used-in">
+              Used in{' '}
+              {usedIn.slice(0, 3).map((pattern, index, shown) => (
+                <span key={pattern.href}>
+                  {index > 0 && (index === shown.length - 1 && usedIn.length <= 3 ? ' and ' : ', ')}
+                  <Link prefetch={false} href={pattern.href}>
+                    {pattern.label}
+                  </Link>
+                </span>
+              ))}
+              {usedIn.length > 3 && (
+                <>
+                  {' and '}
+                  <Link prefetch={false} href="/patterns/">
+                    {usedIn.length - 3} more patterns
+                  </Link>
+                </>
+              )}
+              .
+            </p>
+          )}
+          {when && (
+            <dl className="detail-when" aria-label="When to use it">
+              <div>
+                <dt>Use it for</dt>
+                <dd>{when.use}</dd>
+              </div>
+              <div>
+                <dt>Not for</dt>
+                <dd>
+                  {when.avoid}
+                  {when.instead.length > 0 && (
+                    <>
+                      {' '}
+                      Try{' '}
+                      {when.instead.map((name, index) => (
+                        <span key={name}>
+                          {index > 0 && (index === when.instead.length - 1 ? ' or ' : ', ')}
+                          <Link prefetch={false} href={componentHref(name)}>
+                            {name}
+                          </Link>
+                        </span>
+                      ))}
+                      .
+                    </>
+                  )}
+                </dd>
+              </div>
+            </dl>
+          )}
+          {!isReleaseComponent(entry) && (
+            <p className="explorer-note">
+              This example combines existing controls into an application or website section. It is
+              kept here for existing links and is separate from the first-release component catalog.
+            </p>
+          )}
+        </div>
+        <div id="component-example" className="component-anchor detail-frame">
+          <div className="detail-toolbar">
+            <label>
+              Style
+              <Select
+                value={presentation}
+                disabled={styles.length === 1}
+                onValueChange={setPresentation}
+                aria-label="Presentation style"
+                options={styles.map((value) => ({
+                  value,
+                  label: value.charAt(0).toUpperCase() + value.slice(1),
+                }))}
+              />
+            </label>
+            <label>
+              State
+              <Select
+                value={variant}
+                onValueChange={setVariant}
+                aria-label="Fixture state"
+                options={entry.states.map((state) => ({ value: state, label: state }))}
+              />
+            </label>
+            {styles.length > 1 && (
+              <Button
+                variant="outline"
+                aria-pressed={compare}
+                onClick={() => {
+                  setAllStates(false);
+                  setCompare(!compare);
+                }}
+              >
+                {compare ? 'Show selected style' : `Compare ${styles.length} styles`}
+              </Button>
+            )}
+            {entry.states.length > 1 && (
+              <Button
+                variant="outline"
+                aria-pressed={allStates}
+                onClick={() => {
+                  if (!allStates && compare) setCompare(false);
+                  setAllStates(!allStates);
+                }}
+              >
+                {allStates ? 'Show selected state' : `All ${entry.states.length} states`}
+              </Button>
+            )}
+            <Button variant="ghost" onClick={() => setReset((value) => value + 1)}>
+              <RotateCcw size={15} aria-hidden="true" /> Reset example
+            </Button>
+          </div>
+          <Tabs
+            label="Component example"
+            value={tab}
+            onValueChange={setTab}
+            items={[
+              {
+                value: 'preview',
+                label: 'Preview',
+                content: (
                   <>
-                    {' '}
-                    Try{' '}
-                    {when.instead.map((name, index) => (
-                      <span key={name}>
-                        {index > 0 && (index === when.instead.length - 1 ? ' or ' : ', ')}
+                    <div className="preview-canvas">
+                      <div
+                        ref={compare || allStates ? undefined : fit}
+                        className={compare || allStates ? 'variant-comparison' : 'detail-specimen'}
+                      >
+                        {!compare && !allStates && (
+                          <h2 className="sr-only">{entry.name} preview</h2>
+                        )}
+                        {allStates && !compare ? (
+                          entry.states.map((state) => (
+                            <section className="variant-example" key={state}>
+                              <h2>{state}</h2>
+                              <Specimen
+                                key={`${state}:${presentation}:${reset}`}
+                                name={entry.name}
+                                variant={state}
+                                presentation={presentation}
+                              />
+                            </section>
+                          ))
+                        ) : compare ? (
+                          styles.map((style) => (
+                            <section className="variant-example" key={style}>
+                              <h2>{style.charAt(0).toUpperCase() + style.slice(1)}</h2>
+                              <Specimen
+                                key={`${variant}:${reset}`}
+                                name={entry.name}
+                                variant={variant}
+                                presentation={style}
+                              />
+                            </section>
+                          ))
+                        ) : (
+                          <Specimen
+                            key={`${variant}:${presentation}:${reset}`}
+                            name={entry.name}
+                            variant={variant}
+                            presentation={presentation}
+                          />
+                        )}
+                      </div>
+                    </div>
+                    {(compare || allStates) && (
+                      <p className="preview-caption">
+                        {compare
+                          ? 'Styles start with the same data; interactions are independent.'
+                          : 'Every documented state with the same style; interactions are independent.'}
+                      </p>
+                    )}
+                  </>
+                ),
+              },
+              {
+                value: 'code',
+                label: 'Code',
+                content: (
+                  <div className="code-example">
+                    <pre role="group" tabIndex={0} aria-label={`${entry.name} usage example`}>
+                      <code>{usage}</code>
+                    </pre>
+                    <Button variant="outline" onClick={() => void copyUsage()}>
+                      Copy usage
+                    </Button>
+                    <p role="status">{copied?.usage === usage ? copied.message : ''}</p>
+                    <small>
+                      Supply values and callbacks from your app. For runnable examples, see{' '}
+                      <code>examples/consumer</code> and <code>apps/docs/components</code>.
+                    </small>
+                    {peers && (
+                      <p className="renderer-dependencies">
+                        Optional peers for this example: <code>{peers.join(', ')}</code>.{' '}
+                        <Link href="/getting-started/#optional-renderers">
+                          Installation and stylesheet guide
+                        </Link>
+                        .
+                      </p>
+                    )}
+                  </div>
+                ),
+              },
+            ]}
+          />
+        </div>
+        <section
+          id="component-install"
+          className="api-section component-anchor detail-install-section"
+          aria-labelledby="component-install-title"
+        >
+          <h2 id="component-install-title">Installation</h2>
+          <div className="detail-install" aria-label="Install and import">
+            <div className="detail-install-managers" role="group" aria-label="Package manager">
+              {managers.map(([name]) => (
+                <button
+                  key={name}
+                  type="button"
+                  aria-pressed={manager === name}
+                  onClick={() => {
+                    setManager(name);
+                    try {
+                      localStorage.setItem('unseen-ui-package-manager', name);
+                    } catch {
+                      // Storage can be unavailable; the choice still applies to this page.
+                    }
+                  }}
+                >
+                  {name}
+                </button>
+              ))}
+            </div>
+            <div className="detail-install-row">
+              <code>{installLine}</code>
+              <CopyButton
+                size="sm"
+                variant="ghost"
+                value={installLine}
+                label="Copy install command"
+                iconOnly
+              />
+            </div>
+            <div className="detail-install-row">
+              <code>{importLine}</code>
+              <CopyButton
+                size="sm"
+                variant="ghost"
+                value={importLine}
+                label="Copy import"
+                iconOnly
+              />
+            </div>
+            <div className="detail-install-row">
+              <span>
+                Styles: <code>@stackunseen/ui/styles.css</code>
+                {optionalStyles ? (
+                  <>
+                    {' and '}
+                    <code>{`@stackunseen/ui${module}.css`}</code>
+                  </>
+                ) : null}
+              </span>
+              <Button size="sm" variant="ghost" onClick={() => void copyUsage()}>
+                Copy usage
+              </Button>
+            </div>
+          </div>
+        </section>
+        <section
+          id="component-props"
+          className="api-section component-anchor"
+          aria-labelledby="component-props-title"
+        >
+          <h2 id="component-props-title">Usage and props</h2>
+          {optionalStyles && (
+            <p>
+              Import this component from <code>{`@stackunseen/ui${module}`}</code>. Load{' '}
+              <code>@stackunseen/ui/styles.css</code> first, then{' '}
+              <code>{`@stackunseen/ui${module}.css`}</code>.
+            </p>
+          )}
+          <p className="component-guidance">
+            {guidance?.use}
+            {guidance && integrationNote ? ' ' : ''}
+            {integrationNote}
+          </p>
+          {guidance ? (
+            <dl className="component-prop-list">
+              {guidance.props.map((prop) => (
+                <div key={prop.name}>
+                  <dt>
+                    <code>{prop.name}</code>
+                    <span>
+                      <code>{prop.type}</code>
+                    </span>
+                  </dt>
+                  <dd>{prop.description}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : (
+            <div className="component-signature">
+              <h3>Supported inputs</h3>
+              <p>
+                This is the public signature used by this example. Open Code to see how the values
+                and callbacks fit together.
+              </p>
+              <pre tabIndex={0} role="group" aria-label={`${entry.name} supported inputs`}>
+                <code>{entry.contract}</code>
+              </pre>
+            </div>
+          )}
+          <div className="props-guide-actions">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setTab('code');
+                document.getElementById('component-example')?.scrollIntoView();
+              }}
+            >
+              See the code example
+            </Button>
+            <Link href="/docs/integration/">How state and callbacks work</Link>
+            {['Modal', 'AlertDialog', 'Card'].includes(entry.name) && (
+              <Link href="/docs/customization/#custom-headers-and-footers">
+                Custom headers and footers
+              </Link>
+            )}
+          </div>
+          <p className="explorer-note">
+            These are the main props for the example. The package's TypeScript declarations include
+            the full API.
+          </p>
+        </section>
+        <section
+          id="component-customization"
+          className="api-section component-anchor"
+          aria-labelledby="component-customization-title"
+        >
+          <h2 id="component-customization-title">Keyboard and customization</h2>
+          <h3>Keyboard</h3>
+          <p className="component-guidance">
+            {entry.keyboard ??
+              guidance?.keyboard ??
+              'Tab reaches controls; Enter or Space activates buttons. Accordions use arrow keys, Home and End. Select menus support arrows and typeahead; Escape closes menus and dialogs and restores focus.'}
+          </p>
+          <h3>Customization</h3>
+          <p className="component-guidance">
+            Change shared colors, spacing, corners and icons with the theme. Use the component's
+            supported props to adapt its content and layout.{' '}
+            <Link href="/docs/customization/">Customization guide</Link>
+            {' · '}
+            <Link href="/customize/">Theme Studio</Link>
+          </p>
+        </section>
+        {(tasks.length > 0 || siblings.length > 0) && (
+          <section
+            id="component-related"
+            className="api-section component-anchor detail-related"
+            aria-labelledby="component-related-title"
+          >
+            <h2 id="component-related-title">Works with</h2>
+            {tasks.map((task) => (
+              <div className="detail-related-group" key={task.id}>
+                <h3>{task.label}</h3>
+                <p className="component-guidance">{task.description}</p>
+                <ul className="detail-related-links">
+                  {task.components
+                    .filter((name) => name !== entry.name)
+                    .map((name) => (
+                      <li key={name}>
                         <Link prefetch={false} href={componentHref(name)}>
                           {name}
                         </Link>
-                      </span>
+                      </li>
                     ))}
-                    .
-                  </>
-                )}
-              </dd>
-            </div>
-          </dl>
-        )}
-        {!isReleaseComponent(entry) && (
-          <p className="explorer-note">
-            This example combines existing controls into an application or website section. It is
-            kept here for existing links and is separate from the first-release component catalog.
-          </p>
-        )}
-      </div>
-      <div className="detail-install" aria-label="Install and import">
-        <div className="detail-install-row">
-          <code>{installLine}</code>
-          <CopyButton
-            size="sm"
-            variant="ghost"
-            value={installLine}
-            label="Copy install command"
-            iconOnly
-          />
-        </div>
-        <div className="detail-install-row">
-          <code>{importLine}</code>
-          <CopyButton size="sm" variant="ghost" value={importLine} label="Copy import" iconOnly />
-        </div>
-        <div className="detail-install-row">
-          <span>
-            Styles: <code>@stackunseen/ui/styles.css</code>
-            {optionalStyles ? (
-              <>
-                {' and '}
-                <code>{`@stackunseen/ui${module}.css`}</code>
-              </>
-            ) : null}
-          </span>
-          <Button size="sm" variant="ghost" onClick={() => void copyUsage()}>
-            Copy usage
-          </Button>
-        </div>
-      </div>
-      <div className="detail-toolbar">
-        <label>
-          Style
-          <Select
-            value={presentation}
-            disabled={styles.length === 1}
-            onValueChange={setPresentation}
-            aria-label="Presentation style"
-            options={styles.map((value) => ({
-              value,
-              label: value.charAt(0).toUpperCase() + value.slice(1),
-            }))}
-          />
-        </label>
-        <label>
-          State
-          <Select
-            value={variant}
-            onValueChange={setVariant}
-            aria-label="Fixture state"
-            options={entry.states.map((state) => ({ value: state, label: state }))}
-          />
-        </label>
-        {styles.length > 1 && (
-          <Button
-            variant="outline"
-            aria-pressed={compare}
-            onClick={() => {
-              setAllStates(false);
-              setCompare(!compare);
-            }}
-          >
-            {compare ? 'Show selected style' : `Compare ${styles.length} styles`}
-          </Button>
-        )}
-        {entry.states.length > 1 && (
-          <Button
-            variant="outline"
-            aria-pressed={allStates}
-            onClick={() => {
-              if (!allStates && compare) setCompare(false);
-              setAllStates(!allStates);
-            }}
-          >
-            {allStates ? 'Show selected state' : `All ${entry.states.length} states`}
-          </Button>
-        )}
-        <Button variant="ghost" onClick={() => setReset((value) => value + 1)}>
-          <RotateCcw size={15} aria-hidden="true" /> Reset example
-        </Button>
-      </div>
-      <div id="component-example" className="component-anchor">
-        <Tabs
-          label="Component example"
-          value={tab}
-          onValueChange={setTab}
-          items={[
-            {
-              value: 'preview',
-              label: 'Preview',
-              content: (
-                <>
-                  <div className="preview-canvas">
-                    <div
-                      className={compare || allStates ? 'variant-comparison' : 'detail-specimen'}
-                    >
-                      {!compare && !allStates && <h2 className="sr-only">{entry.name} preview</h2>}
-                      {allStates && !compare ? (
-                        entry.states.map((state) => (
-                          <section className="variant-example" key={state}>
-                            <h2>{state}</h2>
-                            <Specimen
-                              key={`${state}:${presentation}:${reset}`}
-                              name={entry.name}
-                              variant={state}
-                              presentation={presentation}
-                            />
-                          </section>
-                        ))
-                      ) : compare ? (
-                        styles.map((style) => (
-                          <section className="variant-example" key={style}>
-                            <h2>{style.charAt(0).toUpperCase() + style.slice(1)}</h2>
-                            <Specimen
-                              key={`${variant}:${reset}`}
-                              name={entry.name}
-                              variant={variant}
-                              presentation={style}
-                            />
-                          </section>
-                        ))
-                      ) : (
-                        <Specimen
-                          key={`${variant}:${presentation}:${reset}`}
-                          name={entry.name}
-                          variant={variant}
-                          presentation={presentation}
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <p className="preview-caption">
-                    {compare
-                      ? 'Styles start with the same data; interactions are independent.'
-                      : allStates
-                        ? 'Every documented state with the same style; interactions are independent.'
-                        : 'Interactions use local sample data.'}
-                  </p>
-                </>
-              ),
-            },
-            {
-              value: 'code',
-              label: 'Code',
-              content: (
-                <div className="code-example">
-                  <pre role="group" tabIndex={0} aria-label={`${entry.name} usage example`}>
-                    <code>{usage}</code>
-                  </pre>
-                  <Button variant="outline" onClick={() => void copyUsage()}>
-                    Copy usage
-                  </Button>
-                  <p role="status">{copied?.usage === usage ? copied.message : ''}</p>
-                  <small>
-                    Supply values and callbacks from your app. For runnable examples, see{' '}
-                    <code>examples/consumer</code> and <code>apps/docs/components</code>.
-                  </small>
-                  {peers && (
-                    <p className="renderer-dependencies">
-                      Optional peers for this example: <code>{peers.join(', ')}</code>.{' '}
-                      <Link href="/getting-started/#optional-renderers">
-                        Installation and stylesheet guide
-                      </Link>
-                      .
-                    </p>
-                  )}
-                </div>
-              ),
-            },
-          ]}
-        />
-      </div>
-      <section
-        id="component-props"
-        className="api-section component-anchor"
-        aria-labelledby="component-props-title"
-      >
-        <h2 id="component-props-title">Usage and props</h2>
-        {optionalStyles && (
-          <p>
-            Import this component from <code>{`@stackunseen/ui${module}`}</code>. Load{' '}
-            <code>@stackunseen/ui/styles.css</code> first, then{' '}
-            <code>{`@stackunseen/ui${module}.css`}</code>.
-          </p>
-        )}
-        <p className="component-guidance">
-          {guidance?.use}
-          {guidance && integrationNote ? ' ' : ''}
-          {integrationNote}
-        </p>
-        {guidance ? (
-          <dl className="component-prop-list">
-            {guidance.props.map((prop) => (
-              <div key={prop.name}>
-                <dt>
-                  <code>{prop.name}</code>
-                  <span>
-                    <code>{prop.type}</code>
-                  </span>
-                </dt>
-                <dd>{prop.description}</dd>
+                </ul>
               </div>
             ))}
-          </dl>
-        ) : (
-          <div className="component-signature">
-            <h3>Supported inputs</h3>
-            <p>
-              This is the public signature used by this example. Open Code to see how the values and
-              callbacks fit together.
-            </p>
-            <pre tabIndex={0} role="group" aria-label={`${entry.name} supported inputs`}>
-              <code>{entry.contract}</code>
-            </pre>
-          </div>
-        )}
-        <div className="props-guide-actions">
-          <Button
-            variant="outline"
-            onClick={() => {
-              setTab('code');
-              document.getElementById('component-example')?.scrollIntoView();
-            }}
-          >
-            See the code example
-          </Button>
-          <Link href="/docs/integration/">How state and callbacks work</Link>
-          {['Modal', 'AlertDialog', 'Card'].includes(entry.name) && (
-            <Link href="/docs/customization/#custom-headers-and-footers">
-              Custom headers and footers
-            </Link>
-          )}
-        </div>
-        <p className="explorer-note">
-          These are the main props for the example. The package's TypeScript declarations include
-          the full API.
-        </p>
-      </section>
-      <section
-        id="component-customization"
-        className="api-section component-anchor"
-        aria-labelledby="component-customization-title"
-      >
-        <h2 id="component-customization-title">Keyboard and customization</h2>
-        <h3>Keyboard</h3>
-        <p className="component-guidance">
-          {entry.keyboard ??
-            guidance?.keyboard ??
-            'Tab reaches controls; Enter or Space activates buttons. Accordions use arrow keys, Home and End. Select menus support arrows and typeahead; Escape closes menus and dialogs and restores focus.'}
-        </p>
-        <h3>Customization</h3>
-        <p className="component-guidance">
-          Change shared colors, spacing, corners and icons with the theme. Use the component's
-          supported props to adapt its content and layout.{' '}
-          <Link href="/docs/customization/">Customization guide</Link>
-          {' · '}
-          <Link href="/customize/">Theme Studio</Link>
-        </p>
-      </section>
-      {(tasks.length > 0 || siblings.length > 0) && (
-        <section
-          id="component-related"
-          className="api-section component-anchor detail-related"
-          aria-labelledby="component-related-title"
-        >
-          <h2 id="component-related-title">Works with</h2>
-          {tasks.map((task) => (
-            <div className="detail-related-group" key={task.id}>
-              <h3>{task.label}</h3>
-              <p className="component-guidance">{task.description}</p>
-              <ul className="detail-related-links">
-                {task.components
-                  .filter((name) => name !== entry.name)
-                  .map((name) => (
-                    <li key={name}>
-                      <Link prefetch={false} href={componentHref(name)}>
-                        {name}
+            {siblings.length > 0 && (
+              <div className="detail-related-group">
+                <h3>Same group: {navigationGroup(entry)}</h3>
+                <ul className="detail-related-links">
+                  {siblings.map((item) => (
+                    <li key={item.name}>
+                      <Link prefetch={false} href={componentHref(item.name)}>
+                        {item.name}
                       </Link>
                     </li>
                   ))}
-              </ul>
-            </div>
-          ))}
-          {siblings.length > 0 && (
-            <div className="detail-related-group">
-              <h3>Same group: {navigationGroup(entry)}</h3>
-              <ul className="detail-related-links">
-                {siblings.map((item) => (
-                  <li key={item.name}>
-                    <Link prefetch={false} href={componentHref(item.name)}>
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </section>
-      )}
+                </ul>
+              </div>
+            )}
+          </section>
+        )}
+      </div>
+      <nav className="detail-toc" aria-label="On this page">
+        <p>On this page</p>
+        {sections.map(([id, label]) => (
+          <a key={id} href={`#${id}`}>
+            {label}
+          </a>
+        ))}
+      </nav>
     </div>
   );
 }

@@ -82,7 +82,7 @@ const PartView = memo(function PartView({
       break;
     case 'tool':
       content = tool ? (
-        (renderTool?.(tool) ?? <ToolCall value={tool} variant="compact" />)
+        (renderTool?.(tool) ?? <ToolCall value={tool} variant="row" />)
       ) : (
         <p className={s.unavailable}>
           Tool result unavailable. The host has not resolved this call.

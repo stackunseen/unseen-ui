@@ -5,7 +5,7 @@
   color: var(--ai-muted, #52525b);
 }
 .keyword {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
 }
 .string {
   color: var(--ai-secondary-text, #6d28d9);

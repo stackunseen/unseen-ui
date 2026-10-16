@@ -56,7 +56,7 @@
   min-block-size: 40px;
   padding: 4px;
   border: 1px solid transparent;
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: transparent;
   color: inherit;
   font: inherit;
@@ -72,11 +72,11 @@
   text-underline-offset: 4px;
 }
 .day[data-endpoint] {
-  background: var(--ai-primary, #2563eb);
+  background: var(--ai-primary, #18181b);
   color: var(--ai-primary-foreground, #fff);
 }
 .day[data-endpoint]:hover:not([aria-disabled='true']) {
-  background: var(--ai-primary-hover, #1d4ed8);
+  background: var(--ai-primary-hover, #27272a);
 }
 .day[aria-current='date'] {
   border-color: currentColor;
@@ -92,7 +92,7 @@
 .day:focus-visible,
 .navigation:focus-visible {
   position: relative;
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: -2px;
 }
 .status {
@@ -111,7 +111,7 @@
 }
 .loading span {
   block-size: 40px;
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface-subtle, #f4f4f5);
 }
 .srOnly {

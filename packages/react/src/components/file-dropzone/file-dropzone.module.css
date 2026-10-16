@@ -5,7 +5,7 @@
   min-width: 0;
   padding: var(--ai-panel-padding, 16px);
   border: 2px dashed var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #18181b);
   transition:
@@ -19,7 +19,7 @@
   border-color: var(--ai-control-border, #71717a);
 }
 .zone[data-dragging] {
-  border-color: var(--ai-primary, #2563eb);
+  border-color: var(--ai-primary, #18181b);
   background: var(--ai-primary-soft, #eff6ff);
 }
 /* Locked zones keep readable text: only the glyph dims and the surface changes. */
@@ -31,7 +31,7 @@
   opacity: var(--ai-disabled-opacity, 0.62);
 }
 .zone:has(button:focus-visible) {
-  border-color: var(--ai-focus, #2563eb);
+  border-color: var(--ai-focus, #18181b);
 }
 .icon {
   flex-shrink: 0;
@@ -41,7 +41,7 @@
   color: var(--ai-muted, #52525b);
 }
 .zone[data-dragging] .icon {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
 }
 .body {
   display: grid;

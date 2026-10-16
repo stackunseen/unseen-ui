@@ -390,12 +390,13 @@ const guides = {
         name: 'value',
         type: 'ToolCallData',
         description:
-          'The tool id, name, revision, state and input, with optional output, error and durationMs.',
+          'The tool id, name, revision, state and input, with optional output, error, durationMs, and a host-written label and target that rows show instead of the name.',
       },
       {
         name: 'variant',
-        type: "'card' | 'terminal' | 'compact' (optional)",
-        description: 'Defaults to card. Compact keeps execution details behind a disclosure.',
+        type: "'card' | 'terminal' | 'compact' | 'row' (optional)",
+        description:
+          'Defaults to card. Row is one line per step (status, label, target, duration) with details on request; messages and Chat use it. Compact keeps execution details behind a disclosure.',
       },
       {
         name: 'children',

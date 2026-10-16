@@ -7,3 +7,33 @@
   font-size: var(--ai-font-size-meta, 13px);
   overflow-wrap: anywhere;
 }
+.selection:not(:has(> :not(.srOnly))) {
+  display: contents;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.clear {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--ai-control-radius, 10px);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.clear:hover:not(:disabled) {
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-text, #18181b);
+}
+.clear:disabled {
+  cursor: not-allowed;
+  opacity: var(--ai-disabled-opacity, 0.62);
+}

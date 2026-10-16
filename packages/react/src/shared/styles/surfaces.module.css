@@ -3,7 +3,7 @@
   max-inline-size: 100%;
   padding: var(--ai-panel-padding, 16px);
   border: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-radius-card, var(--ai-radius, 10px));
+  border-radius: var(--ai-radius-card, var(--ai-radius, 12px));
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #18181b);
   overflow-wrap: anywhere;
@@ -50,10 +50,10 @@
   min-inline-size: 0;
   overflow: auto;
   border: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
 }
 .tableScroll:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 3px;
 }
 .table {

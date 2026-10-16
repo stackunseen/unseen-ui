@@ -127,7 +127,7 @@ function palette(seeds: Required<ThemeInput>, dark: boolean): ThemeTokens {
     'control-border': {
       subtle: dark ? '#52525b' : '#d4d4d8',
       balanced: dark ? '#71717a' : '#a1a1aa',
-      strong: dark ? '#a1a1aa' : '#71717a',
+      strong: dark ? '#7c7c85' : '#71717a',
     }[seeds.borderStrength],
     primary,
     'primary-hover': shade(
@@ -215,16 +215,16 @@ export function createTheme(input: ThemeInput = {}): ResolvedTheme {
   )
     throw new Error('Unknown theme option.');
   const seeds: Required<ThemeInput> = {
-    primary: hex(input.primary ?? '#2563eb'),
+    primary: hex(input.primary ?? '#171717'),
     secondary: hex(input.secondary ?? '#7c3aed'),
     accent: hex(input.accent ?? '#0f766e'),
-    radius: input.radius ?? 10,
+    radius: input.radius ?? 12,
     density: input.density ?? 'comfortable',
-    controlRadius: input.controlRadius ?? 8,
+    controlRadius: input.controlRadius ?? 10,
     composerRadius: input.composerRadius ?? 16,
-    buttonRadius: input.buttonRadius ?? input.controlRadius ?? 8,
+    buttonRadius: input.buttonRadius ?? input.controlRadius ?? 10,
     pillRadius: input.pillRadius ?? 999,
-    cardRadius: input.cardRadius ?? input.radius ?? 10,
+    cardRadius: input.cardRadius ?? input.radius ?? 12,
     tagRadius: input.tagRadius ?? 999,
     borderStrength: input.borderStrength ?? 'strong',
     borderWidth: input.borderWidth ?? 1,

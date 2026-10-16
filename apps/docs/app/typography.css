@@ -278,18 +278,6 @@ body {
     opacity: 0;
   }
 }
-/* Quiet model picker inside the composer toolbar. */
-.prompt-model-picker {
-  min-height: 32px;
-  padding: 4px 8px;
-  border-color: transparent;
-  background: transparent;
-  color: var(--ai-muted);
-  font-size: 12px;
-}
-.prompt-model-picker:hover {
-  color: var(--ai-text);
-}
 .message-exchange {
   display: grid;
   gap: 4px;

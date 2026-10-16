@@ -7,6 +7,7 @@ import '../components/explorer.css';
 import './website.css';
 import './typography.css';
 import './home.css';
+import './polish.css';
 import { SiteShell } from '../components/site-shell';
 import { pageMetadata, siteDescription, siteOrigin } from '../lib/site-seo';
 const instrumentSans = localFont({

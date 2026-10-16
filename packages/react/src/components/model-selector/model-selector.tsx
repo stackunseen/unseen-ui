@@ -19,6 +19,8 @@ export interface ModelSelectorProps {
   onValueChange: (id: string) => void;
   label?: string;
   disabled?: boolean;
+  /** `ghost` reads as quiet text, for a composer toolbar. */
+  variant?: 'outline' | 'ghost';
   className?: string;
 }
 
@@ -29,6 +31,7 @@ export function ModelSelector({
   onValueChange,
   label = 'Model',
   disabled = false,
+  variant = 'outline',
   className = '',
 }: ModelSelectorProps) {
   const id = useId();
@@ -53,6 +56,8 @@ export function ModelSelector({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         className={className}
+        variant={variant}
+        size={variant === 'ghost' ? 'sm' : undefined}
         disabled={disabled}
         aria-label={`${label}: ${current?.name ?? 'none selected'}`}
         data-part="model-selector"

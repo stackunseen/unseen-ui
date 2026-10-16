@@ -14,14 +14,15 @@ export function ChatSpecimen({
   onNotice: (text: string) => void;
 }) {
   const host = useLocalHost({
-    suggestions: ['Summarize the plan', 'Search notes for renewals', 'Fail on purpose'],
+    suggestions: ['Summarize the plan', 'Search notes for renewals', 'Draft a follow-up'],
     now: () => '2026-10-16T10:00:00.000Z',
   });
   useEffect(() => {
-    if (state === 'Mid conversation' || state === 'Tool call' || state === 'Failed') {
+    // The default opens on a finished turn with a tool step; Empty shows the starting screen.
+    if (state !== 'Empty') {
       host.reset();
       host.send(
-        state === 'Tool call'
+        state === 'Default'
           ? 'Search notes for renewals'
           : state === 'Failed'
             ? 'Fail on purpose'
@@ -40,7 +41,7 @@ export function ChatSpecimen({
       variant={resolveVariant('Chat', presentation)}
       title="Assistant"
       placeholder="Ask the local host…"
-      style={{ ['--ai-chat-height' as string]: '460px' }}
+      style={{ ['--ai-chat-height' as string]: '540px' }}
     />
   );
 }

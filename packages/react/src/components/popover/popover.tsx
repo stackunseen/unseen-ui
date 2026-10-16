@@ -11,7 +11,11 @@ export interface PopoverProps extends ComponentProps<typeof Primitive.Root> {
   /** Set for locally scoped RTL layouts so the portal and trigger share direction. */
   dir?: 'ltr' | 'rtl';
 }
-export type PopoverTriggerProps = ComponentProps<typeof Primitive.Trigger>;
+export type PopoverTriggerProps = ComponentProps<typeof Primitive.Trigger> & {
+  /** Button presentation of the trigger; ignored with `asChild`. */
+  variant?: 'outline' | 'ghost';
+  size?: 'default' | 'sm';
+};
 export type PopoverCloseProps = ComponentProps<typeof Primitive.Close>;
 export interface PopoverContentProps extends Omit<
   ComponentProps<typeof Primitive.Content>,
@@ -25,7 +29,14 @@ export interface PopoverContentProps extends Omit<
   container?: ComponentProps<typeof Primitive.Portal>['container'];
 }
 
-export function PopoverTrigger({ asChild, dir, className = '', ...props }: PopoverTriggerProps) {
+export function PopoverTrigger({
+  asChild,
+  dir,
+  className = '',
+  variant = 'outline',
+  size,
+  ...props
+}: PopoverTriggerProps) {
   const direction = useOverlayDirection(dir);
   return (
     <Primitive.Trigger
@@ -33,7 +44,8 @@ export function PopoverTrigger({ asChild, dir, className = '', ...props }: Popov
       dir={direction}
       asChild={asChild}
       className={`${asChild ? '' : controls.button} ${className}`}
-      data-variant="outline"
+      data-variant={variant}
+      data-size={size}
     />
   );
 }

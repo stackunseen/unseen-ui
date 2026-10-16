@@ -37,7 +37,7 @@
   cursor: pointer;
 }
 .toggle:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 2px;
 }
 .list,
@@ -68,7 +68,7 @@
 }
 .link:focus-visible,
 .subLink:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: -2px;
   border-radius: 4px;
 }
@@ -85,14 +85,14 @@
   color: var(--ai-muted, #52525b);
 }
 .item[data-state='read'] .number {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
 }
 .item[data-state='current'] > .link,
 .link[aria-current='location'],
 .subLink[aria-current='location'] {
   color: var(--ai-text, #18181b);
   font-weight: 600;
-  border-inline-start-color: var(--ai-primary, #2563eb);
+  border-inline-start-color: var(--ai-primary, #18181b);
 }
 .sub .subLink {
   padding-inline-start: 28px;

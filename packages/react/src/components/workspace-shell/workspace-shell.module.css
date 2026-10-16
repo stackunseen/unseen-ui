@@ -14,7 +14,7 @@
 }
 .root[data-variant='contained'] {
   border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
 }
 .root[data-variant='compact'] {
   --ai-workspace-gap: max(8px, var(--ai-field-gap, 8px));

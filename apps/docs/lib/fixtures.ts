@@ -52,6 +52,8 @@ export const steps: Step[] = [
 export const tool: ToolCallData = {
   id: 'query-accounts',
   name: 'search_accounts',
+  label: 'Searched accounts',
+  target: 'inactive for 90 days',
   revision: 1,
   state: 'succeeded',
   input: '{\n  "inactive_days": 90,\n  "limit": 20\n}',

@@ -26,6 +26,8 @@ describe('design audit interaction corrections', () => {
       );
       if (variant === 'compact')
         await user.click(screen.getByRole('button', { name: 'Inspect execution' }));
+      if (variant === 'row')
+        await user.click(screen.getByRole('button', { name: /read_document/ }));
       expect(screen.getByRole('status')).toHaveTextContent('Waiting for a host result');
       for (const [state, message] of toolStates) {
         rerender(<ToolCall variant={variant} value={{ ...tool, state }} />);

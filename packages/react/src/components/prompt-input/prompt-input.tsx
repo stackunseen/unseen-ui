@@ -158,6 +158,7 @@ export function PromptInput({
         <span
           className={variant === 'inline' && !unavailableReason ? s.srOnly : s.muted}
           id={`${id}-help`}
+          data-hint={unavailableReason ? undefined : ''}
         >
           {unavailableReason ?? 'Shift + Enter for a new line'}
         </span>

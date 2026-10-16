@@ -1,4 +1,5 @@
 'use client';
+import { Paperclip } from 'lucide-react';
 import { ModelSelector } from '@stackunseen/ui/assistant';
 import '@stackunseen/ui/assistant.css';
 import { useState } from 'react';
@@ -309,12 +310,13 @@ export function Specimen({
                 <Button
                   size="sm"
                   variant="ghost"
+                  aria-label="Attach files"
                   onClick={() => setResult('Attachment picker requested in demo.')}
                 >
-                  + Attach
+                  <Paperclip size={16} aria-hidden="true" />
                 </Button>
                 <ModelSelector
-                  className="prompt-model-picker"
+                  variant="ghost"
                   value={model}
                   onValueChange={setModel}
                   models={[
@@ -621,6 +623,8 @@ export function Specimen({
                     ...tool,
                     id: '2',
                     name: 'read_handbook',
+                    label: failed ? 'Read handbook' : 'Reading handbook',
+                    target: 'Operations handbook',
                     state: failed ? 'failed' : 'running',
                     output: undefined,
                     durationMs: failed ? 410 : undefined,

@@ -30,7 +30,7 @@
   min-inline-size: 0;
 }
 .crumbLink {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
   text-underline-offset: 3px;
 }
 .crumbText[aria-current='page'] {
@@ -43,7 +43,7 @@
 .crumbLink:focus-visible,
 .pageControl:focus-visible,
 .sidebarLink:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 2px;
 }
 .pagination {
@@ -87,9 +87,9 @@
   cursor: pointer;
 }
 .pageControl[aria-current='page'] {
-  border-color: var(--ai-primary-text, #1d4ed8);
+  border-color: var(--ai-primary-text, #27272a);
   background: var(--ai-primary-soft, #eff6ff);
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -147,7 +147,7 @@
   background: var(--ai-surface-subtle, #f4f4f5);
 }
 .sidebarLink[aria-current='page'] {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
   background: var(--ai-primary-soft, #eff6ff);
   border-inline-start-color: currentColor;
   font-weight: 600;

@@ -6,7 +6,7 @@
   box-sizing: border-box;
   padding: 4px 8px;
   border: 1px solid var(--ai-control-border, #71717a);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #18181b);
   box-shadow: var(--ai-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.1));

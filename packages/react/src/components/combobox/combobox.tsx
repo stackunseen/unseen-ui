@@ -1,6 +1,5 @@
 'use client';
 import { useRef } from 'react';
-import { Button } from '../button/button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { SelectionPicker } from '../../shared/selection/selection-picker.js';
 import type { ComboboxOption, ComboboxProps } from './types.js';
@@ -24,25 +23,32 @@ export function Combobox<T extends ComboboxOption>({
       selection={value === null ? [] : [value]}
       onSelect={onValueChange}
       data-part="combobox"
+      displayValue={value === null ? undefined : (selected?.label ?? value)}
+      trailing={
+        value === null ? (
+          <AIIcon name="expand" />
+        ) : (
+          <button
+            type="button"
+            className={s.clear}
+            disabled={props.disabled}
+            aria-label={`Clear ${props.label}`}
+            onClick={() => {
+              onValueChange(null);
+              inputRef.current?.focus();
+            }}
+          >
+            <AIIcon name="close" />
+          </button>
+        )
+      }
     >
       {(summaryId) => (
         <div className={s.selection}>
-          <span id={summaryId}>{summary}</span>
+          <span id={summaryId} className={s.srOnly}>
+            {summary}
+          </span>
           {value !== null && !selected && <span>Option details unavailable.</span>}
-          {value !== null && (
-            <Button
-              size="sm"
-              variant="ghost"
-              disabled={props.disabled}
-              aria-label={`Clear ${props.label}`}
-              onClick={() => {
-                onValueChange(null);
-                inputRef.current?.focus();
-              }}
-            >
-              <AIIcon name="close" /> Clear
-            </Button>
-          )}
         </div>
       )}
     </SelectionPicker>

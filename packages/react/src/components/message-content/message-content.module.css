@@ -20,7 +20,7 @@
   margin: 0;
   padding: 10px 12px;
   border: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
   line-height: 1.6;

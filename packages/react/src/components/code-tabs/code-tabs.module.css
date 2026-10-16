@@ -12,7 +12,7 @@
   gap: 8px;
   padding: 12px 14px;
   border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
   background: var(--ai-surface, #fff);
 }
 .tourHead {
@@ -53,12 +53,12 @@
   border-color: var(--ai-control-border, #71717a);
 }
 .stop[aria-current='step'] {
-  border-color: var(--ai-primary, #2563eb);
-  background: var(--ai-primary, #2563eb);
+  border-color: var(--ai-primary, #18181b);
+  background: var(--ai-primary, #18181b);
   color: var(--ai-primary-foreground, #fff);
 }
 .stop:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 2px;
 }
 .tourNav {
@@ -114,7 +114,7 @@
   min-inline-size: 0;
   padding: 8px 10px;
   border: var(--ai-border-width, 1px) solid transparent;
-  border-radius: var(--ai-radius-card, var(--ai-radius, 10px));
+  border-radius: var(--ai-radius-card, var(--ai-radius, 12px));
   background: transparent;
   color: var(--ai-muted, #52525b);
   font: inherit;
@@ -134,7 +134,7 @@
   color: var(--ai-text, #18181b);
 }
 .file:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: -2px;
 }
 .fileName {
@@ -147,7 +147,7 @@
   font-size: var(--ai-font-size-caption, 12px);
 }
 .fileStops {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
 }
 .pane,
 .figure {

@@ -57,6 +57,8 @@ const tool = z.strictObject({
   output: text.optional(),
   error: short.optional(),
   durationMs: z.number().finite().nonnegative().optional(),
+  label: short.optional(),
+  target: short.optional(),
 });
 const resolvedApproval = z.enum(['approved', 'rejected', 'expired', 'superseded']);
 const proposal = z.strictObject({

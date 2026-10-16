@@ -10,7 +10,7 @@
   overflow-y: auto;
   padding: 4px;
   border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #18181b);
   box-shadow: var(--ai-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.1));
@@ -25,7 +25,7 @@
   gap: var(--ai-field-gap, 8px);
   min-block-size: var(--ai-control-height, 40px);
   padding: 8px 12px;
-  border-radius: max(2px, calc(var(--ai-radius, 10px) - 4px));
+  border-radius: max(2px, calc(var(--ai-radius, 12px) - 4px));
   cursor: pointer;
 }
 .optionText {
@@ -38,7 +38,7 @@
   font-size: var(--ai-font-size-caption, 12px);
 }
 .option[aria-selected='true'] {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
   font-weight: 500;
 }
 /* A quiet highlight keeps option text and descriptions readable while browsing. */
@@ -69,4 +69,27 @@
   .option {
     min-block-size: 44px;
   }
+}
+/* The field shows its current choice; end controls sit inside the edge. */
+.control {
+  position: relative;
+}
+.control > input[data-display-value]::placeholder {
+  color: var(--ai-text, #18181b);
+  opacity: 1;
+}
+.control:has(> .trailing) > input {
+  padding-inline-end: 36px;
+}
+.trailing {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 4px;
+  display: flex;
+  align-items: center;
+  color: var(--ai-muted, #52525b);
+  pointer-events: none;
+}
+.trailing > button {
+  pointer-events: auto;
 }

@@ -63,8 +63,8 @@ describe('presentation variants preserve meaning and actions', () => {
       );
       expect(screen.getByText(proposal.impact)).toBeVisible();
       expect(screen.getByText(proposal.scopes.join(', '))).toBeVisible();
-      expect(screen.getByRole('button', { name: 'Approve action' })).toBeDisabled();
-      expect(screen.getByRole('button', { name: 'Reject' })).toBeDisabled();
+      expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
+      expect(screen.queryByRole('button', { name: 'Reject' })).toBeNull();
     },
   );
   it.each(componentVariants.SourceCard)(

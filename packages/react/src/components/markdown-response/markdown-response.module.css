@@ -47,7 +47,7 @@
 }
 .markdown input[type='checkbox'] {
   margin-inline: -1.35em 0.5em;
-  accent-color: var(--ai-primary, #2563eb);
+  accent-color: var(--ai-primary, #18181b);
 }
 .markdown blockquote {
   margin-inline: 0;
@@ -60,7 +60,7 @@
   border-block-start: 1px solid var(--ai-border, #e4e4e7);
 }
 .markdown a {
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
@@ -68,7 +68,7 @@
   text-decoration-thickness: 2px;
 }
 .markdown :where(a, pre, [role='group']):focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 3px;
 }
 .markdown :where(code, pre) {
@@ -86,7 +86,7 @@
   max-width: 100%;
   overflow: auto;
   border: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
 }
 .markdown table {
   margin: 0;
@@ -121,7 +121,7 @@
   font: inherit;
 }
 .fallback:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: -2px;
 }
 .srOnly {

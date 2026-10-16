@@ -3,7 +3,7 @@
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #18181b);
 }
@@ -29,7 +29,7 @@
   height: 24px;
   border-radius: 50%;
   background: var(--ai-primary-soft, #eff6ff);
-  color: var(--ai-primary-text, #1d4ed8);
+  color: var(--ai-primary-text, #27272a);
   flex-shrink: 0;
 }
 .titles {

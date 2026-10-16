@@ -42,11 +42,11 @@
   overflow: auto;
   overscroll-behavior-inline: contain;
   border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-radius, 10px);
+  border-radius: var(--ai-radius, 12px);
   background: var(--ai-surface, #fff);
 }
 .scroll:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 3px;
 }
 .table {
@@ -159,7 +159,7 @@
 .skeleton {
   block-size: 24px;
   background: var(--ai-surface-subtle, #f4f4f5);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
 }
 @media (pointer: coarse) {
   .sort {

@@ -43,7 +43,7 @@
   min-inline-size: 0;
   min-block-size: var(--ai-control-height, 36px);
   border: var(--ai-border-width, 1px) solid var(--ai-control-border, #71717a);
-  border-radius: var(--ai-control-radius, 8px);
+  border-radius: var(--ai-control-radius, 10px);
   padding: 8px 12px;
   background: var(--ai-field-background, var(--ai-surface, #fff));
   color: var(--ai-text, #18181b);
@@ -63,15 +63,15 @@
   border-color: var(--ai-danger, #991b1b);
 }
 .input:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: -1px;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #2563eb) 22%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #18181b) 22%, transparent);
 }
 .checkbox:focus-visible,
 .switch:focus-visible,
 .radioOption input:focus-visible,
 .thumb:focus-visible {
-  outline: 2px solid var(--ai-focus, #2563eb);
+  outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: 3px;
 }
 .input:disabled,
@@ -109,11 +109,11 @@
 }
 .checkbox::before {
   border: 1px solid var(--ai-control-border, #71717a);
-  border-radius: min(4px, var(--ai-control-radius, 8px));
+  border-radius: min(4px, var(--ai-control-radius, 10px));
 }
 .checkbox:checked::before,
 .checkbox:indeterminate::before {
-  background: var(--ai-primary, #2563eb);
+  background: var(--ai-primary, #18181b);
 }
 .checkbox:checked::after,
 .checkbox:indeterminate::after {
@@ -157,8 +157,8 @@
   background: var(--ai-muted, #52525b);
 }
 .switch:checked {
-  background: var(--ai-primary, #2563eb);
-  border-color: var(--ai-primary, #2563eb);
+  background: var(--ai-primary, #18181b);
+  border-color: var(--ai-primary, #18181b);
 }
 .switch:checked::before {
   inset-inline-start: auto;
@@ -193,7 +193,7 @@
   block-size: 20px;
   flex-shrink: 0;
   margin: 2px 0 0;
-  accent-color: var(--ai-primary, #2563eb);
+  accent-color: var(--ai-primary, #18181b);
 }
 .radioOption > span {
   min-inline-size: 0;
@@ -219,7 +219,7 @@
   position: absolute;
   block-size: 100%;
   border-radius: inherit;
-  background: var(--ai-primary, #2563eb);
+  background: var(--ai-primary, #18181b);
 }
 .thumb {
   display: block;
@@ -230,7 +230,7 @@
   border-radius: 50%;
 }
 .thumb::before {
-  border: 2px solid var(--ai-primary, #2563eb);
+  border: 2px solid var(--ai-primary, #18181b);
   border-radius: inherit;
 }
 .slider[data-orientation='vertical'] {

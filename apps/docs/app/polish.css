@@ -1,0 +1,324 @@
+/*
+ * Quiet, neutral presentation (2026-10-17), loaded last. Baseline: hairline borders, 13px
+ * interface text, 32px controls with 10px corners, grey selection instead of coloured boxes,
+ * one framed stage per example and an outline column on wide screens.
+ */
+
+/* Header: translucent, borderless, pill navigation. */
+.web-header {
+  min-height: 56px;
+  padding: 8px 24px;
+  gap: 24px;
+  background: color-mix(in srgb, var(--ai-canvas) 86%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom-color: color-mix(in srgb, var(--ai-border) 70%, transparent);
+}
+.web-brand {
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+.web-mark {
+  width: 28px;
+  height: 28px;
+}
+.web-nav {
+  gap: 2px;
+}
+.web-nav a {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 10px;
+}
+.web-nav a:hover,
+.web-nav a[aria-current] {
+  text-decoration: none;
+  color: var(--ai-text);
+}
+.web-nav a[aria-current] {
+  background: var(--ai-surface-subtle);
+}
+.web-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+}
+.web-icon:hover {
+  background: var(--ai-surface-subtle);
+}
+
+/* Sidebar: flat list, grey selection, 32px rows. */
+.explorer-sidebar {
+  width: 248px;
+  flex-basis: 248px;
+  padding: 12px 8px 0;
+}
+.workspace-nav {
+  padding-bottom: 8px;
+  border-bottom-color: transparent;
+}
+.explorer-sidebar .nav-main {
+  min-height: 32px;
+  margin: 1px 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 10px;
+}
+.explorer-sidebar .nav-main.active {
+  color: var(--ai-text);
+  background: var(--ai-surface-subtle);
+  font-weight: 500;
+}
+.library-search {
+  padding: 8px 0 4px;
+  gap: 8px;
+}
+.explorer-sidebar .search-field {
+  min-height: 32px;
+  border-color: transparent;
+  border-radius: 10px;
+  background: var(--ai-surface-subtle);
+}
+.library-count {
+  font-size: 11px;
+}
+.component-link {
+  min-height: 32px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 10px;
+  line-height: 20px;
+}
+.component-link.active {
+  color: var(--ai-text);
+  background: var(--ai-surface-subtle);
+  font-weight: 500;
+}
+.catalog-groups h2 button {
+  min-height: 32px;
+  padding-inline: 8px;
+  color: var(--ai-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Component page: title row, framed example, outline column. */
+.explorer-main {
+  padding-top: 32px;
+}
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+  max-width: 1120px;
+  margin-inline: auto;
+}
+.detail-main {
+  min-width: 0;
+}
+.detail-toc {
+  display: none;
+}
+@media (min-width: 1280px) {
+  .detail-layout {
+    grid-template-columns: minmax(0, 1fr) 176px;
+  }
+  .detail-toc {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+    display: grid;
+    gap: 2px;
+    font-size: 13px;
+  }
+  .detail-toc p {
+    margin: 0 0 6px;
+    color: var(--ai-muted);
+  }
+  .detail-toc a {
+    padding: 4px 0;
+    color: var(--ai-muted);
+    text-decoration: none;
+  }
+  .detail-toc a:hover {
+    color: var(--ai-text);
+  }
+}
+.detail-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.explorer-main .detail-heading h1 {
+  margin: 0;
+  font-size: clamp(26px, 2.4vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.detail-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.detail-title-actions .component-pagination {
+  display: flex;
+  gap: 4px;
+}
+.detail-title-actions .component-pagination a {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 10px;
+  color: var(--ai-text);
+}
+.detail-title-actions .component-pagination a:hover {
+  background: var(--ai-surface-subtle);
+}
+.explorer-main .detail-heading p {
+  margin-top: 8px;
+  color: var(--ai-muted);
+}
+.explorer-main .detail-heading .detail-used-in {
+  margin-top: 6px;
+  font-size: 13px;
+}
+.detail-used-in a {
+  color: var(--ai-text);
+  text-underline-offset: 3px;
+}
+.explorer-main .detail-heading .detail-when {
+  margin-top: 12px;
+  font-size: 13px;
+}
+.detail-frame {
+  margin-top: 24px;
+  overflow: hidden;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 16px;
+  background: var(--ai-surface);
+}
+.explorer-main .detail-frame .detail-toolbar {
+  margin: 0;
+  padding: 10px 14px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.detail-frame [role='tablist'] {
+  padding-inline: 14px;
+}
+.detail-frame .preview-canvas {
+  display: grid;
+  align-content: center;
+  min-height: 340px;
+  padding: 40px clamp(16px, 4vw, 48px);
+  border: 0;
+  border-radius: 0;
+}
+.explorer-main .detail-frame .detail-specimen {
+  max-width: 760px;
+}
+.detail-specimen[data-fit='content'] .specimen-content {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.detail-frame .preview-caption {
+  margin: 0;
+  padding: 10px 14px;
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.detail-frame .code-example {
+  padding: 16px;
+}
+.detail-install-section .detail-install {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+.detail-install-managers {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+.detail-install-managers button {
+  min-height: 28px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ai-muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.detail-install-managers button[aria-pressed='true'] {
+  background: var(--ai-surface);
+  color: var(--ai-text);
+  box-shadow: 0 0 0 1px var(--ai-border);
+}
+.explorer-main .api-section h2 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+@media (max-width: 640px) {
+  .detail-frame .preview-canvas {
+    min-height: 240px;
+    padding: 24px 16px;
+  }
+}
+
+/* Home: left-aligned statement, quiet pill, muted second line. */
+.home-intro-pill {
+  display: inline-flex;
+  margin: 0 0 20px;
+  padding: 3px 10px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 999px;
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+.home-intro h1 {
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+.home-intro h1 > span {
+  display: block;
+  color: var(--ai-muted);
+}
+.home-intro-description {
+  font-size: 16px;
+  max-width: 56ch;
+}
+.home-intro-meta code {
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--ai-surface-subtle);
+  color: var(--ai-text);
+  font-size: 12.5px;
+}
+.web-button {
+  min-height: 36px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.web-button {
+  padding: 0 14px;
+  gap: 8px;
+}
+.web-button.secondary {
+  border-color: var(--ai-border);
+}
+.catalog-groups > div {
+  border-bottom: 0;
+}
+.explorer-main .detail-frame .detail-toolbar label > button {
+  min-width: 112px;
+}
+.explorer-main .detail-frame .detail-toolbar > button:last-child {
+  margin-inline-start: auto;
+}

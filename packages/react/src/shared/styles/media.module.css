@@ -23,7 +23,7 @@
   flex-shrink: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--ai-primary, #2563eb);
+  background: var(--ai-primary, #18181b);
   color: var(--ai-primary-foreground, #fff);
   cursor: pointer;
 }
@@ -34,7 +34,7 @@
 .seek {
   flex: 1;
   min-width: 60px;
-  accent-color: var(--ai-primary, #2563eb);
+  accent-color: var(--ai-primary, #18181b);
 }
 .time {
   color: var(--ai-muted, #52525b);
@@ -97,11 +97,11 @@ button.segment:hover {
   cursor: pointer;
 }
 .voice:has(input:checked) {
-  border-color: var(--ai-primary, #2563eb);
+  border-color: var(--ai-primary, #18181b);
   background: var(--ai-surface-subtle, #f4f4f5);
 }
 .voice input {
-  accent-color: var(--ai-primary, #2563eb);
+  accent-color: var(--ai-primary, #18181b);
 }
 .grow {
   flex: 1;
@@ -139,10 +139,10 @@ button.segment:hover {
   background: radial-gradient(
     circle at 35% 30%,
     var(--ai-surface, #fff) 0%,
-    var(--ai-primary, #2563eb) 55%,
-    var(--ai-primary-text, #1d4ed8) 100%
+    var(--ai-primary, #18181b) 55%,
+    var(--ai-primary-text, #27272a) 100%
   );
-  box-shadow: 0 0 0 0 var(--ai-primary-soft, rgb(37 99 235 / 0.25));
+  box-shadow: 0 0 0 0 var(--ai-primary-soft, rgb(24 24 27 / 0.25));
 }
 .persona[data-state='asleep'] .orb {
   filter: grayscale(1);

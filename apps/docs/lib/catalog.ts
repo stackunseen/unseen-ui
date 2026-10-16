@@ -296,9 +296,10 @@ export const catalog: CatalogEntry[] = [
     category: 'Conversation',
     description: 'Renders an answer as it streams and marks interrupted or failed states.',
     states: [
-      'Waiting',
+      'Live stream',
       'Streaming',
       'Default',
+      'Waiting',
       'Interrupted',
       'Markdown',
       'Code',
@@ -308,7 +309,6 @@ export const catalog: CatalogEntry[] = [
       'Footnotes',
       'Long code',
       'Large content',
-      'Live stream',
       'Long labels',
     ],
     contract: 'text · state · error? · renderContent?; optional MarkdownResponse from /markdown',
@@ -485,6 +485,7 @@ export const catalog: CatalogEntry[] = [
     name: 'ToolCall',
     category: 'Tools',
     description: 'A tool request with its input, result, failure and duration.',
+    presentations: ['row', 'card', 'terminal', 'compact'],
     states: [
       'Default',
       'Running',
@@ -517,6 +518,7 @@ export const catalog: CatalogEntry[] = [
     name: 'ToolGroup',
     category: 'Tools',
     description: 'Several tool calls grouped together, keeping each failure visible.',
+    presentations: ['list', 'stack', 'grid', 'accordion'],
     states: ['Default', 'Failed', 'Empty'],
     contract: 'tools: ToolCallData[] · detail?',
     responsibility: 'A group summary does not erase a failed call.',
@@ -665,7 +667,7 @@ export const catalog: CatalogEntry[] = [
     ],
     description:
       'A complete chat surface: transcript, streaming reply, tool cards, suggestions, stop, retry and composer, driven by a host or by controlled props.',
-    states: ['Default', 'Mid conversation', 'Tool call', 'Failed', 'AI SDK approval'],
+    states: ['Default', 'Empty', 'Mid conversation', 'Failed', 'AI SDK approval'],
     contract:
       'host: ChatHost · or messages · tools? · status · suggestions? · draft · onDraftChange · onSend · onCancel? · onRetry? · title? · starters? · toolbar? · attachments?',
     responsibility:

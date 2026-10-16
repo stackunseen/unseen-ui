@@ -420,41 +420,44 @@ export function Gallery({
           </nav>
         </aside>
         <main id="main-content" className="main-content explorer-main" tabIndex={-1}>
-          <div className="explorer-context">
-            <span>
-              <Link href="/components/">Components</Link>
-              {' / '}
-              {view === 'components'
-                ? `${sectionLabels[section]} / ${navigationGroup(entry)}`
-                : `${sectionLabels[section]} / ${workspaces.find((item) => item.view === view)?.label}`}
-            </span>
-            {view === 'components' && (
-              <nav className="component-pagination" aria-label="Browse components">
-                {previous && (
-                  <LocalLink
-                    location={entryLocation(previous.name)}
-                    onNavigate={navigate}
-                    aria-label={`Previous component: ${previous.name}`}
-                  >
-                    <ArrowLeft size={15} aria-hidden="true" />
-                    <span>Previous</span>
-                  </LocalLink>
-                )}
-                {next && (
-                  <LocalLink
-                    location={entryLocation(next.name)}
-                    onNavigate={navigate}
-                    aria-label={`Next component: ${next.name}`}
-                  >
-                    <span>Next</span>
-                    <ArrowRight size={15} aria-hidden="true" />
-                  </LocalLink>
-                )}
-              </nav>
-            )}
-          </div>
+          {view !== 'components' && (
+            <div className="explorer-context">
+              <span>
+                <Link href="/components/">Components</Link>
+                {' / '}
+                {`${sectionLabels[section]} / ${workspaces.find((item) => item.view === view)?.label}`}
+              </span>
+            </div>
+          )}
           {view === 'components' ? (
-            <ComponentDetail key={entry.name} entry={entry} location={location} onChange={change} />
+            <ComponentDetail
+              key={entry.name}
+              entry={entry}
+              location={location}
+              onChange={change}
+              pagination={
+                <nav className="component-pagination" aria-label="Browse components">
+                  {previous && (
+                    <LocalLink
+                      location={entryLocation(previous.name)}
+                      onNavigate={navigate}
+                      aria-label={`Previous component: ${previous.name}`}
+                    >
+                      <ArrowLeft size={15} aria-hidden="true" />
+                    </LocalLink>
+                  )}
+                  {next && (
+                    <LocalLink
+                      location={entryLocation(next.name)}
+                      onNavigate={navigate}
+                      aria-label={`Next component: ${next.name}`}
+                    >
+                      <ArrowRight size={15} aria-hidden="true" />
+                    </LocalLink>
+                  )}
+                </nav>
+              }
+            />
           ) : view === 'coding' ? (
             <CodingStudio />
           ) : view === 'templates' ? (

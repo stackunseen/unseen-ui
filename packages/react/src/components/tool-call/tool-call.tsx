@@ -9,6 +9,7 @@ import { Accordion } from '../accordion/accordion.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
 import { SummaryHeading } from '../../shared/summary-heading.js';
+import { useDisclosure } from '../../shared/disclosure.js';
 import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import css from './tools.module.css';
@@ -116,6 +117,60 @@ function ToolOutput() {
   );
 }
 
+/** States a row keeps as a labelled badge; the rest read from a small icon. */
+const exceptionStates = new Set<ToolCallData['state']>([
+  'failed',
+  'denied',
+  'cancelled',
+  'approval-required',
+  'outcome-unknown',
+]);
+function formatDuration(ms: number) {
+  return ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toFixed(ms < 10_000 ? 1 : 0)} s`;
+}
+
+/** One line per step: status, label, target and host duration; details open below. */
+function ToolRow() {
+  const value = useTool();
+  const disclosure = useDisclosure({});
+  const problem = !!value.error || value.state === 'failed' || value.state === 'outcome-unknown';
+  const duration =
+    value.durationMs !== undefined &&
+    Number.isFinite(value.durationMs) &&
+    value.durationMs >= 0 &&
+    settledStates.has(value.state)
+      ? formatDuration(value.durationMs)
+      : undefined;
+  return (
+    <>
+      <button className={css.rowTrigger} {...disclosure.triggerProps}>
+        <StatusBadge
+          state={value.state}
+          variant={exceptionStates.has(value.state) ? 'soft' : 'icon'}
+        />
+        <span className={css.rowLabel}>{value.label ?? <code>{value.name}</code>}</span>
+        {value.target && <span className={css.rowTarget}>{value.target}</span>}
+        {duration && <span className={css.rowMeta}>{duration}</span>}
+        <AIIcon name={disclosure.open ? 'collapse' : 'expand'} />
+      </button>
+      {problem && <ToolOutput />}
+      <div {...disclosure.contentProps} className={css.rowBody}>
+        {value.input && (
+          <pre
+            className={`${s.code} ${css.preview}`}
+            tabIndex={0}
+            role="group"
+            aria-label={`${value.name} input preview`}
+          >
+            {value.input.slice(0, 4000)}
+          </pre>
+        )}
+        {!problem && <ToolOutput />}
+      </div>
+    </>
+  );
+}
+
 function ToolRoot({
   value: input,
   children,
@@ -128,6 +183,16 @@ function ToolRoot({
     children?: ReactNode;
   }) {
   const value = toolCallFrom(input);
+  if (variant === 'row' && !children)
+    return (
+      <ToolContext.Provider value={value}>
+        <ToolDetailContext.Provider value={detail}>
+          <div data-part="tool-call" data-variant="row" data-detail={detail} className={css.row}>
+            <ToolRow />
+          </div>
+        </ToolDetailContext.Provider>
+      </ToolContext.Provider>
+    );
   return (
     <ToolContext.Provider value={value}>
       <ToolDetailContext.Provider value={detail}>
