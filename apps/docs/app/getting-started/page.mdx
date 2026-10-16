@@ -123,6 +123,10 @@ Follow each component's usage guide for its required values and callbacks. There
 
 [Customize](/customize/) previews appearance, colors, density and corners. [Themes and icons](/docs/customization/) covers `AITheme`, `IconsProvider` and custom header/footer composition. For server responses and optional workflow examples, read [Connect to your app](/docs/integration/).
 
+## 5. Notes for Next.js apps
+
+Three things that only come up with a server-rendering router. Skip this section until you need it.
+
 ### Compound parts in Server Components
 
 Compound components such as `Card.Header`, `Sidebar.Group`, `Tooltip.Trigger` and `NavigationMenu.List` are undefined when imported into a Next.js Server Component, because the client reference proxy does not carry static properties. Every part is also a top-level named export, so import those there:

@@ -1024,6 +1024,20 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   outline: 2px solid #2563eb;
   outline-offset: 2px;
 }
+/* Guide code blocks carry a copy button in the corner */
+.code-panel {
+  position: relative;
+  margin: 16px 0;
+}
+.code-panel > pre {
+  margin: 0;
+  padding-inline-end: 52px;
+}
+.code-panel > [data-part='copy-button-root'] {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
 .docs-article a {
   color: #1d4ed8;
 }
