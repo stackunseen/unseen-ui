@@ -57,6 +57,7 @@ export default defineConfig(({ mode }) => {
     'devtools',
     'media',
     'navigation',
+    'mcp-apps',
   ].includes(mode);
   return {
     css: { modules: { generateScopedName: scopedName } },
@@ -105,7 +106,7 @@ export default defineConfig(({ mode }) => {
       lib: {
         entry: optional
           ? {
-              [mode]: `src/${mode}.${['editor', 'artifact-editor', 'conversation-flow'].includes(mode) ? 'tsx' : 'ts'}`,
+              [mode]: `src/${mode}.${['editor', 'artifact-editor', 'conversation-flow', 'mcp-apps'].includes(mode) ? 'tsx' : 'ts'}`,
             }
           : {
               index: 'src/index.ts',

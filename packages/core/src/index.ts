@@ -15,6 +15,17 @@ export { validateApprovalDecision, safeUrl } from './approval.js';
 export type * from './measurement.js';
 export type * from './surface-lang.js';
 export type * from './a2ui.js';
+export type * from './app-bridge.js';
+export {
+  createAppBridge,
+  buildAppCsp,
+  injectAppCsp,
+  appPermissionPolicy,
+  isAppResource,
+  appMethods,
+  appProtocolVersion,
+  jsonRpcErrors,
+} from './app-bridge.js';
 export { createA2UISession, mapA2UIStream, a2uiProtocolVersion } from './a2ui.js';
 export {
   createSurfaceParser,

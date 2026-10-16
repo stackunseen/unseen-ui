@@ -133,7 +133,12 @@
       "types": "./dist/navigation.d.ts",
       "import": "./dist/navigation.js"
     },
-    "./navigation.css": "./dist/navigation.css"
+    "./navigation.css": "./dist/navigation.css",
+    "./mcp-apps": {
+      "types": "./dist/mcp-apps.d.ts",
+      "import": "./dist/mcp-apps.js"
+    },
+    "./mcp-apps.css": "./dist/mcp-apps.css"
   },
   "peerDependencies": {
     "@tanstack/react-virtual": "^3.14.13",
@@ -236,7 +241,7 @@
     "zod": "4.6.5"
   },
   "scripts": {
-    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && vite build --mode assistant && vite build --mode devtools && vite build --mode media && vite build --mode navigation && tsc -p tsconfig.build.json",
+    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && vite build --mode assistant && vite build --mode devtools && vite build --mode media && vite build --mode navigation && vite build --mode mcp-apps && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

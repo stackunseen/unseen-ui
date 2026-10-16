@@ -71,6 +71,7 @@ export const componentVariants = {
   BackgroundStatus: ['pill', 'banner'],
   RunCompare: ['columns', 'stacked'],
   SubagentTree: ['tree', 'compact'],
+  MCPAppFrame: ['card', 'plain'],
 } as const;
 export type VariantComponent = keyof typeof componentVariants;
 export type ComponentVariant<K extends VariantComponent> = (typeof componentVariants)[K][number];

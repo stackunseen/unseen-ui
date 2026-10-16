@@ -625,6 +625,21 @@ export const catalog: CatalogEntry[] = [
     code: '<MCPToolList tools={tools} query={query} onQueryChange={setQuery} />',
   },
   {
+    name: 'MCPAppFrame',
+    category: 'MCP',
+    importPath: '/mcp-apps',
+    aliases: ['MCP App', 'Tool view', 'App frame'],
+    description:
+      'A sandboxed frame for an MCP App view with the declared policy and a host-controlled bridge.',
+    states: ['Default', 'Nothing granted', 'Fetching', 'Blocked', 'Failed', 'Not an app'],
+    contract:
+      'server · resource · state · reason? · toolInput? · toolResult? · hostCapabilities? · hostContext? · grantedPermissions? · allowForms? · maxHeight? · onRequest? · onNotification? · onClose? · fallback?',
+    responsibility:
+      'The host fetches the resource, decides whether the server may show views, declares what it honours and answers every request. The frame grants no permission and runs nothing outside the sandbox.',
+    keyboard: 'Tab moves into the view and back out; the Close button is a normal button.',
+    code: '<MCPAppFrame server={server} resource={resource} state="ready" onRequest={decide} />',
+  },
+  {
     name: 'ContextBar',
     category: 'Context',
     description: 'What the current request includes, with removable items.',

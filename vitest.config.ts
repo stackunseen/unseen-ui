@@ -21,6 +21,9 @@ export default defineConfig({
       '@stackunseen/ui/navigation': fileURLToPath(
         new URL('./packages/react/src/navigation.ts', import.meta.url),
       ),
+      '@stackunseen/ui/mcp-apps': fileURLToPath(
+        new URL('./packages/react/src/mcp-apps.tsx', import.meta.url),
+      ),
       '@stackunseen/ui/media': fileURLToPath(
         new URL('./packages/react/src/media.ts', import.meta.url),
       ),
