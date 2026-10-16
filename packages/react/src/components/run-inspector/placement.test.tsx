@@ -18,12 +18,12 @@ describe('execution content and contextual actions', () => {
       render(<RunInspector variant={variant} runId="run" spans={[span]} onSelect={inspect} />);
       if (variant === 'accordion')
         await userEvent.click(
-          screen.getByRole('button', { name: /Read the release checklist · complete/ }),
+          screen.getByRole('button', { name: /Read the release checklist.*Complete/ }),
         );
       const action = screen.getByRole('button', {
         name: 'Inspect span: Read the release checklist',
       });
-      expect(screen.getAllByText(/complete/)).toHaveLength(1);
+      expect(screen.getAllByText(/complete/i)).toHaveLength(1);
       expect(screen.getByText('Duration: Not measured')).toBeVisible();
       expect(action).toHaveAttribute('data-part', 'icon-button');
       await userEvent.click(action);

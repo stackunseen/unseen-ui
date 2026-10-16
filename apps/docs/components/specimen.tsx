@@ -582,6 +582,7 @@ export function Specimen({
                     name: 'read_handbook',
                     state: failed ? 'failed' : 'running',
                     output: undefined,
+                    durationMs: failed ? 410 : undefined,
                     error: failed ? 'Access revoked.' : undefined,
                   },
                 ]

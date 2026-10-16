@@ -21,7 +21,7 @@ describe('coding and workflow contracts', () => {
       />,
     );
     expect(screen.getByText('Usage not reported')).toBeVisible();
-    await userEvent.click(screen.getByRole('button', { name: 'Search · running' }));
+    await userEvent.click(screen.getByRole('button', { name: /Search.*Running/ }));
     expect(screen.getByText('Duration: Not measured')).toBeVisible();
   });
 });

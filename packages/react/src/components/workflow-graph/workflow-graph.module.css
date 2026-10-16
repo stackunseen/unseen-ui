@@ -5,8 +5,13 @@
 .root [data-part='status'] {
   font-size: var(--ai-font-size-caption, 12px);
 }
+.fit {
+  position: relative;
+  overflow: hidden;
+}
 .canvas {
   position: relative;
+  transform-origin: top left;
   width: 960px;
   background: var(--ai-surface-subtle);
   border-radius: var(--ai-control-radius, 8px);

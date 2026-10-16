@@ -13,6 +13,14 @@ import s from '../../shared/styles/styles.module.css';
 import css from './tools.module.css';
 import { ToolResult } from '../tool-result/tool-result.js';
 import { ToolContext } from './tool-context.js';
+/** States in which a host duration describes a finished call rather than a stale number. */
+const settledStates = new Set<ToolCallData['state']>([
+  'succeeded',
+  'failed',
+  'cancelled',
+  'denied',
+  'outcome-unknown',
+]);
 function useTool() {
   const value = useContext(ToolContext);
   if (!value) throw new Error('ToolCall parts require ToolCall.Root.');
@@ -98,7 +106,7 @@ function ToolOutput() {
           )}
         </p>
       )}
-      {value.durationMs !== undefined && (
+      {value.durationMs !== undefined && settledStates.has(value.state) && (
         <small className={s.muted}>Host duration: {value.durationMs} ms</small>
       )}
     </div>

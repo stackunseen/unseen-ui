@@ -5,7 +5,7 @@ import { componentSearchText, searchCatalog } from './gallery-navigation';
 
 describe('component tasks', () => {
   it('name only components that exist, each task at least three', () => {
-    const names = new Set(catalog.map((entry) => entry.name));
+    const names = new Set<string>(catalog.map((entry) => entry.name));
     for (const task of componentTasks) {
       expect(task.components.length).toBeGreaterThanOrEqual(3);
       for (const name of task.components) expect(names.has(name), `${task.id}: ${name}`).toBe(true);

@@ -72,7 +72,10 @@ export function ResponseStatus({
 }: Pick<StreamingResponseProps, 'state' | 'variant' | 'error'>) {
   return (
     <>
-      <span role="status" className={`${state === 'complete' ? s.srOnly : s.muted} ${r.status}`}>
+      <span
+        role="status"
+        className={`${state === 'complete' || (state === 'streaming' && variant === 'cursor') ? s.srOnly : s.muted} ${r.status}`}
+      >
         {state === 'streaming'
           ? variant === 'cursor'
             ? 'Receiving response'

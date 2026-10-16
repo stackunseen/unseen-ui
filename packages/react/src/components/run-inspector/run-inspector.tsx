@@ -1,6 +1,7 @@
 'use client';
 import { IconButton } from '../icon-button/icon-button.js';
 import { Accordion } from '../accordion/accordion.js';
+import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import c from '../../shared/styles/coding.module.css';
@@ -24,6 +25,14 @@ export interface RunInspectorProps extends VariantProps<'RunInspector'> {
   onSelect?: (span: RunSpan) => void;
 }
 
+const badgeState: Record<RunSpan['state'], string> = {
+  queued: 'queued',
+  running: 'running',
+  complete: 'succeeded',
+  failed: 'failed',
+  cancelled: 'cancelled',
+};
+
 export function RunInspector({
   runId,
   spans,
@@ -36,7 +45,6 @@ export function RunInspector({
       <div className={s.root}>
         <p className={s.muted}>
           {span.kind}
-          {variant !== 'accordion' ? ` · ${span.state}` : ''}
           {span.parentId ? ` · Parent ${span.parentId}` : ''}
         </p>
         <p>{span.summary?.slice(0, 5000) || 'No public summary supplied.'}</p>
@@ -59,7 +67,9 @@ export function RunInspector({
   }
   return (
     <div className={s.root} data-part="run-inspector" data-variant={variant}>
-      <strong>Run {runId}</strong>
+      <strong>
+        Run <code>{runId}</code>
+      </strong>
       <p className={s.muted}>
         {usage && Number.isSafeInteger(usage.tokens) && usage.tokens >= 0 && usage.source.trim()
           ? `${usage.tokens.toLocaleString('en-US')} tokens · ${usage.source}`
@@ -72,7 +82,12 @@ export function RunInspector({
           type="multiple"
           items={spans.slice(0, 200).map((span) => ({
             value: span.id,
-            title: `${span.name} · ${span.state}`,
+            title: (
+              <span className={s.row}>
+                <span>{span.name}</span>
+                <StatusBadge state={badgeState[span.state]} />
+              </span>
+            ),
             content: body(span),
           }))}
         />
@@ -80,7 +95,10 @@ export function RunInspector({
         <ul className={c.list}>
           {spans.slice(0, 200).map((span) => (
             <li className={c.test} key={span.id}>
-              <strong>{span.name}</strong>
+              <div className={s.row}>
+                <strong>{span.name}</strong>
+                <StatusBadge state={badgeState[span.state]} />
+              </div>
               {body(span)}
             </li>
           ))}

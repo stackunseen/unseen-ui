@@ -30,6 +30,8 @@ export interface WorkflowGraphProps extends VariantProps<'WorkflowGraph'> {
     'ready' | 'streaming' | 'stale' | 'loading' | 'denied' | 'unavailable' | 'error' | 'unknown';
   error?: string;
 }
+/** Below this the diagram scrolls instead of shrinking further. */
+const minScale = 0.6;
 export function WorkflowGraph({
   nodes,
   edges,
@@ -133,6 +135,20 @@ function WorkflowView({
 }: Omit<WorkflowGraphProps, 'nodes' | 'edges'> & { model: WorkflowModel; interactive: boolean }) {
   const prefix = `workflow-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const [focusedId, setFocusedId] = useState<string>();
+  const scroller = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  useLayoutEffect(() => {
+    const element = scroller.current;
+    if (!element || typeof ResizeObserver === 'undefined') return;
+    const measure = () => {
+      if (!element.clientWidth) return;
+      setScale(Math.max(minScale, Math.min(1, element.clientWidth / workflowCanvas.width)));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [variant]);
   const buttons = useRef(new Map<string, HTMLButtonElement>());
   const selected =
     selection ?? (selectedId ? { kind: 'node' as const, id: selectedId } : undefined);
@@ -351,75 +367,96 @@ function WorkflowView({
               Connections.
             </p>
           )}
-          <div className={c.scroll} tabIndex={0} role="group" aria-label="Workflow diagram">
-            <div className={css.canvas} style={{ height: routing!.canvas.height }}>
-              <svg
-                viewBox={`0 0 ${routing!.canvas.width} ${routing!.canvas.height}`}
-                aria-hidden="true"
+          <div
+            ref={scroller}
+            className={c.scroll}
+            tabIndex={0}
+            role="group"
+            aria-label="Workflow diagram"
+            data-scale={scale.toFixed(2)}
+          >
+            <div
+              className={css.fit}
+              style={{
+                width: Math.round(workflowCanvas.width * scale),
+                height: Math.round(routing!.canvas.height * scale),
+              }}
+            >
+              <div
+                className={css.canvas}
+                style={{
+                  height: routing!.canvas.height,
+                  transform: scale < 1 ? `scale(${scale})` : undefined,
+                }}
               >
-                <defs>
-                  <marker
-                    id={`${prefix}-arrow`}
-                    viewBox="0 0 10 10"
-                    refX={9}
-                    refY={5}
-                    markerWidth={8}
-                    markerHeight={8}
-                    markerUnits="userSpaceOnUse"
-                    orient="auto"
-                  >
-                    <path d="M0,0 L10,5 L0,10 Z" fill="var(--ai-muted)" />
-                  </marker>
-                </defs>
-                {routing!.routes.map(
-                  (route) =>
-                    route.path && (
-                      <g key={route.edge.id}>
-                        <path
-                          className={css.edge}
-                          data-edge-id={route.edge.id}
-                          data-loop={route.loop}
-                          data-selected={edgeSelected?.id === route.edge.id}
-                          d={route.path}
-                          markerEnd={`url(#${prefix}-arrow)`}
-                        />
-                        {route.label && (
-                          <g
-                            className={css.edgeNumber}
-                            transform={`translate(${route.label!.x},${route.label!.y})`}
-                          >
-                            <rect x={-18} y={-12} width={36} height={24} rx={4} />
-                            <text>E{route.index}</text>
-                          </g>
-                        )}
-                      </g>
-                    ),
-                )}
-              </svg>
-              {model.nodes.map((node) => (
-                <button
-                  key={node.id}
-                  ref={(button) => {
-                    if (button) buttons.current.set(node.id, button);
-                    else buttons.current.delete(node.id);
-                  }}
-                  type="button"
-                  className={css.node}
-                  data-workflow-node={node.id}
-                  style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                  aria-label={`${node.label} · ${node.state}`}
-                  title={`${node.label} · ${node.state}`}
-                  aria-pressed={nodeSelected?.id === node.id}
-                  disabled={!interactive || !onSelect}
-                  tabIndex={node.id === activeId ? 0 : -1}
-                  onFocus={() => setFocusedId(node.id)}
-                  onKeyDown={(event) => keyboard(event, node)}
-                  onClick={() => selectNode(node)}
+                <svg
+                  viewBox={`0 0 ${routing!.canvas.width} ${routing!.canvas.height}`}
+                  aria-hidden="true"
                 >
-                  <span className={css.nodeLabel}>{node.label}</span>
-                  <StatusBadge state={node.state} />
-                </button>
-              ))}
+                  <defs>
+                    <marker
+                      id={`${prefix}-arrow`}
+                      viewBox="0 0 10 10"
+                      refX={9}
+                      refY={5}
+                      markerWidth={8}
+                      markerHeight={8}
+                      markerUnits="userSpaceOnUse"
+                      orient="auto"
+                    >
+                      <path d="M0,0 L10,5 L0,10 Z" fill="var(--ai-muted)" />
+                    </marker>
+                  </defs>
+                  {routing!.routes.map(
+                    (route) =>
+                      route.path && (
+                        <g key={route.edge.id}>
+                          <path
+                            className={css.edge}
+                            data-edge-id={route.edge.id}
+                            data-loop={route.loop}
+                            data-selected={edgeSelected?.id === route.edge.id}
+                            d={route.path}
+                            markerEnd={`url(#${prefix}-arrow)`}
+                          />
+                          {route.label && (
+                            <g
+                              className={css.edgeNumber}
+                              transform={`translate(${route.label!.x},${route.label!.y})`}
+                            >
+                              <rect x={-18} y={-12} width={36} height={24} rx={4} />
+                              <text>E{route.index}</text>
+                            </g>
+                          )}
+                        </g>
+                      ),
+                  )}
+                </svg>
+                {model.nodes.map((node) => (
+                  <button
+                    key={node.id}
+                    ref={(button) => {
+                      if (button) buttons.current.set(node.id, button);
+                      else buttons.current.delete(node.id);
+                    }}
+                    type="button"
+                    className={css.node}
+                    data-workflow-node={node.id}
+                    style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                    aria-label={`${node.label} · ${node.state}`}
+                    title={`${node.label} · ${node.state}`}
+                    aria-pressed={nodeSelected?.id === node.id}
+                    disabled={!interactive || !onSelect}
+                    tabIndex={node.id === activeId ? 0 : -1}
+                    onFocus={() => setFocusedId(node.id)}
+                    onKeyDown={(event) => keyboard(event, node)}
+                    onClick={() => selectNode(node)}
+                  >
+                    <span className={css.nodeLabel}>{node.label}</span>
+                    <StatusBadge state={node.state} />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           <p className={css.summary}>
