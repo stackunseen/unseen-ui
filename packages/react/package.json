@@ -19,8 +19,12 @@
   "private": false,
   "type": "module",
   "license": "MIT",
+  "bin": {
+    "unseen-ui": "./bin/unseen-ui.mjs"
+  },
   "files": [
     "dist",
+    "bin",
     "README.md"
   ],
   "sideEffects": [

@@ -75,6 +75,24 @@ jobs:
           path: output/playwright/ci-smoke/
           if-no-files-found: ignore
           retention-days: 7
+      # The exported site: routes, links and SEO, then real journeys and axe in a browser.
+      - name: Docs site checks
+        if: github.event_name != 'pull_request'
+        run: |
+          node apps/docs/scripts/check-static-site.mjs
+          mkdir -p output
+          node apps/docs/scripts/preview.mjs > output/docs-preview.log 2>&1 &
+          for attempt in $(seq 1 30); do curl -sf http://127.0.0.1:4175/ > /dev/null && break; sleep 1; done
+          node apps/docs/scripts/site-browser-check.mjs
+        timeout-minutes: 10
+      - name: Retain site check evidence
+        if: always() && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: site-check
+          path: output/playwright/unseen-site/
+          if-no-files-found: ignore
+          retention-days: 7
       - run: pnpm check:packages
         if: github.event_name != 'pull_request'
       - run: pnpm check:size

@@ -3,6 +3,7 @@ import { componentHref } from '../../lib/site-paths';
 import { navigationGroup } from '../../lib/gallery-navigation';
 import { isReleaseComponent } from '../../lib/first-release';
 import { siteOrigin } from '../../lib/site-seo';
+import { componentImport } from '../../lib/component-import';
 
 export const dynamic = 'force-static';
 
@@ -10,14 +11,14 @@ export const dynamic = 'force-static';
 export function GET() {
   const origin = siteOrigin ?? '';
   const sections = catalog.filter(isReleaseComponent).map((entry) => {
-    const importPath = `@stackunseen/ui${entry.importPath ?? ''}`;
+    const imported = componentImport(entry);
     return [
       `## ${entry.name}`,
       '',
       `${entry.description}`,
       '',
       `- Group: ${navigationGroup(entry)}`,
-      `- Import: \`import { ${entry.name} } from '${importPath}'\``,
+      `- Import: \`${imported.line}\`${imported.stylesheet ? ` and \`import '${imported.stylesheet}';\`` : ''}`,
       `- Page: ${origin}${componentHref(entry.name)}`,
       `- Inputs: ${entry.contract}`,
       entry.responsibility ? `- Host responsibility: ${entry.responsibility}` : '',
@@ -36,8 +37,6 @@ export function GET() {
     '# Unseen UI — full component reference',
     '',
     'Install: `npm install @stackunseen/ui`. Import `@stackunseen/ui/styles.css` once; optional entries name their own stylesheet (for example `@stackunseen/ui/chat.css`). React 19.3 is a peer.',
-    '',
-    'The import line below uses the catalog name; a few entries export a differently named component, which the page shows.',
     '',
     ...sections,
   ].join('\n');

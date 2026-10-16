@@ -1,5 +1,3 @@
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import Link from 'next/link';
 import { DocsFrame } from '../../components/docs-frame';
 import { ComponentDirectory } from '../../components/component-directory';
@@ -11,7 +9,8 @@ import {
   componentSearchText,
   navigationGroup,
 } from '../../lib/gallery-navigation';
-import { componentHref, componentSlug } from '../../lib/site-paths';
+import { componentHref } from '../../lib/site-paths';
+import { componentPreview } from '../../lib/component-previews';
 import { releaseSections, sectionGroups, sectionLabels } from '../../lib/component-collections';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
@@ -28,11 +27,7 @@ export default function Page() {
     group: navigationGroup(entry),
     terms: componentSearchText(entry),
     // Thumbnails come from apps/docs/scripts/capture-component-previews.mjs; absent ones fall back to the name.
-    preview: existsSync(
-      join(process.cwd(), 'public/previews/components', `${componentSlug(entry.name)}-light.webp`),
-    )
-      ? `/previews/components/${componentSlug(entry.name)}`
-      : undefined,
+    preview: componentPreview(entry.name),
   }));
   const rail = (
     <nav className="directory-rail" aria-label="Component categories">

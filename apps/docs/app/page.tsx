@@ -74,14 +74,14 @@ export default function Page() {
         <section className="home-tasks" aria-labelledby="home-tasks-title">
           <div className="home-section-heading">
             <h2 id="home-tasks-title">Explore by what you are building</h2>
-            <Link href="/components/">
-              All components <ArrowRight size={16} aria-hidden="true" />
+            <Link href="/tasks/">
+              All tasks <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
           <ul>
             {componentTasks.slice(0, 8).map((task) => (
               <li key={task.id}>
-                <Link href={`/components/?q=${encodeURIComponent(task.label)}`}>
+                <Link href={`/tasks/${task.id}/`}>
                   <strong>{task.label}</strong>
                   <span>{task.description}</span>
                   <small>{task.components.slice(0, 4).join(' · ')}</small>
@@ -89,6 +89,43 @@ export default function Page() {
               </li>
             ))}
           </ul>
+        </section>
+        <section className="home-why" aria-labelledby="home-why-title">
+          <div className="home-section-heading">
+            <h2 id="home-why-title">Why Unseen UI</h2>
+          </div>
+          <ul>
+            <li>
+              <strong>Approvals that wait for your server</strong>
+              <span>
+                A decision carries the proposal&apos;s version and digest, and the card stays
+                pending until your server answers. Nothing is treated as approved because a button
+                was clicked.
+              </span>
+              <Link href="/components/approval-card/">ApprovalCard</Link>
+            </li>
+            <li>
+              <strong>States that do not pretend</strong>
+              <span>
+                Measured, estimated and unknown values read differently. An unknown outcome is never
+                shown as a failure or a success, and stale data is marked.
+              </span>
+              <Link href="/components/usage-meter/">UsageMeter</Link>
+            </li>
+            <li>
+              <strong>One package, no Tailwind</strong>
+              <span>
+                Install from npm and import a stylesheet. Scoped styles and theme tokens work in any
+                React 19 app, and updates arrive as versions instead of copied files.
+              </span>
+              <Link href="/getting-started/">Getting started</Link>
+            </li>
+          </ul>
+          <p className="home-why-evidence">
+            Measured 16 October 2026: 2,131 unit and interaction tests passing · zero automated
+            accessibility (axe) violations on the audited pages · base stylesheet 24 KiB gzip · Chat
+            entry under 3 KiB gzip.
+          </p>
         </section>
         <HomeShowcase />
         <HomeFinder entries={entries} />

@@ -1,0 +1,39 @@
+# Changelog
+
+Unseen UI is an experimental alpha. Prereleases are published on npm under the `alpha` tag; pin exact versions. Newest first.
+
+## Next prerelease (in the repository, not yet on npm)
+
+- **Chat:** a new `@stackunseen/ui/chat` entry with `Chat`, a complete chat surface, and `useLocalHost` for prototypes.
+- **AI SDK:** `useAiSdkChat(useChat())` connects Chat to the Vercel AI SDK, with tool approvals shown as approval cards. `@stackunseen/ui-core/ai-sdk` has the mapping for custom layouts.
+- **Shorter inputs:** Message accepts `{ role, text }`; ToolCall and ToolGroup accept `{ name }` plus what you know.
+- **Compact by default:** ToolCall, ToolGroup, RunInspector, WorkflowGraph and ExecutionTimeline take `detail: 'compact' | 'full'` and hide revisions, durations and source lines unless asked.
+- **Honest approvals:** ApprovalCard reads "Risk not assessed" and "None supplied" instead of invented values when the host has none.
+- **Site:** gallery and list views with live-preview thumbnails, search by meaning, task pages, Patterns in the navigation, an AI SDK recipe, this changelog, and `llms.txt` for coding agents.
+
+## 0.1.0-alpha.7 — 16 October 2026 (tagged; npm publish pending)
+
+- **Runs:** RunBoard, AttentionQueue, RunSummaryCard, BackgroundStatus, RunCompare and SubagentTree in `/conversation-flow`.
+- **Generated interfaces:** a streaming line format and parser for GeneratedUI, prompt text from the vocabulary, A2UI v1.0 mapping, and new nodes (list, callout, options, steps, image, metric group).
+- **MCP Apps:** MCPAppFrame in a new `/mcp-apps` entry with a sandboxed bridge; a ToolResult renderer registry and partial results.
+- **Approvals:** ScopeGrant, DryRunPreview and ApprovalBatch, plus AG-UI interrupt and MCP elicitation adapters.
+- **Trust signals:** UsageMeter, ProvenanceBadge, ConfidenceNote and FeedbackCapture.
+- **Design language:** zinc neutrals, motion and type tokens, readable soft colour pairs.
+- **Docs:** install and import on every component page, tasks for discovery, related components, copy buttons on code blocks.
+- **Fixes:** Matrix plain data, FilterBar search row, Stepper segments, CodeTabs reveal, contrast, ModelSelector mark, row spacing, FileDropzone.
+
+## 0.1.0-alpha.6 — 14 October 2026
+
+- Fourteen follow-ups from adopting alpha.5 on the StackUnseen site.
+
+## 0.1.0-alpha.5 — 13 October 2026
+
+- Site components: CommandPalette, TableOfContents, ShareMenu, CopyButton, InputGroup, AppearanceToggle, ProgressRing, Checklist and CodeTabs, with documentation and showcases.
+
+## 0.1.0-alpha.4 — 9 October 2026
+
+- Router links for linked controls, link-mode tab order, Stepper tooltips, Matrix headers and fills, the Sidecar sheet and the FilterBar pattern.
+
+## 0.1.0-alpha.1 to alpha.3 — 7 to 9 October 2026
+
+- The first public prereleases of the component set, the theme and the docs site.

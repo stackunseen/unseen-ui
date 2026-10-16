@@ -93,7 +93,8 @@ body {
   font-size: 16px;
   line-height: 1.65;
 }
-.pattern-list h2 {
+.pattern-list h2,
+.pattern-list h3 {
   font-size: 24px;
   line-height: 1.25;
   letter-spacing: -0.025em;
@@ -239,6 +240,12 @@ body {
   }
   .web-footer-compact nav {
     gap: 4px 12px;
+  }
+}
+@media (max-width: 420px) {
+  /* Four links wrap to two rows here; 24px targets keep the footer compact and meet WCAG 2.5.8. */
+  .web-footer-compact nav a {
+    min-height: 24px;
   }
 }
 

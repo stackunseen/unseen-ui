@@ -263,3 +263,21 @@ export function matchesQuery(searchText: string, query: string): boolean {
     }),
   );
 }
+
+/**
+ * How well a component matches, for ordering: a word in the name counts most, a literal word in
+ * the text next, an intent or a forgiven typo least. Zero means no match.
+ */
+export function searchScore(name: string, searchText: string, query: string): number {
+  if (!matchesQuery(searchText, query)) return 0;
+  const lowerName = name.toLowerCase();
+  const text = searchText.toLowerCase();
+  const typed = words(query).filter((word) => !fillers.has(word));
+  let score = 1;
+  for (const word of typed) {
+    if (lowerName === word) score += 10;
+    else if (lowerName.includes(word) || lowerName.includes(stem(word))) score += 5;
+    else if (text.includes(word)) score += 2;
+  }
+  return score;
+}

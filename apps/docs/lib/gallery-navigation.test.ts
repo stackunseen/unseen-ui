@@ -46,11 +46,16 @@ describe('library collections', () => {
     expect(sectionCatalog('patterns')).toEqual([]);
     expect(siteNavigation.map(([label]) => label)).toEqual([
       'Components',
+      'Patterns',
       'Getting Started',
       'Customize',
     ]);
     for (const path of ['/patterns/coding-studio/', '/patterns/recoverable-chat/', '/templates/'])
-      expect(siteNavigation.some(([, href]) => isSiteSectionActive(path, href))).toBe(false);
+      expect(
+        siteNavigation
+          .filter(([, href]) => isSiteSectionActive(path, href))
+          .map(([label]) => label),
+      ).toEqual(['Patterns']);
     for (const path of [
       '/getting-started/',
       '/docs/integration/',

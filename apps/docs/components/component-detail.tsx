@@ -16,6 +16,8 @@ import { catalog } from '../lib/catalog';
 import { navigationGroup } from '../lib/gallery-navigation';
 import { componentHref } from '../lib/site-paths';
 import { tasksFor } from '../lib/tasks';
+import { componentImport } from '../lib/component-import';
+import { guidanceFor } from '../lib/usage-guidance';
 export function ComponentDetail({
   entry,
   location,
@@ -37,6 +39,8 @@ export function ComponentDetail({
           : entry.responsibility;
   const { state: variant, style: presentation, compare, tab } = location;
   const [reset, setReset] = useState(0);
+  const [allStates, setAllStates] = useState(false);
+  const when = guidanceFor(entry.name);
   const setVariant = (state: string) => onChange({ state });
   const setPresentation = (style: string) => onChange({ style });
   const setCompare = (compare: boolean) => onChange({ compare });
@@ -101,7 +105,7 @@ export function ComponentDetail({
       ? `import '@stackunseen/ui${module}.css';\n`
       : '';
   const peers = rendererPeers[rich || structured ? '/markdown' : module];
-  const importLine = `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : entry.name} } from '@stackunseen/ui${module}';`;
+  const importLine = `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : componentImport(entry).exportName} } from '@stackunseen/ui${module}';`;
   const installLine = `npm install @stackunseen/ui${peers?.length ? ` ${peers.join(' ')}` : ''}`;
   const tasks = tasksFor(entry.name);
   const siblings = catalog
@@ -140,6 +144,35 @@ export function ComponentDetail({
         </div>
         <h1>{entry.name}</h1>
         <p>{entry.description}</p>
+        {when && (
+          <dl className="detail-when" aria-label="When to use it">
+            <div>
+              <dt>Use it for</dt>
+              <dd>{when.use}</dd>
+            </div>
+            <div>
+              <dt>Not for</dt>
+              <dd>
+                {when.avoid}
+                {when.instead.length > 0 && (
+                  <>
+                    {' '}
+                    Try{' '}
+                    {when.instead.map((name, index) => (
+                      <span key={name}>
+                        {index > 0 && (index === when.instead.length - 1 ? ' or ' : ', ')}
+                        <Link prefetch={false} href={componentHref(name)}>
+                          {name}
+                        </Link>
+                      </span>
+                    ))}
+                    .
+                  </>
+                )}
+              </dd>
+            </div>
+          </dl>
+        )}
         {!isReleaseComponent(entry) && (
           <p className="explorer-note">
             This example combines existing controls into an application or website section. It is
@@ -201,8 +234,27 @@ export function ComponentDetail({
           />
         </label>
         {styles.length > 1 && (
-          <Button variant="outline" aria-pressed={compare} onClick={() => setCompare(!compare)}>
+          <Button
+            variant="outline"
+            aria-pressed={compare}
+            onClick={() => {
+              setAllStates(false);
+              setCompare(!compare);
+            }}
+          >
             {compare ? 'Show selected style' : `Compare ${styles.length} styles`}
+          </Button>
+        )}
+        {entry.states.length > 1 && (
+          <Button
+            variant="outline"
+            aria-pressed={allStates}
+            onClick={() => {
+              if (!allStates && compare) setCompare(false);
+              setAllStates(!allStates);
+            }}
+          >
+            {allStates ? 'Show selected state' : `All ${entry.states.length} states`}
           </Button>
         )}
         <Button variant="ghost" onClick={() => setReset((value) => value + 1)}>
@@ -221,9 +273,23 @@ export function ComponentDetail({
               content: (
                 <>
                   <div className="preview-canvas">
-                    <div className={compare ? 'variant-comparison' : 'detail-specimen'}>
-                      {!compare && <h2 className="sr-only">{entry.name} preview</h2>}
-                      {compare ? (
+                    <div
+                      className={compare || allStates ? 'variant-comparison' : 'detail-specimen'}
+                    >
+                      {!compare && !allStates && <h2 className="sr-only">{entry.name} preview</h2>}
+                      {allStates && !compare ? (
+                        entry.states.map((state) => (
+                          <section className="variant-example" key={state}>
+                            <h2>{state}</h2>
+                            <Specimen
+                              key={`${state}:${presentation}:${reset}`}
+                              name={entry.name}
+                              variant={state}
+                              presentation={presentation}
+                            />
+                          </section>
+                        ))
+                      ) : compare ? (
                         styles.map((style) => (
                           <section className="variant-example" key={style}>
                             <h2>{style.charAt(0).toUpperCase() + style.slice(1)}</h2>
@@ -248,7 +314,9 @@ export function ComponentDetail({
                   <p className="preview-caption">
                     {compare
                       ? 'Styles start with the same data; interactions are independent.'
-                      : 'Interactions use local sample data.'}
+                      : allStates
+                        ? 'Every documented state with the same style; interactions are independent.'
+                        : 'Interactions use local sample data.'}
                   </p>
                 </>
               ),

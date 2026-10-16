@@ -3,51 +3,71 @@ import { ArrowRight } from 'lucide-react';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
   'Documentation',
-  'Set up Unseen UI locally, compose controlled React components, customize scoped themes and connect your application host.',
+  'Install Unseen UI, compose controlled React components, connect the AI SDK, customize scoped themes and migrate from AI Elements.',
   '/docs/',
 );
+const guides = [
+  [
+    '/getting-started/',
+    'Getting started',
+    'Install from npm, render a first component, or let `init` write a chat.',
+  ],
+  [
+    '/components/chat/',
+    'Chat',
+    'A complete chat on a local host or the Vercel AI SDK, with approvals.',
+  ],
+  [
+    '/docs/integration/',
+    'Connect to your app',
+    'Values and callbacks, saving changes and handling server responses.',
+  ],
+  [
+    '/docs/customization/',
+    'Themes and icons',
+    'Appearance, density, colors, styling and icon overrides.',
+  ],
+  [
+    '/docs/migrate-from-ai-elements/',
+    'Migrate from AI Elements',
+    'A component-by-component map and the AI SDK hook-up.',
+  ],
+  ['/docs/changelog/', 'Changelog', 'What changed in each prerelease, and what comes next.'],
+] as const;
 export default function Page() {
   return (
     <>
       <p className="web-eyebrow">Documentation</p>
       <h1>Build with Unseen UI.</h1>
       <p className="article-lead">
-        Use React components for forms, navigation and AI workflows. Start with a component, then
+        React components for forms, navigation and AI workflows. Start with a component, then
         connect its values and callbacks to your app.
       </p>
       <div className="docs-links">
-        <Link href="/getting-started/">
-          <strong>
-            Getting started <ArrowRight size={17} aria-hidden="true" />
-          </strong>
-          <span>Local setup, package imports and a first component.</span>
-        </Link>
-        <Link href="/docs/customization/">
-          <strong>
-            Themes and icons <ArrowRight size={17} aria-hidden="true" />
-          </strong>
-          <span>Appearance, density, colors, styling and icon overrides.</span>
-        </Link>
-        <Link href="/docs/integration/">
-          <strong>
-            Connect to your app <ArrowRight size={17} aria-hidden="true" />
-          </strong>
-          <span>Use values and callbacks, save changes and handle server responses.</span>
-        </Link>
+        {guides.map(([href, title, description]) => (
+          <Link key={href} href={href}>
+            <strong>
+              {title} <ArrowRight size={17} aria-hidden="true" />
+            </strong>
+            <span>{description.replace(/`/g, '')}</span>
+          </Link>
+        ))}
       </div>
       <h2>Explore while you read</h2>
       <p>
         The <Link href="/components/">component catalog</Link> puts live examples beside their props
-        and code. The <Link href="/templates/saas-admin/">SaaS admin example</Link> combines them in
-        a working app. <Link href="/customize/">Customize</Link> previews your theme and exports its
-        configuration.
+        and code. <Link href="/tasks/">Build by task</Link> groups them by what you are making.{' '}
+        <Link href="/patterns/">Patterns</Link> show them working together, from an AI SDK chat to a
+        SaaS admin app. <Link href="/customize/">Customize</Link> previews your theme and exports
+        its configuration.
       </p>
       <h2>Current availability</h2>
       <p>
         The library is an experimental alpha. <code>@stackunseen/ui</code> and{' '}
-        <code>@stackunseen/ui-core</code> are not yet published on npm. The source repository is
-        private, so local setup requires access. The examples use synthetic data and a simulated
-        host.
+        <code>@stackunseen/ui-core</code> are published on npm under the <code>alpha</code> tag; pin
+        exact versions, because APIs may change between prereleases. The site&apos;s examples use
+        synthetic data and simulated hosts; no model is called. Coding agents can read{' '}
+        <a href="/llms.txt">llms.txt</a> and <a href="/llms-full.txt">llms-full.txt</a>.
       </p>
     </>
   );

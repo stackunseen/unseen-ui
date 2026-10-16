@@ -5,14 +5,12 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import {
   AgentSteps,
-  ApprovalCard,
   Button,
   Checkbox,
   DataTable,
   Field,
   Input,
   Message,
-  PromptInput,
   Select,
   StatusBadge,
   Switch,
@@ -21,9 +19,7 @@ import {
 import type { DataTableProps, TableColumn } from '@stackunseen/ui';
 
 type TableRow = DataTableProps['rows'][number];
-import { ModelSelector } from '@stackunseen/ui/assistant';
-import type { ApprovalProposal, SubmissionState } from '@stackunseen/ui-core';
-import { proposal, steps, tool } from '../lib/fixtures';
+import { steps, tool } from '../lib/fixtures';
 import { componentHref } from '../lib/site-paths';
 import { updateShowcaseTheme } from '../lib/showcase-theme';
 import { useSiteTheme } from './site-shell';
@@ -78,11 +74,6 @@ function Tile({
 
 export function HomeShowcase() {
   const { theme, setTheme } = useSiteTheme();
-  const [draft, setDraft] = useState('');
-  const [sent, setSent] = useState('');
-  const [model, setModel] = useState('atlas-fast');
-  const [decision, setDecision] = useState<ApprovalProposal>(proposal);
-  const [submission, setSubmission] = useState<SubmissionState>('idle');
   const [name, setName] = useState('Acme Sandbox');
   const [region, setRegion] = useState('eu');
   const [notify, setNotify] = useState(true);
@@ -128,46 +119,6 @@ export function HomeShowcase() {
         </div>
       </div>
       <div className="home-tiles">
-        <Tile name="PromptInput" group="Conversation" span={2}>
-          <PromptInput
-            value={draft}
-            onValueChange={setDraft}
-            onSubmit={(text) => {
-              setSent(text);
-              setDraft('');
-            }}
-            placeholder="Ask about the sample accounts…"
-            toolbar={
-              <>
-                <Button size="sm" variant="ghost" onClick={() => setSent('')}>
-                  + Attach
-                </Button>
-                <ModelSelector
-                  className="prompt-model-picker"
-                  value={model}
-                  onValueChange={setModel}
-                  models={[
-                    { id: 'atlas-fast', name: 'Atlas Fast', provider: 'Demo provider' },
-                    { id: 'atlas-deep', name: 'Atlas Deep', provider: 'Demo provider' },
-                  ]}
-                />
-              </>
-            }
-          />
-          <p className="home-tile-status" role="status">
-            {sent ? `Your app receives “${sent}”. No model is connected here.` : ''}
-          </p>
-        </Tile>
-        <Tile name="ApprovalCard" group="Review & permissions">
-          <ApprovalCard
-            proposal={decision}
-            submission={submission}
-            onDecision={(choice) => {
-              setSubmission('acknowledged');
-              setDecision({ ...decision, status: choice === 'approve' ? 'approved' : 'rejected' });
-            }}
-          />
-        </Tile>
         <Tile name="Message" group="Conversation">
           <div className="message-exchange">
             <Message

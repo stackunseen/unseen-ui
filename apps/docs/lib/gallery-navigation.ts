@@ -16,7 +16,7 @@ export {
   sectionGroups,
 } from './component-collections';
 import { taskTerms } from './tasks';
-import { matchesQuery } from './search';
+import { searchScore } from './search';
 export type { ComponentSection, GallerySection } from './component-collections';
 const aiDomains: Record<string, (typeof aiGroups)[number]> = {
   Conversation: 'Conversation',
@@ -91,7 +91,10 @@ export function componentSearchText(entry: CatalogEntry): string {
 }
 /** Main component discovery spans the first-release UI and AI collections. */
 export function searchCatalog(query: string) {
-  return filterCatalog('').filter(
-    (entry) => isReleaseComponent(entry) && matchesQuery(componentSearchText(entry), query),
-  );
+  return filterCatalog('')
+    .filter(isReleaseComponent)
+    .map((entry) => ({ entry, score: searchScore(entry.name, componentSearchText(entry), query) }))
+    .filter((item) => item.score > 0)
+    .sort((first, second) => second.score - first.score)
+    .map((item) => item.entry);
 }

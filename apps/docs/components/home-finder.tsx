@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowRight, ArrowUpRight, Search } from 'lucide-react';
 import type { DirectoryEntry } from './component-directory';
-import { matchesQuery } from '../lib/search';
+import { searchScore } from '../lib/search';
 
 const suggested = {
   all: ['Button', 'Modal', 'PromptInput', 'ApprovalCard'],
@@ -13,10 +13,12 @@ const suggested = {
 export function HomeFinder({ entries }: { entries: DirectoryEntry[] }) {
   const [query, setQuery] = useState('');
   const [collection, setCollection] = useState<'all' | 'ui' | 'ai'>('all');
-  const matches = entries.filter(
-    (entry) =>
-      (collection === 'all' || entry.section === collection) && matchesQuery(entry.terms, query),
-  );
+  const matches = entries
+    .filter((entry) => collection === 'all' || entry.section === collection)
+    .map((entry) => ({ entry, score: searchScore(entry.name, entry.terms, query) }))
+    .filter((item) => item.score > 0)
+    .sort((first, second) => second.score - first.score)
+    .map((item) => item.entry);
   const items = query.trim()
     ? matches.slice(0, 8)
     : suggested[collection].flatMap((name) => entries.filter((entry) => entry.name === name));

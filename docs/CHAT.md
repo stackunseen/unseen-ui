@@ -14,6 +14,8 @@ export function Demo() {
 }
 ```
 
+`npx @stackunseen/ui init` writes this component into your project (`--ai-sdk` for the AI SDK version and a Next.js route).
+
 Type "search notes for renewals" to see a tool call run before the text, "fail" to see a failed turn with Retry, or press Stop while a reply streams. The local host never calls a model and its replies say so.
 
 ## Two ways to drive it

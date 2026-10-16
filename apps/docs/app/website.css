@@ -389,6 +389,7 @@
 }
 .docs-links a:hover strong,
 .pattern-list > a:hover h2,
+.pattern-list > a:hover h3,
 .home-finder-heading a:hover,
 .web-footer nav a:hover {
   text-decoration: underline;
@@ -795,7 +796,107 @@
 .pattern-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 24px 40px;
+}
+.pattern-list h3 {
+  margin: 0 0 6px;
+}
+.patterns-heading {
+  margin: 32px 0 16px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.pattern-templates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pattern-templates a {
+  display: grid;
+  gap: 4px;
+  height: 100%;
+  overflow: hidden;
+  padding-bottom: 14px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface);
+  color: var(--ai-text);
+  text-decoration: none;
+}
+.pattern-templates a:hover {
+  border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+}
+.pattern-templates a > strong,
+.pattern-templates a > span:last-child {
+  padding-inline: 14px;
+}
+.pattern-templates a > strong {
+  margin-top: 10px;
+  font-size: 15px;
+}
+.pattern-templates a > span:last-child {
+  color: var(--ai-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.pattern-template-preview {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ai-surface-subtle);
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  color: var(--ai-muted);
+  font-size: 18px;
+  font-weight: 550;
+}
+.pattern-template-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+.ai-sdk-recipe {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.ai-sdk-recipe > * {
+  min-width: 0;
+}
+.ai-sdk-recipe-notice {
+  margin: 10px 0 0;
+  color: var(--ai-muted);
+  font-size: 13px;
+}
+.ai-sdk-recipe-code .code-panel {
+  margin: 12px 0 0;
+}
+.ai-sdk-recipe-code pre {
+  max-height: 420px;
+  overflow: auto;
+  padding: 16px;
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface-subtle);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.ai-sdk-recipe-steps {
+  margin: 16px 0 0;
+  padding-left: 20px;
+  color: var(--ai-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+@media (max-width: 1000px) {
+  .ai-sdk-recipe {
+    grid-template-columns: 1fr;
+  }
 }
 .pattern-list > a {
   display: flex;
@@ -1447,4 +1548,136 @@
   border-color: var(--ai-primary);
   background: var(--ai-primary-soft);
   color: var(--ai-primary-text);
+}
+
+/* Task pages */
+.task-examples-title {
+  margin: 8px 0 12px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.task-examples {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+.task-example {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  min-width: 0;
+}
+.task-example-wide {
+  grid-column: 1 / -1;
+}
+.task-example-stage {
+  min-width: 0;
+  padding: 20px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface-subtle);
+}
+.task-example figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ai-muted);
+  font-size: 13px;
+}
+.task-example figcaption a {
+  flex: none;
+  color: var(--ai-text);
+}
+.task-section {
+  margin-top: 32px;
+}
+.task-section > h2 {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.task-section .directory-group {
+  padding-top: 0;
+}
+.task-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.task-list a {
+  display: grid;
+  gap: 6px;
+  height: 100%;
+  padding: 16px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface);
+  color: var(--ai-text);
+  text-decoration: none;
+}
+.task-list a:hover {
+  border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+}
+.task-list strong {
+  font-size: 16px;
+}
+.task-list span,
+.task-list small {
+  color: var(--ai-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.task-list em {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-style: normal;
+}
+@media (max-width: 760px) {
+  .task-examples {
+    grid-template-columns: 1fr;
+  }
+  .task-example figcaption {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+/* Tables in the MDX guides */
+.web-article table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.web-article th,
+.web-article td {
+  padding: 8px 12px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  text-align: left;
+  vertical-align: top;
+}
+.web-article th {
+  color: var(--ai-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.web-article tbody tr:hover {
+  background: var(--ai-surface-subtle);
+}
+.web-article td code,
+.web-article th code {
+  font-size: 12.5px;
 }

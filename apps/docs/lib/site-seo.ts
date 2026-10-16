@@ -1,3 +1,4 @@
+import { componentTasks } from './tasks';
 import type { Metadata } from 'next';
 import { releaseCatalog } from './first-release';
 import { componentHref } from './site-paths';
@@ -35,7 +36,10 @@ export const staticPaths = [
   '/getting-started/',
   '/docs/customization/',
   '/docs/integration/',
+  '/docs/migrate-from-ai-elements/',
+  '/docs/changelog/',
   '/patterns/',
+  '/patterns/ai-sdk-chat/',
   '/patterns/agent-workbench/',
   '/patterns/coding-studio/',
   '/patterns/recoverable-chat/',
@@ -47,6 +51,8 @@ export const staticPaths = [
   '/templates/marketing/',
   '/customize/',
   '/design/',
+  '/tasks/',
+  ...componentTasks.map((task) => `/tasks/${task.id}/`),
 ];
 export const releasePagePaths = [
   '/',
@@ -55,9 +61,15 @@ export const releasePagePaths = [
   '/getting-started/',
   '/docs/customization/',
   '/docs/integration/',
+  '/docs/migrate-from-ai-elements/',
+  '/docs/changelog/',
   '/templates/saas-admin/',
   '/customize/',
   '/design/',
+  '/patterns/',
+  '/patterns/ai-sdk-chat/',
+  '/tasks/',
+  ...componentTasks.map((task) => `/tasks/${task.id}/`),
 ];
 // Additional examples retain their public URLs, but stay out of launch indexing.
 export const indexablePaths = [
@@ -70,9 +82,11 @@ export function pageMetadata(
   description: string,
   path: string,
   origin = siteOrigin,
+  /** A page-specific image, such as a component's captured preview; the site image otherwise. */
+  pageImage?: { path: string; width: number; height: number; alt: string },
 ): Metadata {
   const fullTitle = `${title} | Unseen UI`;
-  const image = origin ? `${origin}/social-preview.png` : undefined;
+  const image = origin ? `${origin}${pageImage?.path ?? '/social-preview.png'}` : undefined;
   return {
     title: { absolute: fullTitle },
     description,
@@ -90,9 +104,11 @@ export function pageMetadata(
             images: [
               {
                 url: image,
-                width: 1200,
-                height: 630,
-                alt: 'Unseen UI by Stack Unseen. React components for application interfaces and AI workflows.',
+                width: pageImage?.width ?? 1200,
+                height: pageImage?.height ?? 630,
+                alt:
+                  pageImage?.alt ??
+                  'Unseen UI by Stack Unseen. React components for application interfaces and AI workflows.',
               },
             ],
           }

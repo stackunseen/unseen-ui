@@ -1,0 +1,116 @@
+# Migrate from AI Elements
+
+The AI Elements site now says it is moving to shadcn/ui and that the project will be deprecated at the end of November 2026. If you are choosing what to move to, this page maps each AI Elements component to its Unseen UI counterpart and shows how the AI SDK connects.
+
+## What changes
+
+| Area         | AI Elements                                | Unseen UI                                                                                           |
+| ------------ | ------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Distribution | Source copied into your project with a CLI | One npm package, `@stackunseen/ui`, updated by version                                              |
+| Styling      | Tailwind CSS 4 and shadcn/ui               | Scoped CSS files and theme tokens; no Tailwind needed                                               |
+| Data         | Reads AI SDK message parts directly        | Controlled components; `useAiSdkChat` maps AI SDK state for you                                     |
+| Approvals    | Confirmation and tool approval states      | ApprovalCard binds the decision to the proposal version and stays pending until your server answers |
+| Unknowns     | Not described                              | Measured, estimated and unknown values read differently everywhere                                  |
+
+## Connect the AI SDK
+
+Keep your `useChat` hook and server route. Replace the conversation, messages and prompt input with one component:
+
+```tsx
+'use client';
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport, lastAssistantMessageIsCompleteWithApprovalResponses } from 'ai';
+import { Chat, useAiSdkChat } from '@stackunseen/ui/chat';
+import { renderMarkdownPart } from '@stackunseen/ui/markdown';
+import '@stackunseen/ui/styles.css';
+import '@stackunseen/ui/chat.css';
+
+export function Assistant() {
+  const chat = useChat({
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
+  });
+  return <Chat {...useAiSdkChat(chat)} title="Assistant" renderTextPart={renderMarkdownPart} />;
+}
+```
+
+Tools marked `needsApproval` on the server show an approval card under the tool; Approve and Reject call `addToolApprovalResponse` with the approval id. Your own tool views go in `renderTool`. The [Chat on the AI SDK recipe](/patterns/ai-sdk-chat/) runs this with a simulated chat and has the server route.
+
+If you built your own layout from the pieces, use them directly: [PromptInput](/components/prompt-input/), [Message](/components/message/), [ToolCall](/components/tool-call/) and [ApprovalCard](/components/approval-card/), with `fromAiSdkChat` from `@stackunseen/ui-core/ai-sdk` to map messages, tool calls, sources and approvals.
+
+## Component map
+
+Each link opens the component page, which shows its import line and stylesheet.
+
+### Chatbot
+
+| AI Elements      | Unseen UI                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------- |
+| Attachments      | [Attachment](/components/attachment/), [FileDropzone](/components/file-dropzone/)     |
+| Chain of Thought | [ChainOfThought](/components/chain-of-thought/)                                       |
+| Checkpoint       | [Checkpoint](/components/checkpoint/)                                                 |
+| Confirmation     | [ApprovalCard](/components/approval-card/), shown inline by [Chat](/components/chat/) |
+| Context          | [ContextBar](/components/context-bar/), [UsageMeter](/components/usage-meter/)        |
+| Conversation     | [Chat](/components/chat/), or ConversationViewport for paged history                  |
+| Inline Citation  | [Citation](/components/citation/)                                                     |
+| Message          | [Message](/components/message/)                                                       |
+| Model Selector   | [ModelSelector](/components/model-selector/)                                          |
+| Plan             | [Plan](/components/plan/)                                                             |
+| Prompt Input     | [PromptInput](/components/prompt-input/)                                              |
+| Question         | [ClarificationRequest](/components/clarification-request/)                            |
+| Queue            | [MessageQueue](/components/message-queue/)                                            |
+| Reasoning        | [Reasoning](/components/reasoning/) (public summaries only)                           |
+| Shimmer          | [Shimmer](/components/shimmer/)                                                       |
+| Sources          | [Sources](/components/sources/)                                                       |
+| Suggestion       | [Suggestions](/components/suggestions/)                                               |
+| Task             | [Task](/components/task/)                                                             |
+| Tool             | [ToolCall](/components/tool-call/), [ToolGroup](/components/tool-group/)              |
+
+### Code
+
+| AI Elements           | Unseen UI                                                                                                                                |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Agent                 | [AgentCard](/components/agent-card/)                                                                                                     |
+| Artifact              | [ArtifactPanel](/components/artifact-panel/), [ArtifactPreview](/components/artifact-preview/)                                           |
+| Code Block            | [MarkdownCodeBlock](/components/markdown-code-block/), [CodeTabs](/components/code-tabs/)                                                |
+| Commit                | [Commit](/components/commit/)                                                                                                            |
+| Environment Variables | [EnvironmentVariables](/components/environment-variables/)                                                                               |
+| File Tree             | [FileExplorer](/components/file-explorer/)                                                                                               |
+| JSX Preview           | Not offered: Unseen UI never renders model-written code. Use [GeneratedUI](/components/generated-ui/) for validated generated interfaces |
+| Package Info          | [PackageInfo](/components/package-info/)                                                                                                 |
+| Sandbox               | Not yet; planned                                                                                                                         |
+| Schema Display        | [SchemaDisplay](/components/schema-display/)                                                                                             |
+| Snippet               | [Snippet](/components/snippet/)                                                                                                          |
+| Stack Trace           | [StackTrace](/components/stack-trace/)                                                                                                   |
+| Terminal              | [TerminalOutput](/components/terminal-output/)                                                                                           |
+| Test Results          | [TestResults](/components/test-results/)                                                                                                 |
+| Web Preview           | [WebPreview](/components/web-preview/)                                                                                                   |
+
+### Voice
+
+| AI Elements    | Unseen UI                                                                    |
+| -------------- | ---------------------------------------------------------------------------- |
+| Audio Player   | [AudioPlayer](/components/audio-player/)                                     |
+| Mic Selector   | [VoiceControl](/components/voice-control/) (microphone choice is part of it) |
+| Persona        | [Persona](/components/persona/)                                              |
+| Speech Input   | [VoiceControl](/components/voice-control/)                                   |
+| Transcription  | [Transcription](/components/transcription/)                                  |
+| Voice Selector | [VoiceSelector](/components/voice-selector/)                                 |
+
+### Workflow and utilities
+
+| AI Elements                                              | Unseen UI                                                     |
+| -------------------------------------------------------- | ------------------------------------------------------------- |
+| Canvas, Node, Edge, Connection, Controls, Panel, Toolbar | [WorkflowGraph](/components/workflow-graph/) as one component |
+| Image                                                    | [Image](/components/image/)                                   |
+| Open In Chat                                             | [OpenInChat](/components/open-in-chat/)                       |
+
+## Styling
+
+Remove the copied AI Elements files once their replacements are in place, then import `@stackunseen/ui/styles.css` once. Unseen UI's styles are scoped, so they sit beside Tailwind without conflict. Set colours, radius and density with `AITheme` or export a theme from the [Theme Studio](/customize/).
+
+## What to check after moving
+
+- Approval decisions now wait for your server's answer before reading as done. Make sure your route answers.
+- Reasoning parts from the AI SDK are not shown by `useAiSdkChat`; show public summaries with [Reasoning](/components/reasoning/) if you want them.
+- Replies are plain text until you pass `renderTextPart={renderMarkdownPart}`.

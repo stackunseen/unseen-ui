@@ -85,6 +85,30 @@ export function FirstExample() {
 
 The value and callback stay in your application. To save to a server, replace the local update with your host's validation and receipt handling. Read [Connect to your app](/docs/integration/) before wiring tools, approvals or execution.
 
+### Start a new project
+
+Next.js (App Router):
+
+```sh
+npx create-next-app@latest my-assistant --ts --app
+cd my-assistant
+npm install @stackunseen/ui
+```
+
+Vite:
+
+```sh
+npm create vite@latest my-assistant -- --template react-ts
+cd my-assistant
+npm install @stackunseen/ui
+```
+
+Then add the chat below as a component and render it from your page. In Next.js, keep the `'use client'` line; in Vite it is harmless. Or let the package write it for you; it detects Next.js or Vite, never overwrites a file without `--force`, and `--ai-sdk` writes the AI SDK version with a Next.js route:
+
+```sh
+npx @stackunseen/ui init
+```
+
 ### Or start with a whole chat
 
 `@stackunseen/ui/chat` composes the transcript, streaming reply, tool cards, suggestions and composer, and ships a local host that streams deterministic replies so you can see it work before anything is connected. Swap the host for your server when you are ready; see the [Chat guide](/components/chat/).

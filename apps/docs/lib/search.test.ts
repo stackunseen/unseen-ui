@@ -37,4 +37,10 @@ describe('search by meaning', () => {
     expect(both).not.toContain('Button');
     expect(names('zzzz-nothing')).toEqual([]);
   });
+
+  it('ranks name matches before intent matches', () => {
+    expect(names('approval')[0]).toBe('ApprovalCard');
+    expect(names('chat')[0]).toBe('Chat');
+    expect(names('button').slice(0, 2)).toContain('Button');
+  });
 });

@@ -1029,9 +1029,16 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   position: relative;
   margin: 16px 0;
 }
+.code-panel {
+  min-width: 0;
+  max-width: 100%;
+}
 .code-panel > pre {
   margin: 0;
   padding-inline-end: 52px;
+  /* Long lines scroll inside the block instead of widening the page. */
+  overflow-x: auto;
+  max-width: 100%;
 }
 .code-panel > [data-part='copy-button-root'] {
   position: absolute;
@@ -1464,4 +1471,35 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 .detail-related-links a:hover {
   border-color: var(--ai-primary);
   color: var(--ai-primary-text);
+}
+
+/* When to use a component, under its description */
+.detail-when {
+  display: grid;
+  gap: 4px;
+  margin: 10px 0 4px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.detail-when > div {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 12px;
+}
+.detail-when dt {
+  color: var(--ai-muted);
+  font-weight: 500;
+}
+.detail-when dd {
+  margin: 0;
+  max-width: 72ch;
+}
+.detail-when a {
+  color: var(--ai-primary-text);
+}
+@media (max-width: 560px) {
+  .detail-when > div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 }

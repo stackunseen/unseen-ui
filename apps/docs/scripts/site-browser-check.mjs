@@ -64,26 +64,25 @@ async function journeys(page, { origin, output }, audit) {
       await page.locator('#main-content').evaluate((node) => node === document.activeElement),
       'Skip link reaches main content',
     );
-    const composer = page.locator('.home-tile textarea').first();
+    const composer = page.locator('.home-hero-demo textarea');
     await composer.fill('Summarize');
     await composer.press('Enter');
+    await page.waitForFunction(
+      () =>
+        /This page simulates the AI SDK/.test(
+          document.querySelector('.home-hero-demo')?.textContent ?? '',
+        ),
+      null,
+      { timeout: 8000 },
+    );
     assert(
-      await page
-        .getByText('Your app receives “Summarize”. No model is connected here.', { exact: true })
-        .isVisible(),
-      'Prompt reports the disclosed local handling',
+      await page.locator('.home-hero-demo').getByText('Summarize', { exact: true }).isVisible(),
+      'Hero composer sends to the simulated chat and discloses that no model answered',
     );
     await page.getByLabel('Workspace name', { exact: true }).fill('Review Sandbox');
     assert(
       (await page.getByLabel('Workspace name', { exact: true }).inputValue()) === 'Review Sandbox',
       'Showcase form field is controlled locally',
-    );
-    // The hero demo has its own approval card, so the tile is addressed by its example name.
-    const tile = page.getByRole('article', { name: 'ApprovalCard example', exact: true });
-    await tile.getByRole('button', { name: 'Approve action', exact: true }).click();
-    assert(
-      await tile.getByText('Action approved', { exact: true }).isVisible(),
-      'Approval tile acknowledges the local sample decision',
     );
     const hero = page.locator('.home-hero-demo');
     assert(
@@ -105,8 +104,8 @@ async function journeys(page, { origin, output }, audit) {
     const tasks = page.locator('.home-tasks li a');
     assert(
       (await tasks.count()) === 8 &&
-        (await tasks.first().getAttribute('href')) === '/components/?q=AI%20chat',
-      'Homepage task cards open the catalog filtered by task',
+        (await tasks.first().getAttribute('href')) === '/tasks/ai-chat/',
+      'Homepage task cards open their task pages',
     );
     await page.getByRole('button', { name: 'Forest primary', exact: true }).click();
     assert(
