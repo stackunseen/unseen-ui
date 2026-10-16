@@ -78,10 +78,35 @@ async function journeys(page, { origin, output }, audit) {
       (await page.getByLabel('Workspace name', { exact: true }).inputValue()) === 'Review Sandbox',
       'Showcase form field is controlled locally',
     );
-    await page.getByRole('button', { name: 'Approve action', exact: true }).click();
+    // The hero demo has its own approval card, so the tile is addressed by its example name.
+    const tile = page.getByRole('article', { name: 'ApprovalCard example', exact: true });
+    await tile.getByRole('button', { name: 'Approve action', exact: true }).click();
     assert(
-      await page.getByText('Action approved', { exact: true }).isVisible(),
+      await tile.getByText('Action approved', { exact: true }).isVisible(),
       'Approval tile acknowledges the local sample decision',
+    );
+    const hero = page.locator('.home-hero-demo');
+    assert(
+      (await hero.locator('[data-part="approval"]').count()) === 1 &&
+        (await hero.getByRole('heading', { name: 'Run archive_accounts' }).isVisible()),
+      'Hero shows a working chat with an approval waiting on a person',
+    );
+    await hero.getByRole('button', { name: 'Reject', exact: true }).click();
+    await page.waitForFunction(
+      () =>
+        /Nothing was archived/.test(document.querySelector('.home-hero-demo')?.textContent ?? ''),
+      null,
+      { timeout: 8000 },
+    );
+    assert(
+      await hero.getByText('Denied', { exact: true }).isVisible(),
+      'Hero rejection settles the simulated tool as denied',
+    );
+    const tasks = page.locator('.home-tasks li a');
+    assert(
+      (await tasks.count()) === 8 &&
+        (await tasks.first().getAttribute('href')) === '/components/?q=AI%20chat',
+      'Homepage task cards open the catalog filtered by task',
     );
     await page.getByRole('button', { name: 'Forest primary', exact: true }).click();
     assert(
@@ -149,6 +174,41 @@ async function journeys(page, { origin, output }, audit) {
       (await page.locator('.directory-group li').count()) === total,
       'Clear search restores all entries',
     );
+    const thumbs = page.locator('.directory-thumb img.directory-thumb-light');
+    await thumbs.first().scrollIntoViewIfNeeded();
+    assert(
+      (await thumbs.count()) === total &&
+        (await thumbs.first().evaluate((image) => image.complete && image.naturalWidth === 480)),
+      'Gallery cards carry a loaded captured preview',
+    );
+    await page.getByRole('button', { name: 'List', exact: true }).click();
+    await page.waitForFunction(
+      () => document.querySelector('.directory-group')?.getAttribute('data-view') === 'list',
+      null,
+      { timeout: 7000 },
+    );
+    const listState = {
+      url: page.url(),
+      rows: await page.locator('.directory-group[data-view="list"] li').count(),
+      thumbs: await page.locator('.directory-thumb').count(),
+      total,
+    };
+    assert(
+      /[?&]view=list(?:[&#]|$)/.test(listState.url) &&
+        listState.rows === total &&
+        listState.thumbs === 0,
+      `List view keeps every entry as a dense row and is addressable ${JSON.stringify(listState)}`,
+    );
+    await page.getByRole('button', { name: 'Gallery', exact: true }).click();
+    await page.locator('.directory-thumb').first().waitFor();
+    const rail = page.getByRole('navigation', { name: 'Component categories' });
+    if (await rail.isVisible()) {
+      const target = await rail.getByRole('link', { name: /^Overlays/ }).getAttribute('href');
+      assert(
+        target === '#group-ui-overlays' && (await page.locator(target).count()) === 1,
+        'Category rail links reach their group',
+      );
+    }
     await search.fill('button');
     await page.locator('.directory-group a[href="/components/button/"]').click();
     await page.waitForURL((url) => url.pathname === '/components/button/');

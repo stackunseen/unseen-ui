@@ -16,11 +16,14 @@ export function DocsFrame({
   links = docsLinks,
   label = 'Documentation',
   mainClassName = 'web-article',
+  rail,
 }: {
   children: ReactNode;
   links?: readonly FrameLink[];
   label?: string;
   mainClassName?: string;
+  /** Extra sidebar content under the links, such as a catalog's category list. */
+  rail?: ReactNode;
 }) {
   return (
     <div className="web-docs-layout">
@@ -28,6 +31,7 @@ export function DocsFrame({
         <nav aria-label={label}>
           <FrameLinks links={links} />
         </nav>
+        {rail}
         <p>
           Experimental alpha
           <br />

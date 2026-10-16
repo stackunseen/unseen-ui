@@ -16,8 +16,8 @@ The site-only preview serves `apps/docs/out` at `http://127.0.0.1:4175/`. `PORT`
 
 ## Content and routes
 
-- `/`: a component showcase first: eight real components (PromptInput, ApprovalCard, Message, ToolCall, AgentSteps, Field controls, DataTable) on tinted tiles that link to their detail pages, with primary-colour swatches that retheme the whole page; then component search and starter links, the light/dark SaaS admin screenshot and setup links.
-- `/components/` and `/components/[slug]/`: all 157 entries across UI components (67), AI components (74), application patterns (8) and marketing blocks (8), with global search, actual specimens, visible usage and props, and stable direct links. Application controls and marketing blocks show their optional import and CSS paths.
+- `/`: a split hero with the working Chat approval example (Chat, ToolCall and ApprovalCard on a simulated AI SDK chat, without the Markdown entry), then task cards ("Explore by what you are building", from `lib/tasks.ts`) that open the catalog filtered by task, then the component showcase: eight real components (PromptInput, ApprovalCard, Message, ToolCall, AgentSteps, Field controls, DataTable) on tinted tiles that link to their detail pages, with primary-colour swatches that retheme the whole page; then component search and starter links, the light/dark SaaS admin screenshot and setup links.
+- `/components/` and `/components/[slug]/`: all 173 entries across UI components (67), AI components (90), application patterns (8) and marketing blocks (8). The index has a gallery view (cards with a captured thumbnail of each component's live preview, light and dark) and a list view (one dense row per component), a category rail with counts in the sidebar, and group headings above each grid; with global search, actual specimens, visible usage and props, and stable direct links. Application controls and marketing blocks show their optional import and CSS paths.
 - `/docs/`, `/getting-started/`, `/docs/customization/`, `/docs/integration/`: local setup, theming, custom headers and footers, and state/callback examples.
 - `/templates/`: Agent Workbench, Coding Studio, SaaS Admin, Marketing and Relay.
 - `/templates/saas-admin/`: a local dashboard with customer creation, editing and deletion, members and roles, organization settings and illustrative billing. Draft guards, validation and original receipt recovery keep uncertain saves explicit.
@@ -28,11 +28,15 @@ The site-only preview serves `apps/docs/out` at `http://127.0.0.1:4175/`. `PORT`
 - `/templates/relay/`: setup and integration guide for the existing separate React/Vite consumer.
 - `/patterns/`, `/customize/`, `/design/`: three focused AI recipes, shared theme controls and design foundations.
 
-The two template URLs retain the established pattern route names. Their pages use the full viewport rather than a component-explorer sidebar. Old query links resolve to these routes. Search and presentation states do not create separate indexable component URLs. Directory collection filters use `?collection=ui|ai|application|marketing`; search uses `?q=...` and remains global when typing. Back, forward and direct query links restore those choices.
+The two template URLs retain the established pattern route names. Their pages use the full viewport rather than a component-explorer sidebar. Old query links resolve to these routes. Search and presentation states do not create separate indexable component URLs. Directory collection filters use `?collection=ui|ai|application|marketing`; search uses `?q=...` and remains global when typing; `?view=list` selects the list view. Back, forward and direct query links restore those choices.
 
 The application and marketing components are optional public entries, `@stackunseen/ui/application` and `@stackunseen/ui/marketing`. Each has a separate stylesheet alongside `@stackunseen/ui/styles.css`; neither stylesheet joins the base bundle. Their built controls share the root theme, icons and portal direction.
 
 Appearance, validated theme JSON and icon preferences can persist in local storage. Workspace records and simulated actions are page-session data. Templates disclose their boundaries in the UI.
+
+Catalog thumbnails live in `public/previews/components/<slug>-light.webp` and `-dark.webp` (480×300). They are captured from the exported site's own previews: build the docs, start the preview server, then run `node apps/docs/scripts/capture-component-previews.mjs` (all components) or pass slugs to refresh a few. The catalog page checks which files exist at build time and shows the component name on a plain tile for any that are missing, so a new component never shows a broken image.
+
+`/llms.txt` and `/llms-full.txt` are generated from the catalog at export for coding agents.
 
 The site self-hosts Instrument Sans through `next/font/local`. Its variable Latin font is about 30KB; the SIL Open Font License is in `public/fonts/instrument-sans-OFL.txt`. Reading sizes and responsive headings are defined in `app/typography.css`. Component pages keep one quiet control row (32px selects with inline labels) above a tinted preview stage; the stage has no second border, so component-owned borders are the only frame. The explorer sidebar lists only the catalog sections; Getting Started lives in the main navigation. Internal pages use a compact footer. Component-specific integration notes appear with Usage and props.
 

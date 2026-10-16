@@ -106,14 +106,6 @@ body {
 .directory-group h3 {
   font-size: 14px;
 }
-.directory-group strong {
-  font-size: 17px;
-  line-height: 1.4;
-}
-.directory-group li a > span {
-  font-size: 14px;
-  line-height: 1.6;
-}
 .web-docs-nav p,
 .web-footer p,
 .web-footer nav a,

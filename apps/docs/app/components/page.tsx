@@ -1,6 +1,9 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import Link from 'next/link';
 import { DocsFrame } from '../../components/docs-frame';
 import { ComponentDirectory } from '../../components/component-directory';
+import { groupAnchor } from '../../lib/directory-location';
 import { catalog } from '../../lib/catalog';
 import { featuredApp, releaseCatalog } from '../../lib/first-release';
 import {
@@ -8,7 +11,8 @@ import {
   componentSearchText,
   navigationGroup,
 } from '../../lib/gallery-navigation';
-import { componentHref } from '../../lib/site-paths';
+import { componentHref, componentSlug } from '../../lib/site-paths';
+import { releaseSections, sectionGroups, sectionLabels } from '../../lib/component-collections';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
   'React component catalog',
@@ -23,26 +27,61 @@ export default function Page() {
     section: componentSection(entry),
     group: navigationGroup(entry),
     terms: componentSearchText(entry),
+    // Thumbnails come from apps/docs/scripts/capture-component-previews.mjs; absent ones fall back to the name.
+    preview: existsSync(
+      join(process.cwd(), 'public/previews/components', `${componentSlug(entry.name)}-light.webp`),
+    )
+      ? `/previews/components/${componentSlug(entry.name)}`
+      : undefined,
   }));
+  const rail = (
+    <nav className="directory-rail" aria-label="Component categories">
+      {releaseSections.map((section) => (
+        <div key={section}>
+          <a className="directory-rail-section" href={`#${section}`}>
+            {sectionLabels[section]}
+            <span>{entries.filter((entry) => entry.section === section).length}</span>
+          </a>
+          <ul>
+            {sectionGroups(section)
+              .map(
+                (group) =>
+                  [
+                    group,
+                    entries.filter((entry) => entry.section === section && entry.group === group)
+                      .length,
+                  ] as const,
+              )
+              .filter(([, count]) => count > 0)
+              .map(([group, count]) => (
+                <li key={group}>
+                  <a href={`#${groupAnchor(section, group)}`}>
+                    {group}
+                    <span>{count}</span>
+                  </a>
+                </li>
+              ))}
+          </ul>
+        </div>
+      ))}
+    </nav>
+  );
   return (
     <DocsFrame
       label="Library"
       mainClassName="directory-page"
       links={[
         ['All components', '/components/'],
-        ['UI components', '/components/#ui'],
-        ['AI components', '/components/#ai'],
+        ['Patterns', '/patterns/'],
         ['Customize', '/customize/'],
         ['Getting started', '/getting-started/'],
       ]}
+      rail={rail}
     >
       <header className="web-page-heading">
         <p className="web-eyebrow">The library</p>
         <h1>Components</h1>
-        <p>
-          Browse UI controls and AI components. Each component has a live example and usage guide
-          with local sample data.
-        </p>
+        <p>Every component with a live example, its states and the code to use it.</p>
       </header>
       <ComponentDirectory entries={entries} />
       <p className="collection-note">

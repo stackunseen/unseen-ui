@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useSyncExternalStore } from 'react';
-import { ArrowUpRight, Search } from 'lucide-react';
+import { ArrowUpRight, LayoutGrid, List, Search } from 'lucide-react';
 import Link from 'next/link';
 import {
   componentSections,
@@ -11,7 +11,7 @@ import {
   releaseSections,
 } from '../lib/component-collections';
 import type { ComponentSection } from '../lib/component-collections';
-import { directorySearch, readDirectoryLocation } from '../lib/directory-location';
+import { directorySearch, groupAnchor, readDirectoryLocation } from '../lib/directory-location';
 import { componentTasks } from '../lib/tasks';
 export interface DirectoryEntry {
   name: string;
@@ -20,6 +20,8 @@ export interface DirectoryEntry {
   section: ComponentSection;
   group: string;
   terms: string;
+  /** Base path of the captured thumbnail, without `-light.webp` or `-dark.webp`. */
+  preview?: string;
 }
 export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
   const search = useSyncExternalStore(
@@ -27,7 +29,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
     () => window.location.search,
     () => '',
   );
-  const { query, collection: section } = readDirectoryLocation(search);
+  const { query, collection: section, view } = readDirectoryLocation(search);
   const compositionView = section !== 'all' && !isReleaseSection(section);
   const releaseEntries = entries.filter((entry) => isReleaseSection(entry.section));
   const visibleEntries = compositionView ? entries : releaseEntries;
@@ -129,17 +131,37 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
           ))}
         </div>
       )}
-      <p className="directory-count" role="status">
-        {filtered.length}{' '}
-        {compositionView
-          ? filtered.length === 1
-            ? 'example'
-            : 'examples'
-          : filtered.length === 1
-            ? 'component'
-            : 'components'}
-        {query && ` matching “${query}”`}
-      </p>
+      <div className="directory-count-row">
+        <p className="directory-count" role="status">
+          {filtered.length}{' '}
+          {compositionView
+            ? filtered.length === 1
+              ? 'example'
+              : 'examples'
+            : filtered.length === 1
+              ? 'component'
+              : 'components'}
+          {query && ` matching “${query}”`}
+        </p>
+        <div className="directory-view" role="group" aria-label="Layout">
+          <button
+            type="button"
+            aria-pressed={view === 'gallery'}
+            onClick={() => update({ view: 'gallery' }, true)}
+          >
+            <LayoutGrid size={16} aria-hidden="true" />
+            Gallery
+          </button>
+          <button
+            type="button"
+            aria-pressed={view === 'list'}
+            onClick={() => update({ view: 'list' }, true)}
+          >
+            <List size={16} aria-hidden="true" />
+            List
+          </button>
+        </div>
+      </div>
       {componentSections.map((collection) => {
         const items = filtered.filter((entry) => entry.section === collection);
         if (!items.length) return null;
@@ -150,27 +172,66 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
           <section className="directory-collection" id={collection} key={collection}>
             <h2>{sectionLabels[collection]}</h2>
             <p className="directory-collection-description">{collectionDescriptions[collection]}</p>
-            {groups.map((group) => (
-              <div className="directory-group" key={group}>
-                <h3>{group}</h3>
-                <ul>
-                  {items
-                    .filter((entry) => entry.group === group)
-                    .sort((first, second) => first.name.localeCompare(second.name, 'en'))
-                    .map((entry) => (
+            {groups.map((group) => {
+              const members = items
+                .filter((entry) => entry.group === group)
+                .sort((first, second) => first.name.localeCompare(second.name, 'en'));
+              return (
+                <div
+                  className="directory-group"
+                  id={groupAnchor(collection, group)}
+                  key={group}
+                  data-view={view}
+                >
+                  <h3>
+                    {group} <span>{members.length}</span>
+                  </h3>
+                  <ul>
+                    {members.map((entry) => (
                       <li key={entry.name}>
                         <Link prefetch={false} href={entry.href}>
-                          <strong>
-                            {entry.name}
-                            <ArrowUpRight size={16} aria-hidden="true" />
-                          </strong>
-                          <span>{entry.description}</span>
+                          {view === 'gallery' && (
+                            <span className="directory-thumb" aria-hidden="true">
+                              {entry.preview ? (
+                                <>
+                                  <img
+                                    className="directory-thumb-light"
+                                    src={`${entry.preview}-light.webp`}
+                                    alt=""
+                                    width={480}
+                                    height={300}
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                  <img
+                                    className="directory-thumb-dark"
+                                    src={`${entry.preview}-dark.webp`}
+                                    alt=""
+                                    width={480}
+                                    height={300}
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </>
+                              ) : (
+                                <span className="directory-thumb-name">{entry.name}</span>
+                              )}
+                            </span>
+                          )}
+                          <span className="directory-text">
+                            <strong>
+                              {entry.name}
+                              <ArrowUpRight size={16} aria-hidden="true" />
+                            </strong>
+                            <span>{entry.description}</span>
+                          </span>
                         </Link>
                       </li>
                     ))}
-                </ul>
-              </div>
-            ))}
+                  </ul>
+                </div>
+              );
+            })}
           </section>
         );
       })}
