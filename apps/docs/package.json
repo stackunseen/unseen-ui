@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/build-registry.mjs",
     "dev": "next dev --hostname 127.0.0.1",
+    "prebuild": "node scripts/build-registry.mjs",
     "build": "next build --webpack",
     "typecheck": "tsc --noEmit"
   },

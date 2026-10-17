@@ -2,9 +2,10 @@
 // an @unseen namespace. Items install the published npm package (pinned to this release) and
 // write small starter files; the components themselves stay in the package, so updates arrive as
 // versions. Chat files come from the init CLI's templates, so both write the same code.
-//   node apps/docs/scripts/build-registry.mjs          writes apps/docs/public/r/
-//   node apps/docs/scripts/build-registry.mjs --check  fails when the written files are stale
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+// Runs before every docs build (and dev), so the pinned version always matches the package.
+//   node apps/docs/scripts/build-registry.mjs              writes apps/docs/public/r/
+//   node apps/docs/scripts/build-registry.mjs --out <dir>  writes elsewhere (tests)
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import process from 'node:process';
@@ -12,7 +13,8 @@ import console from 'node:console';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../../..');
-const out = resolve(here, '../public/r');
+const outIndex = process.argv.indexOf('--out');
+const out = outIndex > 0 ? resolve(process.argv[outIndex + 1]) : resolve(here, '../public/r');
 const { templates } = await import(
   pathToFileURL(join(root, 'packages/react/bin/unseen-ui.mjs')).href
 );
@@ -114,20 +116,6 @@ files.set(
   )}\n`,
 );
 
-if (process.argv.includes('--check')) {
-  const stale = [...files].filter(
-    ([name, text]) =>
-      !existsSync(join(out, name)) || readFileSync(join(out, name), 'utf8') !== text,
-  );
-  if (stale.length) {
-    console.error(
-      `Stale registry files: ${stale.map(([name]) => name).join(', ')}. Run node apps/docs/scripts/build-registry.mjs`,
-    );
-    process.exit(1);
-  }
-  console.log(`Registry up to date: ${files.size} files`);
-} else {
-  mkdirSync(out, { recursive: true });
-  for (const [name, text] of files) writeFileSync(join(out, name), text);
-  console.log(`Wrote ${files.size} registry files to apps/docs/public/r/ for ${pkg}`);
-}
+mkdirSync(out, { recursive: true });
+for (const [name, text] of files) writeFileSync(join(out, name), text);
+console.log(`Wrote ${files.size} registry files to ${out} for ${pkg}`);

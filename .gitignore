@@ -72,3 +72,5 @@ id_ed25519
 
 # Wrangler local state
 .wrangler/
+# shadcn registry: generated on every docs build with the current package version.
+/apps/docs/public/r/
