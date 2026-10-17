@@ -72,6 +72,11 @@ export default function Page() {
     >
       <AiSdkChatRecipe client={client} server={server} wording={wording} />
       <p className="collection-note">
+        Start from these two files in your project:{' '}
+        <code>npx shadcn@latest add https://unseenui.com/r/chat-ai-sdk.json</code>, or{' '}
+        <code>npx @stackunseen/ui init --ai-sdk</code>.
+      </p>
+      <p className="collection-note">
         Full mapping table and what is and is not verified: the{' '}
         <Link href="/components/chat/">Chat page</Link>. Components used:{' '}
         <Link href="/components/chat/">Chat</Link>,{' '}

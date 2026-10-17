@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat",
+  "type": "registry:block",
+  "title": "Chat",
+  "description": "A working chat on a simulated host: transcript, streaming reply, tool rows, suggestions, stop and retry. Swap the host for your server or the AI SDK.",
+  "dependencies": [
+    "@stackunseen/ui@0.1.0-alpha.7"
+  ],
+  "files": [
+    {
+      "path": "registry/unseen/chat/assistant.tsx",
+      "type": "registry:component",
+      "target": "@components/assistant.tsx",
+      "content": "'use client';\nimport { Chat, useLocalHost } from '@stackunseen/ui/chat';\nimport '@stackunseen/ui/styles.css';\nimport '@stackunseen/ui/chat.css';\n\n/**\n * A working chat on a simulated host, so you can see it before anything is connected.\n * Replace useLocalHost with your own host, or run `npx @stackunseen/ui init --ai-sdk`.\n */\nexport function Assistant() {\n  const host = useLocalHost({ suggestions: ['Summarize the plan', 'Search notes for renewals'] });\n  return <Chat host={host} title=\"Assistant\" />;\n}\n"
+    }
+  ],
+  "docs": "Render <Assistant /> from components/assistant. Guide: https://unseenui.com/components/chat/",
+  "categories": [
+    "ai",
+    "chat"
+  ],
+  "author": "Stack Unseen"
+}

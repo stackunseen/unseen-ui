@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-ai-sdk",
+  "type": "registry:block",
+  "title": "Chat on the Vercel AI SDK",
+  "description": "Chat wired to useChat, with tool approvals as approval cards, Markdown replies and a Next.js route whose example tool waits for a person.",
+  "dependencies": [
+    "@stackunseen/ui@0.1.0-alpha.7",
+    "@ai-sdk/react",
+    "ai",
+    "zod"
+  ],
+  "files": [
+    {
+      "path": "registry/unseen/chat-ai-sdk/assistant.tsx",
+      "type": "registry:component",
+      "target": "@components/assistant.tsx",
+      "content": "'use client';\nimport { useChat } from '@ai-sdk/react';\nimport { DefaultChatTransport, lastAssistantMessageIsCompleteWithApprovalResponses } from 'ai';\nimport { Chat, useAiSdkChat } from '@stackunseen/ui/chat';\nimport { renderMarkdownPart } from '@stackunseen/ui/markdown';\nimport '@stackunseen/ui/styles.css';\nimport '@stackunseen/ui/chat.css';\n\n/** Chat on the Vercel AI SDK. Tools marked needsApproval on the server show an approval card. */\nexport function Assistant() {\n  const chat = useChat({\n    transport: new DefaultChatTransport({ api: '/api/chat' }),\n    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,\n  });\n  return <Chat {...useAiSdkChat(chat)} title=\"Assistant\" renderTextPart={renderMarkdownPart} />;\n}\n"
+    },
+    {
+      "path": "registry/unseen/chat-ai-sdk/route.ts",
+      "type": "registry:file",
+      "target": "~/app/api/chat/route.ts",
+      "content": "import { convertToModelMessages, streamText, tool } from 'ai';\nimport { z } from 'zod';\n\n// Set the model and its API key for your provider. The example tool waits for a person.\nexport async function POST(request: Request) {\n  const { messages } = await request.json();\n  const result = streamText({\n    model: 'openai/gpt-5-mini',\n    messages: convertToModelMessages(messages),\n    tools: {\n      archive_accounts: tool({\n        description: 'Archive inactive accounts',\n        inputSchema: z.object({ accountIds: z.array(z.string()) }),\n        needsApproval: true,\n        execute: async ({ accountIds }) => ({ archived: accountIds.length }),\n      }),\n    },\n  });\n  return result.toUIMessageStreamResponse();\n}\n"
+    }
+  ],
+  "docs": "Set your model and provider key in app/api/chat/route.ts (move it under src/app if your app lives there), then render <Assistant />. Guide: https://unseenui.com/patterns/ai-sdk-chat/",
+  "categories": [
+    "ai",
+    "chat",
+    "ai-sdk"
+  ],
+  "author": "Stack Unseen"
+}

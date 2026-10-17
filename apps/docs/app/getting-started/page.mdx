@@ -109,6 +109,26 @@ Then add the chat below as a component and render it from your page. In Next.js,
 npx @stackunseen/ui init
 ```
 
+<h3 id="shadcn">With the shadcn CLI</h3>
+
+If your project already uses shadcn/ui, add the same starters from the Unseen UI registry. Each one installs `@stackunseen/ui` at this release and writes one small file into your components folder; the components themselves stay in the package, so updates arrive as new versions.
+
+```sh
+npx shadcn@latest add https://unseenui.com/r/chat.json
+npx shadcn@latest add https://unseenui.com/r/chat-ai-sdk.json
+npx shadcn@latest add https://unseenui.com/r/theme.json
+```
+
+`chat` writes a working chat on a local host, `chat-ai-sdk` adds the AI SDK version and its `app/api/chat/route.ts`, and `theme` writes a scoped theme provider. To use the short `@unseen/chat` form, register the namespace in `components.json`:
+
+```json
+{
+  "registries": {
+    "@unseen": "https://unseenui.com/r/{name}.json"
+  }
+}
+```
+
 ### Or start with a whole chat
 
 `@stackunseen/ui/chat` composes the transcript, streaming reply, tool cards, suggestions and composer, and ships a local host that streams deterministic replies so you can see it work before anything is connected. Swap the host for your server when you are ready; see the [Chat guide](/components/chat/).

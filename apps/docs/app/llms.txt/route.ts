@@ -27,6 +27,7 @@ export function GET() {
     `- [Getting started](${origin}/getting-started/): install, the first component, optional entries.`,
     `- [Chat](${origin}/components/chat/): \`import { Chat, useLocalHost, useAiSdkChat } from '@stackunseen/ui/chat'\`; \`<Chat {...useAiSdkChat(useChat())} />\` connects the Vercel AI SDK, including tool approvals.`,
     `- [Full text for agents](${origin}/llms-full.txt): every component with its contract, responsibility and example.`,
+    `- [shadcn registry](${origin}/r/registry.json): \`npx shadcn@latest add ${origin}/r/chat.json\` (also chat-ai-sdk and theme) installs @stackunseen/ui and writes a starter file.`,
     '',
     ...[...groups.entries()].flatMap(([group, lines]) => [`## ${group}`, '', ...lines, '']),
   ].join('\n');

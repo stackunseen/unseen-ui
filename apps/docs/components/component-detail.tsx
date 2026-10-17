@@ -20,6 +20,7 @@ import { tasksFor } from '../lib/tasks';
 import { componentImport } from '../lib/component-import';
 import { guidanceFor } from '../lib/usage-guidance';
 import { patternsUsing } from '../lib/pattern-usage';
+import { registryCommand, registryItemsFor } from '../lib/registry-items';
 
 const managers = [
   ['pnpm', 'pnpm add'],
@@ -159,6 +160,7 @@ export function ComponentDetail({
   const packages = `@stackunseen/ui${peers?.length ? ` ${peers.join(' ')}` : ''}`;
   const installLine = `${managers.find(([name]) => name === manager)![1]} ${packages}`;
   const usedIn = patternsUsing(entry.name);
+  const starters = registryItemsFor[entry.name] ?? [];
   const tasks = tasksFor(entry.name);
   const siblings = catalog
     .filter(
@@ -196,6 +198,7 @@ export function ComponentDetail({
     '',
     '```bash',
     installLine,
+    ...starters.map((item) => registryCommand(item)),
     '```',
     '',
     '## Usage',
@@ -478,6 +481,18 @@ export function ComponentDetail({
                 iconOnly
               />
             </div>
+            {starters.map((item) => (
+              <div className="detail-install-row" key={item}>
+                <code>{registryCommand(item)}</code>
+                <CopyButton
+                  size="sm"
+                  variant="ghost"
+                  value={registryCommand(item)}
+                  label={`Copy shadcn command for ${item}`}
+                  iconOnly
+                />
+              </div>
+            ))}
             <div className="detail-install-row">
               <code>{importLine}</code>
               <CopyButton

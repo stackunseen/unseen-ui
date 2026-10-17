@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "theme",
+  "type": "registry:component",
+  "title": "Theme",
+  "description": "A scoped theme provider with the base stylesheet: wrap your app or a section in <UnseenTheme>.",
+  "dependencies": [
+    "@stackunseen/ui@0.1.0-alpha.7"
+  ],
+  "files": [
+    {
+      "path": "registry/unseen/theme/unseen-theme.tsx",
+      "type": "registry:component",
+      "target": "@components/unseen-theme.tsx",
+      "content": "'use client';\nimport type { ReactNode } from 'react';\nimport { AITheme } from '@stackunseen/ui';\nimport { createTheme } from '@stackunseen/ui/theme';\nimport '@stackunseen/ui/styles.css';\n\n/**\n * The Unseen UI theme for everything inside it. Change the seeds, or replace createTheme(...)\n * with importTheme(json) using a theme exported from https://unseenui.com/customize/.\n */\nconst theme = createTheme({ primary: '#171717', radius: 12, controlRadius: 10 });\n\nexport function UnseenTheme({ children }: { children: ReactNode }) {\n  return (\n    <AITheme theme={theme} appearance=\"system\">\n      {children}\n    </AITheme>\n  );\n}\n"
+    }
+  ],
+  "docs": "Wrap your app in <UnseenTheme> from components/unseen-theme. Customize: https://unseenui.com/customize/",
+  "categories": [
+    "theme"
+  ],
+  "author": "Stack Unseen"
+}

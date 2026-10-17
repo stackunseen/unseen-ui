@@ -72,6 +72,9 @@ export async function POST(request: Request) {
 }
 `;
 
+/** The files init writes; the site's shadcn registry is generated from the same text. */
+export const templates = { localChat, aiSdkChat, aiSdkRoute };
+
 /** Paths as people type them, with forward slashes on every platform. */
 const posix = (path) => path.split('\\').join('/');
 

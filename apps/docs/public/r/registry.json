@@ -1,0 +1,81 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "unseen-ui",
+  "homepage": "https://unseenui.com",
+  "items": [
+    {
+      "name": "chat",
+      "type": "registry:block",
+      "title": "Chat",
+      "description": "A working chat on a simulated host: transcript, streaming reply, tool rows, suggestions, stop and retry. Swap the host for your server or the AI SDK.",
+      "dependencies": [
+        "@stackunseen/ui@0.1.0-alpha.7"
+      ],
+      "docs": "Render <Assistant /> from components/assistant. Guide: https://unseenui.com/components/chat/",
+      "categories": [
+        "ai",
+        "chat"
+      ],
+      "author": "Stack Unseen",
+      "files": [
+        {
+          "path": "registry/unseen/chat/assistant.tsx",
+          "type": "registry:component",
+          "target": "@components/assistant.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat-ai-sdk",
+      "type": "registry:block",
+      "title": "Chat on the Vercel AI SDK",
+      "description": "Chat wired to useChat, with tool approvals as approval cards, Markdown replies and a Next.js route whose example tool waits for a person.",
+      "dependencies": [
+        "@stackunseen/ui@0.1.0-alpha.7",
+        "@ai-sdk/react",
+        "ai",
+        "zod"
+      ],
+      "docs": "Set your model and provider key in app/api/chat/route.ts (move it under src/app if your app lives there), then render <Assistant />. Guide: https://unseenui.com/patterns/ai-sdk-chat/",
+      "categories": [
+        "ai",
+        "chat",
+        "ai-sdk"
+      ],
+      "author": "Stack Unseen",
+      "files": [
+        {
+          "path": "registry/unseen/chat-ai-sdk/assistant.tsx",
+          "type": "registry:component",
+          "target": "@components/assistant.tsx"
+        },
+        {
+          "path": "registry/unseen/chat-ai-sdk/route.ts",
+          "type": "registry:file",
+          "target": "~/app/api/chat/route.ts"
+        }
+      ]
+    },
+    {
+      "name": "theme",
+      "type": "registry:component",
+      "title": "Theme",
+      "description": "A scoped theme provider with the base stylesheet: wrap your app or a section in <UnseenTheme>.",
+      "dependencies": [
+        "@stackunseen/ui@0.1.0-alpha.7"
+      ],
+      "docs": "Wrap your app in <UnseenTheme> from components/unseen-theme. Customize: https://unseenui.com/customize/",
+      "categories": [
+        "theme"
+      ],
+      "author": "Stack Unseen",
+      "files": [
+        {
+          "path": "registry/unseen/theme/unseen-theme.tsx",
+          "type": "registry:component",
+          "target": "@components/unseen-theme.tsx"
+        }
+      ]
+    }
+  ]
+}
