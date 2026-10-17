@@ -2,10 +2,16 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AITheme } from '../../providers/theme/theme-provider.js';
 import { Combobox } from './combobox.js';
+import type { SingleComboboxProps } from './types.js';
+
+/** The single-value form, typed for Storybook args. */
+function SingleCombobox(props: SingleComboboxProps) {
+  return <Combobox {...props} />;
+}
 
 const meta = {
   title: 'Unseen UI/Application/Combobox',
-  component: Combobox,
+  component: SingleCombobox,
   decorators: [
     (Story) => (
       <AITheme>
@@ -35,7 +41,7 @@ const meta = {
     const [value, setValue] = useState(args.value);
     const [query, setQuery] = useState(args.query);
     return (
-      <Combobox
+      <SingleCombobox
         {...args}
         value={value}
         query={query}
@@ -47,7 +53,7 @@ const meta = {
       />
     );
   },
-} satisfies Meta<typeof Combobox>;
+} satisfies Meta<typeof SingleCombobox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -61,3 +67,20 @@ export const Empty: Story = { args: { options: [] } };
 export const Disabled: Story = { args: { disabled: true, value: 'product' } };
 export const UnavailableSelection: Story = { args: { value: 'archived' } };
 export const HostFiltered: Story = { args: { query: 'server-ranked search', filterOption: false } };
+
+function MultipleExample() {
+  const [value, setValue] = useState<readonly string[]>(['product']);
+  const [query, setQuery] = useState('');
+  return (
+    <Combobox
+      type="multiple"
+      label="Workspaces"
+      value={value}
+      onValueChange={setValue}
+      query={query}
+      onQueryChange={setQuery}
+      options={meta.args.options}
+    />
+  );
+}
+export const Multiple: Story = { render: () => <MultipleExample /> };

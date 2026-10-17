@@ -7,7 +7,6 @@ These components render host data and emit intent. They do not run commands, aut
 | API | Contract and bounds |
 | --- | --- |
 | SlashCommandMenu / MentionPicker | Controlled query and selection, cmdk keyboard navigation, loading/error/empty/disabled states, first 200 host options. References include kind and version. The host owns search, authorization and resource resolution. |
-| ReasoningControl | Controlled provider-declared effort IDs, discrete Radix slider, segmented radios or custom Select. This is an effort setting, not a view into private reasoning. Unsupported settings remain explicit. |
 | AccessModeSelector | Current host mode is distinct from a local draft. Requests carry mode, scope and policy version. Drafts are invalidated when scope/version changes. A click does not confer permission. |
 | [VoiceControl](VOICES.md) | Exact session/capture/version snapshots, independent capture/permission/transcription/availability/connection/submission, scoped requests and legacy compatibility. Three layouts reuse compact action groups, devices and keyboard-scrollable transcripts. The optional browser example records audio; it provides no speech-to-text service. |
 | [FileExplorer](FILES.md) | Controlled snapshot-bound selection, disclosures, file windows and filtering; explicit access/freshness and unknown metadata. Three distinct projections, 500 records/500 derived folders/12 folder levels, invalid windows rejected. Native disclosure/list semantics; host owns reads. A separate sample host provides bounded local reads. |
@@ -37,22 +36,12 @@ AIForm renders text, textarea, number, checkbox and select schemas, repeatable r
 
 GeneratedUI renders a bounded catalog of text, metric, action, table, chart, form and section nodes. Identity, host action feedback, controlled form drafts and availability determine what it can display. Generated HTML, callbacks and executable React are forbidden. See [generated interfaces](GENERATED-UI.md) for the complete schema and limits.
 
-DataTable has a caption, typed scalar cells, controlled sorting, loading/error states and host pagination callbacks. Cards retain sorting controls. The display is bounded to 100 rows / 20 columns. [Chart](CHARTS.md) renders legacy points or up to four aligned series as bar/line/area, with null gaps, controlled legends, unit/source and hidden availability states. Readable geometry remains in a local scroll region with equivalent original tabular values. Oversized/invalid data is rejected before plotting. Neither API claims a spreadsheet, virtualized grid or advanced chart engine.
+Chart and GeneratedUI render their tables with an internal DataTable (it is not exported; for application tables use DataGrid from `@stackunseen/ui/application`). It has a caption, typed scalar cells, controlled sorting, loading/error states and host pagination callbacks. Cards retain sorting controls. The display is bounded to 100 rows / 20 columns. [Chart](CHARTS.md) renders legacy points or up to four aligned series as bar/line/area, with null gaps, controlled legends, unit/source and hidden availability states. Readable geometry remains in a local scroll region with equivalent original tabular values. Oversized/invalid data is rejected before plotting. Neither API claims a spreadsheet, virtualized grid or advanced chart engine.
 
-DataTable accepts an explicit `locale` (default `en-US`) and column `format: { kind: 'number' | 'date', options? }`. Number options include currency/percent formatting. Dates accept ISO calendar dates, timezone-qualified ISO instants or epoch milliseconds; UTC is the default display zone. Ambiguous date strings and non-finite values have explicit fallbacks. Invalid locales/format options produce visible warnings. A trusted application `formatCell(value, column, row)` can return inert text capped at 5,000 characters; exceptions and invalid return values show a fallback. Generated content cannot provide that callback or HTML.
+The internal DataTable accepts an explicit `locale` (default `en-US`) and column `format: { kind: 'number' | 'date', options? }`. Number options include currency/percent formatting. Dates accept ISO calendar dates, timezone-qualified ISO instants or epoch milliseconds; UTC is the default display zone. Ambiguous date strings and non-finite values have explicit fallbacks. Invalid locales/format options produce visible warnings. A trusted application `formatCell(value, column, row)` can return inert text capped at 5,000 characters; exceptions and invalid return values show a fallback. Generated content cannot provide that callback or HTML.
 
 Controlled `pagination: { pageIndex, pageSize, totalRows?, hasNextPage? }` describes the supplied page, and `onPageChange(index)` requests a replacement window. No optimistic page/row changes occur inside the component. Page size is 1–100; page/row identities and totals must be consistent. Unknown totals remain unknown and require explicit `hasNextPage: true` to enable Next. Sorting while loading and paging without a handler are disabled. Empty table views include an explanatory data row, not orphaned column headers. The legacy `onLoadMore` intent remains available; prefer one paging mechanism per view.
 
-```tsx
-<DataTable
-  caption="Measured costs"
-  locale="de-DE"
-  columns={[{ id: 'cost', label: 'Cost', format: { kind: 'number', options: { style: 'currency', currency: 'EUR' } } }]}
-  rows={page.rows}
-  pagination={{ pageIndex: page.index, pageSize: 25, totalRows: page.total }}
-  onPageChange={requestPage}
-/>;
-```
 
 [WorkflowGraph](WORKFLOWS.md) validates one bounded current snapshot, projects a routed canvas, adjacency list or compact traversal outline and exposes controlled node/connection inspection. Self/return/parallel routes, explicit cycle/shared references, optional host data waypoints and complete equivalent connections preserve host ownership. Overlap/unroutable/label-capacity conditions are disclosed; hidden availability hides data before inspection. It is not a graph editor, general layout engine or workflow executor. AuditTrail provides searchable timeline/table/compact views with redaction. RunInspector displays public spans, correlation IDs and measured/unknown usage; it must not be fed private model reasoning.
 

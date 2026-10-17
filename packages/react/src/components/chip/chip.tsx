@@ -43,11 +43,7 @@ export interface RemovableChipProps extends ChipBaseProps {
   removeLabel?: string;
   href?: never;
 }
-export interface StaticChipProps extends ChipBaseProps {
-  href?: never;
-  onRemove?: never;
-}
-export type ChipProps = LinkChipProps | RemovableChipProps | StaticChipProps;
+export type ChipProps = LinkChipProps | RemovableChipProps;
 
 function Swatch({ swatch }: { swatch?: string }) {
   if (!swatch) return null;
@@ -55,8 +51,7 @@ function Swatch({ swatch }: { swatch?: string }) {
 }
 
 /**
- * A compact label: a link (current), a removable value or static text. For choices, use
- * ToggleGroup.
+ * A compact link (current) or removable value. Plain labels are Tag; choices are ToggleGroup.
  * Active fills use --ai-chip-active-background and --ai-chip-active-color, which default to
  * the primary tint and primary text so the label keeps its contrast.
  */

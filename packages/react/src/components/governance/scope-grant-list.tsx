@@ -2,7 +2,8 @@
 import { useId } from 'react';
 import type { CommandReceipt, Measurement } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
-import { Chip, ChipGroup } from '../chip/chip.js';
+import { ChipGroup } from '../chip/chip.js';
+import { Tag } from '../tag/tag.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';
 import { MeasuredText, formatTime } from '../runs/shared.js';
@@ -129,9 +130,9 @@ export function ScopeGrantList({
                 </div>
                 <ChipGroup label={`Scopes for ${grant.target}`}>
                   {grant.scopes.map((scope) => (
-                    <Chip key={scope} size="sm">
+                    <Tag key={scope} size="sm">
                       {scope}
-                    </Chip>
+                    </Tag>
                   ))}
                 </ChipGroup>
                 {variant !== 'compact' && (

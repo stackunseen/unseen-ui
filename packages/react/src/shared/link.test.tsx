@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { LinkProvider, useLinkComponent } from './link.js';
 import type { LinkComponentProps } from './link.js';
 import { Chip } from '../components/chip/chip.js';
-import { LinkButton } from '../components/link-button/link-button.js';
+import { Button } from '../components/button/button.js';
 import { Card } from '../components/card/card.js';
 import { Matrix } from '../components/matrix/matrix.js';
 import { ToggleGroup } from '../components/toggle-group/toggle-group.js';
@@ -49,7 +49,7 @@ function Everything() {
       <Card href="/guides/rag">
         <Card.Title>RAG guide</Card.Title>
       </Card>
-      <LinkButton href="/start">Start</LinkButton>
+      <Button href="/start">Start</Button>
       <Matrix
         label="Coverage"
         rows={[{ id: 'rag', label: 'RAG', href: '/d/rag' }]}

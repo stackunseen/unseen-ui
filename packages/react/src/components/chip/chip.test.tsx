@@ -7,8 +7,12 @@ import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
 afterEach(cleanup);
 
 describe('Chip', () => {
-  it('shows a decorative swatch on a static chip', () => {
-    const { container } = render(<Chip swatch="var(--hue-agents)">Agents</Chip>);
+  it('shows a decorative swatch on a link chip', () => {
+    const { container } = render(
+      <Chip href="/lens/agents" swatch="var(--hue-agents)">
+        Agents
+      </Chip>,
+    );
     expect(container.querySelector('[aria-hidden="true"]')).toHaveStyle({
       background: 'var(--hue-agents)',
     });
@@ -43,18 +47,14 @@ describe('Chip', () => {
     expect(onRemove).toHaveBeenCalledTimes(3);
   });
 
-  it('keeps a disabled removable chip inert and renders a static chip without a control', () => {
+  it('keeps a disabled removable chip inert', () => {
     const onRemove = vi.fn();
     render(
-      <>
-        <Chip onRemove={onRemove} disabled removeLabel="Clear stack">
-          Stack
-        </Chip>
-        <Chip>Static</Chip>
-      </>,
+      <Chip onRemove={onRemove} disabled removeLabel="Clear stack">
+        Stack
+      </Chip>,
     );
     expect(screen.getByRole('button', { name: 'Clear stack' })).toBeDisabled();
-    expect(screen.getByText('Static').closest('[data-part="chip"]')?.tagName).toBe('SPAN');
   });
 });
 

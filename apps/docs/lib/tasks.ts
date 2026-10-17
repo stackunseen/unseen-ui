@@ -38,7 +38,6 @@ export const componentTasks: readonly ComponentTask[] = [
       'ExecutionTimeline',
       'RunInspector',
       'Plan',
-      'Task',
       'UsageMeter',
     ],
   },
@@ -74,7 +73,7 @@ export const componentTasks: readonly ComponentTask[] = [
     id: 'generative-ui',
     label: 'Generated interfaces',
     description: 'Validated forms, tables and charts a model describes and the host renders.',
-    components: ['GeneratedUI', 'AIForm', 'DataTable', 'Chart'],
+    components: ['GeneratedUI', 'AIForm', 'DataGrid', 'Chart'],
   },
   {
     id: 'sources',

@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,7 +9,6 @@ import {
   IconsProvider,
   LoadingIndicator,
   MessageActions,
-  ReasoningControl,
   SlashCommandMenu,
   StatusBadge,
 } from '@stackunseen/ui';
@@ -134,15 +133,6 @@ describe('conversation design refinements', () => {
           onSelect={() => {}}
           items={[{ id: 'search', label: 'Search', description: 'Search workspace' }]}
         />
-        <ReasoningControl
-          value="medium"
-          onValueChange={() => {}}
-          options={[
-            { id: 'low', label: 'Low' },
-            { id: 'medium', label: 'Medium' },
-            { id: 'high', label: 'High' },
-          ]}
-        />
       </AITheme>,
     );
     expect(getComputedStyle(screen.getByRole('button', { name: 'Open original' })).minHeight).toBe(
@@ -152,11 +142,5 @@ describe('conversation design refinements', () => {
     expect(
       getComputedStyle(screen.getByRole('combobox', { name: 'Find a command' })).minHeight,
     ).toBe('44px');
-    const slider = screen.getByRole('slider');
-    expect(getComputedStyle(slider).width).toBe('44px');
-    expect(getComputedStyle(slider).height).toBe('44px');
-    act(() => slider.focus());
-    expect(slider).toHaveAccessibleName('Reasoning effort');
-    expect(slider).toHaveAttribute('aria-valuetext', 'Medium');
   });
 });

@@ -3,7 +3,6 @@ import { Tag } from './tag.js';
 import { Avatar } from '../avatar/avatar.js';
 import { Stat, StatGroup } from '../stat/stat.js';
 import { Card } from '../card/card.js';
-import { LinkButton } from '../link-button/link-button.js';
 import { Button } from '../button/button.js';
 
 const meta = {
@@ -62,10 +61,10 @@ export const LinkCards: Story = {
 export const LinkButtons: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 8 }}>
-      <LinkButton href="/start">Get started</LinkButton>
-      <LinkButton href="/docs" variant="outline">
+      <Button href="/start">Get started</Button>
+      <Button href="/docs" variant="outline">
         Read the docs
-      </LinkButton>
+      </Button>
       <Button asChild variant="ghost">
         <a href="/pricing">See pricing</a>
       </Button>

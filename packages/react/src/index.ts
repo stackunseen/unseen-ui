@@ -85,7 +85,6 @@ export {
   validateHandoffDecision,
 } from './components/agent-handoff/handoff-model.js';
 export { AIForm } from './components/ai-form/ai-form.js';
-export { DataTable } from './components/data-table/data-table.js';
 export { Chart } from './components/chart/chart.js';
 export { WorkflowGraph } from './components/workflow-graph/workflow-graph.js';
 export { GeneratedUI } from './components/generated-ui/generated-ui.js';
@@ -104,7 +103,6 @@ export type {
   AIFormReceipt,
 } from './components/ai-form/form-model.js';
 export type {
-  DataTableProps,
   TableColumn,
   TableCellFormat,
   TableCellValue,
@@ -135,17 +133,12 @@ export type {
 } from './components/generated-ui/generated-model.js';
 export { SlashCommandMenu } from './components/slash-command-menu/slash-command-menu.js';
 export { MentionPicker } from './components/mention-picker/mention-picker.js';
-export { ReasoningControl } from './components/reasoning-control/reasoning-control.js';
 export { AccessModeSelector } from './components/access-mode-selector/access-mode-selector.js';
 export { VoiceControl } from './components/voice-control/voice-control.js';
 export type { SlashCommandMenuProps } from './components/slash-command-menu/slash-command-menu.js';
 export type { MentionPickerProps } from './components/mention-picker/mention-picker.js';
 export type { CommandOption, ReferenceOption } from './shared/command-picker/command-picker.js';
 export { referenceUnavailableReason } from './shared/command-picker/command-picker.js';
-export type {
-  ReasoningControlProps,
-  ReasoningOption,
-} from './components/reasoning-control/reasoning-control.js';
 export type {
   AccessModeSelectorProps,
   AccessMode,
@@ -247,7 +240,6 @@ export type { CitationProps, CitationReference } from './components/citation/cit
 export { AgentSteps } from './components/agent-steps/agent-steps.js';
 export { AgentCard } from './components/agent-card/agent-card.js';
 export { ExecutionTimeline } from './components/execution-timeline/execution-timeline.js';
-export { Workflow } from './components/workflow/workflow.js';
 export type { TimelineEntry } from './components/execution-timeline/execution-timeline.js';
 export { ToolCall } from './components/tool-call/tool-call.js';
 export {
@@ -459,7 +451,6 @@ export {
   CardContent,
   CardFooter,
 } from './components/card/card.js';
-export { LinkButton } from './components/link-button/link-button.js';
 export { LinkProvider, useLinkComponent, Anchor } from './shared/link.js';
 export { useCopy } from './shared/copy.js';
 export type { CopyStatus } from './shared/copy.js';
@@ -511,7 +502,6 @@ export type {
 } from './components/appearance-toggle/use-stored-appearance.js';
 export type { Appearance } from './theme.js';
 export type { LinkProviderProps, LinkComponent, LinkComponentProps } from './shared/link.js';
-export type { LinkButtonProps } from './components/link-button/link-button.js';
 export { ToggleGroup } from './components/toggle-group/toggle-group.js';
 export type {
   ToggleGroupOption,
@@ -531,7 +521,6 @@ export type {
   ChipGroupProps,
   LinkChipProps,
   RemovableChipProps,
-  StaticChipProps,
 } from './components/chip/chip.js';
 export { Stepper } from './components/stepper/stepper.js';
 export type {

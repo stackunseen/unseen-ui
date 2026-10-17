@@ -21,16 +21,6 @@ export const expandedCatalog: CatalogEntry[] = [
     code: '<MentionPicker items={references} query={query} onQueryChange={setQuery} onSelect={addReference} />',
   },
   {
-    name: 'ReasoningControl',
-    category: 'Model controls',
-    description: 'A discrete reasoning slider, segmented control or custom select.',
-    states: ['Default', 'Disabled', 'Unsupported'],
-    contract: 'options · value · onValueChange · disabled?',
-    responsibility:
-      'Supply the model’s supported effort levels in order. This is a setting, not a view of private reasoning.',
-    code: '<ReasoningControl options={effortLevels} value={effort} onValueChange={setEffort} />',
-  },
-  {
     name: 'AccessModeSelector',
     category: 'Human review',
     description: 'Request an access mode while keeping confirmed permissions visible.',
@@ -355,28 +345,6 @@ export const expandedCatalog: CatalogEntry[] = [
     responsibility:
       'Authorize surface/version/action IDs, control version-bound form drafts and acknowledgements, and reconcile unknown outcomes. Generated data never provides callbacks.',
     code: '<GeneratedUI surface={surface} state="ready" onAction={requestAction} />',
-  },
-  {
-    name: 'DataTable',
-    category: 'Generative UI',
-    description: 'Structured rows with controlled sorting, pagination and card presentation.',
-    states: [
-      'Default',
-      'Empty',
-      'Loading',
-      'Error',
-      'Long cells',
-      'Currency and dates',
-      'Paged',
-      'Unknown total',
-      'Invalid pagination',
-      'Invalid identities',
-    ],
-    contract:
-      'columns · rows · caption · locale? · formatCell? · sort? · onSort? · pagination? · onPageChange?',
-    responsibility:
-      'Replace the page window, supply unique row/column IDs, immutable sorting and known/unknown totals. Formatters return trusted inert text; preview limits are explicit.',
-    code: '<DataTable columns={columns} rows={page.rows} caption="Build checks" locale="en-US" sort={sort} onSort={requestSort} pagination={page.info} onPageChange={requestPage} />',
   },
   {
     name: 'Chart',

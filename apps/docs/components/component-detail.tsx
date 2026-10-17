@@ -44,7 +44,6 @@ function storedManager(): Manager {
 const centredPreviews = new Set([
   'Button',
   'IconButton',
-  'LinkButton',
   'CopyButton',
   'StatusBadge',
   'Tag',
@@ -62,7 +61,6 @@ const centredPreviews = new Set([
   'Toast',
   'ShareMenu',
   'LoadingIndicator',
-  'Shimmer',
 ]);
 
 export function ComponentDetail({

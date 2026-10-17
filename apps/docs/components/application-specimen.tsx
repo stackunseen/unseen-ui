@@ -11,7 +11,6 @@ import {
   ListToolbar,
   useStoredChecklist,
   MasterDetail,
-  MultiSelect,
   OrgSwitcher,
   PageHeader,
   SettingsSaveCancel,
@@ -256,33 +255,33 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
   let content;
   if (name === 'DataGrid') content = <GridExample state={state} />;
   else if (name === 'Combobox')
-    content = (
-      <Combobox
-        label="Team"
-        value={selected}
-        onValueChange={setSelected}
-        query={query}
-        onQueryChange={setQuery}
-        options={options}
-        disabled={disabled}
-        status={status}
-        error="The host could not load teams."
-      />
-    );
-  else if (name === 'MultiSelect')
-    content = (
-      <MultiSelect
-        label="Teams"
-        value={multiple}
-        onValueChange={setMultiple}
-        query={query}
-        onQueryChange={setQuery}
-        options={options}
-        disabled={disabled}
-        status={status}
-        error="The host could not load teams."
-      />
-    );
+    content =
+      state === 'Multiple' ? (
+        <Combobox
+          type="multiple"
+          label="Teams"
+          value={multiple}
+          onValueChange={setMultiple}
+          query={query}
+          onQueryChange={setQuery}
+          options={options}
+          disabled={disabled}
+          status={status}
+          error="The host could not load teams."
+        />
+      ) : (
+        <Combobox
+          label="Team"
+          value={selected}
+          onValueChange={setSelected}
+          query={query}
+          onQueryChange={setQuery}
+          options={options}
+          disabled={disabled}
+          status={status}
+          error="The host could not load teams."
+        />
+      );
   else if (name === 'Calendar') {
     const props = {
       month,

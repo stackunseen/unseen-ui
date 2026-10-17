@@ -2,17 +2,37 @@
 import { useRef } from 'react';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { SelectionPicker } from '../../shared/selection/selection-picker.js';
-import type { ComboboxOption, ComboboxProps } from './types.js';
+import type { ComboboxOption, ComboboxProps, SingleComboboxProps } from './types.js';
+import { MultiSelect } from '../multi-select/multi-select.js';
 import s from './combobox.module.css';
 
-export type { ComboboxOption, ComboboxProps } from './types.js';
+export type {
+  ComboboxOption,
+  ComboboxProps,
+  SingleComboboxProps,
+  MultipleComboboxProps,
+} from './types.js';
 
-/** Query and selected identity change only when the host supplies replacement props. */
-export function Combobox<T extends ComboboxOption>({
+/**
+ * Search a list and choose one value, or several with type="multiple". Query and selected
+ * identity change only when the host supplies replacement props.
+ */
+export function Combobox<T extends ComboboxOption>(props: ComboboxProps<T>) {
+  if (props.type === 'multiple') {
+    const { type: _type, ...rest } = props;
+    void _type;
+    return <MultiSelect {...rest} />;
+  }
+  return <SingleCombobox {...props} />;
+}
+
+function SingleCombobox<T extends ComboboxOption>({
+  type: _type,
   value,
   onValueChange,
   ...props
-}: ComboboxProps<T>) {
+}: SingleComboboxProps<T>) {
+  void _type;
   const inputRef = useRef<HTMLInputElement>(null);
   const selected = props.options.find((option) => option.value === value);
   const summary = value === null ? 'No option selected.' : `Selected: ${selected?.label ?? value}`;

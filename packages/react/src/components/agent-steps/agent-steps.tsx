@@ -1,5 +1,6 @@
 'use client';
 import type { Step } from '@stackunseen/ui-core';
+import { Button } from '../button/button.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';
 import { AIIcon } from '../../providers/icons/icons.js';
@@ -10,9 +11,17 @@ export function AgentSteps({
   variant = 'timeline',
   steps,
   label = 'Execution steps',
+  dependencies = false,
+  selectedId,
+  onSelect,
 }: VariantProps<'AgentSteps'> & {
   steps: Step[];
   label?: string;
+  /** Print each step's prerequisites ("After: …", or "Starting step"). */
+  dependencies?: boolean;
+  /** With onSelect, step names become buttons that report the chosen step. */
+  selectedId?: string;
+  onSelect?: (id: string) => void;
 }) {
   return (
     <ol className={s.steps} data-variant={variant} aria-label={label}>
@@ -33,9 +42,26 @@ export function AgentSteps({
           </span>
           <div className={s.grow}>
             <div className={s.row}>
-              <strong>{step.label}</strong>
+              {onSelect ? (
+                <Button
+                  variant="ghost"
+                  aria-pressed={selectedId === step.id}
+                  onClick={() => onSelect(step.id)}
+                >
+                  {step.label}
+                </Button>
+              ) : (
+                <strong>{step.label}</strong>
+              )}
               <StatusBadge state={step.state} />
             </div>
+            {dependencies && (
+              <div className={s.muted}>
+                {step.dependencyIds.length
+                  ? `After: ${step.dependencyIds.map((id) => steps.find((x) => x.id === id)?.label ?? `Unavailable step ${id}`).join(', ')}`
+                  : 'Starting step'}
+              </div>
+            )}
             {step.detail && (
               <Accordion
                 region={false}

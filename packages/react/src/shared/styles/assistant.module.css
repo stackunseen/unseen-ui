@@ -103,6 +103,10 @@
   border-color: transparent;
   color: var(--ai-text, #18181b);
 }
+.step[data-state='failed'] .dot {
+  border-color: transparent;
+  color: var(--ai-danger, #991b1b);
+}
 .step[data-state='active'] .dot {
   border-color: var(--ai-border, #e4e4e7);
   border-top-color: var(--ai-text, #18181b);
@@ -350,26 +354,6 @@ a.chip:hover {
   background: var(--ai-field-background, var(--ai-surface, #fff));
   color: inherit;
   font: inherit;
-}
-.links {
-  display: grid;
-  gap: 2px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.links a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px;
-  border-radius: 8px;
-  color: var(--ai-text, #18181b);
-  text-decoration: none;
-}
-.links a:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
 }
 .stepList {
   margin-block-start: 8px;

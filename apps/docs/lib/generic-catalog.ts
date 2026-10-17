@@ -13,11 +13,11 @@ export const genericCatalog: CatalogEntry[] = [
     group: 'Actions',
     category: 'Actions',
     description: 'A labelled action with consistent emphasis, size and keyboard behavior.',
-    aliases: ['Action', 'Submit button', 'Primary button'],
+    aliases: ['Action', 'Submit button', 'Primary button', 'Link button', 'Call to action'],
     presentations: ['primary', 'secondary', 'outline', 'ghost', 'danger', 'link'],
-    states: ['Default', 'Disabled', 'Busy', 'Small', 'Long label'],
+    states: ['Default', 'Disabled', 'Busy', 'Small', 'Long label', 'Link'],
     contract:
-      'variant?: primary | secondary | outline | ghost | danger | link · size?: default | sm · native button props',
+      'variant?: primary | secondary | outline | ghost | danger | link · size?: default | sm · href? target? rel? (renders a link) · native button props',
     responsibility:
       'Provide an explicit action label and choose emphasis by importance. Busy and disabled states come from your application.',
     keyboard:

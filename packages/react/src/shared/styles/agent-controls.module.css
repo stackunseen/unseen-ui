@@ -104,49 +104,6 @@
 .root[data-variant='compact'] .choice {
   padding: 8px;
 }
-.segments {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.segments .choice {
-  flex: 1 1 85px;
-}
-.slider {
-  display: flex;
-  align-items: center;
-  position: relative;
-  height: 32px;
-  touch-action: none;
-  user-select: none;
-  margin-inline: 10px;
-}
-.slider[data-disabled] {
-  opacity: var(--ai-disabled-opacity, 0.62);
-  cursor: not-allowed;
-}
-.track {
-  position: relative;
-  flex-grow: 1;
-  height: 5px;
-  background: var(--ai-border);
-  border-radius: 99px;
-}
-.range {
-  position: absolute;
-  height: 100%;
-  background: var(--ai-primary);
-  border-radius: inherit;
-}
-.thumb {
-  display: block;
-  width: 24px;
-  height: 24px;
-  border: 2px solid var(--ai-primary);
-  border-radius: 50%;
-  background: var(--ai-surface);
-  box-shadow: 0 2px 6px rgb(0 0 0 / 0.12);
-}
 .root :where(input, button, [tabindex]):focus-visible {
   outline: 2px solid var(--ai-focus);
   outline-offset: 3px;
@@ -155,14 +112,6 @@
   outline: 2px solid var(--ai-focus);
   outline-offset: -1px;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #18181b) 22%, transparent);
-}
-.ticks {
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  font-size: var(--ai-font-size-caption, 12px);
-  color: var(--ai-muted);
 }
 .search {
   min-width: 0;
@@ -230,28 +179,5 @@
   .search,
   .choice {
     min-height: 44px;
-  }
-  .slider {
-    height: 44px;
-    margin-inline: 22px;
-  }
-  /* Preserve the 24px visual thumb within a 44px interactive target. */
-  .thumb {
-    position: relative;
-    width: 44px;
-    height: 44px;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-  .thumb::before {
-    content: '';
-    position: absolute;
-    inset: 10px;
-    border: 2px solid var(--ai-primary);
-    border-radius: 50%;
-    background: var(--ai-surface);
-    box-shadow: 0 2px 6px rgb(0 0 0 / 0.12);
-    pointer-events: none;
   }
 }

@@ -29,9 +29,10 @@ export const aiExtrasCatalog: CatalogEntry[] = [
   assistant({
     name: 'ChainOfThought',
     category: 'Execution',
-    aliases: ['Agent steps', 'Thought steps'],
-    description: 'Public, host-reported steps of a run with sources per step.',
-    states: ['Default', 'Active step', 'Empty'],
+    aliases: ['Agent steps', 'Thought steps', 'Task log', 'Activity log'],
+    description:
+      'Public, host-reported steps of a run or one task, with sources or files per step.',
+    states: ['Default', 'Active step', 'Task log', 'Failed step', 'Empty'],
     contract: 'steps · title? · open? · onOpenChange?',
     responsibility:
       'Report steps the host actually took. Source links render only for http(s) URLs.',
@@ -48,16 +49,6 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     code: '<Plan title="Rewrite the docs" steps={steps} actions={<Button>Build</Button>} />',
   }),
   assistant({
-    name: 'Task',
-    category: 'Execution',
-    aliases: ['Task log'],
-    description: 'A compact log of what an agent did for one task.',
-    states: ['Complete', 'Running', 'Failed'],
-    contract: 'title · items · state? · open? · onOpenChange?',
-    responsibility: 'Items are host-reported activity, rendered as text.',
-    code: '<Task title="Found project files" items={items} />',
-  }),
-  assistant({
     name: 'Checkpoint',
     category: 'Conversation',
     aliases: ['Restore point'],
@@ -66,16 +57,6 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     contract: 'label? · createdAt? · onRestore? · restoring?',
     responsibility: 'Restore is a request. The host performs it and reports the outcome.',
     code: '<Checkpoint createdAt={time} onRestore={restore} />',
-  }),
-  assistant({
-    name: 'Shimmer',
-    category: 'State & status',
-    aliases: ['Loading text', 'Text shimmer'],
-    description: 'Animated text for in-progress labels that respects reduced motion.',
-    states: ['Default'],
-    contract: 'children · as?',
-    responsibility: 'Use for genuinely pending work; pair with a status the host controls.',
-    code: '<Shimmer>Searching sources…</Shimmer>',
   }),
   assistant({
     name: 'Sources',
@@ -97,16 +78,6 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     responsibility: 'The host validates the chosen model when the request runs.',
     keyboard: 'Enter opens the list; arrow keys move between models; Escape closes.',
     code: '<ModelSelector models={models} value={model} onValueChange={setModel} />',
-  }),
-  assistant({
-    name: 'OpenInChat',
-    category: 'Conversation',
-    aliases: ['Share to chat'],
-    description: 'Open the current query in another chat product the host lists.',
-    states: ['Default'],
-    contract: 'query · destinations · label?',
-    responsibility: 'Destinations come from the host; only http(s) links render.',
-    code: '<OpenInChat query={query} destinations={destinations} />',
   }),
   devtools({
     name: 'CodeTabs',

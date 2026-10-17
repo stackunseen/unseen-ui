@@ -9,7 +9,6 @@ import {
   DateRangePicker,
   ListToolbar,
   MasterDetail,
-  MultiSelect,
   OrgSwitcher,
   PageHeader,
   SettingsSaveCancel,
@@ -73,7 +72,8 @@ export function ApplicationPublicExample() {
         value={choice}
         onValueChange={setChoice}
       />
-      <MultiSelect
+      <Combobox
+        type="multiple"
         label="Public choices"
         options={options}
         query={query}

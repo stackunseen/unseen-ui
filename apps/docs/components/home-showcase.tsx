@@ -7,7 +7,6 @@ import {
   AgentSteps,
   Button,
   Checkbox,
-  DataTable,
   Field,
   Input,
   Message,
@@ -16,9 +15,9 @@ import {
   Switch,
   ToolCall,
 } from '@stackunseen/ui';
-import type { DataTableProps, TableColumn } from '@stackunseen/ui';
-
-type TableRow = DataTableProps['rows'][number];
+import { DataGrid } from '@stackunseen/ui/application';
+import type { DataGridColumn, DataGridSort } from '@stackunseen/ui/application';
+import '@stackunseen/ui/application.css';
 import { steps, tool } from '../lib/fixtures';
 import { componentHref } from '../lib/site-paths';
 import { updateShowcaseTheme } from '../lib/showcase-theme';
@@ -29,22 +28,21 @@ const colors = [
   { name: 'Forest', value: '#167145' },
   { name: 'Rose', value: '#b82955' },
 ];
-const checkColumns: TableColumn[] = [
-  { id: 'name', label: 'Check', sortable: true },
-  { id: 'duration', label: 'Seconds', sortable: true, format: { kind: 'number' } },
-  {
-    id: 'state',
-    label: 'State',
-    format: {
-      kind: 'status',
-      tones: { Passed: 'success', Running: 'primary', Failed: 'danger' },
-    },
-  },
+interface Check {
+  id: string;
+  name: string;
+  duration: number;
+  state: 'running' | 'succeeded';
+}
+const checkRows: Check[] = [
+  { id: 'build', name: 'Build', duration: 67, state: 'running' },
+  { id: 'search', name: 'Search tests', duration: 41, state: 'succeeded' },
+  { id: 'types', name: 'Typecheck', duration: 18, state: 'succeeded' },
 ];
-const checkRows: TableRow[] = [
-  { id: 'build', cells: { name: 'Build', duration: 67, state: 'Running' } },
-  { id: 'search', cells: { name: 'Search tests', duration: 41, state: 'Passed' } },
-  { id: 'types', cells: { name: 'Typecheck', duration: 18, state: 'Passed' } },
+const checkColumns: readonly DataGridColumn<Check>[] = [
+  { id: 'name', header: 'Check', sortable: true, rowHeader: true, cell: (row) => row.name },
+  { id: 'duration', header: 'Seconds', sortable: true, align: 'end', cell: (row) => row.duration },
+  { id: 'state', header: 'State', cell: (row) => <StatusBadge state={row.state} /> },
 ];
 
 /** One real component per tile, with the page's theme applied to all of them at once. */
@@ -78,13 +76,11 @@ export function HomeShowcase() {
   const [region, setRegion] = useState('eu');
   const [notify, setNotify] = useState(true);
   const [draftKept, setDraftKept] = useState(true);
-  const [sort, setSort] = useState<{ columnId: string; direction: 'asc' | 'desc' }>({
-    columnId: 'name',
-    direction: 'asc',
-  });
+  const [sort, setSort] = useState<DataGridSort | null>({ columnId: 'name', direction: 'asc' });
   const rows = [...checkRows].sort((a, b) => {
-    const left = a.cells[sort.columnId];
-    const right = b.cells[sort.columnId];
+    if (!sort) return 0;
+    const left = a[sort.columnId as keyof Check];
+    const right = b[sort.columnId as keyof Check];
     const order =
       typeof left === 'number' && typeof right === 'number'
         ? left - right
@@ -181,13 +177,14 @@ export function HomeShowcase() {
             </div>
           </div>
         </Tile>
-        <Tile name="DataTable" group="Forms & generated UI" span={2}>
-          <DataTable
+        <Tile name="DataGrid" group="Forms & generated UI" span={2}>
+          <DataGrid
             caption="Synthetic build checks"
             columns={checkColumns}
             rows={rows}
+            getRowId={(row) => row.id}
             sort={sort}
-            onSort={setSort}
+            onSortChange={setSort}
           />
         </Tile>
       </div>

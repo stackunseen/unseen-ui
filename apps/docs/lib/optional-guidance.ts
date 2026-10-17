@@ -1,7 +1,6 @@
 import type {
   DataGridProps,
   ComboboxProps,
-  MultiSelectProps,
   CalendarProps,
   DateRangePickerProps,
   PageHeaderProps,
@@ -28,7 +27,6 @@ import type { Guide } from './component-guidance';
 type APIs = {
   DataGrid: DataGridProps<{ id: string }>;
   Combobox: ComboboxProps;
-  MultiSelect: MultiSelectProps;
   Calendar: CalendarProps;
   DateRangePicker: DateRangePickerProps;
   PageHeader: PageHeaderProps;
@@ -131,14 +129,20 @@ const guides = {
           'Stable value, label, optional description and disabled reason. At most 200 matches are shown with a refinement hint.',
       },
       {
+        name: 'type',
+        type: "'single' | 'multiple' (optional)",
+        description:
+          'Multiple keeps several selected IDs, shown as removable chips below the field, independent of the current results.',
+      },
+      {
         name: 'value',
-        type: 'string | null',
-        description: 'Selected ID. A value outside the loaded options remains explicit.',
+        type: 'string | null, or readonly string[] with type="multiple"',
+        description: 'Selected ID or IDs. A value outside the loaded options remains explicit.',
       },
       {
         name: 'onValueChange',
-        type: '(value: string | null) => void',
-        description: 'Accept a requested selection or clear in your application.',
+        type: '(value) => void',
+        description: 'Accept a requested selection, toggle or clear in your application.',
       },
       { name: 'query', type: 'string', description: 'Current search text.' },
       {
@@ -150,45 +154,6 @@ const guides = {
         name: 'status',
         type: "'ready' | 'loading' | 'error' (optional)",
         description: 'Actual option availability. Supply error for a useful failure message.',
-      },
-    ],
-  },
-  MultiSelect: {
-    use: 'Store selected IDs independently of the current search results. Each choice can be removed from its labelled chip.',
-    keyboard:
-      'Arrow keys browse and Enter toggles a choice. Tab reaches the selected-chip remove actions.',
-    props: [
-      { name: 'label', type: 'string', description: 'Visible field label.' },
-      {
-        name: 'options',
-        type: 'readonly MultiSelectOption[]',
-        description: 'Stable IDs, labels, descriptions and optional disabled reasons.',
-      },
-      {
-        name: 'value',
-        type: 'readonly string[]',
-        description: 'Selected IDs, including values outside the current result window.',
-      },
-      {
-        name: 'onValueChange',
-        type: '(value: readonly string[]) => void',
-        description: 'Requests the complete updated selection.',
-      },
-      {
-        name: 'query',
-        type: 'string',
-        description: 'Search text, separate from the selected values.',
-      },
-      {
-        name: 'onQueryChange',
-        type: '(query: string) => void',
-        description: 'Update the controlled query.',
-      },
-      {
-        name: 'filterOption',
-        type: 'false | ((option, query) => boolean) (optional)',
-        description:
-          'Disable local filtering for server results or supply your own match function.',
       },
     ],
   },

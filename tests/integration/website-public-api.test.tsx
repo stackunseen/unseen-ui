@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, expectTypeOf, it } from 'vitest';
-import { DataTable, Field, Input, Progress, Table, TableRow } from '@stackunseen/ui';
+import { Field, Input, Progress, Table, TableRow } from '@stackunseen/ui';
 import type { TableRow as ExistingDataRow } from '../../packages/react/src/components/data-table/data-table.js';
 import type { TableRowProps } from '@stackunseen/ui';
 import { WebsitePublicExample } from '../fixtures/website-public-example.js';
@@ -12,6 +12,7 @@ describe('website root API integration', () => {
     expectTypeOf<Parameters<typeof TableRow>[0]>().toEqualTypeOf<TableRowProps>();
     expect(TableRow).toBe(Table.Row);
     const row: TableRow = { id: 'legacy', cells: { amount: 12 } };
+    expect(row.cells.amount).toBe(12);
     render(
       <>
         <Table label="Native invoices">
@@ -21,11 +22,6 @@ describe('website root API integration', () => {
             </TableRow>
           </Table.Body>
         </Table>
-        <DataTable
-          caption="Existing data API"
-          columns={[{ id: 'amount', label: 'Amount' }]}
-          rows={[row]}
-        />
         <Field label="Account name" description="Visible to your team">
           <Input value="Sample team" readOnly />
         </Field>
@@ -35,7 +31,6 @@ describe('website root API integration', () => {
     expect(
       within(screen.getByRole('table', { name: 'Native invoices' })).getByRole('cell'),
     ).toHaveTextContent('Native invoice');
-    expect(screen.getByRole('table', { name: 'Existing data API' })).toHaveTextContent('12');
     expect(screen.getByRole('textbox', { name: 'Account name' })).toHaveAccessibleDescription(
       'Visible to your team',
     );
@@ -48,7 +43,6 @@ describe('website root API integration', () => {
     const html = renderToString(<WebsitePublicExample />);
     expect(html).toContain('Website public API');
     expect(html).toContain('aria-current="page"');
-    expect(html).toContain('Existing data API');
     expect(html).toContain('No archived invoices');
     expect(html).not.toContain('role="alertdialog"');
   });

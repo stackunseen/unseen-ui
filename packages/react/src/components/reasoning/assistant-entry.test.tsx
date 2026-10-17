@@ -5,14 +5,13 @@ import {
   ChainOfThought,
   Checkpoint,
   ModelSelector,
-  OpenInChat,
   Plan,
   Reasoning,
-  Shimmer,
   Sources,
-  Task,
   reasoningLabel,
 } from '@stackunseen/ui/assistant';
+import { ShareMenu } from '../share-menu/share-menu.js';
+import { Shimmer } from '../shimmer/shimmer.js';
 
 describe('assistant entry', () => {
   it('labels reasoning without inventing a duration', () => {
@@ -94,7 +93,17 @@ describe('assistant entry', () => {
   it('lists task activity and sources', async () => {
     render(
       <>
-        <Task title="Found project files" items={[{ id: '1', text: 'Read', file: 'page.tsx' }]} />
+        <ChainOfThought
+          title="Found project files"
+          steps={[
+            {
+              id: '1',
+              label: 'Read',
+              state: 'complete',
+              sources: [{ id: 'f', title: 'page.tsx' }],
+            },
+          ]}
+        />
         <Sources sources={[{ id: '1', title: 'React docs', href: 'https://react.dev' }]} />
       </>,
     );
@@ -142,40 +151,37 @@ describe('assistant entry', () => {
     expect(onValueChange).toHaveBeenCalledWith('deep');
   });
 
-  it('lays task activity out as spaced rows with the file chip beside its text', () => {
+  it('shows a task log as steps with file chips and a failed step', () => {
     render(
-      <Task
+      <ChainOfThought
         title="Found project files"
-        items={[
-          { id: '1', text: 'Searching "app/page.tsx"' },
-          { id: '2', text: 'Read', file: 'page.tsx' },
+        steps={[
+          { id: '1', label: 'Searching "app/page.tsx"', state: 'complete' },
+          { id: '2', label: 'Read', state: 'complete', sources: [{ id: 'f', title: 'page.tsx' }] },
+          { id: '3', label: 'Build', state: 'failed' },
         ]}
       />,
     );
-    const list = screen.getByRole('list');
-    expect(list.className).toContain('list');
-    expect(list.className).toContain('content');
     const rows = screen.getAllByRole('listitem');
-    expect(rows).toHaveLength(2);
-    expect(rows[1]).toHaveTextContent('Read page.tsx');
+    expect(rows).toHaveLength(3);
+    expect(rows[1]).toHaveTextContent('Read');
     expect(rows[1]!.querySelector('[class*="chip"]')).toHaveTextContent('page.tsx');
+    expect(rows[2]).toHaveAttribute('data-state', 'failed');
+    expect(rows[2]).toHaveTextContent('(failed)');
   });
 
-  it('only offers http destinations for open in chat', async () => {
+  it('opens a query in another chat through ShareMenu targets, dropping unsafe links', () => {
+    const query = encodeURIComponent('hello world');
     render(
-      <OpenInChat
-        query="hello world"
-        destinations={[
-          {
-            id: 'a',
-            label: 'Chat A',
-            href: (q) => `https://a.example/?q=${encodeURIComponent(q)}`,
-          },
-          { id: 'b', label: 'Chat B', href: () => 'javascript:alert(1)' },
+      <ShareMenu
+        url="https://example.test/q"
+        title="Question"
+        targets={[
+          { id: 'a', label: 'Chat A', href: `https://a.example/?q=${query}` },
+          { id: 'b', label: 'Chat B', href: 'javascript:alert(1)' },
         ]}
       />,
     );
-    await userEvent.click(screen.getByRole('button', { name: 'Open in chat' }));
     expect(screen.getByRole('link', { name: 'Chat A' })).toHaveAttribute(
       'href',
       'https://a.example/?q=hello%20world',

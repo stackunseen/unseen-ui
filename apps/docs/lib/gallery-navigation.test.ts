@@ -9,13 +9,13 @@ import {
 } from './gallery-navigation';
 import { isSiteSectionActive, siteNavigation } from './site-navigation';
 describe('library collections', () => {
-  it('places all 164 entries exactly once in a defined group', () => {
-    expect(catalog).toHaveLength(164);
+  it('places all 156 entries exactly once in a defined group', () => {
+    expect(catalog).toHaveLength(156);
     const entries = componentSections.flatMap((section) => sectionCatalog(section));
     expect(entries).toHaveLength(catalog.length);
     expect(new Set(entries.map((entry) => entry.name)).size).toBe(catalog.length);
     expect(componentSections.map((section) => sectionCatalog(section).length)).toEqual([
-      58, 90, 8, 8,
+      56, 84, 8, 8,
     ]);
     for (const section of componentSections) {
       const groups = sectionGroups(section);
@@ -32,7 +32,7 @@ describe('library collections', () => {
     expect(names('ui')).toEqual(
       expect.arrayContaining(['Table', 'DataGrid', 'MarkdownResponse', 'MarkdownCodeBlock']),
     );
-    expect(names('ai')).toEqual(expect.arrayContaining(['DataTable', 'Chart', 'CodeDiff']));
+    expect(names('ai')).toEqual(expect.arrayContaining(['Chart', 'CodeDiff', 'GeneratedUI']));
     expect(names('application')).toEqual(
       expect.arrayContaining(['PageHeader', 'MasterDetail', 'SettingsSaveCancel', 'UnsavedGuard']),
     );

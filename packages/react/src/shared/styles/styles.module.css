@@ -1767,35 +1767,6 @@
 .contextBar[data-variant='compact'] .usage {
   margin-top: 8px;
 }
-.workflow[data-variant='steps'],
-.workflow[data-variant='cards'] {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-  gap: 12px;
-}
-.workflow[data-variant='steps'] .item {
-  flex-direction: column;
-  align-items: start;
-  justify-content: space-between;
-  border: 0;
-  border-top: 3px solid var(--ai-border, #e4e4e7);
-}
-.workflow[data-variant='cards'] .item {
-  flex-direction: column;
-  align-items: stretch;
-  border: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-radius, 12px);
-  padding: 16px;
-  background: var(--ai-surface, #fff);
-}
-.workflow .item > .grow > .button {
-  justify-content: flex-start;
-  text-align: start;
-  padding-inline: 0;
-}
-.workflow[data-variant='cards'] .item > .badge {
-  align-self: flex-start;
-}
 .loading {
   display: inline-flex;
   align-items: center;

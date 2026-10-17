@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { AuditTrail, DataTable } from '@stackunseen/ui';
+import { AuditTrail } from '@stackunseen/ui';
+// DataTable is internal (Chart and GeneratedUI render it); its request contract still holds.
+import { DataTable } from '../../packages/react/src/components/data-table/data-table';
 
 describe('execution content and contextual actions', () => {
   it('load-more rows and records remain explicit requests and lock during loading', async () => {

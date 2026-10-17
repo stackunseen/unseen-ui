@@ -1,5 +1,5 @@
 'use client';
-import { CheckIcon, ChevronDownIcon, ListBulletIcon } from '@radix-ui/react-icons';
+import { CheckIcon, ChevronDownIcon, Cross2Icon, ListBulletIcon } from '@radix-ui/react-icons';
 import { Shimmer } from '../shimmer/shimmer.js';
 import { safeHttpUrl, useDisclosure } from '../../shared/disclosure.js';
 import s from '../../shared/styles/assistant.module.css';
@@ -13,7 +13,7 @@ export interface ChainOfThoughtStep {
   id: string;
   label: string;
   description?: string;
-  state: 'complete' | 'active' | 'pending';
+  state: 'complete' | 'active' | 'pending' | 'failed';
   sources?: readonly ChainOfThoughtSource[];
 }
 export interface ChainOfThoughtProps {
@@ -25,7 +25,10 @@ export interface ChainOfThoughtProps {
   className?: string;
 }
 
-/** Public, host-reported steps of an agent run with optional sources per step. */
+/**
+ * Public, host-reported steps of an agent run or one task, with optional sources or files per
+ * step. A source without an http(s) link renders as a plain chip, such as a file name.
+ */
 export function ChainOfThought({
   steps,
   title = 'Chain of thought',
@@ -55,6 +58,7 @@ export function ChainOfThought({
             >
               <span className={s.dot} aria-hidden="true">
                 {step.state === 'complete' && <CheckIcon />}
+                {step.state === 'failed' && <Cross2Icon />}
               </span>
               <span className={s.label}>
                 {step.state === 'active' ? <Shimmer>{step.label}</Shimmer> : step.label}

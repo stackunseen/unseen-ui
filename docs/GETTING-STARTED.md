@@ -82,11 +82,11 @@ Compound components such as `Card.Header`, `Sidebar.Group`, `Tooltip.Trigger` an
 import { Card, CardHeader, CardTitle, CardContent } from '@stackunseen/ui';
 ```
 
-The property form (`Card.Header`) works in Client Components. Button, LinkButton, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and the dialogs.
+The property form (`Card.Header`) works in Client Components. Button, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and the dialogs.
 
 ### Router links
 
-Chip, ToggleGroup in links mode, Stepper, Card with `href`, LinkButton and Matrix render native anchors by default. In Next.js that is a full document load on every filter click. Wrap the app once in `LinkProvider` with the router's link and every one of them renders it instead, with prefetching and client-side navigation:
+Chip, ToggleGroup in links mode, Stepper, Card and Button with `href`, and Matrix render native anchors by default. In Next.js that is a full document load on every filter click. Wrap the app once in `LinkProvider` with the router's link and every one of them renders it instead, with prefetching and client-side navigation:
 
 ```tsx
 import Link from 'next/link';
@@ -132,7 +132,7 @@ Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (
 | `@stackunseen/ui/artifact-editor` | Draft preview/edit/diff, save/export requests and receipt recovery | No additional peer; import artifact-editor.css. Compose CodeEditor through renderEditor when needed |
 | `@stackunseen/ui/mcp-apps` | MCPAppFrame: a sandboxed MCP App view with the declared policy and a host-controlled JSON-RPC bridge | No additional peer; import mcp-apps.css |
 | `@stackunseen/ui/conversation-flow` | Exact message edit-to-branch and regenerate-to-attempt intents; RunBoard, AttentionQueue, RunSummaryCard, BackgroundStatus, RunCompare and SubagentTree for work across threads; ScopeGrantList, DryRunPreview and ApprovalBatch for standing permissions, declared effects and batched approvals | No additional peer; import conversation-flow.css |
-| `@stackunseen/ui/assistant` | Reasoning summary, ChainOfThought, Plan, Task, Checkpoint, Shimmer, Sources, ModelSelector, OpenInChat | No additional peer; import assistant.css |
+| `@stackunseen/ui/assistant` | Reasoning summary, ChainOfThought, Plan, Checkpoint, Sources, ModelSelector | No additional peer; import assistant.css |
 | `@stackunseen/ui/devtools` | Snippet, Commit, EnvironmentVariables, PackageInfo, SchemaDisplay, StackTrace, sandboxed WebPreview, CodeTabs | No additional peer; import devtools.css |
 | `@stackunseen/ui/media` | AudioPlayer, Transcription, VoiceSelector, Persona, Image | No additional peer; import media.css |
 | `@stackunseen/ui-core/editing` | Pure document identities, UTF-16 ranges and bounded atomic text edits | None |

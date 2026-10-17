@@ -37,7 +37,6 @@ import {
   ToolGroup,
   ToolResult,
   ToolResultRegistryProvider,
-  Workflow,
 } from '@stackunseen/ui';
 import { artifact, proposal, source, steps, tool } from '../lib/fixtures';
 import { markdownStates } from '../lib/markdown-fixtures';
@@ -478,8 +477,13 @@ export function Specimen({
               ? []
               : failed
                 ? steps.map((s, i) => (i === 2 ? { ...s, state: 'failed' } : s))
-                : steps.slice(0, 3)
+                : variant === 'Dependencies'
+                  ? steps
+                  : steps.slice(0, 3)
           }
+          dependencies={variant === 'Dependencies'}
+          selectedId={variant === 'Dependencies' ? selected : undefined}
+          onSelect={variant === 'Dependencies' ? setSelected : undefined}
         />
       );
       break;
@@ -949,22 +953,6 @@ export function Specimen({
             />
           ))}
         </div>
-      );
-      break;
-    case 'Workflow':
-      preview = (
-        <Workflow
-          variant={resolveVariant('Workflow', presentation)}
-          steps={
-            empty
-              ? []
-              : failed
-                ? steps.map((step, i) => (i === 2 ? { ...step, state: 'failed' } : step))
-                : steps
-          }
-          selectedId={selected}
-          onSelect={setSelected}
-        />
       );
       break;
     default:

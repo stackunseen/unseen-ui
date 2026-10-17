@@ -2,7 +2,6 @@ import type {
   AccessMode,
   CommandOption,
   ReferenceOption,
-  ReasoningOption,
   WorkspaceFile,
   AIField,
   GraphNode,
@@ -50,7 +49,8 @@ export const references: ReferenceOption[] = [
     disabledReason: 'This reference is not accessible.',
   },
 ];
-export const efforts: ReasoningOption[] = [
+/** Reasoning effort choices; the studio shows them in a Select. */
+export const efforts: { id: string; label: string; description?: string }[] = [
   { id: 'low', label: 'Low', description: 'A smaller reasoning budget for straightforward work.' },
   { id: 'medium', label: 'Medium', description: 'A balanced budget for multi-step work.' },
   {

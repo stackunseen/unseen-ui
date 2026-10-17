@@ -17,3 +17,11 @@ https://www.unseenui.com/* https://unseenui.com/:splat 301!
 /components/link-card/ /components/card/ 301
 /components/panel/ /components/card/ 301
 /components/panel-header/ /components/card/ 301
+/components/workflow/ /components/agent-steps/ 301
+/components/multi-select/ /components/combobox/ 301
+/components/reasoning-control/ /components/toggle-group/ 301
+/components/open-in-chat/ /components/share-menu/ 301
+/components/shimmer/ /components/loading-indicator/ 301
+/components/link-button/ /components/button/ 301
+/components/task/ /components/chain-of-thought/ 301
+/components/data-table/ /components/data-grid/ 301

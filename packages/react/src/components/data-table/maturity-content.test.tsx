@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { DataTable } from '@stackunseen/ui';
-import type { DataTableProps, TableColumn } from '@stackunseen/ui';
+import { DataTable } from './data-table.js';
+import type { DataTableProps, TableColumn } from './data-table.js';
 
 vi.stubGlobal(
   'ResizeObserver',

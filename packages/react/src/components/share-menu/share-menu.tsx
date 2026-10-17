@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import { Button } from '../button/button.js';
-import { LinkButton } from '../link-button/link-button.js';
 import { CopyButton } from '../copy-button/copy-button.js';
 import { DropdownMenu } from '../dropdown-menu/dropdown-menu.js';
 import { AIIcon } from '../../providers/icons/icons.js';
@@ -37,9 +36,21 @@ export interface ShareMenuProps extends Omit<ComponentProps<'div'>, 'title'> {
 const subscribeNever = () => () => {};
 const canShareNow = () => typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
+/** Custom targets may be http(s), mailto or relative links; anything else (javascript:) is dropped. */
+function safeTargetHref(href: string) {
+  try {
+    const parsed = new URL(href, 'https://relative.invalid');
+    return ['http:', 'https:', 'mailto:'].includes(parsed.protocol) ? href : null;
+  } catch {
+    return null;
+  }
+}
 function targetLink(target: ShareTarget, url: string, title: string, text?: string) {
   const link = encodeURIComponent(url);
-  if (typeof target === 'object') return { id: target.id, label: target.label, href: target.href };
+  if (typeof target === 'object') {
+    const href = safeTargetHref(target.href);
+    return href ? { id: target.id, label: target.label, href } : null;
+  }
   if (target === 'linkedin')
     return {
       id: 'linkedin',
@@ -168,7 +179,7 @@ export function ShareMenu({
           </Button>
         )}
         {links.map((link) => (
-          <LinkButton
+          <Button
             key={link.id}
             variant="outline"
             size="sm"
@@ -177,7 +188,7 @@ export function ShareMenu({
             onClick={() => onShare?.(link.id)}
           >
             {link.label}
-          </LinkButton>
+          </Button>
         ))}
       </div>
       <p role="status" className={s.status}>

@@ -9,7 +9,7 @@ import {
   MentionPicker,
   Modal,
   PromptInput,
-  ReasoningControl,
+  Select,
   SlashCommandMenu,
   referenceUnavailableReason,
 } from '@stackunseen/ui';
@@ -319,13 +319,12 @@ export function CodingStudioAssistant({
               keepMounted: true,
               content: (
                 <div className={s.settingsBody}>
-                  <ReasoningControl
-                    variant="select"
+                  <Select
+                    label="Demo effort setting"
                     value={effort}
-                    options={efforts}
+                    options={efforts.map((option) => ({ value: option.id, label: option.label }))}
                     onValueChange={setEffort}
                     disabled={busy}
-                    label="Demo effort setting"
                   />
                   <AccessModeSelector
                     key={state.mode}

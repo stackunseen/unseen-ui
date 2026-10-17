@@ -1,6 +1,6 @@
 # Validated generated interfaces
 
-GeneratedUI renders a closed data vocabulary with **stack**, **cards** and **compact** presentations. It reuses canonical AIForm, DataTable and Chart. Import from `@stackunseen/ui` with scoped styles; no new package, protocol client or renderer peer is required.
+GeneratedUI renders a closed data vocabulary with **stack**, **cards** and **compact** presentations. It reuses AIForm, Chart and the internal table renderer that Chart also uses. Import from `@stackunseen/ui` with scoped styles; no new package, protocol client or renderer peer is required.
 
 Generated data supplies descriptions/schema, never callbacks, JSX, HTML, raw MDX, scripts, arbitrary component names, CSS or executable validators. A trusted host assembles transport events into supported validated snapshots. This is not an A2UI/AG-UI/MCP Apps implementation.
 

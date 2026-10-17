@@ -18,9 +18,8 @@ import {
   Attachment,
   AttachmentGroup,
   AttachmentPicker,
-  DataTable,
 } from '@stackunseen/ui';
-import type { AttachmentReference, TableColumn, TablePagination } from '@stackunseen/ui';
+import type { AttachmentReference } from '@stackunseen/ui';
 import type { ModelSettings } from '@stackunseen/ui-core';
 import type { SVGProps } from 'react';
 import { createTheme } from '@stackunseen/ui/theme';
@@ -47,15 +46,6 @@ function BrandIcon(props: SVGProps<SVGSVGElement>) {
 }
 function App() {
   const reference: AttachmentReference = { attachmentId: 'cost-file', version: '1' };
-  const columns: TableColumn[] = [
-    {
-      id: 'amount',
-      label: 'Cost',
-      format: { kind: 'number', options: { style: 'currency', currency: 'EUR' } },
-    },
-    { id: 'date', label: 'Recorded (UTC)', format: { kind: 'date' } },
-  ];
-  const pagination: TablePagination = { pageIndex: 0, pageSize: 1, totalRows: 1 };
   const [draft, setDraft] = useState('');
   const [sent, setSent] = useState('');
   const [mode, setMode] = useState('light');
@@ -80,13 +70,6 @@ function App() {
         <WorkflowExample />
         <FileExample />
         <TerminalExample />
-        <DataTable
-          caption="Packed localized table"
-          columns={columns}
-          rows={[{ id: 'cost', cells: { amount: 1234.5, date: '2026-09-30' } }]}
-          locale="de-DE"
-          pagination={pagination}
-        />
         <Attachment
           name="cost.txt"
           state="ready"

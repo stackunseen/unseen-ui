@@ -7,7 +7,6 @@ import {
   Button,
   SlashCommandMenu,
   MentionPicker,
-  ReasoningControl,
   AccessModeSelector,
   CodeDiff,
   TestResults,
@@ -15,14 +14,13 @@ import {
   BranchSwitcher,
   MessageQueue,
   ReviewChanges,
-  DataTable,
   MemoryControls,
   ArtifactDiff,
   AuditTrail,
   RunInspector,
   resolveVariant,
 } from '@stackunseen/ui';
-import type { QueuedMessage, ThreadSummary, TableColumn, TableRow } from '@stackunseen/ui';
+import type { QueuedMessage, ThreadSummary } from '@stackunseen/ui';
 import { MarkdownCodeBlock } from '@stackunseen/ui/code';
 import { HandoffSpecimen } from './scoped-decision-specimen';
 import { FormSpecimen } from './form-specimen';
@@ -34,7 +32,6 @@ import { ExampleLoading } from './example-loading';
 import {
   commands,
   references,
-  efforts,
   accessModes,
   before,
   after,
@@ -105,7 +102,6 @@ export function ExpandedSpecimen({
 }) {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState('');
-  const [effort, setEffort] = useState('medium');
   const [mode, setMode] = useState('read');
   const [selection, setSelection] = useState<string[]>(['search']);
   const [feedback, setFeedback] = useState('');
@@ -141,7 +137,6 @@ export function ExpandedSpecimen({
       : undefined,
     onReconcile: () => setFeedback('Original fixture request checked; no transport invoked.'),
   };
-  const [pageIndex, setPageIndex] = useState(0);
   const [stage, setStage] = useState('');
   const [versions, setVersions] = useState({
     beforeId: 'v1',
@@ -199,10 +194,6 @@ export function ExpandedSpecimen({
       state: 'queued',
     },
   ]);
-  const [sort, setSort] = useState<{ columnId: string; direction: 'asc' | 'desc' }>({
-    columnId: 'name',
-    direction: 'asc',
-  });
   const empty = state === 'Empty',
     loading = state === 'Loading',
     failed = state === 'Error';
@@ -249,17 +240,6 @@ export function ExpandedSpecimen({
           onQueryChange={setQuery}
           onSelect={(item) => emit(`@${item.label} · version ${item.version} selected`)}
           status={status}
-        />
-      );
-      break;
-    case 'ReasoningControl':
-      content = (
-        <ReasoningControl
-          variant={resolveVariant('ReasoningControl', presentation)}
-          options={state === 'Unsupported' ? [] : efforts}
-          value={effort}
-          onValueChange={setEffort}
-          disabled={state === 'Disabled'}
         />
       );
       break;
@@ -600,100 +580,6 @@ export function ExpandedSpecimen({
     case 'GeneratedUI':
       content = <GeneratedSpecimen state={state} presentation={presentation} onEvent={emit} />;
       break;
-    case 'DataTable': {
-      const formatted = state === 'Currency and dates';
-      const paged =
-        state === 'Paged' || state === 'Unknown total' || state === 'Invalid pagination';
-      const columns: TableColumn[] = formatted
-        ? [
-            { id: 'name', label: 'Check', sortable: true },
-            {
-              id: 'cost',
-              label: 'Cost (EUR)',
-              sortable: true,
-              format: { kind: 'number', options: { style: 'currency', currency: 'EUR' } },
-            },
-            {
-              id: 'date',
-              label: 'Completed (UTC)',
-              format: { kind: 'date', options: { dateStyle: 'medium' } },
-            },
-          ]
-        : [
-            { id: 'name', label: 'Check', sortable: true },
-            { id: 'duration', label: 'Seconds', sortable: true, format: { kind: 'number' } },
-            {
-              id: 'state',
-              label: 'State',
-              format: {
-                kind: 'status',
-                tones: { Passed: 'success', Running: 'primary', Failed: 'danger' },
-              },
-            },
-          ];
-      const rows: TableRow[] = [
-        {
-          id: '1',
-          cells: {
-            name:
-              state === 'Long cells'
-                ? 'Enterprise search regression suite for workspace-specific reference permissions'
-                : 'Search tests',
-            duration: 41,
-            state: 'Passed',
-            cost: 1234.5,
-            date: '2026-09-30T10:15:00Z',
-          },
-        },
-        {
-          id: '2',
-          cells: { name: 'Typecheck', duration: 18, state: 'Passed', cost: 89, date: '2026-09-29' },
-        },
-        {
-          id: '3',
-          cells: { name: 'Build', duration: 67, state: 'Running', cost: null, date: null },
-        },
-      ];
-      rows.sort(
-        (a, b) =>
-          String(a.cells[sort.columnId]).localeCompare(String(b.cells[sort.columnId]), 'en-US', {
-            numeric: true,
-          }) * (sort.direction === 'asc' ? 1 : -1),
-      );
-      content = (
-        <DataTable
-          variant={resolveVariant('DataTable', presentation)}
-          caption="Synthetic build checks"
-          columns={state === 'Invalid identities' ? [columns[0]!, columns[0]!] : columns}
-          rows={empty ? [] : paged ? rows.slice(pageIndex * 2, pageIndex * 2 + 2) : rows}
-          locale={formatted ? 'de-DE' : 'en-US'}
-          sort={columns.some((column) => column.id === sort.columnId) ? sort : undefined}
-          onSort={(next) => {
-            setSort(next);
-            setPageIndex(0);
-          }}
-          pagination={
-            paged
-              ? {
-                  pageIndex,
-                  pageSize: 2,
-                  totalRows:
-                    state === 'Unknown total'
-                      ? undefined
-                      : state === 'Invalid pagination'
-                        ? 1
-                        : rows.length,
-                  hasNextPage: state === 'Unknown total' ? pageIndex === 0 : undefined,
-                }
-              : undefined
-          }
-          onPageChange={paged ? setPageIndex : undefined}
-          loading={loading}
-          error={failed ? 'Unable to load additional rows.' : undefined}
-        />
-      );
-      break;
-    }
     case 'Chart':
       content = <ChartSpecimen state={state} presentation={presentation} onEvent={emit} />;
       break;

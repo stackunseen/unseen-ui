@@ -333,21 +333,6 @@ export const websiteCatalog: CatalogEntry[] = [
       'Tab reaches the scroll region when needed; arrow keys scroll wide content. Column and row headers preserve native table semantics.',
     code: '<Table label="Packages"><Table.Caption>Sample package status</Table.Caption><Table.Header><Table.Row><Table.Head>Package</Table.Head><Table.Head>Status</Table.Head></Table.Row></Table.Header><Table.Body><Table.Row><Table.Head scope="row">Components</Table.Head><Table.Cell>Experimental alpha</Table.Cell></Table.Row></Table.Body></Table>',
   }),
-  entry({
-    name: 'LinkButton',
-    group: 'Actions',
-    aliases: ['Call to action', 'Anchor button', 'asChild'],
-    description: 'A native link with Button styling, for calls to action that navigate.',
-    states: ['Default', 'Outline', 'Small', 'External'],
-    contract:
-      'Native anchor props · href · variant?: primary | secondary | outline | ghost | danger | link · size?: default | sm',
-    responsibility:
-      'Use LinkButton for navigation and Button for actions. With a LinkProvider at the root it renders the router link; Button with asChild remains for a one-off link component.',
-    keyboard:
-      'Tab focuses the link; Enter follows it. Modified clicks open new tabs or windows as the browser decides.',
-    relatedImports: ['Button'],
-    code: '<LinkButton href="/getting-started/">Get started</LinkButton>\n<Button asChild variant="outline"><Link href="/docs/">Read the docs</Link></Button>',
-  }),
   {
     ...entry({
       name: 'ToggleGroup',
@@ -543,14 +528,14 @@ export const websiteCatalog: CatalogEntry[] = [
   entry({
     name: 'ShareMenu',
     group: 'Navigation',
-    aliases: ['Share buttons', 'Share sheet', 'Social share'],
+    aliases: ['Share buttons', 'Share sheet', 'Social share', 'Open in chat'],
     importPath: '/navigation',
     description: 'Copy link, the device share sheet when there is one, and configurable targets.',
-    states: ['Default', 'Menu', 'Custom targets'],
+    states: ['Default', 'Menu', 'Custom targets', 'Open in chat'],
     contract:
       'url · title · text? · targets?: (copy | native | linkedin | x | email | { id, label, href })[] · presentation?: inline | menu · label? · onShare?(target)',
     responsibility:
-      'Native share support is decided on the client only, so server and first client render agree. A dismissed share is not an error. External targets open in a new tab with rel="noopener noreferrer"; no tracking parameters are added.',
+      'Native share support is decided on the client only, so server and first client render agree. A dismissed share is not an error. External targets open in a new tab with rel="noopener noreferrer"; no tracking parameters are added. Custom targets must be http(s), mailto or relative links; others are dropped. For "open in another chat", build each href from the query.',
     keyboard: 'Buttons and links in a labelled group, or a menu with arrow keys.',
     relatedImports: ['CopyButton'],
     code: "<ShareMenu url={pageUrl} title={pageTitle} targets={['copy', 'native', 'linkedin', 'x']} />",

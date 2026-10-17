@@ -34,7 +34,6 @@ The first value in each row is the default.
 | MCPServerCard | `card` · `row` · `compact` |
 | MCPToolList | `list` · `cards` · `accordion` |
 | ContextBar | `list` · `chips` · `compact` |
-| Workflow | `list` · `steps` · `cards` |
 | ConnectionStatus | `banner` · `card` · `compact` |
 | ModelControls | `panel` · `compact` · `accordion` |
 | ContextInspector | `list` · `table` · `accordion` |
@@ -54,7 +53,6 @@ The first value in each row is the default.
 | ReviewChanges | `accordion` · `stack` · `compact` |
 | AIForm | `stacked` · `grid` · `compact` |
 | GeneratedUI | `stack` · `cards` · `compact` |
-| DataTable | `table` · `cards` · `compact` |
 | Chart | `bar` · `line` · `area` |
 | MemoryControls | `list` · `cards` · `compact` |
 | ArtifactDiff | `unified` · `split` · `compact` |
@@ -68,7 +66,6 @@ The first value in each row is the default.
 | MermaidDiagram | `panel` · `minimal` · `source` |
 | SlashCommandMenu | `list` · `cards` · `compact` |
 | MentionPicker | `list` · `cards` · `compact` |
-| ReasoningControl | `slider` · `segmented` · `select` |
 | AccessModeSelector | `cards` · `compact` · `select` |
 | VoiceControl | `panel` · `bar` · `compact` |
 | FileExplorer | `folders` · `list` · `compact` |

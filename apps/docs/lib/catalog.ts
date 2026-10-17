@@ -21,7 +21,6 @@ export type CatalogGroup = Exclude<(typeof categories)[number], 'All components'
 export type GenericComponent =
   | 'DataGrid'
   | 'Combobox'
-  | 'LinkButton'
   | 'Chip'
   | 'Stepper'
   | 'Matrix'
@@ -36,7 +35,6 @@ export type GenericComponent =
   | 'Tag'
   | 'Avatar'
   | 'Stat'
-  | 'MultiSelect'
   | 'Calendar'
   | 'DateRangePicker'
   | 'PageHeader'
@@ -85,13 +83,10 @@ export type GenericComponent =
   | 'Reasoning'
   | 'ChainOfThought'
   | 'Plan'
-  | 'Task'
   | 'Checkpoint'
-  | 'Shimmer'
   | 'Sources'
   | 'ModelSelector'
   | 'FileDropzone'
-  | 'OpenInChat'
   | 'Snippet'
   | 'Commit'
   | 'EnvironmentVariables'
@@ -374,9 +369,11 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'AgentSteps',
     category: 'Execution',
-    description: 'The steps of a run in order, with their states and details.',
-    states: ['Default', 'Failed', 'Empty'],
-    contract: 'steps: Step[] · label?',
+    aliases: ['Workflow', 'Dependencies', 'Pipeline stages'],
+    description:
+      'The steps of a run in order, with their states, details and optional prerequisites.',
+    states: ['Default', 'Failed', 'Dependencies', 'Empty'],
+    contract: 'steps: Step[] · label? · dependencies? · selectedId? · onSelect?(id)',
     responsibility: 'Supply public summaries, not private model reasoning.',
     code: '<AgentSteps steps={run.steps} />',
   },
@@ -790,15 +787,6 @@ export const catalog: CatalogEntry[] = [
     contract: 'state · label? · native span props',
     responsibility: 'Unrecognized states never become success.',
     code: '<StatusBadge state="running" />',
-  },
-  {
-    name: 'Workflow',
-    category: 'Workflow',
-    description: 'The stages of a workflow and the dependencies between them.',
-    states: ['Default', 'Failed', 'Empty'],
-    contract: 'steps · selectedId? · onSelect?',
-    responsibility: 'A read-only execution view; the host schedules the work.',
-    code: '<Workflow steps={steps} selectedId={selected} onSelect={setSelected} />',
   },
 ];
 

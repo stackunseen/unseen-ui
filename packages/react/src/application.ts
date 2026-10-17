@@ -7,9 +7,12 @@ export type {
   DataGridFilter,
 } from './components/data-grid/types.js';
 export { Combobox } from './components/combobox/combobox.js';
-export type { ComboboxProps, ComboboxOption } from './components/combobox/types.js';
-export { MultiSelect } from './components/multi-select/multi-select.js';
-export type { MultiSelectProps, MultiSelectOption } from './components/multi-select/types.js';
+export type {
+  ComboboxProps,
+  ComboboxOption,
+  SingleComboboxProps,
+  MultipleComboboxProps,
+} from './components/combobox/types.js';
 export { Calendar } from './components/calendar/calendar.js';
 export type {
   CalendarProps,

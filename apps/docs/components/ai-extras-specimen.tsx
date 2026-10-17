@@ -5,12 +5,9 @@ import {
   ChainOfThought,
   Checkpoint,
   ModelSelector,
-  OpenInChat,
   Plan,
   Reasoning,
-  Shimmer,
   Sources,
-  Task,
 } from '@stackunseen/ui/assistant';
 import {
   Commit,
@@ -89,36 +86,62 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
       );
       break;
     case 'ChainOfThought':
-      content = (
-        <ChainOfThought
-          steps={
-            state === 'Empty'
-              ? []
-              : [
-                  {
-                    id: '1',
-                    label: 'Searched the activity export',
-                    state: 'complete',
-                    description: '412 accounts checked',
-                  },
-                  {
-                    id: '2',
-                    label: 'Matched the review policy',
-                    state: 'complete',
-                    sources: [
-                      { id: 'a', title: 'Operations handbook' },
-                      { id: 'b', title: 'react.dev', href: 'https://react.dev' },
-                    ],
-                  },
-                  {
-                    id: '3',
-                    label: 'Drafting the summary',
-                    state: state === 'Active step' ? 'active' : 'complete',
-                  },
-                ]
-          }
-        />
-      );
+      content =
+        state === 'Task log' || state === 'Failed step' ? (
+          <ChainOfThought
+            title="Found project files"
+            steps={[
+              {
+                id: '1',
+                label: 'Searching "app/page.tsx, components structure"',
+                state: 'complete',
+              },
+              {
+                id: '2',
+                label: 'Read',
+                state: 'complete',
+                sources: [{ id: 'page', title: 'page.tsx' }],
+              },
+              { id: '3', label: 'Scanning 52 files', state: 'complete' },
+              {
+                id: '4',
+                label: state === 'Failed step' ? 'Build the preview' : 'Reading files',
+                state: state === 'Failed step' ? 'failed' : 'complete',
+                sources:
+                  state === 'Failed step' ? undefined : [{ id: 'layout', title: 'layout.tsx' }],
+              },
+            ]}
+          />
+        ) : (
+          <ChainOfThought
+            steps={
+              state === 'Empty'
+                ? []
+                : [
+                    {
+                      id: '1',
+                      label: 'Searched the activity export',
+                      state: 'complete',
+                      description: '412 accounts checked',
+                    },
+                    {
+                      id: '2',
+                      label: 'Matched the review policy',
+                      state: 'complete',
+                      sources: [
+                        { id: 'a', title: 'Operations handbook' },
+                        { id: 'b', title: 'react.dev', href: 'https://react.dev' },
+                      ],
+                    },
+                    {
+                      id: '3',
+                      label: 'Drafting the summary',
+                      state: state === 'Active step' ? 'active' : 'complete',
+                    },
+                  ]
+            }
+          />
+        );
       break;
     case 'Plan':
       content = (
@@ -143,20 +166,6 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
         />
       );
       break;
-    case 'Task':
-      content = (
-        <Task
-          title={state === 'Running' ? 'Searching project files' : 'Found project files'}
-          state={state === 'Running' ? 'running' : state === 'Failed' ? 'failed' : 'complete'}
-          items={[
-            { id: '1', text: 'Searching "app/page.tsx, components structure"' },
-            { id: '2', text: 'Read', file: 'page.tsx' },
-            { id: '3', text: 'Scanning 52 files' },
-            { id: '4', text: 'Reading files', file: 'layout.tsx' },
-          ]}
-        />
-      );
-      break;
     case 'Checkpoint':
       content = (
         <Checkpoint
@@ -168,9 +177,6 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
           }}
         />
       );
-      break;
-    case 'Shimmer':
-      content = <Shimmer>Searching knowledge sources…</Shimmer>;
       break;
     case 'Sources':
       content = (
@@ -205,20 +211,6 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
               provider: 'Demo provider',
               disabledReason:
                 state === 'Unavailable model' ? 'Not enabled for this workspace' : undefined,
-            },
-          ]}
-        />
-      );
-      break;
-    case 'OpenInChat':
-      content = (
-        <OpenInChat
-          query="Which accounts are inactive?"
-          destinations={[
-            {
-              id: 'example',
-              label: 'Example chat',
-              href: (query) => `https://chat.example.com/?q=${encodeURIComponent(query)}`,
             },
           ]}
         />

@@ -4,7 +4,7 @@ Sidecar, SplitPane and WorkspaceShell compose workspaces from application-owned 
 
 ## Imports
 
-The optional `@stackunseen/ui/application` entry adds DataGrid, Combobox, MultiSelect, Calendar, DateRangePicker, PageHeader, OrgSwitcher, ListToolbar, MasterDetail, SettingsSaveCancel and UnsavedGuard. Import `@stackunseen/ui/application.css` alongside the base stylesheet; it adds no peers. The existing layout entries below remain separate.
+The optional `@stackunseen/ui/application` entry adds DataGrid, Combobox (single or `type="multiple"`), Calendar, DateRangePicker, PageHeader, OrgSwitcher, ListToolbar, MasterDetail, SettingsSaveCancel and UnsavedGuard. Import `@stackunseen/ui/application.css` alongside the base stylesheet; it adds no peers. The existing layout entries below remain separate.
 
 DataGrid receives a host-filtered, sorted and paged row window. Its selection is controlled and preserves off-page IDs. Calendar and DateRangePicker use Gregorian `YYYY-MM-DD` values with explicit month, locale and date bounds. The application patterns compose ordinary controls; organization changes, draft guards and save receipts remain host-owned. The local SaaS admin template exercises these patterns with in-memory customers, members, settings and sample billing.
 

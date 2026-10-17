@@ -12,7 +12,7 @@ The root `@stackunseen/ui` entry includes 36 application component families alon
 | Feedback | Alert, Toast, Progress, EmptyState | Host-supplied messages and measurements; deliberate announcement behavior |
 | Navigation | Breadcrumb, Pagination, Sidebar | Native links/current-page semantics and controlled page requests |
 | Surfaces | Card, Table | Composable section and native table markup |
-| Actions and links | LinkButton, ToggleGroup, Chip | Native anchors with Button presentation; choices as filter pills or joined segments (buttons or links); link, removable and static chips |
+| Actions and links | Button (`href`), ToggleGroup, Chip | Links with Button presentation; choices as filter pills or joined segments (buttons or links); link, removable and static chips |
 | Display | Tag, Avatar, Stat, Matrix | Inert labels, people, metric cards and a heatmap table. A linked card is `Card` with `href`. A single fold is an Accordion with one item |
 | Wayfinding | Stepper | Series and path steps |
 
@@ -20,7 +20,7 @@ Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available.
 
 ## Actions, links and display
 
-`Button` accepts `asChild` and then renders its single child element with the button presentation, so a router link keeps its own `href`, `target`, `rel` and modified-click behaviour. `LinkButton` is a native anchor with the same `variant` and `size` tokens for plain destinations. Neither disables a link; omit the destination instead.
+`Button` accepts `asChild` and then renders its single child element with the button presentation, so a router link keeps its own `href`, `target`, `rel` and modified-click behaviour. With `href`, `Button` itself renders a link (the LinkProvider link when one is set) with the same `variant` and `size` tokens. Neither disables a link; omit the destination instead.
 
 `ToggleGroup` is a row of filter chips. Single selection (the default) uses radio semantics: one tab stop, arrow keys move and select, and `allowEmpty` lets the selected chip be cleared to `null`. `type="multiple"` uses pressed buttons: arrow keys move focus and Space or Enter toggles. Each option takes a host-supplied `count` and may be disabled. Variants are `pills` and `segmented`; `size` is `default` or `sm`.
 
@@ -46,13 +46,13 @@ Existing Button, IconButton, Select, Accordion, Tabs and Modal remain available.
 
 ### Router links
 
-`LinkProvider` takes the host's router link once at the root; Chip, ToggleGroup (links mode), Stepper, Card (`href`), LinkButton and Matrix then render it with `href`, `aria-current` and their other anchor props, so filter clicks are client-side navigations with prefetching. Without a provider they render native anchors. `useLinkComponent` exposes the same component to host code. ToggleGroup's links mode puts every link in the tab order; roving focus applies to button mode only.
+`LinkProvider` takes the host's router link once at the root; Chip, ToggleGroup (links mode), Stepper, Card and Button (`href`), and Matrix then render it with `href`, `aria-current` and their other anchor props, so filter clicks are client-side navigations with prefetching. Without a provider they render native anchors. `useLinkComponent` exposes the same component to host code. ToggleGroup's links mode puts every link in the tab order; roving focus applies to button mode only.
 
 ### Server Components
 
 Every compound part is also a top-level named export: `CardHeader`, `CardTitle`, `SidebarGroup`, `SidebarLink`, `TooltipTrigger`, `NavigationMenuList`, `DropdownMenuItem`, `ContextMenuContent` and so on. In a Next.js Server Component import those names; the `Card.Header` property form is undefined there because a client reference proxy carries no static properties. The property form works in Client Components.
 
-Button, LinkButton, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and the dialogs.
+Button, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and the dialogs.
 
 ## Forms
 

@@ -8,6 +8,7 @@ import s from './multi-select.module.css';
 
 export type { MultiSelectOption, MultiSelectProps } from './types.js';
 
+/** The multiple form of Combobox; internal. */
 export function MultiSelect<T extends MultiSelectOption>({
   value,
   onValueChange,

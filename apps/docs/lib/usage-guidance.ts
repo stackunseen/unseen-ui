@@ -17,21 +17,15 @@ const g = (use: string, avoid: string, ...instead: string[]): UsageGuidance => (
 export const usageGuidance: Record<string, UsageGuidance> = {
   // Actions
   Button: g(
-    'An action that changes something on this page: save, submit, open, run.',
-    'Going to another page; that is a link.',
-    'LinkButton',
+    'An action: save, submit, open, run; or, with href, a call to action that navigates.',
+    'Text links inside sentences.',
     'IconButton',
+    'Card',
   ),
   IconButton: g(
     'A frequent action where the icon is universally understood and space is tight, such as close or copy.',
     'Primary or unfamiliar actions; a visible label is clearer.',
     'Button',
-  ),
-  LinkButton: g(
-    'A call to action that navigates, styled as a button.',
-    'Actions that change data on the current page.',
-    'Button',
-    'Card',
   ),
   CopyButton: g(
     'Copying a value such as a command, id or link, with the real outcome reported.',
@@ -102,18 +96,12 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'One choice from a known list of up to a few dozen items.',
     'Long or searchable lists, or several choices.',
     'Combobox',
-    'MultiSelect',
     'RadioGroup',
   ),
   Combobox: g(
-    'One choice from a long list people search, including results loaded from the host.',
+    'One choice, or several with type="multiple", from a long list people search, including host-loaded results.',
     'Short lists where scanning is faster than typing.',
     'Select',
-  ),
-  MultiSelect: g(
-    'Several choices from a long, searchable list.',
-    'A handful of options that can all be shown.',
-    'Checkbox',
     'ToggleGroup',
   ),
   Calendar: g(
@@ -211,7 +199,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Tabs',
   ),
   ShareMenu: g(
-    'Sharing a page: copy link, native share sheet and chosen targets.',
+    'Sharing a page or opening a query in another chat: copy link, native share sheet and chosen targets.',
     'Copying a single value.',
     'CopyButton',
   ),
@@ -265,7 +253,6 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Read-only tabular data with native semantics.',
     'Sorting, paging and selection.',
     'DataGrid',
-    'DataTable',
   ),
   DataGrid: g(
     'Large tables with controlled sorting, paging, selection and column visibility.',
@@ -359,11 +346,6 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Branch navigation.',
     'BranchSwitcher',
   ),
-  OpenInChat: g(
-    'Opening the current query in another chat product the host lists.',
-    'Sharing a page.',
-    'ShareMenu',
-  ),
   SlashCommandMenu: g(
     'Invoking host commands from the composer with "/".',
     'Referencing files or people.',
@@ -402,7 +384,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'ToolCall',
   ),
   AgentSteps: g(
-    'The ordered steps of a run with their states.',
+    'The ordered steps of a run or workflow with their states, and prerequisites with dependencies.',
     'Timestamps and durations.',
     'ExecutionTimeline',
     'Plan',
@@ -419,31 +401,15 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'AgentSteps',
     'DryRunPreview',
   ),
-  Task: g(
-    'A compact log of what an agent did for one task.',
-    'A whole run with many steps.',
-    'AgentSteps',
-  ),
   ChainOfThought: g(
-    'Public, host-reported steps of a run with their sources.',
+    'Public, host-reported steps of a run or a task log, with their sources or files.',
     'Private reasoning.',
     'Reasoning',
-  ),
-  Shimmer: g(
-    'Animated text for an in-progress label.',
-    'Holding space for content.',
-    'Skeleton',
-    'LoadingIndicator',
   ),
   WorkflowGraph: g(
     'Inspecting branches, loops and joins of a workflow.',
     'A simple linear list of stages.',
-    'Workflow',
-  ),
-  Workflow: g(
-    'The stages of a workflow and their dependencies, read-only.',
-    'Branching graphs to inspect.',
-    'WorkflowGraph',
+    'AgentSteps',
   ),
   RunInspector: g(
     'Inspecting the model, tool and agent spans of a run.',
@@ -610,7 +576,6 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Just choosing a model.',
     'ModelSelector',
   ),
-  ReasoningControl: g('Choosing a reasoning level.', 'Other model settings.', 'ModelControls'),
   AgentCard: g('One agent with its capabilities and activity.', 'Runs across agents.', 'RunBoard'),
   AuditTrail: g('Searchable history of actions with outcomes.', 'Live runs.', 'RunBoard'),
   PolicyStatus: g(
@@ -623,7 +588,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Rendering a validated surface a model described.',
     'Interfaces you write yourself.',
     'AIForm',
-    'DataTable',
+    'Chart',
   ),
   AIForm: g(
     'Controlled forms with conditional fields, validation and receipts.',
@@ -634,11 +599,6 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'A question the assistant needs answered before it continues.',
     'Optional follow-ups.',
     'Suggestions',
-  ),
-  DataTable: g(
-    'Structured rows with sorting, paging and a card layout on small screens.',
-    'Large grids with selection.',
-    'DataGrid',
   ),
   Chart: g('Bar, line and area charts with an equivalent data table.', 'A single number.', 'Stat'),
   // Coding and artifacts
@@ -651,7 +611,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'AIForm',
   ),
   PackageInfo: g('A package change with versions and dependencies.', 'Code changes.', 'CodeDiff'),
-  SchemaDisplay: g('An API operation with parameters and bodies.', 'Data rows.', 'DataTable'),
+  SchemaDisplay: g('An API operation with parameters and bodies.', 'Data rows.', 'DataGrid'),
   StackTrace: g(
     'A readable error with internal frames collapsed.',
     'Process output.',

@@ -12,13 +12,11 @@ import {
   CardTitle,
   Checkbox,
   ContextMenu,
-  DataTable,
   DropdownMenu,
   EmptyState,
   EmptyStateTitle,
   Field,
   Input,
-  LinkButton,
   NavigationMenu,
   NavigationMenuList,
   Pagination,
@@ -48,11 +46,10 @@ import {
   Tooltip,
   TooltipProvider,
 } from '@stackunseen/ui';
-import type { TableRow as DataRow, TableRowProps } from '@stackunseen/ui';
+import type { TableRowProps } from '@stackunseen/ui';
 
 /** The same public-only fixture is compiled and bundled from isolated packed tarballs. */
 export function WebsitePublicExample() {
-  const row: DataRow = { id: 'invoice', cells: { amount: 12 } };
   const nativeRow: TableRowProps = { children: <Table.Cell>Native invoice</Table.Cell> };
   return (
     <Card aria-labelledby="public-website-title">
@@ -111,11 +108,6 @@ export function WebsitePublicExample() {
             <TableRow {...nativeRow} />
           </Table.Body>
         </Table>
-        <DataTable
-          caption="Existing data API"
-          columns={[{ id: 'amount', label: 'Amount' }]}
-          rows={[row]}
-        />
         <Pagination page={1} pageCount={3} getPageHref={(page) => `/billing?page=${page}`} />
         <ToggleGroup
           label="Invoice filter"
@@ -148,7 +140,7 @@ export function WebsitePublicExample() {
           <Chip href="/billing/?paid" active>
             Paid
           </Chip>
-          <Chip>Overdue</Chip>
+          <Tag>Overdue</Tag>
           <Chip onRemove={() => {}}>Q3</Chip>
         </ChipGroup>
         <Stepper
@@ -174,9 +166,9 @@ export function WebsitePublicExample() {
           <Card.Title>Invoice history</Card.Title>
           <Card.Description>Public fixture.</Card.Description>
         </Card>
-        <LinkButton href="/billing/new" variant="outline">
+        <Button href="/billing/new" variant="outline">
           New invoice
-        </LinkButton>
+        </Button>
         <Button asChild>
           <a href="/billing/export">Export</a>
         </Button>

@@ -4,7 +4,6 @@ import { Tag } from './tag.js';
 import { Avatar, avatarInitials } from '../avatar/avatar.js';
 import { Stat, StatGroup } from '../stat/stat.js';
 import { Card } from '../card/card.js';
-import { LinkButton } from '../link-button/link-button.js';
 import { Button } from '../button/button.js';
 
 afterEach(cleanup);
@@ -119,11 +118,11 @@ describe('Card as a link', () => {
 });
 
 describe('Link buttons', () => {
-  it('LinkButton is a native anchor with button presentation', () => {
+  it('Button with href is a native anchor with button presentation', () => {
     render(
-      <LinkButton href="/start" variant="outline" size="sm" target="_blank" rel="noreferrer">
+      <Button href="/start" variant="outline" size="sm" target="_blank" rel="noreferrer">
         Get started
-      </LinkButton>,
+      </Button>,
     );
     const link = screen.getByRole('link', { name: 'Get started' });
     expect(link).toHaveAttribute('href', '/start');

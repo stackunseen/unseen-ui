@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Sparkles } from 'lucide-react';
-import { Avatar, Button, LinkButton, Stat, StatGroup, Tag, ToggleGroup } from '@stackunseen/ui';
+import { Avatar, Stat, StatGroup, Tag, ToggleGroup } from '@stackunseen/ui';
 import type { ToggleGroupOption } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
@@ -15,23 +15,6 @@ const topics: ToggleGroupOption[] = [
 export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpecimenProps) {
   const [topic, setTopic] = useState<string | null>('all');
   const [topicsSelected, setTopicsSelected] = useState<readonly string[]>(['agents']);
-  if (name === 'LinkButton')
-    return (
-      <div className="generic-demo-actions" style={{ justifyContent: 'flex-start', margin: 0 }}>
-        <LinkButton
-          href="/getting-started/"
-          variant={state === 'Outline' ? 'outline' : 'primary'}
-          size={state === 'Small' ? 'sm' : 'default'}
-          target={state === 'External' ? '_blank' : undefined}
-          rel={state === 'External' ? 'noreferrer' : undefined}
-        >
-          {state === 'External' ? 'Open the npm package' : 'Get started'}
-        </LinkButton>
-        <Button asChild variant="ghost" size={state === 'Small' ? 'sm' : 'default'}>
-          <a href="/components/">Browse components</a>
-        </Button>
-      </div>
-    );
   if (name === 'ToggleGroup') {
     const options = topics.map((option) => ({
       ...option,

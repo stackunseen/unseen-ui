@@ -4,7 +4,8 @@ import type { ApprovalProposal, CommandReceipt, SubmissionState } from '@stackun
 import { validateApprovalDecision } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Checkbox } from '../checkbox/checkbox.js';
-import { Chip, ChipGroup } from '../chip/chip.js';
+import { ChipGroup } from '../chip/chip.js';
+import { Tag } from '../tag/tag.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
@@ -135,9 +136,9 @@ export function ApprovalBatch({
           {targets.size === 1 ? `Target: ${[...targets][0]}.` : 'Different targets.'}{' '}
           <ChipGroup label="Scopes" className={g.inlineChips}>
             {[...scopes].map((scope) => (
-              <Chip key={scope} size="sm">
+              <Tag key={scope} size="sm">
                 {scope}
-              </Chip>
+              </Tag>
             ))}
           </ChipGroup>
         </p>

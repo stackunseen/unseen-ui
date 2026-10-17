@@ -35,28 +35,17 @@ export const applicationCatalog: CatalogEntry[] = [
     name: 'Combobox',
     group: 'Forms',
     category: 'Searchable choices',
-    description: 'Search a list and choose one value, with labelled loading and error states.',
-    states: ['Default', 'Disabled', 'Loading', 'Error', 'Empty'],
-    contract: 'label · options · value · onValueChange · query · onQueryChange',
+    description:
+      'Search a list and choose one value, or several with type="multiple", with labelled loading and error states.',
+    aliases: ['Autocomplete', 'Multi select', 'Searchable select'],
+    states: ['Default', 'Multiple', 'Disabled', 'Loading', 'Error', 'Empty'],
+    contract:
+      'label · options · type?: single | multiple · value · onValueChange · query · onQueryChange',
     responsibility:
       'Keep the selected value and search query in your app. Use filterOption={false} for options already filtered by your server.',
     keyboard:
       'Arrow keys move through options. Enter selects, Escape closes, and Tab leaves the field. Focus stays in the input.',
     code: '<Combobox label="Owner" options={owners} value={owner} onValueChange={setOwner}\n  query={query} onQueryChange={setQuery} />',
-  }),
-  application({
-    name: 'MultiSelect',
-    group: 'Forms',
-    category: 'Searchable choices',
-    description:
-      'Search and select several values without losing choices outside the current results.',
-    states: ['Default', 'Disabled', 'Loading', 'Error', 'Empty'],
-    contract: 'label · options · value: readonly string[] · onValueChange · query · onQueryChange',
-    responsibility:
-      'Store selected IDs in your app. Validate them against current access and available choices before submission.',
-    keyboard:
-      'Arrow keys browse options and Enter toggles a choice. Selected chips have labelled remove buttons.',
-    code: '<MultiSelect label="Teams" options={teams} value={selectedTeams} onValueChange={setSelectedTeams}\n  query={query} onQueryChange={setQuery} />',
   }),
   application({
     name: 'Calendar',

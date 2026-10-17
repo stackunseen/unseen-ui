@@ -67,7 +67,26 @@ export function GenericSpecimen({
   if (['Sidecar', 'WorkspaceShell'].includes(name))
     return <LayoutSpecimen name={name} state={state} presentation={presentation} />;
   let content;
-  if (name === 'Button') {
+  if (name === 'Button' && state === 'Link') {
+    content = (
+      <>
+        <div className="generic-demo-actions" style={{ margin: 0 }}>
+          <Button href="/getting-started/" variant={variant}>
+            Get started
+          </Button>
+          <Button
+            href="https://www.npmjs.com/package/@stackunseen/ui"
+            variant="outline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open the npm package
+          </Button>
+        </div>
+        <p className="generic-demo-status">With href, Button renders a link with the same look.</p>
+      </>
+    );
+  } else if (name === 'Button') {
     const busy = state === 'Busy';
     content = (
       <>
