@@ -7,19 +7,12 @@ import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
 afterEach(cleanup);
 
 describe('Chip', () => {
-  it('toggles with aria-pressed and shows a decorative swatch', async () => {
-    const onPressedChange = vi.fn();
-    const { container } = render(
-      <Chip pressed={false} onPressedChange={onPressedChange} swatch="var(--hue-agents)">
-        Agents
-      </Chip>,
-    );
-    const chip = screen.getByRole('button', { name: 'Agents', pressed: false });
+  it('shows a decorative swatch on a static chip', () => {
+    const { container } = render(<Chip swatch="var(--hue-agents)">Agents</Chip>);
     expect(container.querySelector('[aria-hidden="true"]')).toHaveStyle({
       background: 'var(--hue-agents)',
     });
-    await userEvent.click(chip);
-    expect(onPressedChange).toHaveBeenCalledWith(true);
+    expect(screen.queryByRole('button')).toBeNull();
   });
 
   it('renders a link chip with aria-current when active', () => {

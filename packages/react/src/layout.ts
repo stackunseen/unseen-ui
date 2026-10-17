@@ -5,11 +5,8 @@ export type {
   SidecarPresentation,
   SidecarNarrowPresentation,
 } from './components/sidecar/sidecar.js';
-export { WorkspaceShell, PanelHeader } from './components/workspace-shell/workspace-shell.js';
-export type {
-  WorkspaceShellProps,
-  PanelHeaderProps,
-} from './components/workspace-shell/workspace-shell.js';
+export { WorkspaceShell } from './components/workspace-shell/workspace-shell.js';
+export type { WorkspaceShellProps } from './components/workspace-shell/workspace-shell.js';
 export { SplitPane } from './components/split-pane/split-pane.js';
 export type {
   SplitPaneProps,

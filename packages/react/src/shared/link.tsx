@@ -18,7 +18,7 @@ export interface LinkProviderProps {
 }
 
 /**
- * Supplies the router link once at the root. Chip, SegmentedControl, Stepper, LinkCard,
+ * Supplies the router link once at the root. Chip, ToggleGroup links, Stepper, Card links,
  * LinkButton and Matrix then render it instead of a native anchor, so filter clicks become
  * client-side navigations with prefetching. Without a provider they render `<a>`.
  */

@@ -3,7 +3,7 @@ import { useSyncExternalStore } from 'react';
 import type { ComponentProps, SVGProps } from 'react';
 import { DesktopIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { Button } from '../button/button.js';
-import { SegmentedControl } from '../segmented-control/segmented-control.js';
+import { ToggleGroup } from '../toggle-group/toggle-group.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { Appearance } from '../../theme.js';
 import s from './appearance-toggle.module.css';
@@ -63,11 +63,14 @@ export function AppearanceToggle({
   if (variant === 'segmented')
     return (
       <div {...props} className={`${s.root} ${className}`} data-part="appearance-toggle">
-        <SegmentedControl
+        <ToggleGroup
+          variant="segmented"
           label={label}
           size={size === 'sm' ? 'sm' : 'default'}
           value={value}
-          onValueChange={(next) => onValueChange(next as Appearance)}
+          onValueChange={(next) => {
+            if (next !== null) onValueChange(next as Appearance);
+          }}
           options={order.map((appearance) => ({
             value: appearance,
             label: (

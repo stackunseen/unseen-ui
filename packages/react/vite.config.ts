@@ -21,7 +21,7 @@ const sharedPublicModules = new Set([
   // Controls and helpers that optional entries render through the installed root, so one
   // LinkProvider, one copy hook and one stylesheet serve every entry.
   'components/chip/chip',
-  'components/segmented-control/segmented-control',
+  'components/toggle-group/toggle-group',
   'components/loading-indicator/loading-indicator',
   'components/dropdown-menu/dropdown-menu',
   'components/tooltip/tooltip',

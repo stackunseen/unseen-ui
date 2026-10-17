@@ -307,13 +307,14 @@ export const websiteCatalog: CatalogEntry[] = [
   entry({
     name: 'Card',
     group: 'Data Display',
-    aliases: ['Content card', 'Surface'],
-    description: 'A composed content surface with a heading, description, body and footer.',
-    states: ['Default', 'With action', 'Long content'],
+    aliases: ['Content card', 'Surface', 'Panel', 'Link card', 'Resource card', 'Section header'],
+    description:
+      'A surface with a header (title, description, actions), body and footer, or a whole-card link.',
+    states: ['Default', 'Header actions', 'With action', 'Link', 'External link', 'Long content'],
     contract:
-      'Native section props/ref · Card.Header/Title/Description/Content/Footer · Title as?: h2–h6',
+      'Native section props · href? · external? · Card.Header actions? actionsLabel? · Card.Title as?: h2–h6 · Card.Description/Content/Footer',
     responsibility:
-      'Choose a heading level appropriate to the page. Add aria-labelledby only when the card should be a named region.',
+      'Choose a heading level appropriate to the page. Add aria-labelledby only when the card should be a named region. With href the whole card is one link, so keep buttons and other links out of it.',
     keyboard:
       'The surface adds no tab stop; links and actions inside it follow ordinary document order.',
     code: '<Card><Card.Header><Card.Title>Component library</Card.Title><Card.Description>Reusable website and AI controls.</Card.Description></Card.Header><Card.Content>Explore the available components.</Card.Content></Card>',
@@ -351,16 +352,22 @@ export const websiteCatalog: CatalogEntry[] = [
     ...entry({
       name: 'ToggleGroup',
       group: 'Actions',
-      aliases: ['Filter chips', 'Toggle buttons', 'Segmented filter'],
+      aliases: [
+        'Filter chips',
+        'Toggle buttons',
+        'Segmented control',
+        'View switch',
+        'Joined buttons',
+      ],
       description:
-        'A row of filter chips with single or multiple selection and host-supplied counts.',
-      states: ['Default', 'Multiple', 'With counts', 'Disabled option', 'Small'],
+        'Choose one or several options shown at once: filter pills with counts, or joined segments, as buttons or links.',
+      states: ['Default', 'Multiple', 'With counts', 'Links', 'Disabled option', 'Small'],
       contract:
-        'label · options: { value, label, count?, disabled? }[] · type?: single | multiple · value · onValueChange · allowEmpty? · size?: default | sm · disabled?',
+        'label · options: { value, label, count?, description?, href?, disabled? }[] · type?: single | multiple · value · onValueChange? · allowEmpty? · mode?: buttons | links · variant?: pills | segmented · size?: default | sm · disabled?',
       responsibility:
-        'The application owns the selected values and the counts. Single selection uses radio semantics; multiple selection uses pressed buttons.',
+        'The application owns the selected values and the counts. Single selection uses radio semantics; multiple selection uses pressed buttons; links mode renders anchors with aria-current for URL-driven views and works before hydration.',
       keyboard:
-        'Tab reaches the group once. Arrow keys, Home and End move between enabled chips; in single mode they also select. Space or Enter toggles a chip in multiple mode.',
+        'Tab reaches the group once. Arrow keys, Home and End move between enabled options; in single mode they also select. Space or Enter toggles an option in multiple mode. In links mode every link is in the tab order.',
       code: '<ToggleGroup label="Topics" options={topics} value={topic} onValueChange={setTopic} />',
     }),
     presentations: ['pills', 'segmented'],
@@ -411,54 +418,19 @@ export const websiteCatalog: CatalogEntry[] = [
     presentations: ['card', 'plain'],
     presentationProp: 'variant',
   },
-  {
-    ...entry({
-      name: 'LinkCard',
-      group: 'Navigation',
-      aliases: ['Resource card', 'Related link', 'Outbound card'],
-      description:
-        'A plain link presented as a card or row, with icon, title, description and meta.',
-      states: ['Default', 'External', 'Row', 'With icon'],
-      contract:
-        'href · title · description? · meta? · icon? · external? · variant?: card | row · native anchor props',
-      responsibility:
-        'The whole card is one anchor (the LinkProvider link when one is set), so keep interactive content out of it. Use SourceCard for cited material with a locator, version and access state.',
-      keyboard: 'Tab focuses the card; Enter follows the link.',
-      relatedImports: ['SourceCard'],
-      code: '<LinkCard href="/guides/rag/" title="Retrieval guide" description="Chunking and ranking." meta="12 min read" />',
-    }),
-    presentations: ['card', 'row'],
-    presentationProp: 'variant',
-  },
-  entry({
-    name: 'SegmentedControl',
-    group: 'Actions',
-    aliases: ['Segmented buttons', 'View switch', 'Joined buttons'],
-    description:
-      'A single choice shown as joined segments, as buttons or as links with aria-current.',
-    states: ['Default', 'Links', 'Small', 'Disabled option'],
-    contract:
-      'label · options: { value, label, description?, href?, disabled? }[] · value · onValueChange? · mode?: buttons | links · size?: default | sm · disabled?',
-    responsibility:
-      'The host owns the value. Button mode is a radiogroup; link mode renders anchors (the LinkProvider link when one is set) for URL-driven views and works before hydration.',
-    keyboard:
-      'Button mode has one tab stop: arrow keys move and select, Home and End jump to the ends. Link mode puts every link in the tab order.',
-    relatedImports: ['ToggleGroup'],
-    code: '<SegmentedControl label="View" options={views} value={view} onValueChange={setView} />',
-  }),
   entry({
     name: 'Chip',
     group: 'Actions',
-    aliases: ['Filter chip', 'Toggle chip', 'Removable chip', 'ChipGroup'],
+    aliases: ['Filter link', 'Removable chip', 'Tag link', 'ChipGroup'],
     description:
-      'A compact label that toggles, links or can be removed, with a group that wraps or scrolls.',
-    states: ['Default', 'Links', 'Removable', 'Scrolling group'],
+      'A compact label that links or can be removed, with a group that wraps or scrolls. For choices, use ToggleGroup.',
+    states: ['Default', 'Removable', 'Scrolling group'],
     contract:
-      'children · pressed/onPressedChange | href/active/current? + anchor props | onRemove/removeLabel · swatch? · size?: default | sm · disabled? · ChipGroup: label · overflow?: wrap | scroll',
+      'children · href/active/current? + anchor props | onRemove/removeLabel · swatch? · size?: default | sm · disabled? · ChipGroup: label · overflow?: wrap | scroll',
     responsibility:
       'Chips report intents; the host applies the filter. Link chips render the LinkProvider link when one is set. Active fills use --ai-chip-active-background and --ai-chip-active-color so labels keep their contrast.',
     keyboard:
-      'Toggle and remove chips are buttons; link chips are links. Backspace or Delete on a removable chip removes it.',
+      'Link chips are links; the remove control is a button. Backspace or Delete on a removable chip removes it.',
     relatedImports: ['ChipGroup'],
     code: '<ChipGroup label="Lens"><Chip pressed={lens === "agents"} onPressedChange={() => setLens("agents")}>Agents</Chip></ChipGroup>',
   }),

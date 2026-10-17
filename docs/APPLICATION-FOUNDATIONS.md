@@ -1,6 +1,6 @@
 # Application layouts
 
-Sidecar, SplitPane, WorkspaceShell and PanelHeader compose workspaces from application-owned content. They manage layout and focus; your host owns routing, persistence and authorization.
+Sidecar, SplitPane and WorkspaceShell compose workspaces from application-owned content. They manage layout and focus; your host owns routing, persistence and authorization.
 
 ## Imports
 
@@ -24,11 +24,11 @@ SplitPane accepts named primary/secondary descriptors, a controlled two-number p
 
 The `split`, `stacked` and `responsive` presentations use the same DOM panes. Responsive layout changes orientation at a container width of 640px by default. Collapsed contents unmount. Each panel chooses host or automatic scrolling.
 
-## WorkspaceShell and PanelHeader
+## WorkspaceShell
 
 WorkspaceShell accepts header/navigation/main/inspector/footer slots, `workspace`, `contained` or `compact` presentation, and flow or bounded pane scrolling. Use `mainAs="section"` to avoid a nested main landmark, and `inspectorAs="div"` when a child Sidecar already supplies complementary semantics.
 
-PanelHeader provides heading level, description, leading/status/actions slots and a named action group with native Tab order.
+For a section header inside a slot, use `Card.Header` with `Card.Title` (choose the level with `as`), `Card.Description` and `actions`, which form a named group with native Tab order.
 
 ## Compose a workspace
 

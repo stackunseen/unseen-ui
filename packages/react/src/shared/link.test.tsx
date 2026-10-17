@@ -6,9 +6,9 @@ import { LinkProvider, useLinkComponent } from './link.js';
 import type { LinkComponentProps } from './link.js';
 import { Chip } from '../components/chip/chip.js';
 import { LinkButton } from '../components/link-button/link-button.js';
-import { LinkCard } from '../components/link-card/link-card.js';
+import { Card } from '../components/card/card.js';
 import { Matrix } from '../components/matrix/matrix.js';
-import { SegmentedControl } from '../components/segmented-control/segmented-control.js';
+import { ToggleGroup } from '../components/toggle-group/toggle-group.js';
 import { Stepper } from '../components/stepper/stepper.js';
 
 afterEach(cleanup);
@@ -27,7 +27,8 @@ function Everything() {
       <Chip href="/lens/agents" active>
         Agents
       </Chip>
-      <SegmentedControl
+      <ToggleGroup
+        variant="segmented"
         label="View"
         mode="links"
         value="latest"
@@ -45,7 +46,9 @@ function Everything() {
         previous={{ href: '/s/1' }}
         next={{ href: '/s/3' }}
       />
-      <LinkCard href="/guides/rag" title="RAG guide" />
+      <Card href="/guides/rag">
+        <Card.Title>RAG guide</Card.Title>
+      </Card>
       <LinkButton href="/start">Start</LinkButton>
       <Matrix
         label="Coverage"
@@ -93,7 +96,7 @@ describe('LinkProvider', () => {
         <Chip href="/lens/agents" disabled>
           Agents
         </Chip>
-        <SegmentedControl
+        <ToggleGroup
           label="View"
           mode="links"
           value="latest"

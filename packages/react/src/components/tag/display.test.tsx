@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { Tag } from './tag.js';
 import { Avatar, avatarInitials } from '../avatar/avatar.js';
 import { Stat, StatGroup } from '../stat/stat.js';
-import { LinkCard } from '../link-card/link-card.js';
+import { Card } from '../card/card.js';
 import { LinkButton } from '../link-button/link-button.js';
 import { Button } from '../button/button.js';
 
@@ -71,34 +71,50 @@ describe('Stat', () => {
   });
 });
 
-describe('LinkCard', () => {
-  it('is one native anchor with title, description and meta', () => {
+describe('Card as a link', () => {
+  it('is one anchor around the card content, headings included', () => {
     render(
-      <LinkCard
-        href="/guides/rag"
-        title="Retrieval guide"
-        description="Chunking and ranking."
-        meta="12 min"
-        icon={<svg data-testid="icon" />}
-        variant="row"
-      />,
+      <Card href="/guides/rag">
+        <Card.Title>Retrieval guide</Card.Title>
+        <Card.Description>Chunking and ranking.</Card.Description>
+      </Card>,
     );
     const link = screen.getByRole('link', { name: /Retrieval guide/ });
     expect(link).toHaveAttribute('href', '/guides/rag');
-    expect(link).toHaveAttribute('data-variant', 'row');
+    expect(link).toHaveAttribute('data-link');
     expect(link).not.toHaveAttribute('target');
     expect(link).toHaveTextContent('Chunking and ranking.');
-    expect(link).toHaveTextContent('12 min');
-    expect(screen.getByTestId('icon').parentElement).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByRole('heading', { name: 'Retrieval guide' })).toBeInTheDocument();
   });
 
-  it('opens external links safely while allowing explicit overrides', () => {
-    const { rerender } = render(<LinkCard href="https://example.test" title="Docs" external />);
-    const link = screen.getByRole('link', { name: 'Docs' });
+  it('opens external links safely, says so, and allows explicit overrides', () => {
+    const { rerender } = render(
+      <Card href="https://example.test" external>
+        <Card.Title>Docs</Card.Title>
+      </Card>,
+    );
+    const link = screen.getByRole('link', { name: 'Docs (opens in a new tab)' });
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noreferrer');
-    rerender(<LinkCard href="https://example.test" title="Docs" external rel="noopener" />);
-    expect(screen.getByRole('link', { name: 'Docs' })).toHaveAttribute('rel', 'noopener');
+    rerender(
+      <Card href="https://example.test" external rel="noopener">
+        <Card.Title>Docs</Card.Title>
+      </Card>,
+    );
+    expect(screen.getByRole('link', { name: /Docs/ })).toHaveAttribute('rel', 'noopener');
+  });
+
+  it('keeps header actions in a named group beside the title', () => {
+    render(
+      <Card>
+        <Card.Header actions={<button type="button">Edit</button>}>
+          <Card.Title>Project</Card.Title>
+        </Card.Header>
+      </Card>,
+    );
+    expect(screen.getByRole('group', { name: 'Card actions' })).toContainElement(
+      screen.getByRole('button', { name: 'Edit' }),
+    );
   });
 });
 

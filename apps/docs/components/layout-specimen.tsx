@@ -1,7 +1,7 @@
 'use client';
 import { useId, useRef, useState } from 'react';
-import { Button, Panel, StatusBadge } from '@stackunseen/ui';
-import { PanelHeader, WorkspaceShell } from '@stackunseen/ui/workspace';
+import { Button, Card } from '@stackunseen/ui';
+import { WorkspaceShell } from '@stackunseen/ui/workspace';
 import { Sidecar } from '@stackunseen/ui/sidecar';
 
 export function LayoutSpecimen({
@@ -19,41 +19,6 @@ export function LayoutSpecimen({
   const [notice, setNotice] = useState('');
   const [canvasSelection, setCanvasSelection] = useState<string | null>(null);
   const inspectorStart = useRef<HTMLDivElement>(null);
-  if (name === 'PanelHeader')
-    return (
-      <div className="generic-demo" data-demo={name}>
-        <Panel>
-          <PanelHeader
-            title={
-              state === 'Long title'
-                ? 'Project overview for the international documentation and developer experience workspace'
-                : 'Project overview'
-            }
-            description="Current project information and local actions."
-            headingLevel={3}
-            status={
-              state === 'With status' || state === 'Default' ? (
-                <StatusBadge state="idle" label="Draft" />
-              ) : undefined
-            }
-            actions={
-              state === 'With actions' || state === 'Default' ? (
-                <Button
-                  variant="outline"
-                  onClick={() => setNotice('Edit requested for the current project.')}
-                >
-                  Edit project
-                </Button>
-              ) : undefined
-            }
-          />
-          <p style={{ margin: '12px 0 0' }}>The panel body follows the header.</p>
-        </Panel>
-        <p role="status" className="generic-demo-status">
-          {notice}
-        </p>
-      </div>
-    );
   if (name === 'Sidecar' && state === 'Beside a canvas') {
     const selected = canvasSelection !== null;
     return (
@@ -141,7 +106,9 @@ export function LayoutSpecimen({
         inspectorLabel={`Project details ${variant}`}
         header={
           state === 'Minimal' ? undefined : (
-            <PanelHeader title="Project workspace" headingLevel={3} />
+            <Card.Header>
+              <Card.Title>Project workspace</Card.Title>
+            </Card.Header>
           )
         }
         navigation={

@@ -1,5 +1,4 @@
 'use client';
-import { useId } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import s from './workspace-shell.module.css';
 
@@ -116,63 +115,5 @@ export function WorkspaceShell({
         </footer>
       )}
     </section>
-  );
-}
-
-export interface PanelHeaderProps extends Omit<ComponentProps<'header'>, 'children' | 'title'> {
-  title: ReactNode;
-  description?: ReactNode;
-  leading?: ReactNode;
-  status?: ReactNode;
-  actions?: ReactNode;
-  actionsLabel?: string;
-  headingLevel?: 2 | 3 | 4 | 5 | 6;
-}
-
-/** Contextual header with native Tab order; action groups do not claim toolbar arrow behavior. */
-export function PanelHeader({
-  title,
-  description,
-  leading,
-  status,
-  actions,
-  actionsLabel = 'Panel actions',
-  headingLevel = 2,
-  className = '',
-  ...props
-}: PanelHeaderProps) {
-  const titleId = useId();
-  const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  return (
-    <header
-      role="group"
-      aria-labelledby={titleId}
-      {...props}
-      data-part="panel-header"
-      className={`${s.panelHeader} ${className}`}
-    >
-      <div className={s.headerLayout}>
-        {hasSlot(leading) && <div className={s.leading}>{leading}</div>}
-        <div className={s.heading}>
-          <div className={s.titleRow}>
-            <Heading id={titleId} className={s.title}>
-              {title}
-            </Heading>
-            {hasSlot(status) && <div className={s.status}>{status}</div>}
-          </div>
-          {hasSlot(description) && <div className={s.description}>{description}</div>}
-        </div>
-        {hasSlot(actions) && (
-          <div
-            role="group"
-            aria-label={actionsLabel}
-            data-part="panel-actions"
-            className={s.actions}
-          >
-            {actions}
-          </div>
-        )}
-      </div>
-    </header>
   );
 }

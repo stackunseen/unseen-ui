@@ -131,7 +131,7 @@ export const applicationCatalog: CatalogEntry[] = [
     keyboard:
       'Enter in the search box submits. Button-mode order is a radiogroup with arrow keys; chips, links and selects are ordinary controls.',
     code: '<FilterBar searchLabel="Search the journal" search={q} onSearchChange={setQ} onSearchSubmit={apply}\n  order={{ label: "Order", value: view, options: views, mode: "links" }}\n  facet={{ label: "Discipline", options: disciplines, selected, onToggle }}\n  selects={[{ name: "kind", label: "Kind", value: kind, options: kinds, onValueChange: setKind }]}\n  onClear={clear} summary={`${shown} of ${total} entries`} />',
-    relatedImports: ['Chip', 'SegmentedControl', 'Select'],
+    relatedImports: ['ToggleGroup', 'Chip', 'Select'],
   }),
   application({
     name: 'Checklist',

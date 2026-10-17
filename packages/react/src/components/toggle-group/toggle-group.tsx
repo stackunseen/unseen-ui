@@ -2,7 +2,9 @@
 import { useRef } from 'react';
 import type { ComponentProps, KeyboardEvent, ReactNode } from 'react';
 import type { VariantProps } from '../../shared/variants.js';
+import { Anchor } from '../../shared/link.js';
 import { rovingTarget } from '../../shared/roving-focus.js';
+import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
 import d from '../../shared/styles/display.module.css';
 
 export interface ToggleGroupOption {
@@ -10,6 +12,10 @@ export interface ToggleGroupOption {
   label: ReactNode;
   /** A host-supplied count shown after the label, for example matching results. */
   count?: ReactNode;
+  /** Read by assistive technology after the label; keeps compact segments short. */
+  description?: string;
+  /** Destination in links mode. */
+  href?: string;
   disabled?: boolean;
 }
 interface ToggleGroupBaseProps
@@ -24,9 +30,17 @@ interface ToggleGroupBaseProps
 export interface SingleToggleGroupProps extends ToggleGroupBaseProps {
   type?: 'single';
   value: string | null;
-  onValueChange: (value: string | null) => void;
+  /** Required with buttons. Links navigate instead and may omit it. */
+  onValueChange?: (value: string | null) => void;
   /** Lets the selected chip be deselected again. */
   allowEmpty?: boolean;
+  /**
+   * Buttons use radio semantics with one tab stop. Links render anchors with aria-current for
+   * URL-driven views, each in the tab order like any navigation, so a server-rendered filter
+   * works before hydration; every option then needs an href. A LinkProvider swaps in the
+   * host's router link.
+   */
+  mode?: 'buttons' | 'links';
 }
 export interface MultipleToggleGroupProps extends ToggleGroupBaseProps {
   type: 'multiple';
@@ -52,7 +66,8 @@ export function ToggleGroup(props: ToggleGroupProps) {
   const allowEmpty = props.type !== 'multiple' && props.allowEmpty === true;
   // Selection props stay out of the DOM element.
   const divProps: Record<string, unknown> = { ...rest };
-  for (const key of ['type', 'value', 'onValueChange', 'allowEmpty']) delete divProps[key];
+  for (const key of ['type', 'value', 'onValueChange', 'allowEmpty', 'mode']) delete divProps[key];
+  const links = props.type !== 'multiple' && props.mode === 'links';
   const elementProps = divProps as Omit<ComponentProps<'div'>, 'onChange' | 'defaultValue'>;
   const group = useRef<HTMLDivElement>(null);
   const multiple = props.type === 'multiple';
@@ -74,28 +89,31 @@ export function ToggleGroup(props: ToggleGroupProps) {
           : [...current, option.value],
       );
     } else if (props.value === option.value) {
-      if (allowEmpty) props.onValueChange(null);
-    } else props.onValueChange(option.value);
+      if (allowEmpty) props.onValueChange?.(null);
+    } else props.onValueChange?.(option.value);
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (links) return;
     const buttons = [...(group.current?.querySelectorAll<HTMLButtonElement>('button') ?? [])];
     const target = rovingTarget(event, buttons);
     if (!target) return;
     target.focus();
     const option = options.find((item) => item.value === target.dataset.value);
-    if (!multiple && option && props.value !== option.value) props.onValueChange(option.value);
+    if (props.type !== 'multiple' && option && props.value !== option.value)
+      props.onValueChange?.(option.value);
   }
 
   return (
     <div
       {...elementProps}
       ref={group}
-      role={multiple ? 'group' : 'radiogroup'}
+      role={multiple || links ? 'group' : 'radiogroup'}
       aria-label={label}
       data-variant={variant}
       data-size={size}
       data-part="toggle-group"
+      data-mode={links ? 'links' : undefined}
       className={`${d.toggleGroup} ${className}`}
       onKeyDown={(event) => {
         elementProps.onKeyDown?.(event);
@@ -104,6 +122,31 @@ export function ToggleGroup(props: ToggleGroupProps) {
     >
       {options.map((option) => {
         const checked = selected(option);
+        const content = (
+          <>
+            <span>{option.label}</span>
+            {option.count !== undefined && option.count !== null && (
+              <span className={d.toggleCount}>{option.count}</span>
+            )}
+            {option.description && <VisuallyHidden>{` ${option.description}`}</VisuallyHidden>}
+          </>
+        );
+        if (links) {
+          const linkProps = {
+            'aria-current': checked ? ('page' as const) : undefined,
+            'data-value': option.value,
+            className: d.toggle,
+          };
+          return disabled || option.disabled || !option.href ? (
+            <a key={option.value} {...linkProps} aria-disabled="true" tabIndex={-1}>
+              {content}
+            </a>
+          ) : (
+            <Anchor key={option.value} {...linkProps} href={option.href}>
+              {content}
+            </Anchor>
+          );
+        }
         return (
           <button
             key={option.value}
@@ -117,10 +160,7 @@ export function ToggleGroup(props: ToggleGroupProps) {
             className={d.toggle}
             onClick={() => choose(option)}
           >
-            <span>{option.label}</span>
-            {option.count !== undefined && option.count !== null && (
-              <span className={d.toggleCount}>{option.count}</span>
-            )}
+            {content}
           </button>
         );
       })}

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tag } from './tag.js';
 import { Avatar } from '../avatar/avatar.js';
 import { Stat, StatGroup } from '../stat/stat.js';
-import { LinkCard } from '../link-card/link-card.js';
+import { Card } from '../card/card.js';
 import { LinkButton } from '../link-button/link-button.js';
 import { Button } from '../button/button.js';
 
@@ -48,19 +48,14 @@ export const Stats: Story = {
 export const LinkCards: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 12, maxWidth: 420 }}>
-      <LinkCard
-        href="/guides/rag"
-        title="Retrieval guide"
-        description="Chunking, ranking and citation patterns."
-        meta="12 min read"
-      />
-      <LinkCard
-        href="https://example.test/spec"
-        title="Specification"
-        description="External reference."
-        variant="row"
-        external
-      />
+      <Card href="/guides/rag">
+        <Card.Title>Retrieval guide</Card.Title>
+        <Card.Description>Chunking, ranking and citation patterns.</Card.Description>
+      </Card>
+      <Card href="https://example.test/spec" external>
+        <Card.Title>Specification</Card.Title>
+        <Card.Description>External reference.</Card.Description>
+      </Card>
     </div>
   ),
 };

@@ -69,7 +69,7 @@ Use spacing and separators before adding another bordered container. A card insi
 | --- | --- | --- |
 | `--ai-control-radius` | 8px | Inputs, selects, buttons (via `--ai-button-radius`) |
 | `--ai-radius` | 10px | Panels, menus, dialogs |
-| `--ai-radius-card` | 12px | Card, LinkCard, Stat |
+| `--ai-radius-card` | 12px | Card, Stat |
 | `--ai-composer-radius` | 16px | Prompt composer |
 | `--ai-radius-pill` / `--ai-radius-tag` | 999px | Chips, segmented controls, tags |
 | 6px / 4px | fixed | Icon tiles, inline code, small markers |

@@ -1,16 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { BookOpen, Sparkles } from 'lucide-react';
-import {
-  Avatar,
-  Button,
-  LinkButton,
-  LinkCard,
-  Stat,
-  StatGroup,
-  Tag,
-  ToggleGroup,
-} from '@stackunseen/ui';
+import { Sparkles } from 'lucide-react';
+import { Avatar, Button, LinkButton, Stat, StatGroup, Tag, ToggleGroup } from '@stackunseen/ui';
 import type { ToggleGroupOption } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
@@ -49,6 +40,23 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
     }));
     const variant = presentation === 'segmented' ? 'segmented' : 'pills';
     const size = state === 'Small' ? 'sm' : 'default';
+    if (state === 'Links')
+      return (
+        <ToggleGroup
+          label="View"
+          mode="links"
+          variant={variant}
+          value="latest"
+          options={[
+            { value: 'latest', label: 'Latest', href: '/components/toggle-group/' },
+            {
+              value: 'grouped',
+              label: 'By discipline',
+              href: '/components/toggle-group/#grouped',
+            },
+          ]}
+        />
+      );
     return state === 'Multiple' ? (
       <ToggleGroup
         type="multiple"
@@ -156,21 +164,5 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
       />
     );
   }
-  return (
-    <div style={{ display: 'grid', gap: 12, maxWidth: 440 }}>
-      <LinkCard
-        href={state === 'External' ? 'https://www.npmjs.com/package/@stackunseen/ui' : '/docs/'}
-        title={state === 'External' ? '@stackunseen/ui on npm' : 'Documentation'}
-        description={
-          state === 'External'
-            ? 'Package page with versions and install instructions.'
-            : 'Setup, theming and state guides.'
-        }
-        meta={state === 'External' ? 'npmjs.com' : '4 guides'}
-        icon={state === 'With icon' || state === 'External' ? <BookOpen size={18} /> : undefined}
-        external={state === 'External'}
-        variant={presentation === 'row' || state === 'Row' ? 'row' : 'card'}
-      />
-    </div>
-  );
+  return null;
 }

@@ -82,11 +82,11 @@ Compound components such as `Card.Header`, `Sidebar.Group`, `Tooltip.Trigger` an
 import { Card, CardHeader, CardTitle, CardContent } from '@stackunseen/ui';
 ```
 
-The property form (`Card.Header`) works in Client Components. Button, LinkButton, Tag, Stat, LinkCard, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, SegmentedControl, Chip, Disclosure, Sidecar, Popover, Tooltip, the menus and the dialogs.
+The property form (`Card.Header`) works in Client Components. Button, LinkButton, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and the dialogs.
 
 ### Router links
 
-Chip, SegmentedControl, Stepper, LinkCard, LinkButton and Matrix render native anchors by default. In Next.js that is a full document load on every filter click. Wrap the app once in `LinkProvider` with the router's link and every one of them renders it instead, with prefetching and client-side navigation:
+Chip, ToggleGroup in links mode, Stepper, Card with `href`, LinkButton and Matrix render native anchors by default. In Next.js that is a full document load on every filter click. Wrap the app once in `LinkProvider` with the router's link and every one of them renders it instead, with prefetching and client-side navigation:
 
 ```tsx
 import Link from 'next/link';

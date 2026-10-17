@@ -56,7 +56,7 @@ Provider overrides apply by semantic role, including through React portals. Nest
 
 IconButton accepts a semantic role name, not an SVG component. Wrap a single IconButton in a provider for a local replacement, or compose Button with custom children. Keep the accessible label when replacing icons. AIIcon itself is decorative and accepts `size` and wrapper `className`; the supplied SVG component owns its detailed SVG props.
 
-Natural content slots include Alert's `icon`, Sidebar.Link's `icon`, EmptyStateIcon, PromptInput's `attachments`/`toolbar`, Message's `renderContent`, WorkspaceShell's regions and PanelHeader's actions/status. Compound cards, tables and overlays expose their parts for composition.
+Natural content slots include Alert's `icon`, Sidebar.Link's `icon`, EmptyStateIcon, PromptInput's `attachments`/`toolbar`, Message's `renderContent`, WorkspaceShell's regions and Card.Header's actions. Compound cards, tables and overlays expose their parts for composition.
 
 Menu check/radio indicators and navigation/submenu chevrons currently use internal text or CSS outside IconsProvider. Native checkbox/radio indicators and CSS loading spinners also do not use the icon provider. Replacing those internals is not a supported global icon-pack operation.
 

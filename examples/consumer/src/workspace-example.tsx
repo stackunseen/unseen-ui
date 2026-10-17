@@ -8,8 +8,8 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
-import { AIIcon, Button, IconButton, PromptInput, Select, Tabs } from '@stackunseen/ui';
-import { Sidecar, SplitPane, WorkspaceShell, PanelHeader } from '@stackunseen/ui/layout';
+import { AIIcon, Button, Card, IconButton, PromptInput, Select, Tabs } from '@stackunseen/ui';
+import { Sidecar, SplitPane, WorkspaceShell } from '@stackunseen/ui/layout';
 import type {
   SidecarPresentation,
   SplitPaneSizes,
@@ -153,11 +153,12 @@ export function WorkspaceExample() {
   );
   const conversation = (
     <div className={s.conversation}>
-      <PanelHeader
-        title={`${selected} conversation`}
-        headingLevel={4}
-        description="Keep the main task readable; reveal supporting detail when needed."
-      />
+      <Card.Header>
+        <Card.Title as="h4">{`${selected} conversation`}</Card.Title>
+        <Card.Description>
+          Keep the main task readable; reveal supporting detail when needed.
+        </Card.Description>
+      </Card.Header>
       <ConversationViewport
         value={history}
         label="Workspace conversation"
@@ -242,11 +243,8 @@ export function WorkspaceExample() {
         scrollMode="panes"
         navigationLabel="Project navigation"
         header={
-          <PanelHeader
-            title="Project workspace"
-            headingLevel={3}
-            leading={<AIIcon name="assistant" />}
-            status={<span className={s.local}>Local example</span>}
+          <Card.Header
+            actionsLabel="Workspace actions"
             actions={
               <IconButton
                 ref={opener}
@@ -256,7 +254,12 @@ export function WorkspaceExample() {
                 onClick={() => setOpen(!open)}
               />
             }
-          />
+          >
+            <Card.Title>
+              <AIIcon name="assistant" /> Project workspace{' '}
+              <span className={s.local}>Local example</span>
+            </Card.Title>
+          </Card.Header>
         }
         navigation={
           <div className={s.navigation}>

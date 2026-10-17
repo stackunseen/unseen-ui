@@ -64,9 +64,9 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
           ? FeedbackSpecimen
           : ['Breadcrumb', 'Pagination', 'Sidebar'].includes(name)
             ? NavigationSpecimen
-            : ['LinkButton', 'ToggleGroup', 'Tag', 'Avatar', 'Stat', 'LinkCard'].includes(name)
+            : ['LinkButton', 'ToggleGroup', 'Tag', 'Avatar', 'Stat'].includes(name)
               ? DisplaySpecimen
-              : ['SegmentedControl', 'Chip', 'Stepper', 'Matrix'].includes(name)
+              : ['Chip', 'Stepper', 'Matrix'].includes(name)
                 ? ControlSpecimen
                 : [
                       'CopyButton',

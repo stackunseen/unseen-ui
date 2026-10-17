@@ -59,41 +59,6 @@ export const genericCatalog: CatalogEntry[] = [
     code: '<Modal open={open} onOpenChange={setOpen} title="Project details" description="Review the selected project." trigger={<Button>Open details</Button>} footer={<Button onClick={() => setOpen(false)}>Done</Button>}>{content}</Modal>',
   },
   {
-    name: 'Panel',
-    group: 'Layout',
-    category: 'Surfaces',
-    description: 'A reusable section surface for related content and actions.',
-    aliases: ['Section', 'Container', 'Surface'],
-    presentations: ['default'],
-    presentationProp: null,
-    states: ['Default', 'With actions', 'Long content'],
-    contract: 'Native section props · children · className?',
-    responsibility:
-      'Supply the heading and accessible name when the section needs a landmark. Panel does not introduce a new state or variant API.',
-    keyboard:
-      'The section is not an extra tab stop. Its nested links and controls follow normal document order.',
-    code: '<Panel aria-labelledby="project-title"><h2 id="project-title">Project overview</h2><p>{summary}</p></Panel>',
-  },
-  {
-    name: 'PanelHeader',
-    group: 'Layout',
-    category: 'Panel composition',
-    relatedImports: ['Button'],
-    description: 'A heading, supporting context and adjacent actions for a panel.',
-    aliases: ['Section header', 'Panel title', 'Action header'],
-    presentations: ['default'],
-    presentationProp: null,
-    importPath: '/workspace',
-    states: ['Default', 'With actions', 'With status', 'Long title'],
-    contract:
-      'title · description? · leading? · status? · actions? · actionsLabel? · headingLevel?',
-    responsibility:
-      'Choose the heading level for the surrounding document. Keep actions relevant to this panel.',
-    keyboard:
-      'Actions use native Tab order; the action group does not claim toolbar arrow-key behavior.',
-    code: '<PanelHeader title="Project overview" description="Current project information" headingLevel={2} actions={<Button variant="outline">Edit project</Button>} />',
-  },
-  {
     name: 'Sidecar',
     group: 'Layout',
     category: 'Inspectors',

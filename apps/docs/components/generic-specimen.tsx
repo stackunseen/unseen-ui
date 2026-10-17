@@ -1,7 +1,7 @@
 'use client';
 import { useId, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Button, IconButton, LoadingIndicator, Modal, Panel } from '@stackunseen/ui';
+import { Button, IconButton, LoadingIndicator, Modal } from '@stackunseen/ui';
 import type { ButtonProps } from '@stackunseen/ui';
 import { ExampleLoading } from './example-loading';
 import { websiteNames } from '../lib/website-catalog';
@@ -64,7 +64,7 @@ export function GenericSpecimen({
   if (marketingNames.has(name)) return <MarketingSpecimen name={name} state={state} />;
   if (aiExtrasNames.has(name)) return <AIExtrasSpecimen name={name} state={state} />;
   if (name === 'SplitPane') return <SplitPaneSpecimen state={state} presentation={presentation} />;
-  if (['PanelHeader', 'Sidecar', 'WorkspaceShell'].includes(name))
+  if (['Sidecar', 'WorkspaceShell'].includes(name))
     return <LayoutSpecimen name={name} state={state} presentation={presentation} />;
   let content;
   if (name === 'Button') {
@@ -213,29 +213,6 @@ export function GenericSpecimen({
           {notice || 'Open the example, then use Escape to return to its trigger.'}
         </p>
       </>
-    );
-  } else if (name === 'Panel') {
-    content = (
-      <Panel aria-labelledby={`${id}-title`}>
-        <h3 id={`${id}-title`}>Project overview</h3>
-        <p>
-          A named surface for related information. Its contents are supplied by the application.
-        </p>
-        {state === 'Long content' && (
-          <p>{'Keep supporting details readable at every width. '.repeat(18)}</p>
-        )}
-        {state === 'With actions' && (
-          <div className="generic-demo-actions">
-            <Button
-              variant="outline"
-              onClick={() => setNotice('Editing requested for this example project.')}
-            >
-              Edit project
-            </Button>
-          </div>
-        )}
-        {notice && <p role="status">{notice}</p>}
-      </Panel>
     );
   }
   return (

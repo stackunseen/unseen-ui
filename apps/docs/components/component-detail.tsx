@@ -39,7 +39,7 @@ function storedManager(): Manager {
 
 /**
  * Small components read best centred on the stage. A fixed list, not a measurement: measuring
- * drawn content misjudged lazy-loading previews and collapsed full-width ones such as PanelHeader.
+ * drawn content misjudged lazy-loading previews and collapsed full-width ones.
  */
 const centredPreviews = new Set([
   'Button',
@@ -53,7 +53,6 @@ const centredPreviews = new Set([
   'Switch',
   'Checkbox',
   'ToggleGroup',
-  'SegmentedControl',
   'AppearanceToggle',
   'Tooltip',
   'Popover',

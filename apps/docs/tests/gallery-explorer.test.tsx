@@ -24,7 +24,7 @@ import {
 
 describe('gallery links', () => {
   it('maps every component to one scoped navigation group without changing its identity', () => {
-    expect(sectionCatalog('ui')).toHaveLength(62);
+    expect(sectionCatalog('ui')).toHaveLength(58);
     expect(sectionCatalog('ai')).toHaveLength(90);
     expect(
       new Set(
@@ -84,7 +84,7 @@ describe('gallery links', () => {
         expect(readGalleryLocation(galleryHref(location))).toEqual(location);
       }
     }
-    expect(catalog.find((entry) => entry.name === 'Panel')?.presentationProp).toBeNull();
+    expect(catalog.find((entry) => entry.name === 'Card')?.presentationProp).toBeNull();
     expect(catalog.find((entry) => entry.name === 'Modal')?.presentationProp).toBe('layout');
   });
   it('roundtrips a complete deep link including a spaced fixture name', () => {

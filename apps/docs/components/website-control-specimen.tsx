@@ -1,23 +1,9 @@
 'use client';
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import { Chip, ChipGroup, Matrix, SegmentedControl, Stepper } from '@stackunseen/ui';
+import { Chip, ChipGroup, Matrix, Stepper } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
-const views = [
-  { value: 'latest', label: 'Latest', href: '/components/segmented-control/' },
-  {
-    value: 'discipline',
-    label: 'By discipline',
-    href: '/components/segmented-control/?view=discipline',
-  },
-  { value: 'archive', label: 'Archive', href: '/components/segmented-control/?view=archive' },
-];
-const tiers = [
-  { value: 'simple', label: 'Simple' },
-  { value: 'production', label: 'Production' },
-  { value: 'enterprise', label: 'Enterprise', description: 'Contact sales' },
-];
 const disciplines = [
   'Retrieval',
   'Orchestration',
@@ -81,47 +67,8 @@ const coverage: Record<string, number | null> = {
 };
 
 export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
-  const [tier, setTier] = useState('production');
-  const [lens, setLens] = useState<string[]>(['agents']);
   const [stacks, setStacks] = useState(['Next.js', 'Postgres', 'Vercel']);
-  if (name === 'SegmentedControl')
-    return state === 'Links' ? (
-      <SegmentedControl label="View" options={views} value="latest" mode="links" />
-    ) : (
-      <SegmentedControl
-        label="Tier"
-        options={
-          state === 'Disabled option'
-            ? tiers.map((item) =>
-                item.value === 'enterprise' ? { ...item, disabled: true } : item,
-              )
-            : tiers
-        }
-        value={tier}
-        onValueChange={setTier}
-        size={state === 'Small' ? 'sm' : 'default'}
-      />
-    );
   if (name === 'Chip') {
-    const toggle = (id: string) =>
-      setLens((current) =>
-        current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
-      );
-    if (state === 'Links')
-      return (
-        <ChipGroup label="Disciplines">
-          {disciplines.slice(0, 4).map((item, index) => (
-            <Chip
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              active={index === 0}
-              swatch={`hsl(${index * 50 + 10} 60% 50%)`}
-            >
-              {item}
-            </Chip>
-          ))}
-        </ChipGroup>
-      );
     if (state === 'Removable')
       return (
         <ChipGroup label="Active filters">
@@ -136,27 +83,22 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
           {stacks.length === 0 && <span className="generic-demo-status">No filters.</span>}
         </ChipGroup>
       );
-    if (state === 'Scrolling group')
-      return (
-        <div style={{ maxWidth: 360 }}>
-          <ChipGroup label="Disciplines" overflow="scroll">
-            {disciplines.map((item) => (
-              <Chip key={item} pressed={lens.includes(item)} onPressedChange={() => toggle(item)}>
-                {item}
-              </Chip>
-            ))}
-          </ChipGroup>
-        </div>
-      );
-    return (
-      <ChipGroup label="Lens">
-        {['agents', 'rag', 'evaluation'].map((id) => (
-          <Chip key={id} pressed={lens.includes(id)} onPressedChange={() => toggle(id)}>
-            {id}
+    const items = state === 'Scrolling group' ? disciplines : disciplines.slice(0, 4);
+    const chips = (
+      <ChipGroup label="Disciplines" overflow={state === 'Scrolling group' ? 'scroll' : 'wrap'}>
+        {items.map((item, index) => (
+          <Chip
+            key={item}
+            href={`#${item.toLowerCase().replace(/\W+/g, '-')}`}
+            active={index === 0}
+            swatch={`hsl(${index * 50 + 10} 60% 50%)`}
+          >
+            {item}
           </Chip>
         ))}
       </ChipGroup>
     );
+    return state === 'Scrolling group' ? <div style={{ maxWidth: 360 }}>{chips}</div> : chips;
   }
   if (name === 'Stepper')
     return (

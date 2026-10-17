@@ -192,7 +192,6 @@ export type { SkeletonProps } from './components/skeleton/skeleton.js';
 export { AITheme, ThemeSurface } from './providers/theme/theme-provider.js';
 export type { AIThemeProps } from './providers/theme/theme-provider.js';
 export { Button } from './components/button/button.js';
-export { Panel } from './components/panel/panel.js';
 export { Tabs } from './components/tabs/tabs.js';
 export { Modal } from './components/modal/modal.js';
 export type { ButtonProps } from './components/button/button.js';
@@ -526,18 +525,10 @@ export { Avatar, avatarInitials } from './components/avatar/avatar.js';
 export type { AvatarProps } from './components/avatar/avatar.js';
 export { Stat, StatGroup } from './components/stat/stat.js';
 export type { StatProps, StatGroupProps } from './components/stat/stat.js';
-export { LinkCard } from './components/link-card/link-card.js';
-export type { LinkCardProps } from './components/link-card/link-card.js';
-export { SegmentedControl } from './components/segmented-control/segmented-control.js';
-export type {
-  SegmentedControlProps,
-  SegmentedOption,
-} from './components/segmented-control/segmented-control.js';
 export { Chip, ChipGroup } from './components/chip/chip.js';
 export type {
   ChipProps,
   ChipGroupProps,
-  ToggleChipProps,
   LinkChipProps,
   RemovableChipProps,
   StaticChipProps,

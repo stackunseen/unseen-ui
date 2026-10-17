@@ -19,7 +19,6 @@ import {
   Field,
   Input,
   LinkButton,
-  LinkCard,
   NavigationMenu,
   NavigationMenuList,
   Pagination,
@@ -29,7 +28,6 @@ import {
   StatGroup,
   Tag,
   ToggleGroup,
-  SegmentedControl,
   Chip,
   ChipGroup,
   Stepper,
@@ -136,7 +134,8 @@ export function WebsitePublicExample() {
         <Tag hue="#b45309" mono>
           v0.1
         </Tag>
-        <SegmentedControl
+        <ToggleGroup
+          variant="segmented"
           label="View"
           mode="links"
           value="latest"
@@ -149,9 +148,7 @@ export function WebsitePublicExample() {
           <Chip href="/billing/?paid" active>
             Paid
           </Chip>
-          <Chip pressed={false} onPressedChange={() => {}}>
-            Overdue
-          </Chip>
+          <Chip>Overdue</Chip>
           <Chip onRemove={() => {}}>Q3</Chip>
         </ChipGroup>
         <Stepper
@@ -173,7 +170,10 @@ export function WebsitePublicExample() {
           Press <kbd>Esc</kbd> to close.
         </p>
         <Avatar name="Sample team" />
-        <LinkCard href="/billing/history" title="Invoice history" description="Public fixture." />
+        <Card href="/billing/history">
+          <Card.Title>Invoice history</Card.Title>
+          <Card.Description>Public fixture.</Card.Description>
+        </Card>
         <LinkButton href="/billing/new" variant="outline">
           New invoice
         </LinkButton>

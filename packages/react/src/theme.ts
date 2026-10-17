@@ -15,7 +15,7 @@ export interface ThemeInput {
   buttonRadius?: number;
   /** Chips and segmented controls (default 999). */
   pillRadius?: number;
-  /** Card and LinkCard surfaces; defaults to radius. */
+  /** Card and Stat surfaces; defaults to radius. */
   cardRadius?: number;
   /** Tag labels (default 999). */
   tagRadius?: number;

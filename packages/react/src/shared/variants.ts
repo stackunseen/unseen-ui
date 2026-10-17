@@ -64,7 +64,6 @@ export const componentVariants = {
   ContextInspector: ['list', 'table', 'accordion'],
   PolicyStatus: ['list', 'cards', 'accordion'],
   ToggleGroup: ['pills', 'segmented'],
-  LinkCard: ['card', 'row'],
   RunBoard: ['board', 'list', 'compact'],
   AttentionQueue: ['list', 'compact'],
   RunSummaryCard: ['card', 'inline'],

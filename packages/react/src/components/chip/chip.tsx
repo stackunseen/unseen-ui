@@ -13,12 +13,6 @@ interface ChipBaseProps {
   style?: CSSProperties;
   disabled?: boolean;
 }
-export interface ToggleChipProps extends ChipBaseProps {
-  pressed: boolean;
-  onPressedChange: (pressed: boolean) => void;
-  href?: never;
-  onRemove?: never;
-}
 export interface LinkChipProps
   extends
     ChipBaseProps,
@@ -28,7 +22,6 @@ export interface LinkChipProps
   active?: boolean;
   /** The aria-current token for an active chip; "true" suits a filter, "page" a destination. */
   current?: 'true' | 'page' | 'step' | 'location' | 'date' | 'time';
-  pressed?: never;
   onRemove?: never;
 }
 const chipOwnKeys = [
@@ -41,8 +34,6 @@ const chipOwnKeys = [
   'href',
   'active',
   'current',
-  'pressed',
-  'onPressedChange',
   'onRemove',
   'removeLabel',
 ] as const;
@@ -50,15 +41,13 @@ export interface RemovableChipProps extends ChipBaseProps {
   onRemove: () => void;
   /** Accessible name of the remove control; defaults to "Remove" plus the chip text. */
   removeLabel?: string;
-  pressed?: never;
   href?: never;
 }
 export interface StaticChipProps extends ChipBaseProps {
-  pressed?: never;
   href?: never;
   onRemove?: never;
 }
-export type ChipProps = ToggleChipProps | LinkChipProps | RemovableChipProps | StaticChipProps;
+export type ChipProps = LinkChipProps | RemovableChipProps | StaticChipProps;
 
 function Swatch({ swatch }: { swatch?: string }) {
   if (!swatch) return null;
@@ -66,7 +55,8 @@ function Swatch({ swatch }: { swatch?: string }) {
 }
 
 /**
- * A compact interactive label: a toggle (pressed), a link (current) or a removable value.
+ * A compact label: a link (current), a removable value or static text. For choices, use
+ * ToggleGroup.
  * Active fills use --ai-chip-active-background and --ai-chip-active-color, which default to
  * the primary tint and primary text so the label keeps its contrast.
  */
@@ -137,24 +127,6 @@ export function Chip(props: ChipProps) {
       <Anchor {...linkProps} href={props.href}>
         {label}
       </Anchor>
-    );
-  }
-  if ('pressed' in props && typeof props.pressed === 'boolean') {
-    const { pressed, onPressedChange } = props;
-    return (
-      <button
-        type="button"
-        aria-pressed={pressed}
-        disabled={disabled}
-        className={base}
-        style={style}
-        data-part="chip"
-        data-size={size}
-        onClick={() => onPressedChange(!pressed)}
-      >
-        <Swatch swatch={swatch} />
-        <span className={d.chipLabel}>{children}</span>
-      </button>
     );
   }
   return (

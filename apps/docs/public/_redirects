@@ -13,3 +13,7 @@ https://www.unseenui.com/* https://unseenui.com/:splat 301!
 /components/kbd/ /docs/changelog/ 301
 /components/skip-link/ /docs/changelog/ 301
 /components/visually-hidden/ /docs/changelog/ 301
+/components/segmented-control/ /components/toggle-group/ 301
+/components/link-card/ /components/card/ 301
+/components/panel/ /components/card/ 301
+/components/panel-header/ /components/card/ 301

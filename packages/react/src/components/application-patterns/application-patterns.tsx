@@ -10,8 +10,8 @@ import { Chip, ChipGroup } from '../chip/chip.js';
 import { InputGroup, InputGroupAddon } from '../input-group/input-group.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover.js';
-import { SegmentedControl } from '../segmented-control/segmented-control.js';
-import type { SegmentedOption } from '../segmented-control/segmented-control.js';
+import { ToggleGroup } from '../toggle-group/toggle-group.js';
+import type { ToggleGroupOption } from '../toggle-group/toggle-group.js';
 import type { SelectChoice, SelectOption } from '../select/select.js';
 import s from './application-patterns.module.css';
 
@@ -295,7 +295,7 @@ export interface FilterBarFacet {
 }
 export interface FilterBarOrder {
   label: string;
-  options: readonly SegmentedOption[];
+  options: readonly ToggleGroupOption[];
   value: string;
   onValueChange?: (value: string) => void;
   /** Links render anchors for URL-driven views. */
@@ -419,42 +419,51 @@ export function FilterBar({
       )}
     </form>
   );
-  const chips = facet && (
-    <ChipGroup label={facet.label} overflow={facet.overflow}>
-      {facet.options.map((option) => {
-        const selected = facet.selected.includes(option.value);
-        const text = (
-          <>
-            {option.label}
-            {option.count !== undefined && (
-              <span className={s.facetCount}>{` ${option.count}`}</span>
-            )}
-          </>
-        );
-        return option.href ? (
-          <Chip
-            key={option.value}
-            href={option.href}
-            active={selected}
-            swatch={option.swatch}
-            disabled={disabled}
-          >
-            {text}
-          </Chip>
-        ) : (
-          <Chip
-            key={option.value}
-            pressed={selected}
-            onPressedChange={() => facet.onToggle?.(option.value)}
-            swatch={option.swatch}
-            disabled={disabled}
-          >
-            {text}
-          </Chip>
-        );
-      })}
-    </ChipGroup>
+  const facetText = (option: NonNullable<typeof facet>['options'][number]) => (
+    <>
+      {option.swatch && (
+        <span className={s.facetSwatch} aria-hidden="true" style={{ background: option.swatch }} />
+      )}
+      {option.label}
+      {option.count !== undefined && <span className={s.facetCount}>{` ${option.count}`}</span>}
+    </>
   );
+  // Link facets stay chips (each a destination); toggle facets are one multiple-choice group.
+  const chips =
+    facet &&
+    (facet.options.some((option) => option.href) ? (
+      <ChipGroup label={facet.label} overflow={facet.overflow}>
+        {facet.options.map((option) => (
+          <Chip
+            key={option.value}
+            href={option.href ?? '#'}
+            active={facet.selected.includes(option.value)}
+            disabled={disabled || !option.href}
+          >
+            {facetText(option)}
+          </Chip>
+        ))}
+      </ChipGroup>
+    ) : (
+      <ToggleGroup
+        type="multiple"
+        size="sm"
+        label={facet.label}
+        value={facet.selected}
+        disabled={disabled}
+        className={facet.overflow === 'scroll' ? s.facetScroll : undefined}
+        options={facet.options.map((option) => ({
+          value: option.value,
+          label: facetText(option),
+        }))}
+        onValueChange={(next) => {
+          const changed =
+            next.find((value) => !facet.selected.includes(value)) ??
+            facet.selected.find((value) => !next.includes(value));
+          if (changed !== undefined) facet.onToggle?.(changed);
+        }}
+      />
+    ));
   const selectControls = selects?.map((select) => (
     <Select
       key={select.name}
@@ -537,11 +546,14 @@ export function FilterBar({
         <div className={s.toolbarRow}>
           {searchForm}
           {order && (
-            <SegmentedControl
+            <ToggleGroup
+              variant="segmented"
               label={order.label}
               options={order.options}
               value={order.value}
-              onValueChange={order.onValueChange}
+              onValueChange={(next) => {
+                if (next !== null) order.onValueChange?.(next);
+              }}
               mode={order.mode}
               disabled={disabled}
               className={s.order}
@@ -591,11 +603,14 @@ export function FilterBar({
       <div className={s.toolbarRow}>
         {searchForm}
         {order && (
-          <SegmentedControl
+          <ToggleGroup
+            variant="segmented"
             label={order.label}
             options={order.options}
             value={order.value}
-            onValueChange={order.onValueChange}
+            onValueChange={(next) => {
+              if (next !== null) order.onValueChange?.(next);
+            }}
             mode={order.mode}
             disabled={disabled}
             className={s.order}

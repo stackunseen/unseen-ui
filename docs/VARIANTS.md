@@ -9,7 +9,6 @@ The first value in each row is the default.
 | Component | `variant` values (default first) |
 | --- | --- |
 | ToggleGroup | `pills` · `segmented` |
-| LinkCard | `card` · `row` |
 | PromptInput | `standard` · `compact` · `inline` |
 | Message | `plain` · `bubble` · `panel` |
 | MessageActions | `toolbar` · `compact` · `vertical` |

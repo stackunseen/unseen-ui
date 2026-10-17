@@ -1,9 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
-import { describe, expect, it, vi } from 'vitest';
-import { WorkspaceShell, PanelHeader } from './workspace-shell.js';
-import { IconButton } from '../icon-button/icon-button.js';
+import { describe, expect, it } from 'vitest';
+import { WorkspaceShell } from './workspace-shell.js';
 import { Button } from '../button/button.js';
 
 describe('WorkspaceShell composition', () => {
@@ -124,71 +123,5 @@ describe('WorkspaceShell composition', () => {
     expect(shell).toHaveStyle({ maxHeight: '500px' });
     expect(shell).toHaveAttribute('data-scroll-mode', 'flow');
     expect(screen.getByRole('main')).not.toHaveAttribute('tabindex');
-  });
-});
-
-describe('PanelHeader placement and semantics', () => {
-  it('groups actions on their panel and preserves ordinary Tab and host callbacks', async () => {
-    const back = vi.fn();
-    const inspect = vi.fn();
-    const remove = vi.fn();
-    render(
-      <PanelHeader
-        title="Search results"
-        description="Read the matched source before taking action."
-        leading={<IconButton icon="close" label="Close search" onClick={back} />}
-        status={<span>Three matches</span>}
-        actionsLabel="Search result actions"
-        actions={
-          <>
-            <IconButton icon="search" label="Inspect result" onClick={inspect} />
-            <IconButton icon="delete" label="Remove result" onClick={remove} />
-          </>
-        }
-      />,
-    );
-    expect(screen.getByRole('heading', { name: 'Search results', level: 2 })).toBeVisible();
-    const group = screen.getByRole('group', { name: 'Search result actions' });
-    expect(within(group).getAllByRole('button')).toHaveLength(2);
-    expect(screen.queryByRole('toolbar')).not.toBeInTheDocument();
-    expect(screen.getByText('Three matches')).toBeVisible();
-    await userEvent.tab();
-    expect(screen.getByRole('button', { name: 'Close search' })).toHaveFocus();
-    await userEvent.keyboard('{Enter}');
-    await userEvent.tab();
-    expect(screen.getByRole('button', { name: 'Inspect result' })).toHaveFocus();
-    await userEvent.keyboard('{Enter}');
-    await userEvent.tab();
-    expect(screen.getByRole('button', { name: 'Remove result' })).toHaveFocus();
-    await userEvent.keyboard('{Enter}');
-    expect(back).toHaveBeenCalledOnce();
-    expect(inspect).toHaveBeenCalledOnce();
-    expect(remove).toHaveBeenCalledOnce();
-  });
-
-  it.each([2, 3, 4, 5, 6] as const)(
-    'accepts host heading level %s without empty action groups',
-    (level) => {
-      render(<PanelHeader title="Source details" headingLevel={level} />);
-      expect(screen.getByRole('heading', { name: 'Source details', level })).toBeVisible();
-      expect(screen.queryByRole('group', { name: 'Panel actions' })).not.toBeInTheDocument();
-    },
-  );
-
-  it('keeps a rich title and description as host content without introducing controls', () => {
-    render(
-      <PanelHeader
-        title={
-          <>
-            <span>Changes in </span>
-            <code>search.ts</code>
-          </>
-        }
-        description={<p>One updated file with a long source name.</p>}
-      />,
-    );
-    expect(screen.getByRole('heading', { name: 'Changes in search.ts' })).toBeVisible();
-    expect(screen.getByText('One updated file with a long source name.')).toBeVisible();
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

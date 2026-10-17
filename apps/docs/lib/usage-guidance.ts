@@ -31,7 +31,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'A call to action that navigates, styled as a button.',
     'Actions that change data on the current page.',
     'Button',
-    'LinkCard',
+    'Card',
   ),
   CopyButton: g(
     'Copying a value such as a command, id or link, with the real outcome reported.',
@@ -40,29 +40,21 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Snippet',
   ),
   Chip: g(
-    'Small toggles, removable selections or tag links in a row.',
-    'A single exclusive choice between two to five options.',
-    'SegmentedControl',
+    'Removable selections or tag links in a row.',
+    'Choosing between options; that is a ToggleGroup.',
     'ToggleGroup',
     'Tag',
   ),
   ToggleGroup: g(
-    'Filtering a list by one or several categories with counts.',
-    'Switching between views of the same content.',
+    'Choosing one or several options shown at once: filter pills with counts, or joined segments (variant="segmented"), as buttons or URL links.',
+    'Switching between panels of content.',
     'Tabs',
-    'SegmentedControl',
-  ),
-  SegmentedControl: g(
-    'One exclusive choice among two to five short options shown at once.',
-    'Long lists of options, or several selected at once.',
     'Select',
-    'RadioGroup',
-    'ToggleGroup',
   ),
   AppearanceToggle: g(
     'Letting people choose light, dark or system appearance.',
     'Other settings; it is wired to the theme provider.',
-    'SegmentedControl',
+    'ToggleGroup',
     'Switch',
   ),
   // Forms
@@ -99,7 +91,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'One choice from a short list where every option should stay visible.',
     'More than about seven options.',
     'Select',
-    'SegmentedControl',
+    'ToggleGroup',
   ),
   Slider: g(
     'Picking a number in a range where the exact value matters less than the position.',
@@ -207,12 +199,6 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Breadcrumb',
     'Progress',
   ),
-  LinkCard: g(
-    'A destination with a short description, in a grid or list.',
-    'Actions; it is a link.',
-    'Card',
-    'LinkButton',
-  ),
   CommandPalette: g(
     'A Ctrl/Cmd+K jump-anywhere search for frequent users.',
     'The only way to reach pages.',
@@ -270,10 +256,10 @@ export const usageGuidance: Record<string, UsageGuidance> = {
   ),
   // Data display
   Card: g(
-    'A grouped surface with heading, body and footer.',
-    'Whole-card links.',
-    'LinkCard',
-    'Panel',
+    'A grouped surface with heading, actions, body and footer, or a whole-card link with href.',
+    'Interactive controls inside a linked card.',
+    'Accordion',
+    'Table',
   ),
   Table: g(
     'Read-only tabular data with native semantics.',
@@ -304,12 +290,6 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Chart',
   ),
   // Layout
-  Panel: g(
-    'A section surface for related content and actions inside a workspace.',
-    'Standalone content cards.',
-    'Card',
-  ),
-  PanelHeader: g('The heading and actions at the top of a panel.', 'Page headings.', 'Panel'),
   Sidecar: g(
     'An inspector or drawer beside content, becoming a sheet on small screens.',
     'Blocking tasks.',
