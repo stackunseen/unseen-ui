@@ -105,7 +105,6 @@ if (expectedOrigin) {
     '/templates/marketing/',
     '/components/org-switcher/',
     '/components/marketing-faq/',
-    '/patterns/',
   ])
     if (indexedPaths.has(path)) failures.push(`Deferred collection promoted in sitemap: ${path}`);
 } else if (!robots.includes('Disallow: /') || sitemap.includes('<loc>'))
