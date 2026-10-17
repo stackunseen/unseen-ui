@@ -1,6 +1,6 @@
 'use client';
 import { useId, useRef, useState } from 'react';
-import { Button, StatusBadge } from '@stackunseen/ui';
+import { Button, Panel, StatusBadge } from '@stackunseen/ui';
 import { PanelHeader, WorkspaceShell } from '@stackunseen/ui/workspace';
 import { Sidecar } from '@stackunseen/ui/sidecar';
 
@@ -22,26 +22,33 @@ export function LayoutSpecimen({
   if (name === 'PanelHeader')
     return (
       <div className="generic-demo" data-demo={name}>
-        <PanelHeader
-          title={
-            state === 'Long title'
-              ? 'Project overview for the international documentation and developer experience workspace'
-              : 'Project overview'
-          }
-          description="Current project information and local actions."
-          headingLevel={3}
-          status={state === 'With status' ? <StatusBadge state="idle" label="Draft" /> : undefined}
-          actions={
-            state === 'With actions' ? (
-              <Button
-                variant="outline"
-                onClick={() => setNotice('Edit requested for the current project.')}
-              >
-                Edit project
-              </Button>
-            ) : undefined
-          }
-        />
+        <Panel>
+          <PanelHeader
+            title={
+              state === 'Long title'
+                ? 'Project overview for the international documentation and developer experience workspace'
+                : 'Project overview'
+            }
+            description="Current project information and local actions."
+            headingLevel={3}
+            status={
+              state === 'With status' || state === 'Default' ? (
+                <StatusBadge state="idle" label="Draft" />
+              ) : undefined
+            }
+            actions={
+              state === 'With actions' || state === 'Default' ? (
+                <Button
+                  variant="outline"
+                  onClick={() => setNotice('Edit requested for the current project.')}
+                >
+                  Edit project
+                </Button>
+              ) : undefined
+            }
+          />
+          <p style={{ margin: '12px 0 0' }}>The panel body follows the header.</p>
+        </Panel>
         <p role="status" className="generic-demo-status">
           {notice}
         </p>

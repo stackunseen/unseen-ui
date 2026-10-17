@@ -1,17 +1,7 @@
 'use client';
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import {
-  Chip,
-  ChipGroup,
-  Disclosure,
-  Kbd,
-  Matrix,
-  SegmentedControl,
-  SkipLink,
-  Stepper,
-  VisuallyHidden,
-} from '@stackunseen/ui';
+import { Chip, ChipGroup, Matrix, SegmentedControl, Stepper } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 const views = [
@@ -94,7 +84,6 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
   const [tier, setTier] = useState('production');
   const [lens, setLens] = useState<string[]>(['agents']);
   const [stacks, setStacks] = useState(['Next.js', 'Postgres', 'Vercel']);
-  const [open, setOpen] = useState(state === 'Open');
   if (name === 'SegmentedControl')
     return state === 'Links' ? (
       <SegmentedControl label="View" options={views} value="latest" mode="links" />
@@ -181,20 +170,6 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
         next={state === 'With navigation' ? { href: '#part-3', label: 'Scoring' } : undefined}
       />
     );
-  if (name === 'Disclosure')
-    return (
-      <Disclosure
-        summary="Overview"
-        open={open}
-        onOpenChange={setOpen}
-        variant={state === 'Plain' ? 'plain' : 'card'}
-      >
-        <p>
-          The host owns this state. Native details and summary semantics work before hydration; the
-          chevron and surface follow the theme.
-        </p>
-      </Disclosure>
-    );
   if (name === 'Matrix')
     return state === 'Plain data' ? (
       <div style={{ '--ai-matrix-max-level': 0.6 } as CSSProperties}>
@@ -243,29 +218,5 @@ export function WebsiteControlSpecimen({ name, state }: WebsiteSpecimenProps) {
         href={state === 'Linked cells' ? (row, column) => `#${row.id}-${column.id}` : undefined}
       />
     );
-  if (name === 'Kbd')
-    return (
-      <p style={{ margin: 0 }}>
-        Press <Kbd>/</Kbd> to search and <Kbd>Esc</Kbd> to close. Shortcut: <Kbd>Ctrl</Kbd> +{' '}
-        <Kbd>K</Kbd>.
-      </p>
-    );
-  if (name === 'SkipLink')
-    return (
-      <div style={{ position: 'relative', minHeight: 72 }}>
-        <SkipLink href="#skip-link-target">Skip to the sample content</SkipLink>
-        <p className="generic-demo-status">
-          Tab into this example to reveal the link; it stays hidden until focused.
-        </p>
-        <p id="skip-link-target" tabIndex={-1} style={{ margin: 0 }}>
-          Sample content.
-        </p>
-      </div>
-    );
-  return (
-    <p style={{ margin: 0 }}>
-      Download report <VisuallyHidden>(opens in a new tab)</VisuallyHidden>
-      <span aria-hidden="true"> ↗</span>
-    </p>
-  );
+  return null;
 }

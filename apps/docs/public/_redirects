@@ -6,3 +6,10 @@ https://www.unseenui.com/* https://unseenui.com/:splat 301!
 # Query-string redirects for saved ?view= and ?component= links are not supported by
 # this file (Pages ignores query strings when matching). The homepage keeps its browser
 # fallback for those legacy links, and gallery-routes.json publishes the current mapping.
+
+# Components folded into others (2026-10-17).
+/components/disclosure/ /components/accordion/ 301
+/components/progress-ring/ /components/progress/ 301
+/components/kbd/ /docs/changelog/ 301
+/components/skip-link/ /docs/changelog/ 301
+/components/visually-hidden/ /docs/changelog/ 301

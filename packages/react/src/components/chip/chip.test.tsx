@@ -2,8 +2,6 @@ import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Chip, ChipGroup } from './chip.js';
-import { Kbd } from '../kbd/kbd.js';
-import { SkipLink } from '../skip-link/skip-link.js';
 import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
 
 afterEach(cleanup);
@@ -67,23 +65,15 @@ describe('Chip', () => {
   });
 });
 
-describe('small primitives', () => {
-  it('render Kbd, SkipLink and VisuallyHidden with native semantics', async () => {
+describe('internal primitives', () => {
+  it('renders VisuallyHidden text for assistive technology only', () => {
     render(
-      <>
-        <SkipLink href="#main" />
-        <main id="main" tabIndex={-1}>
-          Press <Kbd>Esc</Kbd> to close.
-          <VisuallyHidden>Extra context</VisuallyHidden>
-        </main>
-      </>,
+      <p>
+        Close
+        <VisuallyHidden>Extra context</VisuallyHidden>
+      </p>,
     );
-    const skip = screen.getByRole('link', { name: 'Skip to content' });
-    expect(skip).toHaveAttribute('href', '#main');
-    expect(screen.getByText('Esc').tagName).toBe('KBD');
     expect(screen.getByText('Extra context')).toHaveClass(/srOnly/);
-    await userEvent.tab();
-    expect(skip).toHaveFocus();
   });
 });
 

@@ -129,17 +129,33 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
         )}
       </div>
     );
-  if (name === 'Stat')
+  if (name === 'Stat') {
+    const variant = presentation === 'plain' ? 'plain' : 'card';
     return state === 'Group' || state === 'Default' ? (
       <StatGroup aria-label="Usage">
-        <Stat label="Active users" value="1,204" delta="+12%" trend="up" note="Last 30 days" />
-        <Stat label="Errors" value="3" delta="-2" trend="down" />
-        <Stat label="Regions" value="5" />
-        <Stat label="Uptime" value="99.98%" />
+        <Stat
+          variant={variant}
+          label="Active users"
+          value="1,204"
+          delta="+12%"
+          trend="up"
+          note="Last 30 days"
+        />
+        <Stat variant={variant} label="Errors" value="3" delta="-2" trend="down" />
+        <Stat variant={variant} label="Regions" value="5" />
+        <Stat variant={variant} label="Uptime" value="99.98%" />
       </StatGroup>
     ) : (
-      <Stat label="Active users" value="1,204" delta="+12%" trend="up" note="Last 30 days" />
+      <Stat
+        variant={variant}
+        label="Active users"
+        value="1,204"
+        delta="+12%"
+        trend="up"
+        note="Last 30 days"
+      />
     );
+  }
   return (
     <div style={{ display: 'grid', gap: 12, maxWidth: 440 }}>
       <LinkCard

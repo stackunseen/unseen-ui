@@ -239,3 +239,16 @@
     outline-offset: -2px;
   }
 }
+/* Keyboard keys in the hints and the field. */
+.key {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 1px 6px;
+  border: 1px solid var(--ai-border, #e4e4e7);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-text, #18181b);
+  font: 500 12px/1.5 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  text-align: center;
+}

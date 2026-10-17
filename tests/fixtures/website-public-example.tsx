@@ -33,11 +33,7 @@ import {
   Chip,
   ChipGroup,
   Stepper,
-  Disclosure,
   Matrix,
-  Kbd,
-  SkipLink,
-  VisuallyHidden,
   Popover,
   Progress,
   RadioGroup,
@@ -166,9 +162,7 @@ export function WebsitePublicExample() {
             { id: 'b', label: 'Billing', state: 'current' },
           ]}
         />
-        <Disclosure summary="More options" defaultOpen>
-          <p>Folded content.</p>
-        </Disclosure>
+        <Progress label="Setup steps" value={1} max={2} variant="ring" />
         <Matrix
           label="Coverage"
           rows={[{ id: 'r', label: 'Row' }]}
@@ -176,9 +170,8 @@ export function WebsitePublicExample() {
           value={() => 2}
         />
         <p>
-          Press <Kbd>Esc</Kbd> to close. <VisuallyHidden>Closes the dialog.</VisuallyHidden>
+          Press <kbd>Esc</kbd> to close.
         </p>
-        <SkipLink href="#public-website-title" />
         <Avatar name="Sample team" />
         <LinkCard href="/billing/history" title="Invoice history" description="Public fixture." />
         <LinkButton href="/billing/new" variant="outline">

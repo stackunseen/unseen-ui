@@ -229,11 +229,6 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Copying a single value.',
     'CopyButton',
   ),
-  SkipLink: g(
-    'Every page with navigation before the main content.',
-    'Nothing; keep it on every layout.',
-    'VisuallyHidden',
-  ),
   // Feedback
   Alert: g(
     'A persistent message about the page or form, with a tone and an action.',
@@ -253,15 +248,9 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Skeleton',
   ),
   Progress: g(
-    'A measured amount of work done, or an explicitly unknown total.',
+    'A measured amount of work done, or an explicitly unknown total; variant="ring" for small square spaces.',
     'Activity without a measure.',
     'LoadingIndicator',
-    'ProgressRing',
-  ),
-  ProgressRing: g(
-    'Measured progress in a small square space.',
-    'Wide layouts where a bar reads better.',
-    'Progress',
   ),
   LoadingIndicator: g(
     'Showing that something is happening without inventing progress.',
@@ -304,27 +293,15 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Trends over time.',
     'Chart',
   ),
-  Disclosure: g(
-    'One optional section people can expand.',
-    'Several sections where one opens at a time.',
-    'Accordion',
-  ),
   Accordion: g(
-    'Several collapsible sections in a list.',
+    'Collapsible sections, including a single one people can expand.',
     'Content people need to compare side by side.',
     'Tabs',
-    'Disclosure',
   ),
   Matrix: g(
     'Counts across two dimensions as a heatmap table with links.',
     'Continuous values over time.',
     'Chart',
-  ),
-  Kbd: g('Keyboard keys in shortcuts and instructions.', 'Code or commands.', 'Snippet'),
-  VisuallyHidden: g(
-    'Text that only assistive technology should read.',
-    'Hiding content from everyone.',
-    'SkipLink',
   ),
   // Layout
   Panel: g(

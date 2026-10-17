@@ -2,6 +2,8 @@
 import { useId } from 'react';
 import type { ComponentProps } from 'react';
 import s from '../../shared/styles/feedback.module.css';
+import { ProgressRing } from '../progress-ring/progress-ring.js';
+import type { ProgressRingProps } from '../progress-ring/progress-ring.js';
 
 export interface ProgressProps extends Omit<
   ComponentProps<'progress'>,
@@ -26,8 +28,18 @@ export interface ProgressProps extends Omit<
   labelVisibility?: 'visible' | 'hidden';
   /** Hide the visible reading when the host prints it elsewhere. */
   showReading?: boolean;
+  /** A bar, or a ring for compact places such as a card corner. Same inputs and semantics. */
+  variant?: 'bar' | 'ring';
+  /** Ring size. */
+  size?: 'sm' | 'default' | 'lg';
 }
-export function Progress({
+/** Named native progress for a measured amount or an explicitly unknown total. */
+export function Progress({ variant = 'bar', size, ...props }: ProgressProps) {
+  if (variant === 'ring')
+    return <ProgressRing {...(props as unknown as ProgressRingProps)} size={size} />;
+  return <ProgressBar {...props} />;
+}
+function ProgressBar({
   label,
   value,
   max = 100,
@@ -36,7 +48,7 @@ export function Progress({
   showReading = true,
   className = '',
   ...props
-}: ProgressProps) {
+}: Omit<ProgressProps, 'variant' | 'size'>) {
   const labelId = useId();
   const validMax = Number.isFinite(max) && max > 0;
   const measured = validMax && typeof value === 'number' && Number.isFinite(value);

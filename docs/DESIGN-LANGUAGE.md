@@ -69,7 +69,7 @@ Use spacing and separators before adding another bordered container. A card insi
 | --- | --- | --- |
 | `--ai-control-radius` | 8px | Inputs, selects, buttons (via `--ai-button-radius`) |
 | `--ai-radius` | 10px | Panels, menus, dialogs |
-| `--ai-radius-card` | 10px | Card, LinkCard, Disclosure |
+| `--ai-radius-card` | 12px | Card, LinkCard, Stat |
 | `--ai-composer-radius` | 16px | Prompt composer |
 | `--ai-radius-pill` / `--ai-radius-tag` | 999px | Chips, segmented controls, tags |
 | 6px / 4px | fixed | Icon tiles, inline code, small markers |
@@ -83,7 +83,7 @@ Layering order: backdrop 100, dialog and sheet 101, menu, popover and select 110
 | Token | Default | Use |
 | --- | --- | --- |
 | `--ai-duration-fast` | 120ms | Hover, press and colour changes |
-| `--ai-duration-base` | 200ms | Disclosure, overlays entering |
+| `--ai-duration-base` | 200ms | Accordion, overlays entering |
 | `--ai-ease` | `cubic-bezier(0.2, 0, 0, 1)` | All UI transitions |
 
 - Transitions apply only under `prefers-reduced-motion: no-preference`. `AITheme` `motion="reduced"` removes them regardless.

@@ -9,7 +9,6 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  ProgressRing,
   useStoredAppearance,
 } from '@stackunseen/ui';
 import type { Appearance } from '@stackunseen/ui';
@@ -218,21 +217,6 @@ export function WebsiteUtilitySpecimen({ name, state }: WebsiteSpecimenProps) {
           {submitted}
         </p>
       </form>
-    );
-  if (name === 'ProgressRing')
-    return (
-      <div
-        className="generic-demo-actions"
-        style={{ justifyContent: 'flex-start', margin: 0, gap: 24 }}
-      >
-        <ProgressRing
-          label="Checklist"
-          value={state === 'Complete' ? 9 : state === 'Indeterminate' ? null : 3}
-          max={9}
-          valueText={state === 'Indeterminate' ? undefined : `${state === 'Complete' ? 9 : 3} of 9`}
-          size={state === 'Large' ? 'lg' : state === 'Small' ? 'sm' : 'default'}
-        />
-      </div>
     );
   return <AppearanceExample state={state} />;
 }

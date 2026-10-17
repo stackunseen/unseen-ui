@@ -21,7 +21,7 @@ import {
 } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
-export function WebsiteFeedbackSpecimen({ name, state }: WebsiteSpecimenProps) {
+export function WebsiteFeedbackSpecimen({ name, state, presentation }: WebsiteSpecimenProps) {
   const [notice, setNotice] = useState('');
   const [steps, setSteps] = useState(state === 'Complete' ? 10 : 3);
   const [open, setOpen] = useState(false);
@@ -107,6 +107,7 @@ export function WebsiteFeedbackSpecimen({ name, state }: WebsiteSpecimenProps) {
       <>
         {state === 'Hidden label' && <h3 style={{ margin: '0 0 8px' }}>Sample steps completed</h3>}
         <Progress
+          variant={presentation === 'ring' ? 'ring' : 'bar'}
           label="Sample steps completed"
           value={state === 'Indeterminate' ? null : steps}
           max={10}

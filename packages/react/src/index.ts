@@ -499,8 +499,6 @@ export type {
   FeedbackTarget,
   FeedbackReason,
 } from './components/trust/feedback-capture.js';
-export { ProgressRing } from './components/progress-ring/progress-ring.js';
-export type { ProgressRingProps } from './components/progress-ring/progress-ring.js';
 export { AppearanceToggle } from './components/appearance-toggle/appearance-toggle.js';
 export type { AppearanceToggleProps } from './components/appearance-toggle/appearance-toggle.js';
 export {
@@ -544,12 +542,6 @@ export type {
   RemovableChipProps,
   StaticChipProps,
 } from './components/chip/chip.js';
-export { VisuallyHidden } from './components/visually-hidden/visually-hidden.js';
-export type { VisuallyHiddenProps } from './components/visually-hidden/visually-hidden.js';
-export { Kbd } from './components/kbd/kbd.js';
-export type { KbdProps } from './components/kbd/kbd.js';
-export { SkipLink } from './components/skip-link/skip-link.js';
-export type { SkipLinkProps } from './components/skip-link/skip-link.js';
 export { Stepper } from './components/stepper/stepper.js';
 export type {
   StepperProps,
@@ -557,8 +549,6 @@ export type {
   StepperLink,
   StepState,
 } from './components/stepper/stepper.js';
-export { Disclosure } from './components/disclosure/disclosure.js';
-export type { DisclosureProps } from './components/disclosure/disclosure.js';
 export { Matrix } from './components/matrix/matrix.js';
 export type { MatrixProps, MatrixAxisItem } from './components/matrix/matrix.js';
 export {

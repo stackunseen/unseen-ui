@@ -9,6 +9,8 @@ export interface StatProps extends ComponentProps<'div'> {
   delta?: ReactNode;
   trend?: 'up' | 'down' | 'neutral';
   note?: ReactNode;
+  /** Card gives each stat its own surface; plain is the bare figure for dense rows. */
+  variant?: 'card' | 'plain';
 }
 export type StatGroupProps = ComponentProps<'div'>;
 
@@ -19,11 +21,12 @@ export function Stat({
   delta,
   trend = 'neutral',
   note,
+  variant = 'card',
   className = '',
   ...props
 }: StatProps) {
   return (
-    <div {...props} data-part="stat" className={`${d.stat} ${className}`}>
+    <div {...props} data-part="stat" data-variant={variant} className={`${d.stat} ${className}`}>
       <span className={d.statLabel}>{label}</span>
       <span className={d.statValue}>{value}</span>
       {delta !== undefined && delta !== null && (

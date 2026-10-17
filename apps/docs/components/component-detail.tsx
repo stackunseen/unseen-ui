@@ -38,60 +38,34 @@ function storedManager(): Manager {
 }
 
 /**
- * Centres a preview whose drawn content (text and controls) covers under half the stage, such as
- * a button or badge; anything wider keeps the full column. Measured once per example.
+ * Small components read best centred on the stage. A fixed list, not a measurement: measuring
+ * drawn content misjudged lazy-loading previews and collapsed full-width ones such as PanelHeader.
  */
-function useFitContent(key: string) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    node.removeAttribute('data-fit');
-    let tries = 0;
-    let timer: ReturnType<typeof setTimeout>;
-    const measure = () => {
-      const content = node.querySelector('.specimen-content');
-      if (!content) return;
-      if (content.querySelector('.example-loading')) {
-        if (tries++ < 20) timer = setTimeout(measure, 150);
-        return;
-      }
-      const box = content.getBoundingClientRect();
-      if (!box.width) return;
-      let left = Infinity;
-      let right = -Infinity;
-      const range = document.createRange();
-      const walker = document.createTreeWalker(
-        content,
-        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
-      );
-      for (
-        let item = walker.nextNode(), seen = 0;
-        item && seen < 2000;
-        item = walker.nextNode(), seen++
-      ) {
-        let rect: DOMRect | undefined;
-        if (item.nodeType === Node.TEXT_NODE) {
-          if (!item.textContent?.trim()) continue;
-          range.selectNodeContents(item);
-          rect = range.getBoundingClientRect();
-        } else if (
-          (item as Element).matches(
-            'button, input, select, textarea, svg, img, [role="switch"], [role="slider"], [role="progressbar"]',
-          )
-        )
-          rect = (item as Element).getBoundingClientRect();
-        if (!rect?.width) continue;
-        left = Math.min(left, rect.left);
-        right = Math.max(right, rect.right);
-      }
-      if (right > left && right - left < box.width * 0.5) node.setAttribute('data-fit', 'content');
-    };
-    timer = setTimeout(measure, 60);
-    return () => clearTimeout(timer);
-  }, [key]);
-  return ref;
-}
+const centredPreviews = new Set([
+  'Button',
+  'IconButton',
+  'LinkButton',
+  'CopyButton',
+  'StatusBadge',
+  'Tag',
+  'Chip',
+  'Avatar',
+  'Switch',
+  'Checkbox',
+  'ToggleGroup',
+  'SegmentedControl',
+  'AppearanceToggle',
+  'Tooltip',
+  'Popover',
+  'DropdownMenu',
+  'Modal',
+  'AlertDialog',
+  'Toast',
+  'ShareMenu',
+  'LoadingIndicator',
+  'Shimmer',
+]);
+
 export function ComponentDetail({
   entry,
   location,
@@ -216,7 +190,6 @@ export function ComponentDetail({
         setCopied({ usage, message: 'Clipboard unavailable. Select the code to copy.' });
     }
   }
-  const fit = useFitContent(`${entry.name}:${variant}:${presentation}:${reset}`);
   const pageMarkdown = [
     `# ${entry.name}`,
     '',
@@ -387,7 +360,11 @@ export function ComponentDetail({
                   <>
                     <div className="preview-canvas">
                       <div
-                        ref={compare || allStates ? undefined : fit}
+                        data-fit={
+                          !compare && !allStates && centredPreviews.has(entry.name)
+                            ? 'content'
+                            : undefined
+                        }
                         className={compare || allStates ? 'variant-comparison' : 'detail-specimen'}
                       >
                         {!compare && !allStates && (

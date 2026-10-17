@@ -22,7 +22,6 @@ const sharedPublicModules = new Set([
   // LinkProvider, one copy hook and one stylesheet serve every entry.
   'components/chip/chip',
   'components/segmented-control/segmented-control',
-  'components/kbd/kbd',
   'components/loading-indicator/loading-indicator',
   'components/dropdown-menu/dropdown-menu',
   'components/tooltip/tooltip',

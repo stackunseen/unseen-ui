@@ -51,8 +51,10 @@
   list-style: none;
 }
 .list.content {
-  gap: var(--ai-activity-gap, var(--ai-gap, 12px));
+  gap: var(--ai-activity-gap, 10px);
+  /* .list resets padding; the content rail keeps its inset from the rule. */
   padding-block: 4px 2px;
+  padding-inline: 14px 0;
 }
 .list.content > li {
   display: flex;

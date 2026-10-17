@@ -1,9 +1,7 @@
 import { cleanup, render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { renderToString } from 'react-dom/server';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { Stepper } from './stepper.js';
-import { Disclosure } from '../disclosure/disclosure.js';
 import { Matrix } from '../matrix/matrix.js';
 import { Tag } from '../tag/tag.js';
 
@@ -60,42 +58,6 @@ describe('Stepper', () => {
     expect(tip).toHaveTextContent('Datasets');
     expect(tip).toHaveAttribute('aria-hidden', 'true');
     expect(link).toHaveAccessibleName('Datasets, current');
-  });
-});
-
-describe('Disclosure', () => {
-  it('uses native details semantics and reports toggles to a controlled host', async () => {
-    const onOpenChange = vi.fn();
-    const { container, rerender } = render(
-      <Disclosure summary={<strong>Overview</strong>} open={false} onOpenChange={onOpenChange}>
-        <p>Folded content</p>
-      </Disclosure>,
-    );
-    const details = container.querySelector('details')!;
-    expect(details.open).toBe(false);
-    await userEvent.click(screen.getByText('Overview'));
-    expect(onOpenChange).toHaveBeenCalledWith(true);
-    expect(details.open).toBe(false);
-    rerender(
-      <Disclosure summary={<strong>Overview</strong>} open onOpenChange={onOpenChange}>
-        <p>Folded content</p>
-      </Disclosure>,
-    );
-    expect(details.open).toBe(true);
-    expect(screen.getByText('Folded content')).toBeVisible();
-  });
-
-  it('opens by default when uncontrolled', () => {
-    const { container } = render(
-      <Disclosure summary="More" defaultOpen variant="plain">
-        <p>Shown</p>
-      </Disclosure>,
-    );
-    expect(container.querySelector('details')!.open).toBe(true);
-    expect(container.querySelector('[data-part="disclosure"]')).toHaveAttribute(
-      'data-variant',
-      'plain',
-    );
   });
 });
 

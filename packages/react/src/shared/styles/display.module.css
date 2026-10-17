@@ -58,6 +58,16 @@
   min-width: 0;
   overflow-wrap: anywhere;
 }
+/* Each stat is its own card; plain drops the surface for dense rows. */
+.stat[data-variant='card'] {
+  padding: 14px 16px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
+  border-radius: var(--ai-radius-card, var(--ai-radius, 12px));
+  background: var(--ai-surface, #fff);
+}
+.statGroup:has(> [data-variant='card']) {
+  gap: var(--ai-gap, 12px);
+}
 .statLabel {
   color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
@@ -371,37 +381,6 @@ button.chip:hover:not(:disabled) {
 .chipGroup[data-overflow='scroll'] > * {
   flex-shrink: 0;
 }
-.kbd {
-  display: inline-block;
-  min-width: 1.6em;
-  padding: 1px 6px;
-  border: 1px solid var(--ai-border, #e4e4e7);
-  border-bottom-width: 2px;
-  border-radius: 6px;
-  background: var(--ai-surface-subtle, #f4f4f5);
-  color: var(--ai-text, #18181b);
-  font: 500 12px/1.5 var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
-  text-align: center;
-  vertical-align: baseline;
-}
-.skipLink {
-  position: absolute;
-  inset-inline-start: 16px;
-  inset-block-start: -200px;
-  z-index: 200;
-  padding: 8px 14px;
-  border-radius: var(--ai-control-radius, 10px);
-  background: var(--ai-surface, #fff);
-  color: var(--ai-primary-text, #27272a);
-  font-weight: 600;
-  text-decoration: underline;
-  box-shadow: var(--ai-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.1));
-}
-.skipLink:focus-visible {
-  inset-block-start: 16px;
-  outline: 2px solid var(--ai-focus, #18181b);
-  outline-offset: 2px;
-}
 @media (prefers-reduced-motion: no-preference) {
   .segment,
   .chip {
@@ -585,76 +564,6 @@ a.stepperStep:hover {
 }
 .stepperNavLink:hover {
   text-decoration: underline;
-}
-/* Disclosure: native details on a Card surface. */
-.disclosure {
-  min-width: 0;
-  border: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: var(--ai-radius-card, var(--ai-radius, 12px));
-  background: var(--ai-surface, #fff);
-  color: var(--ai-text, #18181b);
-}
-.disclosure[data-variant='plain'] {
-  border-width: 0 0 1px;
-  border-radius: 0;
-  background: transparent;
-}
-.disclosureSummary {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px var(--ai-panel-padding, 16px);
-  border-radius: inherit;
-  font-weight: 500;
-  cursor: pointer;
-  list-style: none;
-}
-.disclosure[data-variant='plain'] > .disclosureSummary {
-  padding-inline: 0;
-}
-.disclosureSummary::-webkit-details-marker {
-  display: none;
-}
-.disclosureSummary:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
-}
-.disclosure[data-variant='plain'] > .disclosureSummary:hover {
-  background: transparent;
-  color: var(--ai-primary-text, #27272a);
-}
-.disclosureSummary:focus-visible {
-  outline: 2px solid var(--ai-focus, #18181b);
-  outline-offset: -2px;
-}
-.disclosureSummaryText {
-  flex: 1;
-  min-width: 0;
-}
-.disclosureChevron {
-  display: grid;
-  flex-shrink: 0;
-  color: var(--ai-muted, #52525b);
-}
-.disclosure[open] > .disclosureSummary .disclosureChevron {
-  transform: rotate(180deg);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .disclosureChevron {
-    transition: transform var(--ai-duration-fast, 120ms) var(--ai-ease, cubic-bezier(0.2, 0, 0, 1));
-  }
-}
-.disclosureBody {
-  padding: 0 var(--ai-panel-padding, 16px) var(--ai-panel-padding, 16px);
-  color: var(--ai-text, #18181b);
-}
-.disclosure[data-variant='plain'] > .disclosureBody {
-  padding-inline: 0;
-}
-.disclosureBody > :first-child {
-  margin-block-start: 0;
-}
-.disclosureBody > :last-child {
-  margin-block-end: 0;
 }
 /* Matrix: a real table whose cells carry a single-hue fill behind printed numbers. */
 .matrixScroll {

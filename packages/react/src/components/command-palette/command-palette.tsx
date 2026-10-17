@@ -5,7 +5,6 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Command } from 'cmdk';
 import { ThemeSurface } from '../../providers/theme/theme-provider.js';
 import { AIIcon } from '../../providers/icons/icons.js';
-import { Kbd } from '../kbd/kbd.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
 import { Anchor, useLinkComponent } from '../../shared/link.js';
 import { markMatches } from './mark-matches.js';
@@ -58,13 +57,13 @@ export interface CommandPaletteProps {
 const DEFAULT_HINTS = (
   <>
     <span>
-      <Kbd>↑</Kbd> <Kbd>↓</Kbd> to move
+      <kbd className={s.key}>↑</kbd> <kbd className={s.key}>↓</kbd> to move
     </span>
     <span>
-      <Kbd>Enter</Kbd> to open
+      <kbd className={s.key}>Enter</kbd> to open
     </span>
     <span>
-      <Kbd>Esc</Kbd> to close
+      <kbd className={s.key}>Esc</kbd> to close
     </span>
   </>
 );
@@ -355,9 +354,9 @@ export function CommandPalette({
                   className={s.input}
                   onKeyDown={onInputKeyDown}
                 />
-                <Kbd className={s.fieldKey} aria-hidden="true">
+                <kbd className={`${s.key} ${s.fieldKey}`} aria-hidden="true">
                   Esc
-                </Kbd>
+                </kbd>
                 <Dialog.Close asChild>
                   <button type="button" className={s.cancel}>
                     {cancelLabel}

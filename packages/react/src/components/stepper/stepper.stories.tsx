@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stepper } from './stepper.js';
-import { Disclosure } from '../disclosure/disclosure.js';
 import { Matrix } from '../matrix/matrix.js';
 import { Tag } from '../tag/tag.js';
 
@@ -12,7 +10,7 @@ const steps = [
   { id: '4', label: 'Reporting', state: 'planned' as const },
 ];
 const meta = {
-  title: 'Unseen UI/Stepper, Disclosure and Matrix',
+  title: 'Unseen UI/Stepper and Matrix',
   component: Stepper,
   args: { label: 'Series parts', steps },
 } satisfies Meta<typeof Stepper>;
@@ -26,21 +24,6 @@ export const List: Story = { args: { presentation: 'list' } };
 export const Segments: Story = {
   args: { presentation: 'segments', tooltip: true, reading: true },
 };
-
-function ControlledDisclosure() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ display: 'grid', gap: 12, maxWidth: 480 }}>
-      <Disclosure summary="Overview" open={open} onOpenChange={setOpen}>
-        <p>The host owns this state; the summary reports toggles.</p>
-      </Disclosure>
-      <Disclosure summary="More facets" variant="plain" defaultOpen>
-        <p>Uncontrolled, open by default.</p>
-      </Disclosure>
-    </div>
-  );
-}
-export const Disclosures: Story = { render: () => <ControlledDisclosure /> };
 
 const rows = ['RAG', 'Agents', 'Evals', 'Observability'].map((label) => ({
   id: label.toLowerCase(),

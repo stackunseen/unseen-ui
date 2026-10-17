@@ -222,20 +222,25 @@ export const websiteCatalog: CatalogEntry[] = [
     relatedImports: ['EmptyStateTitle', 'EmptyStateDescription'],
     code: '<EmptyState><EmptyStateTitle>No projects yet</EmptyStateTitle><EmptyStateDescription>Your projects will appear here when you add one.</EmptyStateDescription></EmptyState>',
   }),
-  entry({
-    name: 'Progress',
-    group: 'Feedback',
-    aliases: ['Progress bar', 'Indeterminate progress'],
-    description: 'Named native progress for a measured amount or an explicitly unknown total.',
-    states: ['Default', 'Indeterminate', 'Complete', 'Hidden label'],
-    contract:
-      'label: string · value?: number | null · max?: number · valueText? · labelVisibility?: visible | hidden · showReading?',
-    responsibility:
-      'Use a numeric value only for measured work with a known denominator. The interactive example counts local sample steps; it does not claim real upload or AI completion progress.',
-    keyboard:
-      'The native progress element is named but is not an extra tab stop. Nearby controls remain available while work advances.',
-    code: '<Progress label="Sample steps completed" value={completedSteps} max={10} valueText={`${completedSteps} of 10 sample steps`} />',
-  }),
+  {
+    ...entry({
+      name: 'Progress',
+      group: 'Feedback',
+      aliases: ['Progress bar', 'Indeterminate progress'],
+      description:
+        'Named progress for a measured amount or an explicitly unknown total, as a bar or a ring.',
+      states: ['Default', 'Indeterminate', 'Complete', 'Hidden label'],
+      contract:
+        'label: string · value?: number | null · max?: number · valueText? · labelVisibility?: visible | hidden · showReading? · variant?: bar | ring · size?: sm | default | lg',
+      responsibility:
+        'Use a numeric value only for measured work with a known denominator. The interactive example counts local sample steps; it does not claim real upload or AI completion progress.',
+      keyboard:
+        'The native progress element is named but is not an extra tab stop. Nearby controls remain available while work advances.',
+      code: '<Progress label="Sample steps completed" value={completedSteps} max={10} valueText={`${completedSteps} of 10 sample steps`} />',
+    }),
+    presentations: ['bar', 'ring'],
+    presentationProp: 'variant',
+  },
   entry({
     name: 'Toast',
     group: 'Feedback',
@@ -387,21 +392,25 @@ export const websiteCatalog: CatalogEntry[] = [
     keyboard: 'Inert content; it adds no tab stop.',
     code: '<Avatar name="Ada Lovelace" src={photoUrl} />',
   }),
-  entry({
-    name: 'Stat',
-    group: 'Data Display',
-    aliases: ['Metric', 'KPI', 'Number tile'],
-    description:
-      'A formatted number with its label, optional change and note, for rows of metrics.',
-    states: ['Default', 'With trend', 'Group'],
-    contract:
-      'label · value · delta? · trend?: up | down | neutral · note? · StatGroup: native div props',
-    responsibility:
-      'Format numbers, units and signs in the application. Trend colour only reinforces text that already carries the sign. Renders on the server.',
-    keyboard: 'Inert content; it adds no tab stop.',
-    relatedImports: ['StatGroup'],
-    code: '<StatGroup aria-label="Usage">\n  <Stat label="Active users" value="1,204" delta="+12%" trend="up" note="Last 30 days" />\n</StatGroup>',
-  }),
+  {
+    ...entry({
+      name: 'Stat',
+      group: 'Data Display',
+      aliases: ['Metric', 'KPI', 'Number tile'],
+      description:
+        'A formatted number with its label, optional change and note, for rows of metrics.',
+      states: ['Default', 'With trend', 'Group'],
+      contract:
+        'label · value · delta? · trend?: up | down | neutral · note? · StatGroup: native div props',
+      responsibility:
+        'Format numbers, units and signs in the application. Trend colour only reinforces text that already carries the sign. Renders on the server.',
+      keyboard: 'Inert content; it adds no tab stop.',
+      relatedImports: ['StatGroup'],
+      code: '<StatGroup aria-label="Usage">\n  <Stat label="Active users" value="1,204" delta="+12%" trend="up" note="Last 30 days" />\n</StatGroup>',
+    }),
+    presentations: ['card', 'plain'],
+    presentationProp: 'variant',
+  },
   {
     ...entry({
       name: 'LinkCard',
@@ -469,21 +478,6 @@ export const websiteCatalog: CatalogEntry[] = [
     code: '<Stepper label="Series parts" steps={steps} reading previous={{ href: prev }} next={{ href: next }} />',
   }),
   entry({
-    name: 'Disclosure',
-    group: 'Data Display',
-    aliases: ['Details', 'Collapsible', 'Fold', 'Show more'],
-    description: 'One collapsible section on native details and summary, styled like a Card.',
-    states: ['Default', 'Open', 'Plain'],
-    contract:
-      'summary · children · open? · defaultOpen? · onOpenChange? · variant?: card | plain · native details props',
-    responsibility:
-      'Leave open undefined for native behaviour, or control it from the host. Use Accordion for several related sections.',
-    keyboard:
-      'The summary is a native disclosure control: Tab reaches it, Enter or Space toggles it.',
-    relatedImports: ['Accordion'],
-    code: '<Disclosure summary="Overview">{body}</Disclosure>',
-  }),
-  entry({
     name: 'Matrix',
     group: 'Data Display',
     aliases: ['Heatmap', 'Coverage matrix', 'Grid of counts'],
@@ -498,41 +492,6 @@ export const websiteCatalog: CatalogEntry[] = [
       'A real table with scoped headers inside a focusable, labelled scroll region; header and cell links are ordinary links.',
     relatedImports: ['Table'],
     code: '<Matrix label="Coverage" rows={disciplines} columns={kinds} value={count} href={filterHref} />',
-  }),
-  entry({
-    name: 'Kbd',
-    group: 'Data Display',
-    aliases: ['Keyboard key', 'Shortcut'],
-    description: 'A keyboard key for shortcuts and instructions.',
-    states: ['Default'],
-    contract: 'Native kbd props · children',
-    responsibility:
-      'Describe the shortcut in nearby text as well; the key alone is not an instruction.',
-    keyboard: 'Inert content; it adds no tab stop.',
-    code: 'Press <Kbd>Esc</Kbd> to close.',
-  }),
-  entry({
-    name: 'SkipLink',
-    group: 'Navigation',
-    aliases: ['Skip to content', 'Skip navigation'],
-    description: 'A link to the main content that appears when focused.',
-    states: ['Default'],
-    contract: 'href · children? · native anchor props',
-    responsibility:
-      'Place it first in the document and give the target tabIndex={-1} so focus lands inside it.',
-    keyboard: 'Tab from the top of the page reveals it; Enter moves focus to the target.',
-    code: '<SkipLink href="#main" />',
-  }),
-  entry({
-    name: 'VisuallyHidden',
-    group: 'Data Display',
-    aliases: ['Screen reader only', 'sr-only'],
-    description: 'Text for assistive technology only, kept in the accessibility tree.',
-    states: ['Default'],
-    contract: 'Native span props · children',
-    responsibility: 'Use it to complete a label, not to hide content that sighted users also need.',
-    keyboard: 'Inert content; it adds no tab stop.',
-    code: '<VisuallyHidden>Opens in a new tab</VisuallyHidden>',
   }),
   entry({
     name: 'CopyButton',
@@ -564,20 +523,6 @@ export const websiteCatalog: CatalogEntry[] = [
     code: '<Field label="Email address">\n  <InputGroup shape="pill" size="touch">\n    <Input type="email" />\n    <InputGroupButton type="submit">Subscribe</InputGroupButton>\n  </InputGroup>\n</Field>',
   }),
   entry({
-    name: 'ProgressRing',
-    group: 'Feedback',
-    aliases: ['Circular progress', 'Ring'],
-    description: 'The circular sibling of Progress, with the same inputs and semantics.',
-    states: ['Default', 'Complete', 'Indeterminate', 'Small', 'Large'],
-    contract:
-      'label · value? · max? · valueText? · labelVisibility?: visible | hidden · showReading? · size?: sm | default | lg',
-    responsibility:
-      'A measured value only; unknown work stays indeterminate. The SVG ring draws with tokens and animates only when reduced motion is off.',
-    keyboard: 'Inert; it adds no tab stop.',
-    relatedImports: ['Progress'],
-    code: '<ProgressRing label="Checklist" value={3} max={9} valueText="3 of 9" />',
-  }),
-  entry({
     name: 'AppearanceToggle',
     group: 'Actions',
     aliases: ['Theme toggle', 'Dark mode switch', 'Light dark system'],
@@ -605,7 +550,7 @@ export const websiteCatalog: CatalogEntry[] = [
       'Static items filter locally by every word; async results are debounced, cancelled through the signal and never shown for an older query. With a LinkProvider, items with an href are that router link. Excerpts are plain text; markMatches marks them safely.',
     keyboard:
       'Up and Down move and wrap, Home and End jump, Enter selects, Escape and the backdrop close. Enter does nothing during IME composition. Focus returns to the opener.',
-    relatedImports: ['Button', 'Kbd'],
+    relatedImports: ['Button'],
     code: '<CommandPalette items={jumps} search={searchSite} onSelect={(item) => router.push(item.href)} />',
   }),
   entry({
