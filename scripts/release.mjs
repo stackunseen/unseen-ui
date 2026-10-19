@@ -48,7 +48,8 @@ function assertActions() {
     throw new Error('Remote release operations run only in the manually dispatched main workflow.');
 }
 function assertClean() {
-  if (git('status', '--porcelain')) throw new Error('Release checkout must be clean.');
+  const changes = git('status', '--porcelain');
+  if (changes) throw new Error(`Release checkout must be clean. Changed:\n${changes}`);
 }
 function bumpFiles(version) {
   for (const { folder } of packages) {
