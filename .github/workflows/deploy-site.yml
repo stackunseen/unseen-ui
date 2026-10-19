@@ -1,7 +1,10 @@
 name: Deploy site
 # Builds the static Unseen UI site with the production origin and publishes apps/docs/out
-# to Cloudflare Pages. Package publishing stays in release.yml.
+# to Cloudflare Pages. Package publishing stays in release.yml. The release's version commit
+# is pushed with the workflow token, which does not start other workflows, so run this by hand
+# after a release to pin the shadcn registry to the new version.
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
