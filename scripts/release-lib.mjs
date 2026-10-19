@@ -114,7 +114,9 @@ export function inspectArchive(bytes, expected) {
     const type = field(156, 157);
     if (type !== '' && type !== '0') throw new Error(`Unsupported archive entry: ${name}`);
     if (
-      !/^package\/(?:dist\/.+|README\.md|package\.json|LICENSE(?:\.md|\.txt)?)$/.test(name) ||
+      !/^package\/(?:dist\/.+|bin\/[\w-]+\.mjs|README\.md|package\.json|LICENSE(?:\.md|\.txt)?)$/.test(
+        name,
+      ) ||
       name.split('/').some((part) => part === '..' || part === '.') ||
       name.includes('\\') ||
       files.has(name)
@@ -147,6 +149,21 @@ export function inspectArchive(bytes, expected) {
         throw new Error(`Missing or invalid exported file: ${target}`);
     }
   }
+  const bins =
+    typeof manifest.bin === 'string' ? [manifest.bin] : Object.values(manifest.bin ?? {});
+  for (const target of bins) {
+    const path = typeof target === 'string' ? target.replace(/^\.\//, '') : '';
+    if (!/^bin\/[\w-]+\.mjs$/.test(path) || !files.has(`package/${path}`))
+      throw new Error(`Missing or invalid bin file: ${target}`);
+  }
+  if (
+    [...files.keys()].some(
+      (name) =>
+        name.startsWith('package/bin/') &&
+        !bins.some((target) => `package/${target.replace(/^\.\//, '')}` === name),
+    )
+  )
+    throw new Error('Packed bin files must be declared in the manifest.');
   if (!files.has('package/README.md') || !Object.keys(manifest.exports ?? {}).length)
     throw new Error('Package README and exports are required.');
   return { files: files.size, integrity: integrity(bytes) };

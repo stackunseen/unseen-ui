@@ -118,6 +118,27 @@ test('archive includes only approved files with real exported targets and exact 
   assert.throws(() =>
     inspectArchive(fixture(manifest(), { 'package/dist/../secret': 'fixture' }), manifest()),
   );
+  assert.throws(
+    () =>
+      inspectArchive(
+        fixture(manifest(), { 'package/bin/cli.mjs': '#!/usr/bin/env node' }),
+        manifest(),
+      ),
+    /declared/,
+  );
+  assert.throws(
+    () => inspectArchive(fixture(manifest(0, { bin: { cli: './bin/missing.mjs' } })), manifest()),
+    /bin file/,
+  );
+  assert.equal(
+    inspectArchive(
+      fixture(manifest(0, { bin: { cli: './bin/cli.mjs' } }), {
+        'package/bin/cli.mjs': '#!/usr/bin/env node',
+      }),
+      manifest(),
+    ).files,
+    6,
+  );
   assert.throws(() =>
     inspectArchive(fixture(manifest(0, { exports: { '.': './dist/missing.js' } })), manifest()),
   );
