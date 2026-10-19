@@ -1,5 +1,5 @@
 {
-  "name": "ai-interaction-workspace",
+  "name": "unseen-ui-workspace",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.5.0",
@@ -7,15 +7,15 @@
     "node": ">=24.13.0 <25"
   },
   "scripts": {
-    "dev": "pnpm --filter @ai-interaction/docs dev",
+    "dev": "pnpm --filter @unseen-ui/docs dev",
     "preview": "node scripts/serve-docs.mjs",
-    "template:dev": "pnpm --filter @ai-interaction/consumer exec vite --host 127.0.0.1 --port 4184 --strictPort",
-    "template:preview": "pnpm --filter @ai-interaction/consumer exec vite preview --host 127.0.0.1 --port 4184 --strictPort",
+    "template:dev": "pnpm --filter @unseen-ui/consumer exec vite --host 127.0.0.1 --port 4184 --strictPort",
+    "template:preview": "pnpm --filter @unseen-ui/consumer exec vite preview --host 127.0.0.1 --port 4184 --strictPort",
     "files:demo": "node examples/file-host/serve.mjs",
     "terminal:demo": "node examples/pty-host/demo.mjs",
     "terminal:serve": "node examples/pty-host/serve.mjs",
     "build:packages": "pnpm --filter @stackunseen/ui-core build && pnpm --filter @stackunseen/ui build",
-    "build": "pnpm build:packages && pnpm --filter @ai-interaction/docs build && pnpm --filter @ai-interaction/consumer build",
+    "build": "pnpm build:packages && pnpm --filter @unseen-ui/docs build && pnpm --filter @unseen-ui/consumer build",
     "typecheck": "pnpm -r typecheck && tsc -p tests/tsconfig.json --noEmit",
     "lint": "eslint packages apps examples tests && node scripts/check-boundaries.mjs",
     "test": "vitest run",

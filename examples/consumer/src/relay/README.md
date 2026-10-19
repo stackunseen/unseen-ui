@@ -15,11 +15,11 @@ pnpm template:dev
 Open `http://127.0.0.1:4184/relay.html`. For a built preview, stop the template development server and run:
 
 ```sh
-pnpm --filter @ai-interaction/consumer build
+pnpm --filter @unseen-ui/consumer build
 pnpm template:preview
 ```
 
-Relay is a separate HTML entry in `examples/consumer`. See [Getting Started](../../../../docs/GETTING-STARTED.md) for private checkout and package requirements.
+Relay is a separate HTML entry in `examples/consumer`. See [Getting Started](../../../../docs/GETTING-STARTED.md) for package requirements.
 
 ## Try it
 
@@ -41,9 +41,9 @@ The assistant uses deterministic text and local timers, not a model. It accepts 
 | `assistant.tsx`, `assistant-host.ts`              | Conversation UI and simulated response lifecycle                 |
 | CSS Modules                                       | Scoped application layout using public theme variables           |
 
-To reuse the template, render `RelayApp` in a React app and import `@stackunseen/ui/styles.css` before app styles. Use a bundler with CSS Modules support and a client boundary in frameworks with server components. Relay uses no optional heavy renderer. Package setup and license status are in [Getting Started](../../../../docs/GETTING-STARTED.md).
+To reuse the template, render `RelayApp` in a React app and import `@stackunseen/ui/styles.css` before app styles. Use a bundler with CSS Modules support and a client boundary in frameworks with server components. Relay uses no optional heavy renderer. Package setup is in [Getting Started](../../../../docs/GETTING-STARTED.md).
 
-Replace the local gallery link in `app.tsx` when moving the template. The overview expects at least one account; add an empty portfolio state before supplying asynchronous data. `IconsProvider` replaces semantic library icons, while brand/sidebar SVGs are app content. See [customization](../../../../docs/CUSTOMIZATION.md) for supported theme and icon options.
+Replace the local gallery link in `app.tsx` when moving the template. The overview expects at least one account; add an empty portfolio state before supplying asynchronous data. `IconsProvider` replaces semantic library icons, while brand/sidebar SVGs are app content. See [Customize](https://unseenui.com/customize/) for theme and icon options.
 
 The narrow table scrolls locally, and the assistant moves below it on smaller screens. Recheck keyboard navigation, focus return, contrast, 320px reflow, zoom and screen readers after customization.
 

@@ -1,18 +1,16 @@
 # @stackunseen/ui
 
-React components for **Unseen UI by Stack Unseen**: forms, overlays, navigation, chat, tool cards and approval controls.
+React components for AI interfaces: chat, streaming replies, tool calls, approvals and agent runs, plus the forms, menus, overlays and tables an app around them needs. Part of [Unseen UI](https://unseenui.com) by Stack Unseen.
 
-Experimental alpha, published on npm under the `alpha` tag. MIT licensed.
+Alpha, MIT licensed. APIs can change between releases.
 
-## Use
-
-Install the current alpha:
+## Install
 
 ```sh
 npm install @stackunseen/ui react@^19.3.0 react-dom@^19.3.0
 ```
 
-Core installs as a dependency. Import the stylesheet once before application CSS, then wrap the components in `AITheme`:
+`@stackunseen/ui-core` comes along as a dependency. Import the stylesheet once, before your own CSS, and wrap your components in `AITheme`:
 
 ```tsx
 'use client';
@@ -28,33 +26,37 @@ export function SaveButton({ onSave }: { onSave: () => void }) {
 }
 ```
 
-Next.js, Tailwind and a CSS Modules configuration are not required. Use controlled values and callbacks for interactive components. `IconsProvider` overrides semantic icons; the `/theme` entry exposes pure theme helpers.
+You don't need Next.js or Tailwind. For a working chat to start from, run `npx @stackunseen/ui init` (add `--ai-sdk` for the Vercel AI SDK version).
 
-## Optional entries
+## Entries
 
-| Entry                                                             | Additional peers                                                      |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `/theme`, `/status`, `/code`, `/sidecar`, `/workspace`, `/upload` | None beyond React/ReactDOM                                            |
-| `/markdown`                                                       | react-markdown, remark-gfm, remend                                    |
-| `/math`                                                           | katex; import its CSS/fonts                                           |
-| `/mermaid`                                                        | mermaid, dompurify                                                    |
-| `/rich-markdown`                                                  | Markdown peers, remark-math, katex, mermaid, dompurify                |
-| `/highlight`                                                      | shiki                                                                 |
-| `/terminal`                                                       | @xterm/xterm, @xterm/addon-fit; import `@stackunseen/ui/terminal.css` |
-| `/viewport`                                                       | @tanstack/react-virtual                                               |
-| `/layout`                                                         | react-resizable-panels                                                |
-| `/application`                                                    | No additional peers; import `@stackunseen/ui/application.css`         |
-| `/marketing`                                                      | No additional peers; import `@stackunseen/ui/marketing.css`           |
-| `/assistant`                                                      | No additional peers; import `@stackunseen/ui/assistant.css`           |
-| `/devtools`                                                       | No additional peers; import `@stackunseen/ui/devtools.css`            |
-| `/media`                                                          | No additional peers; import `@stackunseen/ui/media.css`               |
+Ordinary components come from the package root. Heavier features live in their own entries so you only install what you use. Each entry's extra peers are only needed if you import it; supported ranges are in `package.json`.
 
-These peers are required only for the entries you import; their supported ranges are in `package.json`. Use named imports from the root for ordinary components. There are no `/button` or `/icons` subpaths.
+| Entry                                                             | What's in it                                                                                                                | Extra peers                                                |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `/chat`                                                           | `Chat` and a simulated `useLocalHost`, plus `useAiSdkChat`. Import `chat.css`.                                              | none                                                       |
+| `/theme`, `/status`, `/code`, `/sidecar`, `/workspace`, `/upload` | Theme helpers and smaller compositions                                                                                      | none                                                       |
+| `/markdown`                                                       | Markdown replies                                                                                                            | react-markdown, remark-gfm, remend                         |
+| `/math`                                                           | Formulas                                                                                                                    | katex (and its CSS)                                        |
+| `/mermaid`                                                        | Diagrams                                                                                                                    | mermaid, dompurify                                         |
+| `/rich-markdown`                                                  | Markdown with formulas and diagrams                                                                                         | the Markdown peers, remark-math, katex, mermaid, dompurify |
+| `/highlight`                                                      | Highlighted code and diffs                                                                                                  | shiki                                                      |
+| `/terminal`                                                       | Terminal view. Import `terminal.css`.                                                                                       | @xterm/xterm, @xterm/addon-fit                             |
+| `/viewport`                                                       | Long conversation history                                                                                                   | @tanstack/react-virtual                                    |
+| `/layout`                                                         | Resizable panels                                                                                                            | react-resizable-panels                                     |
+| `/editor`                                                         | Code editor. Import `editor.css`.                                                                                           | the @codemirror packages                                   |
+| `/application`                                                    | DataGrid, Combobox, Calendar, DateRangePicker and app page patterns. Import `application.css`.                              | none                                                       |
+| `/marketing`                                                      | Header, hero, features, pricing, FAQ, contact and article blocks. Import `marketing.css`.                                   | none                                                       |
+| `/navigation`                                                     | CommandPalette, TableOfContents, ShareMenu. Import `navigation.css`.                                                        | none                                                       |
+| `/assistant`                                                      | Reasoning summary, ChainOfThought, Plan, Checkpoint, Sources, ModelSelector. Import `assistant.css`.                        | none                                                       |
+| `/devtools`                                                       | Snippet, Commit, EnvironmentVariables, PackageInfo, SchemaDisplay, StackTrace, WebPreview, CodeTabs. Import `devtools.css`. | none                                                       |
+| `/media`                                                          | AudioPlayer, Transcription, VoiceSelector, Persona, Image. Import `media.css`.                                              | none                                                       |
+| `/conversation-flow`, `/artifact-editor`, `/mcp-apps`             | Branching and run overviews, draft editing, sandboxed MCP app views. Import the matching CSS file.                          | none                                                       |
 
-`/application` contains DataGrid, Combobox, MultiSelect, Calendar, DateRangePicker, PageHeader, OrgSwitcher, ListToolbar, MasterDetail, SettingsSaveCancel and UnsavedGuard. DataGrid receives an already filtered, sorted and paged row window. Date controls use date-only `YYYY-MM-DD` values and a supplied month/locale. The host owns selection, scope changes, draft validation and save receipts.
+Load `styles.css` first, then any entry stylesheet. There are no `/button` or `/icons` subpaths; use named imports from the root.
 
-`/marketing` contains MarketingHeader, MarketingFooter, MarketingHero, MarketingFeatures, MarketingPricing, MarketingFAQ, MarketingContact and MarketingArticle. Supply your content, destinations and form behavior; the blocks do not fetch content, send messages or perform payments. Both entries reuse the base controls and theme. Load `styles.css` first, then the optional stylesheet you use.
+## How the components behave
 
-`/assistant` contains Reasoning (a public reasoning summary, never private reasoning), ChainOfThought, Plan, Task, Checkpoint, Shimmer, Sources, ModelSelector and OpenInChat. `/devtools` contains Snippet, Commit, EnvironmentVariables, PackageInfo, SchemaDisplay, StackTrace and a sandboxed WebPreview. `/media` contains AudioPlayer, Transcription, VoiceSelector, Persona and Image. They display host-supplied data: durations, sources, restores and previews are reported or requested, never invented, and links render only for safe URLs.
+Components are controlled: you pass in state and get callbacks back. Your server decides what's allowed and runs the actions, so an approval card or a clicked button is a request, not proof that anything happened. The package makes no network calls, holds no credentials and doesn't connect to a model. Model and tool output is rendered as text, or through sanitized renderers, never as HTML or code.
 
-Components receive controlled values and emit callbacks. Your host authorizes actions, executes tools and supplies confirmed outcomes. This package provides no model connection, MCP transport, authentication or hidden persistence. `RuntimeProvider` is optional.
+Docs and live examples for every component: [unseenui.com](https://unseenui.com).

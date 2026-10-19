@@ -1,8 +1,12 @@
 # @stackunseen/ui-core
 
-Framework-independent contracts and state projection for **Unseen UI by Stack Unseen**. Experimental alpha, published on npm; `latest` points at the current prerelease and the `alpha` tag moves with each release. MIT licensed.
+The state, validation and types behind [Unseen UI](https://unseenui.com), with no React dependency. Alpha, MIT licensed.
 
-Install it with `npm install @stackunseen/ui-core`. It also installs automatically with `@stackunseen/ui`.
+You usually don't install this yourself: it comes with `@stackunseen/ui`. Install it directly if you want the same rules on your server or in a non-React client.
+
+```sh
+npm install @stackunseen/ui-core
+```
 
 ```ts
 import { canTransition } from '@stackunseen/ui-core';
@@ -11,17 +15,19 @@ canTransition('queued', 'running'); // true
 canTransition('succeeded', 'running'); // false
 ```
 
-| Entry                  | Purpose                                                                          |
-| ---------------------- | -------------------------------------------------------------------------------- |
-| `@stackunseen/ui-core` | Runtime projection, transitions, approval validation, safe URLs and domain types |
-| `/schema`              | Canonical event and snapshot validators                                          |
-| `/conversation`        | Scoped conversation windows and commands                                         |
-| `/history`             | Bounded chronological history and page/restore contracts                         |
-| `/adapter`             | Coherent host checkpoints and exact original command receipts                    |
-| `/uploads`             | Upload identities, digests, checkpoints and receipts                             |
+| Entry                  | What's in it                                                                       |
+| ---------------------- | ---------------------------------------------------------------------------------- |
+| `@stackunseen/ui-core` | Run and tool state transitions, approval checks, safe URL helpers and shared types |
+| `/schema`              | Validators for events and snapshots                                                |
+| `/conversation`        | Conversation windows and commands                                                  |
+| `/history`             | Paged message history                                                              |
+| `/adapter`             | Host checkpoints and command receipts                                              |
+| `/uploads`             | Upload identities, checkpoints and receipts                                        |
+| `/editing`             | Document ranges and text edits                                                     |
+| `/ai-sdk`              | Mapping from Vercel AI SDK chat messages                                           |
 
-Core imports no React, browser APIs, provider SDKs, networking or persistence. Snapshots are immutable; stream identity, ordering and revisions are validated. Reconcile gaps through the host, and dispose runtimes to release subscriptions and timers.
+The package doesn't touch the DOM, the network or storage. Snapshots are immutable, and stream order and revisions are checked as they arrive. If you create a runtime, dispose it when you're done so its timers and subscriptions are released.
 
-Validation helpers do not authorize actions. Hosts authenticate actors, enforce access, deduplicate commands and retain durable receipts. Unknown outcomes must be reconciled before retrying mutations.
+These helpers check the shape of data; they don't authorize anything. Your server still has to authenticate users, enforce access, deduplicate commands and keep its own records of what ran. When an outcome is unknown, for example after a dropped connection, look it up before retrying.
 
-Each entry includes TypeScript declarations. Import from the package root or an exported subpath; internal source paths are not a supported API.
+Import from the package root or one of the entries above. Internal file paths aren't part of the API.

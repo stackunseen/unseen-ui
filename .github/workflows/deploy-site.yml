@@ -43,7 +43,7 @@ jobs:
           esac
       - run: pnpm install --frozen-lockfile
       - run: pnpm build:packages
-      - run: pnpm --filter @ai-interaction/docs build
+      - run: pnpm --filter @unseen-ui/docs build
       - name: Check the configured export
         run: node apps/docs/scripts/check-static-site.mjs
       - name: Publish to Cloudflare Pages

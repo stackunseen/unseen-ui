@@ -46,7 +46,7 @@ try {
   }
   const core = await packedPath('core');
   const react = await packedPath('react');
-  const stage = await mkdtemp(join(tmpdir(), 'ai-interaction-packed-'));
+  const stage = await mkdtemp(join(tmpdir(), 'unseen-ui-packed-'));
   console.log(`Isolated consumers: ${stage}`);
   log.push(`Isolated consumers: ${stage}`);
   const rootPkg = JSON.parse(await readFile('package.json', 'utf8'));
@@ -248,7 +248,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
     ],
     stage,
   );
-  const baseStage = await mkdtemp(join(tmpdir(), 'ai-interaction-base-only-'));
+  const baseStage = await mkdtemp(join(tmpdir(), 'unseen-ui-base-only-'));
   await writeFile(
     join(baseStage, 'package.json'),
     JSON.stringify(
@@ -334,7 +334,7 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
     'layout',
     'upload',
   ]) {
-    const isolatedStage = await mkdtemp(join(tmpdir(), `ai-interaction-${entry}-only-`));
+    const isolatedStage = await mkdtemp(join(tmpdir(), `unseen-ui-${entry}-only-`));
     log.push(`Isolated ${entry} consumer: ${isolatedStage}`);
     const peers =
       entry === 'editor'

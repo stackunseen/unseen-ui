@@ -1,42 +1,18 @@
 # Getting started
 
-Unseen UI by Stack Unseen is an experimental React component library, published on npm as `@stackunseen/ui` (`latest` points at the current prerelease) (with `@stackunseen/ui-core` as its dependency). The source repository is private.
+Unseen UI is a React component library for AI interfaces. It's published on npm as `@stackunseen/ui`, which pulls in `@stackunseen/ui-core` automatically. The full guide, with live examples, is at [unseenui.com/getting-started](https://unseenui.com/getting-started/).
 
-## Install from npm
+## Install
 
 ```sh
 npm install @stackunseen/ui react@^19.3.0 react-dom@^19.3.0
 ```
 
-Pin the exact version in your lockfile. Every prerelease is also published under the `alpha` tag, which moves with each release; `latest` is moved by hand until a stable 0.1.0.
-
-## Start with a local build
-
-With an authorized checkout:
-
-For this workspace, use **Node 24.13 or later within Node 24** and **pnpm 11.5.0**. From the repository root:
-
-```sh
-pnpm install --frozen-lockfile
-pnpm build:packages
-pnpm dev
-```
-
-Open [the development site](http://127.0.0.1:3000). Build the packages before starting a workspace consumer.
-
-For the static website preview:
-
-```sh
-pnpm --filter @ai-interaction/docs build
-node apps/docs/scripts/preview.mjs
-```
-
-Open [the website preview](http://127.0.0.1:4175). The preview serves the built site; rebuild the docs app after changing a page.
-
+The packages are in alpha. Every release goes out under the `alpha` tag; `latest` moves by hand. Pin the exact version in your lockfile.
 
 ## Render your first component
 
-Import the base stylesheet once and wrap the interface in `AITheme`. Put interactive composition in a Client Component in Next.js. This example saves a name in local memory and shows the result; nothing is sent or persisted.
+Import the base stylesheet once and wrap your interface in `AITheme`. In Next.js, put interactive code in a Client Component. This example keeps a name in memory and shows it back; nothing is sent anywhere.
 
 ```tsx
 'use client';
@@ -72,21 +48,23 @@ export function FirstExample() {
 }
 ```
 
-The application owns validation and persistence. Connect the local callback to your host and render its pending, failed or confirmed state.
+Your app owns validation and saving. When you connect the callback to a server, show its pending, failed and confirmed states.
+
+## Next.js notes
 
 ### Compound parts in Server Components
 
-Compound components such as `Card.Header`, `Sidebar.Group`, `Tooltip.Trigger` and `NavigationMenu.List` are undefined when imported into a Next.js Server Component, because the client reference proxy does not carry static properties. Every part is also a top-level named export, so import those there:
+`Card.Header`, `Sidebar.Group`, `Tooltip.Trigger`, `NavigationMenu.List` and the other dotted parts are undefined inside a Next.js Server Component, because the client reference proxy drops static properties. Every part is also a named export, so import it directly there:
 
 ```tsx
 import { Card, CardHeader, CardTitle, CardContent } from '@stackunseen/ui';
 ```
 
-The property form (`Card.Header`) works in Client Components. Button, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and the dialogs.
+The dotted form works in Client Components. Button, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render on the server. Controls with state or handlers (Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and dialogs) are Client Components, which a Server Component can still render.
 
 ### Router links
 
-Chip, ToggleGroup in links mode, Stepper, Card and Button with `href`, and Matrix render native anchors by default. In Next.js that is a full document load on every filter click. Wrap the app once in `LinkProvider` with the router's link and every one of them renders it instead, with prefetching and client-side navigation:
+Chip, ToggleGroup in links mode, Stepper, Matrix, and Card or Button with `href` render plain anchors by default, which means a full page load in Next.js. Wrap the app once in `LinkProvider` to use the router's link instead:
 
 ```tsx
 import Link from 'next/link';
@@ -95,11 +73,11 @@ import { LinkProvider } from '@stackunseen/ui';
 <LinkProvider component={Link}>{children}</LinkProvider>
 ```
 
-The provider is a Client Component that a root layout can render; the components inside keep rendering on the server. `useLinkComponent` returns the same component for anchors you render yourself. Disabled links stay native and have no destination.
+A root layout can render the provider, and the components inside still render on the server. `useLinkComponent` returns the same link component for anchors you write yourself. Disabled links stay plain anchors with no destination.
 
 ### Dark code panels on a light page
 
-Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (or any component) to render it dark inside a light page. The nested provider inherits the parent theme's colours and scopes its tokens to that subtree, and portals opened from inside it keep the same appearance.
+Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (or anything else). It inherits the parent theme's colors, and popovers opened inside it stay dark too.
 
 ```tsx
 <AITheme appearance="dark">
@@ -137,27 +115,13 @@ Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (
 | `@stackunseen/ui/media` | AudioPlayer, Transcription, VoiceSelector, Persona, Image | No additional peer; import media.css |
 | `@stackunseen/ui-core/editing` | Pure document identities, UTF-16 ranges and bounded atomic text edits | None |
 
-Use named public imports. There are no `/button`, `/icons` or generic-family subpaths. Heavy renderer and layout peers stay outside the base entry. Importing an optional entry requires its peers even when a particular render skips that feature. Exact tested versions are in the [React package manifest](../packages/react/package.json) and the relevant feature guide.
+Use named imports. There are no `/button` or `/icons` subpaths. An optional entry needs its peers installed as soon as you import it, even if you don't use every feature. The tested peer versions are in the [package manifest](../packages/react/package.json).
 
-The [public editing example](../tests/fixtures/editing-public-example.tsx) composes the optional entries. The host supplies document/draft revisions, command identities, permissions and receipts. CodeEditor preserves host UTF-16 offsets and existing line endings; a single completion can emit a next-word prefix intent. The host must validate that prefix against its original proposal. Pending and unknown requests require the original receipt before another mutation. These UI contracts do not provide model services, authentication, filesystem writes or durable storage.
+The [editing example](../tests/fixtures/editing-public-example.tsx) shows several optional entries together.
 
-## Continue with a feature
+## Scrollbar gutter
 
-- [Website components](WEBSITE-COMPONENTS.md): forms, overlays, feedback, navigation and semantic surfaces.
-- [Minimal customization](CUSTOMIZATION.md): themes, fonts, variants, icons and composition.
-- [Controls and icons](CONTROLS-AND-ICONS.md) and [theming](THEMING.md): exact provider APIs and limitations.
-- [Permissions and handoffs](PERMISSIONS-AND-HANDOFFS.md): scope, original receipts and acknowledged ownership.
-- [Rich responses](RICH-RESPONSES.md), [forms](FORMS.md) and [application foundations](APPLICATION-FOUNDATIONS.md): larger compositions.
-
-## Verify an integration
-
-The [root README](../README.md#check-changes) lists development checks. `pnpm check:packages` tests isolated packed Vite/Next consumers, SSR and optional-peer absence. It also compiles the [public website example](../tests/fixtures/website-public-example.tsx).
-
-After building and installing the local Playwright Chromium browser, `pnpm test:browser` runs the bounded decision/form/select smoke. It is not a complete browser or assistive-technology audit.
-
-Hosts own authorization, execution, routing, storage and durable receipts. The gallery uses simulated hosts; the file, upload, voice and PTY guides describe separate local integrations. Test your production host and accessibility requirements independently.
-
-If your page reserves a scrollbar gutter (`html { scrollbar-gutter: stable }`), add this rule as well. Select and DropdownMenu lock body scrolling while open; with a reserved gutter that lock hides the scrollbar and shifts the page, so the rule lets the page keep scrolling while the open list follows its trigger. Dialogs keep the lock.
+If your page reserves a scrollbar gutter (`html { scrollbar-gutter: stable }`), add this rule. Select and DropdownMenu lock body scrolling while open, and with a reserved gutter that lock shifts the page. The rule keeps the page still. Dialogs keep the lock.
 
 ```css
 html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu-content]) {
@@ -166,3 +130,29 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   margin-right: 0 !important;
 }
 ```
+
+## Working from the repository
+
+To run the docs site and examples locally, use Node 24.13 or later (within Node 24) and pnpm 11.5.0:
+
+```sh
+pnpm install --frozen-lockfile
+pnpm build:packages
+pnpm dev
+```
+
+The site runs at http://127.0.0.1:3000. For a static preview of the built site:
+
+```sh
+pnpm --filter @unseen-ui/docs build
+node apps/docs/scripts/preview.mjs
+```
+
+Then open http://127.0.0.1:4175.
+
+## More
+
+- [Components](https://unseenui.com/components/): every component with its props, variants and states.
+- [Customize](https://unseenui.com/customize/): colors, fonts, density and corners.
+- [Connect to your app](https://unseenui.com/docs/integration/): wiring components to a server, tools and approvals.
+- [Examples](../examples/README.md): local demo hosts for files, uploads, a terminal and voice.

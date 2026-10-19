@@ -25,7 +25,7 @@ const metrics = {
   baseCssGzipBytes: gzipSync(css).length,
 };
 console.log(JSON.stringify(metrics, null, 2));
-// Base CSS budget raised from 20 KiB to 24 KiB on 2026-10-09 (recorded in docs/QUALITY-AND-RELEASE.md).
+// Base CSS budget: 24 KiB gzip (raised from 20 KiB on 2026-10-09).
 if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 24576)
   throw new Error('Initial bundle budget exceeded.');
 
@@ -115,7 +115,7 @@ for (const entry of ['index', 'adapter', 'uploads', 'editing']) {
   const modules = chunks.flatMap((item) => item.moduleIds);
   if (
     modules.some((id) =>
-      /[\\/](?:react|react-dom|@ai-interaction[\\/]react|node-pty|@xterm|@tanstack|@codemirror|@lezer|react-resizable-panels)(?:[\\/@]|$)/.test(
+      /[\\/](?:react|react-dom|node-pty|@xterm|@tanstack|@codemirror|@lezer|react-resizable-panels)(?:[\\/@]|$)/.test(
         id,
       ),
     )

@@ -39,7 +39,7 @@ export default function Page() {
       </section>
       <section id="run-relay">
         <h2>Run and adapt</h2>
-        <p>With access to the private repository, run these commands from the root:</p>
+        <p>From a clone of the repository, run these commands at the root:</p>
         <pre tabIndex={0} role="group" aria-label="Relay setup commands">
           <code>{'pnpm install --frozen-lockfile\npnpm build:packages\npnpm template:dev'}</code>
         </pre>

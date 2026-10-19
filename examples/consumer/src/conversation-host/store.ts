@@ -7,7 +7,7 @@ export interface ConversationStore {
 }
 /** Optional actual browser persistence, opened only by an explicit host operation. */
 export function indexedDBConversationStore(
-  name = 'ai-interaction-conversation-example',
+  name = 'unseen-ui-conversation-example',
 ): ConversationStore {
   let database: IDBDatabase | undefined,
     opening: Promise<IDBDatabase> | undefined,

@@ -1,5 +1,5 @@
 {
-  "name": "@ai-interaction/upload-host-example",
+  "name": "@unseen-ui/upload-host-example",
   "private": true,
   "type": "module",
   "dependencies": {

@@ -74,3 +74,6 @@ id_ed25519
 .wrangler/
 # shadcn registry: generated on every docs build with the current package version.
 /apps/docs/public/r/
+
+# Local tool configuration.
+.claude/

@@ -1,49 +1,50 @@
-# Releasing Unseen UI
+# Releasing
 
-Use this workflow to publish two public npm packages together: `@stackunseen/ui-core`, then `@stackunseen/ui`. Their versions stay equal, and the GitHub repository remains private. The root workspace, gallery and examples are never published.
-
-Publishing requires a selected license, initial package registration and trusted publisher setup.
-
-## One-time setup
-
-1. Done: the MIT license text is in `LICENSE` in both package folders, and both manifests are `private: false`; other workspaces stay private. Review the package READMEs and source maps: the current maps include original source, even though GitHub stays private.
-2. Confirm CLI identity with `npm whoami --registry=https://registry.npmjs.org`. Browser login alone is insufficient. npm refuses publishes from accounts without two-factor authentication unless a granular token with "bypass 2FA" is used, and trusted publisher configuration lives in each *existing* npm package's settings, so a package's first release needs one of these two bootstrap routes:
-   - Interactive: enable two-factor authentication on the npm account, then publish core before React from a logged-in terminal (`pnpm --filter <package> publish --access public --tag alpha --no-git-checks`), entering the one-time code when prompted.
-   - From GitHub: create a granular access token on npm (Packages and scopes: read and write for the `@stackunseen` scope; "Bypass two-factor authentication" enabled; the shortest expiry that covers the release), store it as the repository secret `NPM_TOKEN`, and run the release workflow. The publish job uses that token instead of OIDC while the secret exists. **Delete the secret and the npm token as soon as the first release is complete**, then configure the trusted publishers below; later runs fall back to OIDC automatically.
-3. Approve activation of `.github/workflows/release.yml` and its job permissions: `contents: write` for version commits/tags/GitHub releases, and `id-token: write` for the npm publishing job. Validation has read-only repository access; dependency installation/builds run without write or OIDC permissions.
-4. For **each** npm package, add a GitHub trusted publisher with organization/user `stackunseen`, repository `unseen-ui`, workflow filename `release.yml`, and **no environment**. Allow direct `npm publish`. This workflow needs no separate dist-tag management grant, npm secret, paid environment or account-security change.
-
-Repository rules must allow the workflow's version commit and tag writes. If existing protections reject them, the release stops; do not bypass or weaken protections automatically. Keep the GitHub repository private. GitHub-hosted runners, Node 24.13.0 and npm >=11.5.1 are required.
-
-Trusted publishing supports a private source repository. npm provenance does not; publication explicitly disables provenance. See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
+Two packages are published together and always share a version: `@stackunseen/ui-core` first, then `@stackunseen/ui`. The workspace root, the docs site and the examples are never published.
 
 ## Release a version
 
-Open **Actions → Release packages → Run workflow**, choose **main**, enter the current version of both packages as `expected_version`, and select a bump. Ordinary commits and pull requests never publish.
+Open **Actions → Release packages → Run workflow** on `main`. Enter the version both packages are on now as `expected_version`, then pick a bump:
 
-| Choice | From `0.1.0-alpha.0` | From `1.2.3` |
+| Bump | From `0.1.0-alpha.0` | From `1.2.3` |
 | --- | --- | --- |
 | `prerelease` | `0.1.0-alpha.1` | `1.2.4-alpha.0` |
 | `patch` | `0.1.1-alpha.0` | `1.2.4` |
 | `minor` | `0.2.0-alpha.0` | `1.3.0` |
 | `major` | `1.0.0-alpha.0` | `2.0.0` |
-| `promote` | `0.1.0` | Rejected: already stable |
+| `promote` | `0.1.0` | not allowed, already stable |
 
-Alpha versions use npm's `alpha` tag and a GitHub prerelease. Stable versions use `latest`. Promotion is an explicit decision; a major bump while in alpha stays alpha.
+Alpha versions go to npm's `alpha` tag with a GitHub prerelease. Stable versions go to `latest`. While the project is in alpha, `latest` is moved by hand with `npm dist-tag`.
 
-Preview without changing files:
+The workflow runs the full check suite (lint, types, tests, build, browser smoke tests, packed-consumer installs, size budgets, Storybook), then packs both packages and checks each archive's file list, exports and hash. After that it pushes the version commit and `v<version>` tag, publishes core, waits until npm serves it, publishes the React package, and creates the GitHub release.
+
+npm scans new versions before serving them, which can take about five minutes, so the publish step waits up to ten minutes per package.
+
+**After a release, run Actions → Deploy site by hand.** The version commit is pushed with the workflow's own token, which doesn't trigger other workflows, so the site's shadcn registry keeps pointing at the old version until you redeploy.
+
+To preview a version change without touching anything:
 
 ```sh
 pnpm release:plan prerelease 0.1.0-alpha.0
 pnpm test:release
 ```
 
-The workflow validates packages, tests, types, lint, formatting, builds, browser smoke, packed consumers, sizes and Storybook. It packs the exact versioned artifacts and verifies their file allowlist, exports, internal dependency and SHA-512 hashes. It then atomically pushes the version commit and `v<version>` tag, publishes core and confirms it before publishing React, and creates the matching private GitHub release only after both npm artifacts are confirmed.
+## If a release fails
 
-## Recover a failed release
+Use **Re-run failed jobs** on the same run. If its artifact has expired, re-run all jobs. Don't start a new bump to fix a half-finished release.
 
-Use **Re-run failed jobs** on the same workflow run. Re-run all jobs if its retained artifact expired. Do not request another bump to repair a partial publication.
+Re-runs are safe. A tag or npm version that already exists with the same bytes is reused; different bytes at an existing version stop the run. The workflow never force-pushes, unpublishes or moves a dist-tag backwards.
 
-The version commit is deterministic. Existing matching tags and identical npm artifacts are reused; different bytes at an existing version stop the workflow. A stale `expected_version`, an advanced main branch before reservation, an unknown registry result or a conflicting tag also stops it. No force pushes, unpublishing or replacement versions are attempted. A completed retry does not move an older distribution tag backwards.
+npm can't publish two packages atomically. If the React package fails after core went out, core stays published, and the re-run checks it and carries on with React.
 
-npm cannot publish two packages atomically. If React fails after core succeeds, core remains public and the reserved Git tag remains. The retry verifies core and continues with React. Publishing/security grants, account login and branch protections still require owner setup; this workflow does not create them.
+## One-time setup
+
+This is already done for both packages; it's here for reference.
+
+- Each npm package has a trusted publisher: GitHub Actions, owner `stackunseen`, repository `unseen-ui`, workflow `release.yml`, no environment, with **Allow npm publish** ticked. The workflow publishes with GitHub's OIDC token, so there's no npm token secret.
+- The site deploy uses two repository secrets: `CLOUDFLARE_API_TOKEN` (Cloudflare Pages: Edit, limited to one account) and `CLOUDFLARE_ACCOUNT_ID`.
+- Branch rules must let the workflow push its version commit and tag. If they don't, the release stops rather than working around them.
+
+A brand-new package can't have a trusted publisher until it exists on npm. For a first publish, either publish core and then React from a logged-in terminal with two-factor authentication, or add a short-lived granular token as the `NPM_TOKEN` secret (the workflow uses it when present). Delete the secret and the token as soon as that release is done.
+
+npm provenance is turned off (`--provenance=false` in `scripts/release.mjs`) because npm only supports provenance from public repositories. Remove that flag once the repository is public.
