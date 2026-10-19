@@ -268,7 +268,9 @@ if (command === 'plan' || command === 'prepare') {
         ),
       );
     },
-    pause: () => new Promise((resolvePause) => setTimeout(resolvePause, 2_000)),
+    // Up to ten minutes per package.
+    pause: () => new Promise((resolvePause) => setTimeout(resolvePause, 15_000)),
+    confirmAttempts: 41,
   });
   console.log('Both npm versions have the validated artifact integrity.');
 } else if (command === 'complete') {

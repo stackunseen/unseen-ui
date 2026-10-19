@@ -164,7 +164,10 @@ export function assertRegistryMatch(record, expected) {
     );
 }
 
-export async function publishInOrder(entries, { lookup, channelVersion, publish, pause }) {
+export async function publishInOrder(
+  entries,
+  { lookup, channelVersion, publish, pause, confirmAttempts = 6 },
+) {
   // Check both versions before making any mutation, including on retries.
   const existing = await Promise.all(entries.map((entry) => lookup(entry)));
   for (let i = 0; i < entries.length; i++) {
@@ -182,15 +185,16 @@ export async function publishInOrder(entries, { lookup, channelVersion, publish,
     } catch (error) {
       failure = error;
     }
+    // npm can take several minutes (publish-time scanning) before a new version is readable.
     let confirmed = false;
-    for (let attempt = 0; attempt < 6; attempt++) {
+    for (let attempt = 0; attempt < confirmAttempts; attempt++) {
       const record = await lookup(entry);
       assertRegistryMatch(record, entry);
       if (record) {
         confirmed = true;
         break;
       }
-      if (attempt < 5) await pause();
+      if (attempt < confirmAttempts - 1) await pause();
     }
     if (!confirmed)
       throw new Error(
