@@ -220,12 +220,13 @@
   line-height: 1.5;
   max-inline-size: 100%;
   min-inline-size: 0;
-  overflow-wrap: anywhere;
+  /* Whole words stay together, so a narrow table cannot split "Succeeded". */
+  overflow-wrap: break-word;
   white-space: normal;
 }
 .badge > span:last-child {
   min-inline-size: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 /* Every tone is a soft fill with strong text; the resolver keeps each pair at 4.5:1. */
 .badge[data-tone='primary'] {

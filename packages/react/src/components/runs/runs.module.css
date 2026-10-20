@@ -464,6 +464,10 @@ button.status:hover {
   color: var(--ai-muted, #52525b);
   font-weight: 500;
 }
+/* Outcome words are short; keep "Unconfirmed" whole instead of breaking it mid-word. */
+.compareTable td[data-effect] {
+  overflow-wrap: break-word;
+}
 .compareTable tr[data-same] td {
   color: var(--ai-muted, #52525b);
 }

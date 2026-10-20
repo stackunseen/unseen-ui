@@ -4,6 +4,16 @@ Unseen UI is an experimental alpha. Prereleases are published on npm under the `
 
 ## Next prerelease (in the repository, not yet on npm)
 
+- **Previews:** small components (Breadcrumb, Pagination, Stepper, ModelSelector, Persona, badges and others) sit centred in the component pages instead of in the top-left corner, and expandable rows (ToolCall, ToolGroup, Sources, ChainOfThought) use a centred column so opening them doesn't shift the layout.
+- **Plan:** finished steps show their tick again.
+- **Narrow screens:** StatusBadge and RunCompare keep words like "Succeeded" whole instead of splitting them; Checkpoint wraps its date as one line of text; MCPAppFrame moves its status and Close under the title rather than squeezing it.
+
+## 0.1.0-alpha.9 — 19 October 2026
+
+- **Docs:** rewritten package READMEs, a contributing guide and a security policy.
+
+## 0.1.0-alpha.8 — 19 October 2026
+
 - **Chat:** a new `@stackunseen/ui/chat` entry with `Chat`, a complete chat surface, and `useLocalHost` for prototypes.
 - **AI SDK:** `useAiSdkChat(useChat())` connects Chat to the Vercel AI SDK, with tool approvals shown as approval cards. `@stackunseen/ui-core/ai-sdk` has the mapping for custom layouts.
 - **Shorter inputs:** Message accepts `{ role, text }`; ToolCall and ToolGroup accept `{ name }` plus what you know.
@@ -20,7 +30,7 @@ Unseen UI is an experimental alpha. Prereleases are published on npm under the `
 - **Button:** `variant="link"` for text-like actions; DataGrid `captionVisibility="hidden"` for tables inside titled cards.
 - **Site:** gallery and list views with live-preview thumbnails, search by meaning, task pages, Patterns in the navigation, an AI SDK recipe, this changelog, and `llms.txt` for coding agents.
 
-## 0.1.0-alpha.7 — 16 October 2026 (tagged; npm publish pending)
+## 0.1.0-alpha.7 — 16 October 2026 (published 19 October 2026)
 
 - **Runs:** RunBoard, AttentionQueue, RunSummaryCard, BackgroundStatus, RunCompare and SubagentTree in `/conversation-flow`.
 - **Generated interfaces:** a streaming line format and parser for GeneratedUI, prompt text from the vocabulary, A2UI v1.0 mapping, and new nodes (list, callout, options, steps, image, metric group).

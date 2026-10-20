@@ -30,13 +30,16 @@ export function Checkpoint({
     >
       <span>
         <BookmarkIcon aria-hidden="true" />
-        {label}
-        {createdAt && (
-          <>
-            {' · '}
-            <ObservationTime value={createdAt} />
-          </>
-        )}
+        {/* One text run, so a narrow column wraps it like a sentence instead of orphaning the dot. */}
+        <span>
+          {label}
+          {createdAt && (
+            <>
+              {' · '}
+              <ObservationTime value={createdAt} />
+            </>
+          )}
+        </span>
         {onRestore && (
           <button className={s.textButton} type="button" disabled={restoring} onClick={onRestore}>
             {restoring ? 'Restoring…' : 'Restore'}

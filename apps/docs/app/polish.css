@@ -225,6 +225,11 @@
   max-width: 100%;
   margin-inline: auto;
 }
+.detail-specimen[data-fit='column'] .specimen-content {
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
 .detail-frame .preview-caption {
   margin: 0;
   padding: 10px 14px;

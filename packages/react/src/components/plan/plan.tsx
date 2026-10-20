@@ -1,6 +1,6 @@
 'use client';
 import type { ReactNode } from 'react';
-import { ChevronDownIcon, FileTextIcon } from '@radix-ui/react-icons';
+import { CheckIcon, ChevronDownIcon, FileTextIcon } from '@radix-ui/react-icons';
 import { Shimmer } from '../shimmer/shimmer.js';
 import { useDisclosure } from '../../shared/disclosure.js';
 import s from '../../shared/styles/assistant.module.css';
@@ -68,7 +68,9 @@ export function Plan({
         <ol className={`${s.list} ${s.stepList}`} {...disclosure.contentProps}>
           {steps.map((step) => (
             <li key={step.id} className={s.step} data-state={step.done ? 'complete' : 'pending'}>
-              <span className={s.dot} aria-hidden="true" />
+              <span className={s.dot} aria-hidden="true">
+                {step.done && <CheckIcon />}
+              </span>
               <span className={step.done ? s.done : s.label}>
                 {step.label}
                 {step.done && <span className={s.srOnly}> (done)</span>}

@@ -62,6 +62,35 @@ const centredPreviews = new Set([
   'Toast',
   'ShareMenu',
   'LoadingIndicator',
+  'Persona',
+  'Stepper',
+  'ModelSelector',
+  'MessageActions',
+  'ProvenanceBadge',
+  'BackgroundStatus',
+  'ArtifactPanel',
+  'RadioGroup',
+  'NavigationMenu',
+  'Breadcrumb',
+  'CommandPalette',
+  'Matrix',
+  'Pagination',
+  'InputGroup',
+  'Image',
+  'BranchSwitcher',
+  'Sidecar',
+  'UsageMeter',
+]);
+
+// Rows and disclosures that grow when opened: a centred column keeps them from jumping sideways.
+const columnPreviews = new Set([
+  'ToolCall',
+  'ToolGroup',
+  'Sources',
+  'ChainOfThought',
+  'SubagentTree',
+  'TableOfContents',
+  'Citation',
 ]);
 
 export function ComponentDetail({
@@ -361,9 +390,13 @@ export function ComponentDetail({
                     <div className="preview-canvas">
                       <div
                         data-fit={
-                          !compare && !allStates && centredPreviews.has(entry.name)
-                            ? 'content'
-                            : undefined
+                          compare || allStates
+                            ? undefined
+                            : centredPreviews.has(entry.name)
+                              ? 'content'
+                              : columnPreviews.has(entry.name)
+                                ? 'column'
+                                : undefined
                         }
                         className={compare || allStates ? 'variant-comparison' : 'detail-specimen'}
                       >
