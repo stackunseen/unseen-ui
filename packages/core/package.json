@@ -1,6 +1,6 @@
 {
   "name": "@stackunseen/ui-core",
-  "version": "0.1.0-alpha.9",
+  "version": "0.1.0-alpha.10",
   "description": "Framework-independent contracts, schemas and state projection for AI interfaces. Part of Unseen UI.",
   "keywords": [
     "ai",
