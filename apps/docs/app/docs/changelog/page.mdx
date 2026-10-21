@@ -4,6 +4,13 @@ Unseen UI is an experimental alpha. Prereleases are published on npm under the `
 
 ## Next prerelease (in the repository, not yet on npm)
 
+- **Chat:** `onEdit` lets people rewrite a sent message; `branches` and `onBranchChange` show "‹ 1/2 ›" to switch between versions after an edit or a regenerate; `feedback` and `onFeedback` rate any reply; `renderMessageActions` adds actions such as Read aloud; `emptyContent` replaces the start screen. Copy and rating now appear under every finished reply (earlier ones on hover), with Regenerate on the last.
+- **Messages:** new `reasoning` and `file` parts. Reasoning shows as a "Thinking…" disclosure that collapses when the answer arrives; attached images show as thumbnails and other files as a chip. The AI SDK mapping fills them in; reasoning stays hidden unless you pass `reasoning: 'show'`, and only http(s) or base64 PNG, JPEG, GIF and WebP images are shown inline.
+- **Sources:** web sources from the AI SDK follow the reply, and neighbouring sources share one row of chips.
+- **Modal:** `trigger` is optional, for dialogs opened from a menu or a keyboard shortcut.
+- **Icons:** `more`, `attach`, `sidebar`, `globe`, `newChat` and a real `microphone` glyph for IconButton.
+- **ToggleGroup:** an option's `description` is now announced as a description, so the button's name stays "Search" rather than "Search Search the web".
+
 - **AI SDK approvals:** the card is titled with the tool row's label (from `describeTool`), its wording changes once you approve or reject, and the summary line shows only what is known. Unassessed risk and missing scopes are stated under Details instead.
 - **Types:** `Step`, `MessageData`, `ToolCallData`, `ApprovalProposal`, `Source`, `Measurement` and the other data shapes that props use now export from `@stackunseen/ui`, so apps need only that package.
 - **EmptyState:** takes `title`, `description`, `icon` and `actions` directly; the composed parts still work.

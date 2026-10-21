@@ -27,6 +27,20 @@ export const messagePartSchema = z.discriminatedUnion('type', [
   }),
   z.strictObject({ id, type: z.literal('attachment'), attachmentId: id, version: id }),
   z.strictObject({ id, type: z.literal('unsupported'), kind: id, label: short.min(1) }),
+  z.strictObject({
+    id,
+    type: z.literal('reasoning'),
+    text,
+    state: z.enum(['streaming', 'complete']),
+  }),
+  z.strictObject({
+    id,
+    type: z.literal('file'),
+    name: short.min(1),
+    mediaType: short.min(1),
+    // Data URLs for attached images can be long; renderers still check the scheme.
+    url: z.string().max(12_000_000).optional(),
+  }),
 ]) satisfies z.ZodType<MessagePart>;
 const common = {
   id: z.string().min(1).max(160),

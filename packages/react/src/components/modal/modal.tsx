@@ -24,7 +24,7 @@ export function Modal({
   onOpenChange: (open: boolean) => void;
   title: string;
   description: string;
-  trigger: ReactNode;
+  trigger?: ReactNode;
   /** Replaces the visible heading; title still supplies the accessible dialog name. */
   header?: ReactNode;
   /** Host-owned actions, kept outside the scrolling body. */
@@ -36,7 +36,8 @@ export function Modal({
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
+      {/* Without a trigger the host opens it, such as from a menu item or a keyboard shortcut. */}
+      {trigger !== undefined && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
         <ThemeSurface>
           <Dialog.Overlay className={s.overlay} />

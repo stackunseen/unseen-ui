@@ -37,3 +37,40 @@
   font-size: var(--ai-font-size-meta, 13px);
   font-weight: 400;
 }
+
+.reasoning {
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.reasoning > summary {
+  cursor: pointer;
+  width: fit-content;
+}
+.reasoning > p {
+  margin: 6px 0 0;
+  padding-inline-start: 12px;
+  border-inline-start: 2px solid var(--ai-border, #e4e4e7);
+  white-space: pre-wrap;
+}
+.image {
+  display: block;
+  max-inline-size: min(320px, 100%);
+  max-block-size: 320px;
+  border-radius: var(--ai-control-radius, 10px);
+  object-fit: cover;
+}
+.file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--ai-border, #e4e4e7);
+  border-radius: var(--ai-control-radius, 10px);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+
+.sourceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

@@ -89,6 +89,8 @@ export function MessageActions({
   editAvailability,
   retryAvailability,
   retryLabel = 'Retry',
+  feedbackValue,
+  children,
 }: VariantProps<'MessageActions'> & {
   text: string;
   onRetry?: () => void;
@@ -98,6 +100,10 @@ export function MessageActions({
   editAvailability?: { available: boolean; reason?: string };
   retryAvailability?: { available: boolean; reason?: string };
   retryLabel?: string;
+  /** The rating already recorded for this message; shows as a pressed button. */
+  feedbackValue?: 'helpful' | 'unhelpful';
+  /** Extra actions such as Read aloud or Share, placed after the built-in ones. */
+  children?: ReactNode;
 }) {
   const [feedback, setFeedback] = useState<{ text: string; message: string }>();
   const currentText = useRef(text),
@@ -193,6 +199,7 @@ export function MessageActions({
             <IconButton
               icon="helpful"
               label="Helpful"
+              aria-pressed={feedbackValue === 'helpful'}
               onClick={() => {
                 onFeedback(true);
                 setFeedback({ text, message: 'Feedback requested.' });
@@ -215,6 +222,7 @@ export function MessageActions({
             <IconButton
               icon="unhelpful"
               label="Not helpful"
+              aria-pressed={feedbackValue === 'unhelpful'}
               onClick={() => {
                 onFeedback(false);
                 setFeedback({ text, message: 'Feedback requested.' });
@@ -235,6 +243,7 @@ export function MessageActions({
           )}
         </>
       )}
+      {children}
       <span role="status" className={s.muted}>
         {feedback?.text === text ? feedback.message : ''}
       </span>

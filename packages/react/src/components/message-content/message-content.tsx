@@ -14,6 +14,7 @@ import { Citation } from '../citation/citation.js';
 import { ToolCall } from '../tool-call/tool-call.js';
 import { ResponseStatus, StreamingResponse } from '../streaming-response/streaming-response.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
+import { AIIcon } from '../../providers/icons/icons.js';
 import type { ComponentVariant } from '../../shared/variants.js';
 import s from './message-content.module.css';
 
@@ -106,6 +107,26 @@ const PartView = memo(function PartView({
         />
       );
       break;
+    case 'reasoning':
+      // Open while the model thinks, then collapse so the answer leads; people can reopen it.
+      content = (
+        <details className={s.reasoning} open={part.state === 'streaming' || undefined}>
+          <summary>{part.state === 'streaming' ? 'Thinking…' : 'Reasoning'}</summary>
+          <p>{part.text}</p>
+        </details>
+      );
+      break;
+    case 'file':
+      content =
+        part.url && part.mediaType.startsWith('image/') ? (
+          <img className={s.image} src={part.url} alt={part.name} loading="lazy" />
+        ) : (
+          <span className={s.file}>
+            <AIIcon name="document" size={14} />
+            {part.name}
+          </span>
+        );
+      break;
     case 'unsupported':
       content = (
         <p className={s.unavailable}>
@@ -140,26 +161,42 @@ export function MessageContent({
       />
     );
   let citationNumber = 0;
+  const view = (part: MessagePart) => {
+    if (part.type === 'source') citationNumber++;
+    return (
+      <PartView
+        key={part.id}
+        part={part}
+        responseVariant={responseVariant}
+        renderTextPart={renderTextPart}
+        renderTool={renderTool}
+        citationNumber={part.type === 'source' ? citationNumber : 0}
+        source={part.type === 'source' ? unique(sources, part.sourceId) : undefined}
+        tool={part.type === 'tool' ? unique(tools, part.toolCallId) : undefined}
+        attachment={part.type === 'attachment' ? unique(attachments, part.attachmentId) : undefined}
+      />
+    );
+  };
+  // Sources next to each other share one wrapping row instead of a line each.
+  const rows: ReactNode[] = [];
+  for (let index = 0; index < value.parts.length; index++) {
+    const part = value.parts[index]!;
+    if (part.type !== 'source') {
+      rows.push(view(part));
+      continue;
+    }
+    const group: ReactNode[] = [];
+    while (value.parts[index]?.type === 'source') group.push(view(value.parts[index++]!));
+    index--;
+    rows.push(
+      <div key={`sources-${part.id}`} className={s.sourceRow}>
+        {group}
+      </div>,
+    );
+  }
   return (
     <div className={s.parts} data-part="message-content">
-      {value.parts.map((part) => {
-        if (part.type === 'source') citationNumber++;
-        return (
-          <PartView
-            key={part.id}
-            part={part}
-            responseVariant={responseVariant}
-            renderTextPart={renderTextPart}
-            renderTool={renderTool}
-            citationNumber={part.type === 'source' ? citationNumber : 0}
-            source={part.type === 'source' ? unique(sources, part.sourceId) : undefined}
-            tool={part.type === 'tool' ? unique(tools, part.toolCallId) : undefined}
-            attachment={
-              part.type === 'attachment' ? unique(attachments, part.attachmentId) : undefined
-            }
-          />
-        );
-      })}
+      {rows}
       {!value.parts.length && (
         <p className={s.unavailable}>
           {value.state === 'streaming' ? 'Preparing a response…' : 'No response content.'}

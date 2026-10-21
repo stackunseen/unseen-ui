@@ -96,3 +96,38 @@
   display: grid;
   gap: 8px;
 }
+/* Earlier replies keep their actions out of the way until hovered or focused, as ChatGPT does. */
+.message:not([data-last]):not(:hover):not(:focus-within) [data-part='message-actions'] {
+  opacity: 0;
+}
+.message [data-part='message-actions'] {
+  transition: opacity 120ms ease;
+}
+.versions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.edit {
+  display: grid;
+  gap: 8px;
+  margin-inline-start: auto;
+  inline-size: min(100%, 560px);
+}
+.edit textarea {
+  box-sizing: border-box;
+  inline-size: 100%;
+  padding: 10px 12px;
+  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #a1a1aa);
+  border-radius: var(--ai-control-radius, 10px);
+  background: var(--ai-surface, #fff);
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}

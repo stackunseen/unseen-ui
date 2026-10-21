@@ -46,7 +46,9 @@
       "@stackunseen/ui/viewport": ["../packages/react/src/viewport.tsx"],
       "@stackunseen/ui/layout": ["../packages/react/src/layout.ts"],
       "@stackunseen/ui/sidecar": ["../packages/react/src/sidecar.tsx"],
-      "@stackunseen/ui/workspace": ["../packages/react/src/workspace-shell.tsx"]
+      "@stackunseen/ui/workspace": ["../packages/react/src/workspace-shell.tsx"],
+      "@stackunseen/ui/chat": ["../packages/react/src/chat.tsx"],
+      "@stackunseen/ui-core/ai-sdk": ["../packages/core/src/ai-sdk.ts"]
     }
   }
 }

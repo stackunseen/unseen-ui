@@ -57,6 +57,18 @@ export interface ChatBaseProps extends VariantProps<'Chat'> {
   /** Composition slots for the composer. */
   toolbar?: ReactNode;
   attachments?: ReactNode;
+  /** Ratings already recorded, by message id. */
+  feedback?: Readonly<Record<string, 'helpful' | 'unhelpful'>>;
+  onFeedback?: (messageId: string, helpful: boolean) => void;
+  /** Lets people rewrite one of their messages; the host resends the conversation from there. */
+  onEdit?: (messageId: string, text: string) => void;
+  /** Other versions of a message (edits or regenerations), by message id. */
+  branches?: Readonly<Record<string, { index: number; total: number }>>;
+  onBranchChange?: (messageId: string, index: number) => void;
+  /** Extra actions under a finished reply, such as Read aloud or Share. */
+  renderMessageActions?: (message: MessageData) => ReactNode;
+  /** Replaces the default empty state, for a start screen of your own. */
+  emptyContent?: ReactNode;
   className?: string;
   style?: CSSProperties;
 }
@@ -80,6 +92,11 @@ export interface ChatHostProps extends ChatBaseProps {
 export type ChatProps = ChatControlledProps | ChatHostProps;
 
 const idle: ChatHostSnapshot = { messages: [], status: 'idle' };
+
+function messageText(message: MessageData): string {
+  if ('text' in message && typeof message.text === 'string') return message.text;
+  return (message.parts ?? []).map((part) => (part.type === 'text' ? part.text : '')).join('');
+}
 function useHostSnapshot(host: ChatHost | undefined): ChatHostSnapshot {
   return useSyncExternalStore(
     (listener) => (host ? host.subscribe(listener) : () => {}),
@@ -107,9 +124,17 @@ export function Chat(props: ChatProps) {
     maxPromptLength = 4000,
     toolbar,
     attachments,
+    feedback,
+    onFeedback,
+    onEdit,
+    branches,
+    onBranchChange,
+    renderMessageActions,
+    emptyContent,
     className = '',
     style,
   } = props;
+  const [editing, setEditing] = useState<{ id: string; text: string }>();
   const hostProps = 'host' in props && props.host ? props : undefined;
   const controlled = hostProps ? undefined : (props as ChatControlledProps);
   const host = hostProps?.host;
@@ -171,13 +196,6 @@ export function Chat(props: ChatProps) {
   const textarea = useRef<HTMLTextAreaElement>(null);
   const [follow, setFollow] = useState(true);
   const busy = status === 'streaming';
-  const lastAssistant = [...messages].reverse().find((message) => message.role === 'assistant');
-  const lastAssistantText =
-    lastAssistant && 'text' in lastAssistant && typeof lastAssistant.text === 'string'
-      ? lastAssistant.text
-      : (lastAssistant?.parts ?? [])
-          .map((part) => (part.type === 'text' ? part.text : ''))
-          .join('');
 
   useEffect(() => {
     const node = transcript.current;
@@ -222,38 +240,122 @@ export function Chat(props: ChatProps) {
           setFollow(node.scrollHeight - node.scrollTop - node.clientHeight < 48);
         }}
       >
-        {messages.length === 0 ? (
-          <div className={css.empty}>
-            <strong>{emptyTitle}</strong>
-            <p className={css.muted}>{emptyDescription}</p>
-          </div>
-        ) : (
-          messages.map((message, index) => (
-            <Message
-              key={message.id}
-              value={message}
-              variant="plain"
-              tools={tools}
-              sources={sources}
-              responseVariant={responseVariant}
-              renderTextPart={renderTextPart}
-              renderTool={approvals?.length || customTool ? renderTool : undefined}
-              className={css.message}
-            >
-              {message.role === 'assistant' &&
-                message.state === 'complete' &&
-                !awaitingDecision &&
-                index === messages.length - 1 && (
-                  <MessageActions
-                    variant="compact"
-                    text={lastAssistantText}
-                    onRetry={retry}
-                    retryLabel="Regenerate"
-                  />
-                )}
-            </Message>
-          ))
-        )}
+        {messages.length === 0
+          ? (emptyContent ?? (
+              <div className={css.empty}>
+                <strong>{emptyTitle}</strong>
+                <p className={css.muted}>{emptyDescription}</p>
+              </div>
+            ))
+          : messages.map((message, index) => {
+              const last = index === messages.length - 1;
+              const branch = branches?.[message.id];
+              const versions =
+                branch && branch.total > 1 && onBranchChange ? (
+                  <span className={css.versions} role="group" aria-label="Versions">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      aria-label="Previous version"
+                      disabled={busy || branch.index <= 0}
+                      onClick={() => onBranchChange(message.id, branch.index - 1)}
+                    >
+                      ‹
+                    </Button>
+                    <span className={css.muted}>
+                      {branch.index + 1}/{branch.total}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      aria-label="Next version"
+                      disabled={busy || branch.index >= branch.total - 1}
+                      onClick={() => onBranchChange(message.id, branch.index + 1)}
+                    >
+                      ›
+                    </Button>
+                  </span>
+                ) : null;
+              if (editing?.id === message.id)
+                return (
+                  <form
+                    key={message.id}
+                    className={css.edit}
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      const next = editing.text.trim();
+                      if (!next || next.length > maxPromptLength) return;
+                      onEdit?.(message.id, next);
+                      setEditing(undefined);
+                      setFollow(true);
+                    }}
+                  >
+                    <textarea
+                      aria-label="Edit message"
+                      value={editing.text}
+                      autoFocus
+                      rows={3}
+                      onChange={(event) => setEditing({ id: message.id, text: event.target.value })}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Escape') setEditing(undefined);
+                      }}
+                    />
+                    <div className={css.editActions}>
+                      <Button variant="ghost" size="sm" onClick={() => setEditing(undefined)}>
+                        Cancel
+                      </Button>
+                      <Button type="submit" size="sm" disabled={!editing.text.trim()}>
+                        Send
+                      </Button>
+                    </div>
+                  </form>
+                );
+              return (
+                <Message
+                  key={message.id}
+                  value={message}
+                  variant="plain"
+                  tools={tools}
+                  sources={sources}
+                  responseVariant={responseVariant}
+                  renderTextPart={renderTextPart}
+                  renderTool={approvals?.length || customTool ? renderTool : undefined}
+                  className={css.message}
+                  data-last={last || undefined}
+                >
+                  {message.role === 'assistant' &&
+                    message.state === 'complete' &&
+                    !(last && awaitingDecision) && (
+                      <MessageActions
+                        variant="compact"
+                        text={messageText(message)}
+                        onRetry={last ? retry : undefined}
+                        retryLabel="Regenerate"
+                        onFeedback={
+                          onFeedback ? (helpful) => onFeedback(message.id, helpful) : undefined
+                        }
+                        feedbackValue={feedback?.[message.id]}
+                      >
+                        {versions}
+                        {renderMessageActions?.(message)}
+                      </MessageActions>
+                    )}
+                  {message.role === 'user' && (onEdit || versions) && (
+                    <MessageActions
+                      variant="compact"
+                      text={messageText(message)}
+                      onEdit={
+                        onEdit && !busy
+                          ? () => setEditing({ id: message.id, text: messageText(message) })
+                          : undefined
+                      }
+                    >
+                      {versions}
+                    </MessageActions>
+                  )}
+                </Message>
+              );
+            })}
         {status === 'cancelled' && (
           <p className={`${css.muted} ${css.note}`} role="status">
             Stopped. The partial reply is kept above.

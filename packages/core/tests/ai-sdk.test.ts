@@ -13,7 +13,7 @@ function assistant(parts: AiSdkMessage['parts']): AiSdkMessage {
 }
 
 describe('fromAiSdkChat', () => {
-  it('maps text, sources and files, and leaves reasoning out', () => {
+  it('maps text, sources and files, and leaves reasoning out by default', () => {
     const state = fromAiSdkChat({
       status: 'ready',
       messages: [
@@ -41,13 +41,15 @@ describe('fromAiSdkChat', () => {
     expect(state.status).toBe('complete');
     expect(state.messages[0]).toMatchObject({ role: 'user', state: 'complete' });
     const reply = state.messages[1]!;
-    expect(reply.parts?.map((part) => part.type)).toEqual([
-      'text',
-      'source',
-      'source',
-      'unsupported',
-    ]);
+    expect(reply.parts?.map((part) => part.type)).toEqual(['text', 'file', 'source', 'source']);
     expect(JSON.stringify(reply)).not.toContain('private chain of thought');
+    // A blob: URL is not something the mapping can vouch for, so the file shows by name only.
+    expect(reply.parts?.[1]).toEqual({
+      id: expect.any(String),
+      type: 'file',
+      name: 'accounts.csv',
+      mediaType: 'text/csv',
+    });
     expect(reply.parts?.[0]).toMatchObject({ format: 'markdown', state: 'complete' });
     expect(state.sources).toEqual([
       expect.objectContaining({
@@ -300,5 +302,41 @@ describe('fromAiSdkChat', () => {
       { describeTool },
     );
     expect(approved.approvals[0]?.proposal.impact).toMatch(/You approved this call/);
+  });
+
+  it('shows reasoning summaries and inline images only when asked or safe', () => {
+    const state = fromAiSdkChat(
+      {
+        status: 'ready',
+        messages: [
+          user,
+          assistant([
+            { type: 'reasoning', text: 'Checked the policy first.', state: 'done' },
+            {
+              type: 'file',
+              mediaType: 'image/png',
+              filename: 'chart.png',
+              url: 'data:image/png;base64,iVBORw0KGgo=',
+            },
+            {
+              type: 'file',
+              mediaType: 'image/svg+xml',
+              filename: 'x.svg',
+              url: 'data:image/svg+xml;base64,PHN2Zz4=',
+            },
+          ]),
+        ],
+      },
+      { reasoning: 'show' },
+    );
+    const parts = state.messages[1]!.parts!;
+    expect(parts[0]).toMatchObject({
+      type: 'reasoning',
+      text: 'Checked the policy first.',
+      state: 'complete',
+    });
+    expect(parts[1]).toMatchObject({ type: 'file', url: 'data:image/png;base64,iVBORw0KGgo=' });
+    // SVG can carry script, so it is never passed through as an inline URL.
+    expect(parts[2]).not.toHaveProperty('url');
   });
 });

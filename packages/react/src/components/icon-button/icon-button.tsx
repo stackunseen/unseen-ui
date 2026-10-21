@@ -8,7 +8,13 @@ import {
   TrashIcon,
   ThickArrowUpIcon,
   ThickArrowDownIcon,
+  DotsHorizontalIcon,
+  PlusIcon,
+  ViewVerticalIcon,
+  GlobeIcon,
+  Pencil2Icon,
 } from '@radix-ui/react-icons';
+import type { SVGProps } from 'react';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { IconName, IconComponent } from '../../providers/icons/icons.js';
 import { Button } from '../button/button.js';
@@ -24,7 +30,30 @@ const actions: Partial<Record<IconName, IconComponent>> = {
   moveDown: ArrowDownIcon,
   helpful: ThickArrowUpIcon,
   unhelpful: ThickArrowDownIcon,
+  more: DotsHorizontalIcon,
+  attach: PlusIcon,
+  sidebar: ViewVerticalIcon,
+  globe: GlobeIcon,
+  newChat: Pencil2Icon,
+  microphone: Microphone,
 };
+// Radix has no microphone; this matches its 15px grid and stroke weight.
+function Microphone(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="15"
+      height="15"
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    >
+      <rect x="9" y="2" width="6" height="12" rx="3" />
+      <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8" />
+    </svg>
+  );
+}
 export interface IconButtonProps extends Omit<ButtonProps, 'children' | 'aria-label' | 'size'> {
   label: string;
   icon: IconName;

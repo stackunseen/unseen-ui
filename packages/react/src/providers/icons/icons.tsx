@@ -61,6 +61,11 @@ export type IconName =
   | 'helpful'
   | 'unhelpful'
   | 'microphone'
+  | 'more'
+  | 'attach'
+  | 'sidebar'
+  | 'globe'
+  | 'newChat'
   | 'sun'
   | 'moon'
   | 'monitor';

@@ -1,3 +1,4 @@
+import { safeUrl } from './approval.js';
 import type {
   ApprovalProposal,
   MessageData,
@@ -79,6 +80,11 @@ export interface AiSdkMappingOptions {
   describeTool?: (tool: { name: string; input: unknown }) => { label?: string; target?: string };
   /** Bound on the JSON shown for tool input and output. */
   maxJsonLength?: number;
+  /**
+   * Reasoning parts are left out unless you choose `'show'`. Show them only when your provider
+   * returns reasoning summaries meant for people to read.
+   */
+  reasoning?: 'hide' | 'show';
 }
 
 export interface AiSdkChatState {
@@ -134,6 +140,13 @@ function fingerprint(value: string): string {
  * `approval-requested` and `approval-responded` tool parts and settle when the tool runs or is
  * denied; the server still checks `approval.id` before executing.
  */
+/** http(s) links, or inline image data; anything else is not shown. */
+function previewUrl(value?: string): string | undefined {
+  if (!value) return undefined;
+  if (/^data:image\/(png|jpeg|gif|webp);base64,[a-z0-9+/=]+$/i.test(value)) return value;
+  return safeUrl(value);
+}
+
 export function fromAiSdkChat(
   input: { messages: readonly AiSdkMessage[]; status: AiSdkStatus; error?: { message: string } },
   options: AiSdkMappingOptions = {},
@@ -187,13 +200,28 @@ export function fromAiSdkChat(
           version: '1',
           locator: source.url ?? source.filename ?? source.sourceId,
         });
+      } else if (part.type === 'reasoning') {
+        const reasoning = part as { text?: string; state?: string };
+        if (
+          options.reasoning === 'show' &&
+          typeof reasoning.text === 'string' &&
+          reasoning.text.trim()
+        )
+          parts.push({
+            id,
+            type: 'reasoning',
+            text: reasoning.text,
+            state: reasoning.state === 'streaming' ? 'streaming' : 'complete',
+          });
       } else if (part.type === 'file') {
-        const file = part as { filename?: string; mediaType?: string };
+        const file = part as { filename?: string; mediaType?: string; url?: string };
+        const url = previewUrl(file.url);
         parts.push({
           id,
-          type: 'unsupported',
-          kind: file.mediaType ?? 'file',
-          label: file.filename ?? 'Attached file',
+          type: 'file',
+          name: file.filename ?? 'Attached file',
+          mediaType: file.mediaType ?? 'application/octet-stream',
+          ...(url ? { url } : {}),
         });
       } else if (isToolPart(part)) {
         const name = toolNameOf(part);
@@ -273,14 +301,19 @@ export function fromAiSdkChat(
     });
     const streaming = busy && message === lastAssistant;
     const failed = input.status === 'error' && message === lastAssistant;
+    // Web sources are not tied to a place in the text, so they follow the reply, as chat apps show them.
+    const ordered = [
+      ...parts.filter((part) => part.type !== 'source'),
+      ...parts.filter((part) => part.type === 'source'),
+    ];
     const data: MessageData = {
       id: message.id,
       role: message.role,
-      revision: parts.length,
+      revision: ordered.length,
       state: failed ? 'failed' : streaming ? 'streaming' : 'complete',
       parts: streaming
-        ? parts
-        : parts.map((part) =>
+        ? ordered
+        : ordered.map((part) =>
             part.type === 'text' ? { ...part, state: 'complete' as const } : part,
           ),
     };

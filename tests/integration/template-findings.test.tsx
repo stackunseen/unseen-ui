@@ -1,14 +1,20 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import userEvent from '@testing-library/user-event';
+import { describe, expect, it, vi } from 'vitest';
 import {
   AgentSteps,
   ApprovalCard,
   CodeDiff,
   EmptyState,
+  Message,
+  Modal,
   TerminalOutput,
+  ToggleGroup,
   type ApprovalProposal,
+  type MessageData,
   type Step,
 } from '@stackunseen/ui';
+import { Chat } from '@stackunseen/ui/chat';
 
 // Issues found by building the Pro chat and coding-agent templates on the published API.
 
@@ -72,5 +78,103 @@ describe('findings from the Pro templates', () => {
     render(<TerminalOutput output={'done'} state="complete" title="Logs" />);
     expect(screen.queryByText('Session identity not supplied.')).toBeNull();
     expect(screen.queryByRole('button', { name: 'Pause following' })).toBeNull();
+  });
+
+  it('lets people edit a message, rate replies and switch versions in Chat', async () => {
+    const user = userEvent.setup();
+    const onEdit = vi.fn();
+    const onFeedback = vi.fn();
+    const onBranchChange = vi.fn();
+    const messages: MessageData[] = [
+      { id: 'u1', role: 'user', state: 'complete', revision: 1, text: 'Find accounts' },
+      { id: 'a1', role: 'assistant', state: 'complete', revision: 1, text: 'Found three.' },
+    ];
+    render(
+      <Chat
+        messages={messages}
+        status="complete"
+        draft=""
+        onDraftChange={() => {}}
+        onSend={() => {}}
+        onEdit={onEdit}
+        feedback={{ a1: 'helpful' }}
+        onFeedback={onFeedback}
+        branches={{ a1: { index: 1, total: 2 } }}
+        onBranchChange={onBranchChange}
+      />,
+    );
+    expect(screen.getByRole('button', { name: 'Helpful' })).toHaveAttribute('aria-pressed', 'true');
+    await user.click(screen.getByRole('button', { name: 'Not helpful' }));
+    expect(onFeedback).toHaveBeenCalledWith('a1', false);
+    expect(screen.getByText('2/2')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Previous version' }));
+    expect(onBranchChange).toHaveBeenCalledWith('a1', 0);
+    await user.click(screen.getByRole('button', { name: 'Edit' }));
+    const box = screen.getByRole('textbox', { name: 'Edit message' });
+    await user.clear(box);
+    await user.type(box, 'Find inactive accounts');
+    await user.click(screen.getByRole('button', { name: 'Send' }));
+    expect(onEdit).toHaveBeenCalledWith('u1', 'Find inactive accounts');
+  });
+
+  it('uses a custom start screen when the chat is empty', () => {
+    render(
+      <Chat
+        messages={[]}
+        status="idle"
+        draft=""
+        onDraftChange={() => {}}
+        onSend={() => {}}
+        emptyContent={<h1>What can I help with?</h1>}
+      />,
+    );
+    expect(screen.getByRole('heading', { name: 'What can I help with?' })).toBeInTheDocument();
+  });
+
+  it('shows reasoning as a disclosure and attached images safely', () => {
+    const message: MessageData = {
+      id: 'm1',
+      role: 'assistant',
+      state: 'complete',
+      revision: 1,
+      parts: [
+        { id: 'r', type: 'reasoning', text: 'Checked the policy.', state: 'complete' },
+        {
+          id: 'f',
+          type: 'file',
+          name: 'chart.png',
+          mediaType: 'image/png',
+          url: 'data:image/png;base64,AA==',
+        },
+        { id: 'g', type: 'file', name: 'notes.csv', mediaType: 'text/csv' },
+      ],
+    };
+    render(<Message value={message} />);
+    expect(screen.getByText('Reasoning')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'chart.png' })).toBeInTheDocument();
+    expect(screen.getByText('notes.csv')).toBeInTheDocument();
+  });
+
+  it('opens a Modal without a trigger, from the host', () => {
+    render(
+      <Modal open onOpenChange={() => {}} title="Settings" description="Your preferences.">
+        <p>Body</p>
+      </Modal>,
+    );
+    expect(screen.getByRole('dialog', { name: 'Settings' })).toBeInTheDocument();
+  });
+
+  it('describes a toggle option instead of folding the description into its name', () => {
+    render(
+      <ToggleGroup
+        type="multiple"
+        label="Tools"
+        options={[{ value: 'search', label: 'Search', description: 'Search the web' }]}
+        value={[]}
+        onValueChange={() => {}}
+      />,
+    );
+    const button = screen.getByRole('button', { name: 'Search' });
+    expect(button).toHaveAccessibleDescription('Search the web');
   });
 });

@@ -45,7 +45,11 @@ export type MessagePart =
   | { id: string; type: 'tool'; toolCallId: string }
   | { id: string; type: 'source'; sourceId: string; version: string; locator: string }
   | { id: string; type: 'attachment'; attachmentId: string; version: string }
-  | { id: string; type: 'unsupported'; kind: string; label: string };
+  | { id: string; type: 'unsupported'; kind: string; label: string }
+  /** A public reasoning summary the model streamed; never private chain-of-thought. */
+  | { id: string; type: 'reasoning'; text: string; state: 'streaming' | 'complete' }
+  /** A file in the message, such as an image the user attached. `url` is shown only when safe. */
+  | { id: string; type: 'file'; name: string; mediaType: string; url?: string };
 interface MessageBase {
   id: string;
   role: 'user' | 'assistant' | 'system';

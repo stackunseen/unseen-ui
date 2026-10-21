@@ -1,10 +1,9 @@
 'use client';
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 import type { ComponentProps, KeyboardEvent, ReactNode } from 'react';
 import type { VariantProps } from '../../shared/variants.js';
 import { Anchor } from '../../shared/link.js';
 import { rovingTarget } from '../../shared/roving-focus.js';
-import { VisuallyHidden } from '../visually-hidden/visually-hidden.js';
 import d from '../../shared/styles/display.module.css';
 
 export interface ToggleGroupOption {
@@ -70,6 +69,7 @@ export function ToggleGroup(props: ToggleGroupProps) {
   const links = props.type !== 'multiple' && props.mode === 'links';
   const elementProps = divProps as Omit<ComponentProps<'div'>, 'onChange' | 'defaultValue'>;
   const group = useRef<HTMLDivElement>(null);
+  const uid = useId();
   const multiple = props.type === 'multiple';
   const selected = (option: ToggleGroupOption) =>
     props.type === 'multiple' ? props.value.includes(option.value) : props.value === option.value;
@@ -128,12 +128,19 @@ export function ToggleGroup(props: ToggleGroupProps) {
             {option.count !== undefined && option.count !== null && (
               <span className={d.toggleCount}>{option.count}</span>
             )}
-            {option.description && <VisuallyHidden>{` ${option.description}`}</VisuallyHidden>}
+            {/* A description, not part of the name: "Search", described as "Search the web". */}
+            {option.description && (
+              <span id={`${uid}-${option.value}`} hidden>
+                {option.description}
+              </span>
+            )}
           </>
         );
+        const describedBy = option.description ? `${uid}-${option.value}` : undefined;
         if (links) {
           const linkProps = {
             'aria-current': checked ? ('page' as const) : undefined,
+            'aria-describedby': describedBy,
             'data-value': option.value,
             className: d.toggle,
           };
@@ -154,6 +161,7 @@ export function ToggleGroup(props: ToggleGroupProps) {
             role={multiple ? undefined : 'radio'}
             aria-checked={multiple ? undefined : checked}
             aria-pressed={multiple ? checked : undefined}
+            aria-describedby={describedBy}
             tabIndex={option.value === tabStop ? 0 : -1}
             disabled={disabled || option.disabled}
             data-value={option.value}
