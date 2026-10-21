@@ -1,0 +1,35 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--ai-font-mono, ui-monospace, monospace);
+  font-size: 0.875em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.figures {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.added {
+  color: var(--ai-success);
+}
+.removed {
+  color: var(--ai-danger);
+}
+.blocks {
+  display: inline-flex;
+  gap: 2px;
+}
+.blocks > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--ai-border);
+}
+.blocks > [data-kind='added'] {
+  background: var(--ai-success);
+}
+.blocks > [data-kind='removed'] {
+  background: var(--ai-danger);
+}

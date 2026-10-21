@@ -16,6 +16,7 @@ export function LayoutSpecimen({
   const id = useId();
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState('Overview');
+  const [navigationOpen, setNavigationOpen] = useState(true);
   const [notice, setNotice] = useState('');
   const [canvasSelection, setCanvasSelection] = useState<string | null>(null);
   const inspectorStart = useRef<HTMLDivElement>(null);
@@ -104,6 +105,14 @@ export function LayoutSpecimen({
         mainLabel={`Project content ${variant}`}
         navigationLabel={`Project sections ${variant}`}
         inspectorLabel={`Project details ${variant}`}
+        {...(state === 'Responsive navigation'
+          ? {
+              navigationMode: 'responsive' as const,
+              navigationOpen,
+              onNavigationOpenChange: setNavigationOpen,
+              navigationToggleLabel: 'Project sections',
+            }
+          : {})}
         header={
           state === 'Minimal' ? undefined : (
             <Card.Header>

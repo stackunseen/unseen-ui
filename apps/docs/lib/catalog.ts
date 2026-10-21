@@ -35,6 +35,8 @@ export type GenericComponent =
   | 'Tag'
   | 'Avatar'
   | 'Stat'
+  | 'DiffStat'
+  | 'ElapsedTime'
   | 'Calendar'
   | 'DateRangePicker'
   | 'PageHeader'

@@ -46,4 +46,30 @@ describe('Checkbox and Switch', () => {
     await userEvent.click(screen.getByRole('checkbox'));
     expect(change).not.toHaveBeenCalled();
   });
+
+  it('labels itself with label and description, keeping the id and ref', async () => {
+    const user = userEvent.setup();
+    const ref = createRef<HTMLInputElement>();
+    const change = vi.fn();
+    render(
+      <Checkbox
+        ref={ref}
+        id="terms"
+        label="Accept the terms"
+        description="You can change this later."
+        onCheckedChange={change}
+      />,
+    );
+    const box = screen.getByRole('checkbox', { name: 'Accept the terms' });
+    expect(box).toHaveAttribute('id', 'terms');
+    expect(box).toHaveAccessibleDescription('You can change this later.');
+    expect(ref.current).toBe(box);
+    await user.click(screen.getByText('Accept the terms'));
+    expect(change).toHaveBeenCalledWith(true);
+  });
+
+  it('stays a bare control without a label', () => {
+    const { container } = render(<Checkbox aria-label="Row" />);
+    expect(container.firstElementChild?.tagName).toBe('INPUT');
+  });
 });

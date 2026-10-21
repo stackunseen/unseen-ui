@@ -260,6 +260,16 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Table',
   ),
   Tag: g('A category or level label.', 'Run or task state.', 'StatusBadge', 'Chip'),
+  DiffStat: g(
+    'Lines added and removed beside a task, commit or pull request.',
+    'The changes themselves.',
+    'CodeDiff',
+  ),
+  ElapsedTime: g(
+    'How long a run or turn has taken, live while it runs.',
+    'A date or a schedule.',
+    'StatusBadge',
+  ),
   Avatar: g('A person or team, with an image or initials.', 'Voice agent presence.', 'Persona'),
   Stat: g(
     'A key number with its label and change, in a row of metrics.',

@@ -159,12 +159,12 @@ export function HomeShowcase() {
                 ]}
               />
             </Field>
-            <Field label="Email notifications" orientation="horizontal">
-              <Switch checked={notify} onCheckedChange={setNotify} />
-            </Field>
-            <Field label="Keep a local draft" orientation="horizontal">
-              <Checkbox checked={draftKept} onCheckedChange={setDraftKept} />
-            </Field>
+            <Switch label="Email notifications" checked={notify} onCheckedChange={setNotify} />
+            <Checkbox
+              label="Keep a local draft"
+              checked={draftKept}
+              onCheckedChange={setDraftKept}
+            />
             <div className="home-form-actions">
               <StatusBadge
                 state={draftKept ? 'succeeded' : 'idle'}

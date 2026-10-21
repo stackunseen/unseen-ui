@@ -64,7 +64,7 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
           ? FeedbackSpecimen
           : ['Breadcrumb', 'Pagination', 'Sidebar'].includes(name)
             ? NavigationSpecimen
-            : ['ToggleGroup', 'Tag', 'Avatar', 'Stat'].includes(name)
+            : ['ToggleGroup', 'Tag', 'Avatar', 'Stat', 'DiffStat', 'ElapsedTime'].includes(name)
               ? DisplaySpecimen
               : ['Chip', 'Stepper', 'Matrix'].includes(name)
                 ? ControlSpecimen

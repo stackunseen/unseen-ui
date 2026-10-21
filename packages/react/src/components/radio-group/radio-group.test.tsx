@@ -106,4 +106,10 @@ describe('RadioGroup', () => {
     );
     expect(screen.getByRole('radio', { name: 'In app' })).toBeChecked();
   });
+
+  it('names the group with a legend from label', () => {
+    render(<RadioGroup label="Repeat" options={options} value="a" onValueChange={() => {}} />);
+    const group = screen.getByRole('group', { name: 'Repeat' });
+    expect(within(group).getByRole('radio', { name: 'Email' })).toBeChecked();
+  });
 });

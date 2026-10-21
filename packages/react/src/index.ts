@@ -529,6 +529,10 @@ export type {
   MultipleToggleGroupProps,
 } from './components/toggle-group/toggle-group.js';
 export { Tag } from './components/tag/tag.js';
+export { DiffStat } from './components/diff-stat/diff-stat.js';
+export type { DiffStatProps } from './components/diff-stat/diff-stat.js';
+export { ElapsedTime, formatElapsed } from './components/elapsed-time/elapsed-time.js';
+export type { ElapsedTimeProps } from './components/elapsed-time/elapsed-time.js';
 export type { TagProps, TagTone } from './components/tag/tag.js';
 export { Avatar, avatarInitials } from './components/avatar/avatar.js';
 export type { AvatarProps } from './components/avatar/avatar.js';

@@ -373,6 +373,32 @@ export const websiteCatalog: CatalogEntry[] = [
     code: '<Tag tone="accent">Advanced</Tag>',
   }),
   entry({
+    name: 'DiffStat',
+    group: 'Data Display',
+    aliases: ['Lines changed', 'Diff summary', 'Additions and deletions'],
+    description: 'Lines added and removed for a change, with optional file count and blocks.',
+    states: ['Default', 'With files', 'Blocks', 'No changes'],
+    contract: 'added · removed · files? · blocks? · native span props',
+    responsibility:
+      'Pass the counts your diff or code host reports. The signs are in the text, so it reads without colour, and screen readers hear the counts in words.',
+    keyboard: 'Inert content; it adds no tab stop.',
+    relatedImports: ['CodeDiff'],
+    code: '<DiffStat added={15} removed={1} files={2} />',
+  }),
+  entry({
+    name: 'ElapsedTime',
+    group: 'Data Display',
+    aliases: ['Duration', 'Timer', 'Worked for'],
+    description: 'Time spent on a run or turn, ticking while it runs and fixed once it ends.',
+    states: ['Running', 'Finished', 'Measured by host'],
+    contract: 'startedAt · endedAt? · durationMs? · native time props',
+    responsibility:
+      'Pass endedAt or durationMs when the work stops. Prefer durationMs from the server when the browser clock should not decide the figure.',
+    keyboard: 'Inert content. It is not a live region, so it never interrupts a screen reader.',
+    relatedImports: ['StatusBadge'],
+    code: '<ElapsedTime startedAt={turn.startedAt} endedAt={turn.endedAt} />',
+  }),
+  entry({
     name: 'Avatar',
     group: 'Data Display',
     aliases: ['Profile picture', 'Initials', 'User image'],

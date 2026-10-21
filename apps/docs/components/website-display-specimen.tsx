@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Sparkles } from 'lucide-react';
-import { Avatar, Stat, StatGroup, Tag, ToggleGroup } from '@stackunseen/ui';
+import { Avatar, DiffStat, ElapsedTime, Stat, StatGroup, Tag, ToggleGroup } from '@stackunseen/ui';
 import type { ToggleGroupOption } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
@@ -14,6 +14,8 @@ const topics: ToggleGroupOption[] = [
 
 export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpecimenProps) {
   const [topic, setTopic] = useState<string | null>('all');
+  // Started a little before the example mounted, so the running timer shows a real count.
+  const [startedAt] = useState(() => Date.now() - 42_000);
   const [topicsSelected, setTopicsSelected] = useState<readonly string[]>(['agents']);
   if (name === 'ToggleGroup') {
     const options = topics.map((option) => ({
@@ -93,6 +95,30 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
           </>
         )}
       </div>
+    );
+  if (name === 'DiffStat')
+    return state === 'No changes' ? (
+      <DiffStat added={0} removed={0} />
+    ) : (
+      <DiffStat
+        added={15}
+        removed={4}
+        files={state === 'With files' ? 2 : undefined}
+        blocks={state === 'Blocks'}
+      />
+    );
+  if (name === 'ElapsedTime')
+    return (
+      <span>
+        {state === 'Running' ? 'Working · ' : 'Worked for '}
+        {state === 'Running' ? (
+          <ElapsedTime startedAt={startedAt} />
+        ) : state === 'Measured by host' ? (
+          <ElapsedTime startedAt={0} durationMs={95_000} />
+        ) : (
+          <ElapsedTime startedAt="2026-10-21T10:00:00Z" endedAt="2026-10-21T10:02:05Z" />
+        )}
+      </span>
     );
   if (name === 'Avatar')
     return (

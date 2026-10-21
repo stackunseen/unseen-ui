@@ -16,4 +16,26 @@ describe('Checkbox and Switch', () => {
     rerender(<Switch aria-label="Availability" checked onCheckedChange={change} />);
     expect(toggle).toBeChecked();
   });
+
+  it('labels itself with label and description', async () => {
+    const user = userEvent.setup();
+    const change = vi.fn();
+    render(
+      <Switch
+        label="Web search"
+        description="Cite sources"
+        onCheckedChange={change}
+        disabled={false}
+      />,
+    );
+    const toggle = screen.getByRole('switch', { name: 'Web search' });
+    expect(toggle).toHaveAccessibleDescription('Cite sources');
+    await user.click(screen.getByText('Web search'));
+    expect(change).toHaveBeenCalledWith(true);
+  });
+
+  it('passes disabled to its own field', () => {
+    render(<Switch label="Locked" disabled />);
+    expect(screen.getByRole('switch', { name: 'Locked' })).toBeDisabled();
+  });
 });

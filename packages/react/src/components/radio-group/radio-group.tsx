@@ -16,6 +16,8 @@ export interface RadioGroupProps extends Omit<
   'defaultValue' | 'children'
 > {
   options: readonly RadioGroupOption[];
+  /** A visible group name, rendered as the fieldset's legend. Leave it out inside a Field. */
+  label?: ReactNode;
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -29,6 +31,7 @@ export interface RadioGroupProps extends Omit<
 export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(function RadioGroup(
   {
     options,
+    label,
     value,
     defaultValue,
     onValueChange,
@@ -53,6 +56,7 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(funct
       className={`${s.radioGroup} ${className}`}
       data-orientation={orientation}
     >
+      {label !== undefined && label !== null && <legend className={s.legend}>{label}</legend>}
       {options.length === 0 ? (
         <span className={s.description}>{emptyMessage}</span>
       ) : (

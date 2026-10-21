@@ -105,13 +105,13 @@ export const genericCatalog: CatalogEntry[] = [
     aliases: ['App shell', 'Application shell', 'Dashboard layout'],
     presentations: ['workspace', 'contained', 'compact'],
     importPath: '/workspace',
-    states: ['Default', 'With inspector', 'Minimal', 'Long content'],
+    states: ['Default', 'Responsive navigation', 'With inspector', 'Minimal', 'Long content'],
     contract:
-      'main · header? · navigation? · inspector? · footer? · mainAs? · scrollMode? · variant?',
+      'main · header? · navigation? · inspector? · footer? · mainAs? · scrollMode? · variant? · navigationMode?: inline | responsive · navigationOpen? · onNavigationOpenChange? · navigationBreakpoint?',
     responsibility:
       'Supply real navigation and control visibility. Use mainAs="section" when embedding inside another main landmark.',
     keyboard:
-      'Slot controls retain document Tab order. Flow mode shares page scrolling; panes mode requires a bounded height and named reading regions.',
+      'Slot controls retain document Tab order. Flow mode shares page scrolling; panes mode requires a bounded height and named reading regions. In responsive mode the toggle reports aria-expanded; a narrow drawer takes focus, closes on Escape, the scrim or a followed link, and returns focus to the toggle.',
     code: '<WorkspaceShell label="Project workspace" mainAs="section" header={header} navigation={navigation} main={content} inspector={inspector} />',
   },
 ];
