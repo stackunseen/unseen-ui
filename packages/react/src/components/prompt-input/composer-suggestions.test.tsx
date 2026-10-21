@@ -57,6 +57,28 @@ describe('PromptInput commands and mentions', () => {
     expect(screen.queryByRole('listbox')).toBeNull();
   });
 
+  it('leaves the caret after words the host puts in front for a command', async () => {
+    const user = userEvent.setup();
+    function Prefill() {
+      const [value, setValue] = useState('');
+      return (
+        <PromptInput
+          value={value}
+          onValueChange={setValue}
+          onSubmit={vi.fn()}
+          commands={commands}
+          onCommand={(_command, rest) => setValue(`Create an image of ${rest}`)}
+        />
+      );
+    }
+    render(<Prefill />);
+    const box = screen.getByRole('textbox', { name: 'Message' });
+    await user.type(box, '/ima');
+    await user.keyboard('{Enter}');
+    await user.type(box, 'a red kite');
+    expect(box).toHaveValue('Create an image of a red kite');
+  });
+
   it('moves with the arrow keys and inserts a mention', async () => {
     const user = userEvent.setup();
     const onMention = vi.fn();

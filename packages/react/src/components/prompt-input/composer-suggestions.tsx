@@ -93,7 +93,8 @@ export function useComposerSuggestions({
   // After an insertion, put the caret after it once the host has applied the new value.
   useEffect(() => {
     if (caretAfter.current === undefined || !input.current) return;
-    input.current.setSelectionRange(caretAfter.current, caretAfter.current);
+    const at = caretAfter.current === -1 ? input.current.value.length : caretAfter.current;
+    input.current.setSelectionRange(at, at);
     caretAfter.current = undefined;
     read();
   }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -102,7 +103,8 @@ export function useComposerSuggestions({
     if (!trigger || option.disabledReason) return;
     if (trigger.kind === '/') {
       const next = value.slice(0, trigger.start) + value.slice(trigger.end).replace(/^\s+/, '');
-      caretAfter.current = trigger.start;
+      // At the end: the host may put words in front, such as "Create an image of ".
+      caretAfter.current = -1;
       onValueChange(next);
       // The message without "/word", so the host can build on it before its state updates.
       onCommand?.(option, next);

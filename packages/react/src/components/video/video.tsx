@@ -119,6 +119,8 @@ export function Video({
           aria-label={label}
           width={width}
           height={height}
+          // Fixed, so a poster of another shape does not resize the player before it plays.
+          style={{ aspectRatio: ratio }}
           controls
           playsInline
           preload="metadata"
