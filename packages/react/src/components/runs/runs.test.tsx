@@ -371,3 +371,21 @@ describe('RunBoard hideLabel', () => {
     expect(container.querySelector('[data-part="run-board"]')).toBeTruthy();
   });
 });
+
+describe('RunBoard hrefFor', () => {
+  it('renders card titles as links that still call onSelect on a plain click', async () => {
+    const onSelect = vi.fn();
+    render(
+      <RunBoard
+        runs={cards}
+        hrefFor={(card) => `/runs/${card.run.id}`}
+        onSelect={onSelect}
+        now="2026-10-21T12:00:00Z"
+      />,
+    );
+    const link = screen.getByRole('link', { name: cards[0]!.title });
+    expect(link.getAttribute('href')).toBe(`/runs/${cards[0]!.run.id}`);
+    await userEvent.click(link);
+    expect(onSelect).toHaveBeenCalledWith(cards[0]!.run.id);
+  });
+});

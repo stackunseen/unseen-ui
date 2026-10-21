@@ -46,6 +46,8 @@ export interface RunBoardProps extends VariantProps<'RunBoard'> {
   onFilterChange?: (filter: RunBoardFilter) => void;
   selectedId?: string | null;
   onSelect?: (runId: string) => void;
+  /** A link for each card, so it can open in a new tab; a plain click still calls onSelect. */
+  hrefFor?: (card: RunCard) => string | undefined;
   onAction?: (request: RunActionRequest) => void;
   /** Receipts for actions already requested; a pending receipt disables the card's actions. */
   receipts?: readonly CommandReceipt[];
@@ -112,6 +114,7 @@ export function RunBoard({
   onFilterChange,
   selectedId = null,
   onSelect,
+  hrefFor,
   onAction,
   receipts = [],
   staleAfterMs = 5 * 60_000,
@@ -311,11 +314,8 @@ export function RunBoard({
                         aria-current={selected ? 'true' : undefined}
                       >
                         <div className={r.cardHead}>
-                          <button
-                            type="button"
-                            className={r.opener}
-                            data-run-opener
-                            onClick={() => {
+                          {(() => {
+                            const open = () => {
                               onSelect?.(card.run.id);
                               onAction?.({
                                 runId: card.run.id,
@@ -323,10 +323,41 @@ export function RunBoard({
                                 version: card.run.version,
                                 action: 'open',
                               });
-                            }}
-                          >
-                            {card.title}
-                          </button>
+                            };
+                            const href = hrefFor?.(card);
+                            return href ? (
+                              <a
+                                href={href}
+                                className={r.opener}
+                                data-run-opener
+                                onClick={(event) => {
+                                  // Ctrl, Cmd, Shift and middle clicks open a new tab as links do.
+                                  if (
+                                    event.metaKey ||
+                                    event.ctrlKey ||
+                                    event.shiftKey ||
+                                    event.altKey
+                                  )
+                                    return;
+                                  if (onSelect || onAction) {
+                                    event.preventDefault();
+                                    open();
+                                  }
+                                }}
+                              >
+                                {card.title}
+                              </a>
+                            ) : (
+                              <button
+                                type="button"
+                                className={r.opener}
+                                data-run-opener
+                                onClick={open}
+                              >
+                                {card.title}
+                              </button>
+                            );
+                          })()}
                           <StatusBadge
                             state={stale ? 'blocked' : card.run.lifecycle}
                             label={stale ? 'No recent update' : undefined}

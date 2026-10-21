@@ -215,6 +215,7 @@
 }
 .opener {
   flex: 1 1 160px;
+  text-decoration: none;
   min-width: 0;
   margin: 0;
   padding: 0;
