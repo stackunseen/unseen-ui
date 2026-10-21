@@ -49,6 +49,9 @@ const common = {
   revision: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
   createdAt: z.iso.datetime().optional(),
   error: messageErrorSchema.optional(),
+  author: z
+    .strictObject({ id, name: z.string().min(1).max(80), you: z.boolean().optional() })
+    .optional(),
 };
 export const messageSchema = z
   .union([

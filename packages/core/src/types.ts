@@ -50,12 +50,22 @@ export type MessagePart =
   | { id: string; type: 'reasoning'; text: string; state: 'streaming' | 'complete' }
   /** A file in the message, such as an image the user attached. `url` is shown only when safe. */
   | { id: string; type: 'file'; name: string; mediaType: string; url?: string };
+/** Who sent a message, for conversations with more than one person. */
+export interface MessageAuthor {
+  id: string;
+  /** Display name; data, never markup. */
+  name: string;
+  /** true when the person viewing sent it. */
+  you?: boolean;
+}
 interface MessageBase {
   id: string;
   role: 'user' | 'assistant' | 'system';
   state: MessageState;
   revision: number;
   createdAt?: string;
+  /** The person who sent a user message in a group conversation. Leave out for one-to-one chats. */
+  author?: MessageAuthor;
   error?: MessageError;
 }
 /** Exactly one content representation. Parts require protocol v2 in a runtime. */

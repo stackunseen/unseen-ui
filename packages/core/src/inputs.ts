@@ -34,6 +34,7 @@ export interface MessageInput {
   revision?: number;
   createdAt?: string;
   error?: MessageError;
+  author?: MessageData['author'];
 }
 
 /** Returns host data unchanged and fills defaults for the short form. */
@@ -50,5 +51,6 @@ export function messageFrom(input: MessageInput | MessageData): MessageData {
   };
   if (input.createdAt) message.createdAt = input.createdAt;
   if (input.error) message.error = input.error;
+  if (input.author) message.author = input.author;
   return message;
 }

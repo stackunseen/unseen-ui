@@ -32,6 +32,7 @@ export type {
 export type {
   Step,
   MessageData,
+  MessageAuthor,
   MessagePart,
   ToolCallData,
   ToolState,

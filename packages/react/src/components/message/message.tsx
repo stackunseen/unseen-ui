@@ -37,13 +37,16 @@ export function Message({
   ...props
 }: MessageProps) {
   const value = messageFrom(input);
+  // In a group chat, someone else's message names them; yours and the assistant's read as before.
+  const other = value.author && !value.author.you ? value.author.name : undefined;
   return (
     <article
       {...props}
       className={`${s.message} ${className}`}
       data-role={value.role}
       data-variant={variant}
-      aria-label={`${value.role} message`}
+      data-author={value.author ? (value.author.you ? 'you' : 'other') : undefined}
+      aria-label={other ? `Message from ${other}` : `${value.role} message`}
     >
       <div className={s.messageAvatar} aria-hidden="true">
         <AIIcon
@@ -53,7 +56,8 @@ export function Message({
       <div className={s.messageBody}>
         <div className={`${s.messageLabel} ${m.metadata}`}>
           <span>
-            {value.role === 'assistant' ? 'Assistant' : value.role === 'user' ? 'You' : 'System'}
+            {other ??
+              (value.role === 'assistant' ? 'Assistant' : value.role === 'user' ? 'You' : 'System')}
           </span>
           {value.createdAt && validTimestamp(value.createdAt) && (
             <time dateTime={value.createdAt}>

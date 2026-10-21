@@ -29,4 +29,25 @@ describe('Message chat variant', () => {
     );
     expect(article.lastElementChild).not.toBe(screen.getByRole('button', { name: 'Copy' }));
   });
+
+  it('names other people in a group chat and keeps yours as You', () => {
+    render(
+      <>
+        <Message
+          value={{ role: 'user', text: 'Lunch?', author: { id: 'b', name: 'Ben' } }}
+          variant="chat"
+        />
+        <Message
+          value={{ role: 'user', text: 'Sure', author: { id: 'a', name: 'Ana', you: true } }}
+          variant="chat"
+        />
+      </>,
+    );
+    const ben = screen.getByRole('article', { name: 'Message from Ben' });
+    expect(ben.dataset.author).toBe('other');
+    expect(ben.textContent).toContain('Ben');
+    const mine = screen.getByRole('article', { name: 'user message' });
+    expect(mine.dataset.author).toBe('you');
+    expect(mine.textContent).toContain('You');
+  });
 });

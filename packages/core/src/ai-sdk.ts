@@ -50,6 +50,17 @@ export interface AiSdkMessage {
   id: string;
   role: 'system' | 'user' | 'assistant';
   parts: readonly AiSdkPart[];
+  /** `metadata.author` ({ id, name, you? }) marks who sent it in a group chat. */
+  metadata?: unknown;
+}
+
+function authorOf(metadata: unknown): MessageData['author'] {
+  const author = (metadata as { author?: Record<string, unknown> } | undefined)?.author;
+  if (!author || typeof author.id !== 'string' || typeof author.name !== 'string') return undefined;
+  const id = author.id.slice(0, 160);
+  const name = author.name.replace(/\s+/g, ' ').trim().slice(0, 80);
+  if (!id.trim() || !name) return undefined;
+  return author.you === true ? { id, name, you: true } : { id, name };
 }
 export type AiSdkStatus = 'submitted' | 'streaming' | 'ready' | 'error';
 
@@ -319,6 +330,8 @@ export function fromAiSdkChat(
     };
     if (failed)
       data.error = { code: 'ai-sdk-error', message: input.error?.message ?? 'The reply failed.' };
+    const author = message.role === 'user' ? authorOf(message.metadata) : undefined;
+    if (author) data.author = author;
     return data;
   });
 
