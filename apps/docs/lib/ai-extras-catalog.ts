@@ -27,6 +27,19 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     code: '<Reasoning summary={summary} state="complete" durationMs={3200} />',
   }),
   assistant({
+    name: 'WorkSummary',
+    category: 'Execution',
+    aliases: ['Worked for', 'Turn activity', 'Agent activity'],
+    description:
+      'The steps of one agent turn, open while it works and collapsed to "Worked for 15s" after.',
+    states: ['Running', 'Done', 'Stopped', 'Failed'],
+    contract:
+      'steps · state: running | done | stopped | failed · startedAt · endedAt? · durationMs? · children? · open? · onOpenChange?',
+    responsibility:
+      'Steps and times come from the host. Pass endedAt or durationMs when the turn ends; otherwise the time stops when the state changes.',
+    code: '<WorkSummary steps={turn.steps} state="done" startedAt={turn.startedAt} durationMs={turn.elapsedMs} />',
+  }),
+  assistant({
     name: 'ChainOfThought',
     category: 'Execution',
     aliases: ['Agent steps', 'Thought steps', 'Task log', 'Activity log'],

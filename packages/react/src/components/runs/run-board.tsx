@@ -1,6 +1,6 @@
 'use client';
 import { useId, useMemo } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
 import type { CommandReceipt, Measurement, Run, RunLifecycle } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
@@ -57,6 +57,8 @@ export interface RunBoardProps extends VariantProps<'RunBoard'> {
   timeZone?: string;
   label?: string;
   emptyMessage?: string;
+  /** Trusted extra content at the end of each card's title row, such as a DiffStat. */
+  renderCardTrailing?: (card: RunCard) => ReactNode;
 }
 
 const groups: { id: RunBoardGroup; label: string; states: RunLifecycle[] }[] = [
@@ -116,6 +118,7 @@ export function RunBoard({
   timeZone,
   label = 'Runs',
   emptyMessage = 'No runs.',
+  renderCardTrailing,
 }: RunBoardProps) {
   const id = useId();
   const clock = now ?? (typeof window === 'undefined' ? undefined : new Date().toISOString());
@@ -325,6 +328,7 @@ export function RunBoard({
                             state={stale ? 'blocked' : card.run.lifecycle}
                             label={stale ? 'No recent update' : undefined}
                           />
+                          {renderCardTrailing?.(card)}
                         </div>
                         {variant !== 'compact' && (
                           <div className={r.cardMeta}>

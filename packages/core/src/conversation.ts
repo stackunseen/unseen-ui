@@ -33,6 +33,10 @@ export interface ThreadSummary {
   version: string;
   detail?: string;
   pending?: boolean;
+  /** Last activity (ISO 8601), used to group threads by date. */
+  updatedAt?: string;
+  /** Pinned threads list first, in their own group. */
+  pinned?: boolean;
 }
 export interface ConversationBranch {
   id: string;

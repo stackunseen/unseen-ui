@@ -8,6 +8,7 @@ import {
   Plan,
   Reasoning,
   Sources,
+  WorkSummary,
 } from '@stackunseen/ui/assistant';
 import {
   Commit,
@@ -72,6 +73,8 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
   const [time, setTime] = useState(3);
   const [notice, setNotice] = useState('');
   const [restoring, setRestoring] = useState(false);
+  // A turn that began a little before the example mounted, so the running time is real.
+  const [startedAt] = useState(() => Date.now() - 12_000);
   let content;
   switch (name) {
     case 'Reasoning':
@@ -82,6 +85,39 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
           state={state === 'Streaming' ? 'streaming' : 'complete'}
           durationMs={state === 'Unknown duration' ? undefined : 3200}
           defaultOpen={state !== 'Complete' ? undefined : true}
+        />
+      );
+      break;
+    case 'WorkSummary':
+      content = (
+        <WorkSummary
+          key={state}
+          state={
+            state === 'Running'
+              ? 'running'
+              : state === 'Stopped'
+                ? 'stopped'
+                : state === 'Failed'
+                  ? 'failed'
+                  : 'done'
+          }
+          startedAt={startedAt}
+          durationMs={state === 'Running' ? undefined : 15_000}
+          steps={[
+            { id: 'read', label: 'Read the repository', state: 'succeeded', dependencyIds: [] },
+            {
+              id: 'edit',
+              label: 'Edit src/search.ts',
+              state: state === 'Running' ? 'running' : state === 'Failed' ? 'failed' : 'succeeded',
+              dependencyIds: [],
+            },
+            {
+              id: 'test',
+              label: 'Run the tests',
+              state: state === 'Done' ? 'succeeded' : 'queued',
+              dependencyIds: [],
+            },
+          ]}
         />
       );
       break;

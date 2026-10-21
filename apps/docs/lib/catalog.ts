@@ -83,6 +83,7 @@ export type GenericComponent =
   | 'Card'
   | 'Table'
   | 'Reasoning'
+  | 'WorkSummary'
   | 'ChainOfThought'
   | 'Plan'
   | 'Checkpoint'
@@ -397,7 +398,7 @@ export const catalog: CatalogEntry[] = [
       'Runs across threads as a board, grouped by what they need, with host filters and actions.',
     states: ['Default', 'Stale heartbeat', 'Failed', 'Filtered', 'Empty'],
     contract:
-      'runs: RunCard[] · filter? · onFilterChange? · selectedId? · onSelect? · onAction? · receipts? · staleAfterMs? · now? · label?',
+      'runs: RunCard[] · filter? · onFilterChange? · selectedId? · onSelect? · onAction? · receipts? · staleAfterMs? · now? · label? · renderCardTrailing?',
     responsibility:
       'Lifecycle, timestamps and heartbeats come from the host. A running run with no recent heartbeat is marked, never guessed finished. Actions are requests until a receipt arrives.',
     keyboard:

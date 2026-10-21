@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import {
   sameConversationContext,
   inspectThreadWindow,
@@ -56,6 +57,58 @@ export interface ThreadListProps extends VariantProps<'ThreadList'>, NavigationS
   onScrollOffsetChange?: (offset: number) => void;
   scrollRestoration?: ConversationScroll;
   onScrollSnapshotChange?: (snapshot: ConversationScroll) => void;
+  /** Controls beside the list title, such as a New chat button. */
+  actions?: ReactNode;
+  /**
+   * "date" groups threads into Pinned, Today, Yesterday, Previous 7 days, Previous 30 days and
+   * Earlier, from each thread's updatedAt. Order inside a group stays as the host sent it.
+   */
+  groupBy?: 'none' | 'date';
+  /** The host clock for date groups (ISO 8601), so server and browser agree. */
+  now?: string;
+  /** Extra per-thread controls, such as a menu with Share or Move, after Rename and Archive. */
+  rowActions?: (thread: ThreadSummary) => ReactNode;
+}
+
+export type ThreadDateGroup =
+  'Pinned' | 'Today' | 'Yesterday' | 'Previous 7 days' | 'Previous 30 days' | 'Earlier';
+
+const dateGroups: readonly ThreadDateGroup[] = [
+  'Pinned',
+  'Today',
+  'Yesterday',
+  'Previous 7 days',
+  'Previous 30 days',
+  'Earlier',
+];
+
+/** Splits threads into date groups by local calendar day, keeping the host's order in each. */
+export function groupThreadsByDate(
+  threads: readonly ThreadSummary[],
+  now: Date | string | number = Date.now(),
+): { group: ThreadDateGroup; threads: ThreadSummary[] }[] {
+  const today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  const day = 24 * 3600_000;
+  const startOfToday = today.getTime();
+  const pick = (thread: ThreadSummary): ThreadDateGroup => {
+    if (thread.pinned) return 'Pinned';
+    const at = thread.updatedAt ? Date.parse(thread.updatedAt) : Number.NaN;
+    if (!Number.isFinite(at)) return 'Earlier';
+    if (at >= startOfToday) return 'Today';
+    if (at >= startOfToday - day) return 'Yesterday';
+    if (at >= startOfToday - 7 * day) return 'Previous 7 days';
+    if (at >= startOfToday - 30 * day) return 'Previous 30 days';
+    return 'Earlier';
+  };
+  const buckets = new Map<ThreadDateGroup, ThreadSummary[]>();
+  for (const thread of threads) {
+    const group = pick(thread);
+    buckets.set(group, [...(buckets.get(group) ?? []), thread]);
+  }
+  return dateGroups
+    .filter((group) => buckets.has(group))
+    .map((group) => ({ group, threads: buckets.get(group)! }));
 }
 
 export function ThreadList(props: ThreadListProps) {
@@ -82,7 +135,12 @@ export function ThreadList(props: ThreadListProps) {
     onScrollSnapshotChange,
     variant = 'list',
     label = 'Conversations',
+    actions: headerActions,
+    groupBy = 'none',
+    now,
+    rowActions,
   } = props;
+  const groupId = useId();
   const visible =
     (props.status ?? (props.loading ? 'loading' : 'ready')) === 'ready' || props.status === 'stale';
   const rows = visible ? inspectThreadWindow(threads) : undefined;
@@ -152,6 +210,119 @@ export function ThreadList(props: ThreadListProps) {
     threadVersion: row.version,
   });
   const currentEdit = editing?.key === state.key ? editing : undefined;
+  const renderRow = (row: ThreadSummary) => (
+    <li
+      key={row.id}
+      className={n.thread}
+      data-selected={row.id === selectedId}
+      data-pending={!!row.pending}
+    >
+      <button
+        className={n.threadSelect}
+        type="button"
+        aria-current={row.id === selectedId ? 'true' : undefined}
+        disabled={state.locked || row.pending || !canSelect}
+        onClick={() => {
+          if (onRequestSelect && scope) onRequestSelect(request(row));
+          else if (!onRequestSelect) onSelect?.(row);
+        }}
+      >
+        <span>
+          <strong>{row.title}</strong>
+          {row.detail && <small className={s.muted}>{row.detail}</small>}
+          {row.pending && <small className={s.muted}>Awaiting confirmation</small>}
+        </span>
+      </button>
+      {(onRequestRename || onRename || onRequestArchive || onArchive || rowActions) && (
+        <div className={n.actions} role="group" aria-label={`Actions for ${row.title}`}>
+          {(onRequestRename || onRename) && (
+            <IconButton
+              icon="edit"
+              label={`Rename ${row.title}`}
+              disabled={state.locked || row.pending || !canRename}
+              onClick={(e) => {
+                origin.current = e.currentTarget;
+                setEditing({ thread: row, title: row.title, key: state.key });
+              }}
+            />
+          )}
+          {(onRequestArchive || onArchive) && (
+            <IconButton
+              icon="archive"
+              label={`Archive ${row.title}`}
+              disabled={state.locked || row.pending || !canArchive}
+              onClick={() => {
+                if (onRequestArchive && scope) onRequestArchive(request(row));
+                else if (!onRequestArchive) onArchive?.(row);
+              }}
+            />
+          )}
+          {rowActions?.(row)}
+        </div>
+      )}
+      {currentEdit?.thread.id === row.id && (
+        <form
+          className={n.editor}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              e.preventDefault();
+              close();
+            }
+          }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (
+              currentEdit.title.trim() &&
+              row.version === currentEdit.thread.version &&
+              !state.locked &&
+              !row.pending &&
+              canRename
+            ) {
+              if (onRequestRename && scope)
+                onRequestRename({ ...request(row), title: currentEdit.title.trim() });
+              else if (!onRequestRename) onRename?.(row, currentEdit.title.trim());
+              close();
+            }
+          }}
+        >
+          <label>
+            Conversation title
+            <Input
+              ref={input}
+              className={s.search}
+              value={currentEdit.title}
+              maxLength={200}
+              disabled={state.locked || row.pending}
+              onChange={(e) => setEditing({ ...currentEdit, title: e.target.value })}
+            />
+          </label>
+          {row.version !== currentEdit.thread.version && (
+            <p role="status" className={s.warning}>
+              Conversation changed. Cancel and reopen to rename the current version.
+            </p>
+          )}
+          <div className={actions.footer}>
+            <Button size="sm" variant="ghost" onClick={close}>
+              Cancel rename
+            </Button>
+            <Button
+              size="sm"
+              type="submit"
+              disabled={
+                !currentEdit.title.trim() ||
+                row.version !== currentEdit.thread.version ||
+                state.locked ||
+                row.pending ||
+                !canRename
+              }
+            >
+              Save title
+            </Button>
+          </div>
+        </form>
+      )}
+    </li>
+  );
   return (
     <div
       ref={root}
@@ -164,7 +335,14 @@ export function ThreadList(props: ThreadListProps) {
       data-variant={variant}
       data-status={state.status}
     >
-      <strong>{label}</strong>
+      {headerActions ? (
+        <div className={n.listHead}>
+          <strong>{label}</strong>
+          <div className={n.actions}>{headerActions}</div>
+        </div>
+      ) : (
+        <strong>{label}</strong>
+      )}
       <Notice state={state} onReconcile={props.onReconcile} />
       {state.visible && state.valid && (
         <>
@@ -206,120 +384,18 @@ export function ThreadList(props: ThreadListProps) {
               else if (!onScrollSnapshotChange) onScrollOffsetChange?.(offset);
             }}
           >
-            <ul className={n.threads}>
-              {rows!.map((row) => (
-                <li
-                  key={row.id}
-                  className={n.thread}
-                  data-selected={row.id === selectedId}
-                  data-pending={!!row.pending}
-                >
-                  <button
-                    className={n.threadSelect}
-                    type="button"
-                    aria-current={row.id === selectedId ? 'true' : undefined}
-                    disabled={state.locked || row.pending || !canSelect}
-                    onClick={() => {
-                      if (onRequestSelect && scope) onRequestSelect(request(row));
-                      else if (!onRequestSelect) onSelect?.(row);
-                    }}
-                  >
-                    <span>
-                      <strong>{row.title}</strong>
-                      {row.detail && <small className={s.muted}>{row.detail}</small>}
-                      {row.pending && <small className={s.muted}>Awaiting confirmation</small>}
-                    </span>
-                  </button>
-                  {(onRequestRename || onRename || onRequestArchive || onArchive) && (
-                    <div className={n.actions} role="group" aria-label={`Actions for ${row.title}`}>
-                      {(onRequestRename || onRename) && (
-                        <IconButton
-                          icon="edit"
-                          label={`Rename ${row.title}`}
-                          disabled={state.locked || row.pending || !canRename}
-                          onClick={(e) => {
-                            origin.current = e.currentTarget;
-                            setEditing({ thread: row, title: row.title, key: state.key });
-                          }}
-                        />
-                      )}
-                      {(onRequestArchive || onArchive) && (
-                        <IconButton
-                          icon="archive"
-                          label={`Archive ${row.title}`}
-                          disabled={state.locked || row.pending || !canArchive}
-                          onClick={() => {
-                            if (onRequestArchive && scope) onRequestArchive(request(row));
-                            else if (!onRequestArchive) onArchive?.(row);
-                          }}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {currentEdit?.thread.id === row.id && (
-                    <form
-                      className={n.editor}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Escape') {
-                          e.preventDefault();
-                          close();
-                        }
-                      }}
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        if (
-                          currentEdit.title.trim() &&
-                          row.version === currentEdit.thread.version &&
-                          !state.locked &&
-                          !row.pending &&
-                          canRename
-                        ) {
-                          if (onRequestRename && scope)
-                            onRequestRename({ ...request(row), title: currentEdit.title.trim() });
-                          else if (!onRequestRename) onRename?.(row, currentEdit.title.trim());
-                          close();
-                        }
-                      }}
-                    >
-                      <label>
-                        Conversation title
-                        <Input
-                          ref={input}
-                          className={s.search}
-                          value={currentEdit.title}
-                          maxLength={200}
-                          disabled={state.locked || row.pending}
-                          onChange={(e) => setEditing({ ...currentEdit, title: e.target.value })}
-                        />
-                      </label>
-                      {row.version !== currentEdit.thread.version && (
-                        <p role="status" className={s.warning}>
-                          Conversation changed. Cancel and reopen to rename the current version.
-                        </p>
-                      )}
-                      <div className={actions.footer}>
-                        <Button size="sm" variant="ghost" onClick={close}>
-                          Cancel rename
-                        </Button>
-                        <Button
-                          size="sm"
-                          type="submit"
-                          disabled={
-                            !currentEdit.title.trim() ||
-                            row.version !== currentEdit.thread.version ||
-                            state.locked ||
-                            row.pending ||
-                            !canRename
-                          }
-                        >
-                          Save title
-                        </Button>
-                      </div>
-                    </form>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {groupBy === 'date' ? (
+              groupThreadsByDate(rows!, now).map(({ group, threads: grouped }) => (
+                <div key={group} role="group" aria-labelledby={`${groupId}-${group}`}>
+                  <span id={`${groupId}-${group}`} className={n.groupLabel}>
+                    {group}
+                  </span>
+                  <ul className={n.threads}>{grouped.map(renderRow)}</ul>
+                </div>
+              ))
+            ) : (
+              <ul className={n.threads}>{rows!.map(renderRow)}</ul>
+            )}
           </div>
           {editing && (!currentEdit || !rows!.some((row) => row.id === editing.thread.id)) && (
             <div className={n.editor}>

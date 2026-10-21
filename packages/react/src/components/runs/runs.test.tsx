@@ -344,3 +344,18 @@ describe('BackgroundStatus', () => {
     expect(screen.getByLabelText('Background runs')).toHaveAttribute('data-tone', 'idle');
   });
 });
+
+describe('RunBoard trailing content', () => {
+  it('renders host content at the end of each card title row', () => {
+    render(
+      <RunBoard
+        variant="list"
+        runs={cards}
+        now="2026-10-21T10:00:00Z"
+        renderCardTrailing={(card) => <span data-testid={`trail-${card.run.id}`}>+3 −1</span>}
+      />,
+    );
+    for (const card of cards)
+      expect(screen.getByTestId(`trail-${card.run.id}`)).toHaveTextContent('+3 −1');
+  });
+});

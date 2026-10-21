@@ -386,14 +386,33 @@ export function ExpandedSpecimen({
         <ThreadList
           {...navState}
           variant={resolveVariant('ThreadList', presentation)}
+          {...(state === 'Date groups'
+            ? {
+                groupBy: 'date' as const,
+                now: '2026-10-21T12:00:00.000Z',
+                actions: (
+                  <Button size="sm" variant="outline" onClick={() => emit('new chat requested')}>
+                    New chat
+                  </Button>
+                ),
+              }
+            : {})}
           threads={
             empty
               ? []
-              : state === 'Invalid window'
-                ? [threads[0]!, threads[0]!]
-                : threads.filter((thread) =>
-                    thread.title.toLowerCase().includes(query.toLowerCase()),
-                  )
+              : state === 'Date groups'
+                ? threads.map((thread, index) => ({
+                    ...thread,
+                    pinned: index === 0,
+                    updatedAt: new Date(
+                      Date.parse('2026-10-21T11:00:00.000Z') - index * 3 * 24 * 3600_000,
+                    ).toISOString(),
+                  }))
+                : state === 'Invalid window'
+                  ? [threads[0]!, threads[0]!]
+                  : threads.filter((thread) =>
+                      thread.title.toLowerCase().includes(query.toLowerCase()),
+                    )
           }
           selectedId={selected || '1'}
           query={query}

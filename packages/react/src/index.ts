@@ -47,11 +47,11 @@ export type {
   Measurement,
   CommandReceipt,
 } from '@stackunseen/ui-core';
-export { ThreadList } from './components/thread-list/thread-list.js';
+export { ThreadList, groupThreadsByDate } from './components/thread-list/thread-list.js';
 export { BranchSwitcher } from './components/branch-switcher/branch-switcher.js';
 export { MessageQueue } from './components/message-queue/message-queue.js';
 export { MemoryControls } from './components/memory-controls/memory-controls.js';
-export type { ThreadListProps } from './components/thread-list/thread-list.js';
+export type { ThreadListProps, ThreadDateGroup } from './components/thread-list/thread-list.js';
 export type { ThreadSummary, ConversationBranch, QueuedMessage } from '@stackunseen/ui-core';
 export type { BranchSwitcherProps } from './components/branch-switcher/branch-switcher.js';
 export type { MessageQueueProps } from './components/message-queue/message-queue.js';

@@ -32,6 +32,8 @@ const thread = z
     version: id,
     detail: z.string().max(1000).optional(),
     pending: z.boolean().optional(),
+    updatedAt: z.iso.datetime().optional(),
+    pinned: z.boolean().optional(),
   })
   .strict();
 const branch = z

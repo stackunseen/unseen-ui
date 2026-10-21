@@ -166,6 +166,7 @@ export const expandedCatalog: CatalogEntry[] = [
     description: 'Search, select, rename and archive host-owned conversations.',
     states: [
       'Default',
+      'Date groups',
       'Empty',
       'Loading',
       'Error',
@@ -184,7 +185,7 @@ export const expandedCatalog: CatalogEntry[] = [
       'Invalid window',
     ],
     contract:
-      'threads · query · context? · status? · pagination? · scoped requests or legacy callbacks',
+      'threads · query · context? · status? · pagination? · actions? · groupBy?: none | date · now? · rowActions? · scoped requests or legacy callbacks',
     responsibility:
       'Persist and acknowledge edits by version; provide pages and restored scroll offsets.',
     code: '<ThreadList threads={threads} query={query} onQueryChange={setQuery} onSelect={openThread} />',

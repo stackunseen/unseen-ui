@@ -346,6 +346,12 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Showing files already attached.',
     'Attachment',
   ),
+  WorkSummary: g(
+    'The steps of one agent turn, collapsed to how long it took once done.',
+    'Reasoning text, or runs across many threads.',
+    'Reasoning',
+    'RunBoard',
+  ),
   Reasoning: g(
     'A collapsible public summary of how the reply was reached.',
     'Private chain of thought; do not show it.',

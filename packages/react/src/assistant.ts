@@ -1,5 +1,7 @@
 export { Reasoning, reasoningLabel } from './components/reasoning/reasoning.js';
 export type { ReasoningProps } from './components/reasoning/reasoning.js';
+export { WorkSummary } from './components/work-summary/work-summary.js';
+export type { WorkSummaryProps } from './components/work-summary/work-summary.js';
 export { ChainOfThought } from './components/chain-of-thought/chain-of-thought.js';
 export type {
   ChainOfThoughtProps,
