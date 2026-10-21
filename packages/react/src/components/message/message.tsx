@@ -53,8 +53,8 @@ export function Message({
           name={value.role === 'assistant' ? 'assistant' : value.role === 'user' ? 'user' : 'info'}
         />
       </div>
-      <div className={s.messageBody}>
-        <div className={`${s.messageLabel} ${m.metadata}`}>
+      <div className={s.messageBody} data-part="message-body">
+        <div className={`${s.messageLabel} ${m.metadata}`} data-part="message-label">
           <span>
             {other ??
               (value.role === 'assistant' ? 'Assistant' : value.role === 'user' ? 'You' : 'System')}
