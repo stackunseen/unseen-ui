@@ -586,6 +586,19 @@ export function RichExample() { return <><MathFormula formula={'x^2 + y^2 = z^2'
     const source = await readFile(`packages/react/dist/${entry}.js`, 'utf8');
     if (!source.startsWith('"use client";')) throw new Error(`Missing client boundary: ${entry}`);
   }
+  // Every JS entry must load on its own. Entries share root modules through the root bundle,
+  // so a helper the root does not export only fails here, not in source-level unit tests.
+  const exportsMap = JSON.parse(await readFile('packages/react/package.json', 'utf8')).exports;
+  const jsEntries = Object.values(exportsMap)
+    .filter((value) => value && typeof value === 'object' && typeof value.import === 'string')
+    .map((value) => resolve('packages/react', value.import).replaceAll('\\', '/'));
+  run([
+    'exec',
+    'node',
+    '--input-type=module',
+    '-e',
+    `for (const entry of ${JSON.stringify(jsEntries)}) await import('file:///' + entry.replace(/^\\//, '')); console.log('PASS: all ${jsEntries.length} JS entries import on their own.');`,
+  ]);
   const hashes = await Promise.all(
     [core, react].map(async (path) => ({
       path,

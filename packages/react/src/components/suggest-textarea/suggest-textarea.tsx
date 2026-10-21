@@ -11,7 +11,6 @@ import {
 import type { CSSProperties } from 'react';
 import { Textarea } from '../textarea/textarea.js';
 import type { TextareaProps } from '../textarea/textarea.js';
-import { joinIds } from '../field/field.js';
 import s from '../../shared/styles/styles.module.css';
 import css from './suggest-textarea.module.css';
 
@@ -106,7 +105,10 @@ export const SuggestTextarea = forwardRef<HTMLTextAreaElement, SuggestTextareaPr
           ref={ref}
           value={value}
           className={className}
-          aria-describedby={joinIds(props['aria-describedby'], visible ? hintId : undefined)}
+          aria-describedby={
+            [props['aria-describedby'], visible ? hintId : undefined].filter(Boolean).join(' ') ||
+            undefined
+          }
           onChange={(event) => {
             onValueChange(event.target.value);
             setAtEnd(
