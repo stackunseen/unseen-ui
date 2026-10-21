@@ -1,5 +1,5 @@
 'use client';
-import type { CSSProperties, ReactNode } from 'react';
+import { useRef, type CSSProperties, type ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ThemeSurface } from '../../providers/theme/theme-provider.js';
 import { IconButton } from '../icon-button/icon-button.js';
@@ -34,6 +34,8 @@ export function Modal({
   style?: CSSProperties;
   children: ReactNode;
 }) {
+  // Radix returns focus to its Trigger. A host-opened Modal has none, so remember what had focus.
+  const opener = useRef<HTMLElement | null>(null);
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {/* Without a trigger the host opens it, such as from a menu item or a keyboard shortcut. */}
@@ -52,6 +54,17 @@ export function Modal({
             }}
             data-layout={layout}
             data-slot="modal"
+            onOpenAutoFocus={(event) => {
+              const active = document.activeElement;
+              // A Strict Mode remount runs this again with focus already inside; keep the first.
+              if (active instanceof HTMLElement && !(event.currentTarget as Node).contains(active))
+                opener.current = active;
+            }}
+            onCloseAutoFocus={(event) => {
+              if (trigger !== undefined || !opener.current?.isConnected) return;
+              event.preventDefault();
+              opener.current.focus();
+            }}
           >
             <div className={s.row} data-slot="modal-header">
               <div className={s.grow}>

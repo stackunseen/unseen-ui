@@ -49,6 +49,43 @@ describe('Modal', () => {
     await waitFor(() => expect(trigger).toHaveFocus());
   });
 
+  it.each(['close', 'unmount'] as const)(
+    'returns focus to the opening control without a trigger (%s)',
+    async (how) => {
+      const user = userEvent.setup();
+      function Demo() {
+        const [open, setOpen] = useState(false);
+        const modal = (
+          <Modal
+            open={open}
+            onOpenChange={setOpen}
+            title="Voice"
+            description="Talk to the assistant."
+          >
+            <Button onClick={() => setOpen(false)}>End</Button>
+          </Modal>
+        );
+        return (
+          <>
+            <Button onClick={() => setOpen(true)}>Start voice</Button>
+            {/* Hosts either keep the Modal mounted and close it, or stop rendering it. */}
+            {how === 'close' ? modal : open && modal}
+          </>
+        );
+      }
+      render(<Demo />);
+      const opener = screen.getByRole('button', { name: 'Start voice' });
+      await user.click(opener);
+      expect(screen.getByRole('dialog', { name: 'Voice' })).toBeInTheDocument();
+      await user.keyboard('{Escape}');
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() => expect(opener).toHaveFocus());
+      await user.click(opener);
+      await user.click(screen.getByRole('button', { name: 'End' }));
+      await waitFor(() => expect(opener).toHaveFocus());
+    },
+  );
+
   it.each(['dialog', 'sheet', 'fullscreen'] as const)(
     'preserves the accessible name with a custom %s header and host-owned footer actions',
     async (layout) => {
