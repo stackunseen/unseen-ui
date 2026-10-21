@@ -139,8 +139,9 @@ describe('fromAiSdkChat', () => {
       { maxJsonLength: 20 },
     );
     expect(state.tools.map((tool) => [tool.name, tool.state])).toEqual([
-      ['search', 'input-streaming'],
-      ['search', 'running'],
+      // The chat is idle, so calls left receiving input or running were cut off by Stop.
+      ['search', 'cancelled'],
+      ['search', 'cancelled'],
       ['search', 'succeeded'],
       ['search', 'failed'],
       ['lookup', 'succeeded'],

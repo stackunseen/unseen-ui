@@ -63,3 +63,21 @@ describe('message authors for group chats', () => {
     ).toEqual({ id: 'a', name: 'Ana' });
   });
 });
+
+describe('tool calls cut off by Stop', () => {
+  it('reads as cancelled once the chat is idle, and running while it is busy', () => {
+    const message = {
+      id: 'a1',
+      role: 'assistant' as const,
+      parts: [
+        { type: 'tool-canvas', toolCallId: 'c1', state: 'input-streaming', input: { title: 'Dr' } },
+      ],
+    };
+    expect(fromAiSdkChat({ status: 'ready', messages: [message] }).tools[0]!.state).toBe(
+      'cancelled',
+    );
+    expect(fromAiSdkChat({ status: 'streaming', messages: [message] }).tools[0]!.state).toBe(
+      'input-streaming',
+    );
+  });
+});

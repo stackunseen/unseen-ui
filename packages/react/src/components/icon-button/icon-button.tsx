@@ -6,8 +6,6 @@ import {
   ArrowDownIcon,
   MagnifyingGlassIcon,
   TrashIcon,
-  ThickArrowUpIcon,
-  ThickArrowDownIcon,
   DotsHorizontalIcon,
   PlusIcon,
   ViewVerticalIcon,
@@ -28,8 +26,8 @@ const actions: Partial<Record<IconName, IconComponent>> = {
   search: MagnifyingGlassIcon,
   moveUp: ArrowUpIcon,
   moveDown: ArrowDownIcon,
-  helpful: ThickArrowUpIcon,
-  unhelpful: ThickArrowDownIcon,
+  helpful: ThumbUp,
+  unhelpful: ThumbDown,
   more: DotsHorizontalIcon,
   attach: PlusIcon,
   sidebar: ViewVerticalIcon,
@@ -37,6 +35,47 @@ const actions: Partial<Record<IconName, IconComponent>> = {
   newChat: Pencil2Icon,
   microphone: Microphone,
 };
+// Radix has no thumbs; these match its 15px grid. The filled ones mark a rating already given.
+const thumbPath =
+  'M4.5 6.5v6.5M4.5 6.5 7 1.8c.9 0 1.6.8 1.4 1.7L8 5.5h3.4c.9 0 1.5.8 1.3 1.7l-.9 4.6c-.1.7-.7 1.2-1.4 1.2H4.5M2 6.5h2.5V13H2Z';
+export function ThumbUp(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.1"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d={thumbPath} />
+    </svg>
+  );
+}
+export function ThumbDown(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.1"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d={thumbPath} transform="rotate(180 7.5 7.5)" />
+    </svg>
+  );
+}
+export function ThumbUpFilled(props: SVGProps<SVGSVGElement>) {
+  return <ThumbUp fill="currentColor" {...props} />;
+}
+export function ThumbDownFilled(props: SVGProps<SVGSVGElement>) {
+  return <ThumbDown fill="currentColor" {...props} />;
+}
 // Radix has no microphone; this matches its 15px grid and stroke weight.
 function Microphone(props: SVGProps<SVGSVGElement>) {
   return (

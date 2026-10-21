@@ -4,8 +4,13 @@ import { useRef, useState } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import type { MessageData, MessageInput } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
-import { IconButton } from '../icon-button/icon-button.js';
-import { ThickArrowUpIcon, ThickArrowDownIcon } from '@radix-ui/react-icons';
+import {
+  IconButton,
+  ThumbDown,
+  ThumbDownFilled,
+  ThumbUp,
+  ThumbUpFilled,
+} from '../icon-button/icon-button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { MessageContent } from '../message-content/message-content.js';
 import type { MessageContentProps } from '../message-content/message-content.js';
@@ -203,12 +208,12 @@ export function MessageActions({
         <>
           {iconActions ? (
             <IconButton
-              icon="helpful"
+              icon={feedbackValue === 'helpful' ? ThumbUpFilled : 'helpful'}
               label="Helpful"
               aria-pressed={feedbackValue === 'helpful'}
               onClick={() => {
                 onFeedback(true);
-                setFeedback({ text, message: 'Feedback requested.' });
+                setFeedback({ text, message: 'Feedback sent.' });
               }}
             />
           ) : (
@@ -217,21 +222,24 @@ export function MessageActions({
               variant="ghost"
               onClick={() => {
                 onFeedback(true);
-                setFeedback({ text, message: 'Feedback requested.' });
+                setFeedback({ text, message: 'Feedback sent.' });
               }}
             >
-              <AIIcon name="helpful" fallbackIcon={ThickArrowUpIcon} />
+              <AIIcon
+                name="helpful"
+                fallbackIcon={feedbackValue === 'helpful' ? ThumbUpFilled : ThumbUp}
+              />
               Helpful
             </Button>
           )}
           {iconActions ? (
             <IconButton
-              icon="unhelpful"
+              icon={feedbackValue === 'unhelpful' ? ThumbDownFilled : 'unhelpful'}
               label="Not helpful"
               aria-pressed={feedbackValue === 'unhelpful'}
               onClick={() => {
                 onFeedback(false);
-                setFeedback({ text, message: 'Feedback requested.' });
+                setFeedback({ text, message: 'Feedback sent.' });
               }}
             />
           ) : (
@@ -240,10 +248,13 @@ export function MessageActions({
               variant="ghost"
               onClick={() => {
                 onFeedback(false);
-                setFeedback({ text, message: 'Feedback requested.' });
+                setFeedback({ text, message: 'Feedback sent.' });
               }}
             >
-              <AIIcon name="unhelpful" fallbackIcon={ThickArrowDownIcon} />
+              <AIIcon
+                name="unhelpful"
+                fallbackIcon={feedbackValue === 'unhelpful' ? ThumbDownFilled : ThumbDown}
+              />
               Not helpful
             </Button>
           )}

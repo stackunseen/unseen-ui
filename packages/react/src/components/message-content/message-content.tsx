@@ -209,7 +209,14 @@ export function MessageContent({
           size="small"
         />
       )}
-      <ResponseStatus state={value.state} variant={responseVariant} error={value.error?.message} />
+      {/* "Response complete" describes replies; a person's own sent message only reports trouble. */}
+      {(value.role !== 'user' || value.state !== 'complete') && (
+        <ResponseStatus
+          state={value.state}
+          variant={responseVariant}
+          error={value.error?.message}
+        />
+      )}
     </div>
   );
 }

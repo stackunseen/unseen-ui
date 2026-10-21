@@ -238,11 +238,16 @@ export function fromAiSdkChat(
         const name = toolNameOf(part);
         const inputText = json(part.input, limit);
         const responded = part.state === 'approval-responded';
-        const state: ToolState = responded
-          ? part.approval?.approved
-            ? 'running'
-            : 'denied'
-          : (toolStates[part.state] ?? 'running');
+        // Once the chat is idle, a call still receiving input or running was cut off by Stop.
+        const stopped =
+          !busy && (part.state === 'input-streaming' || part.state === 'input-available');
+        const state: ToolState = stopped
+          ? 'cancelled'
+          : responded
+            ? part.approval?.approved
+              ? 'running'
+              : 'denied'
+            : (toolStates[part.state] ?? 'running');
         const call: ToolCallData = {
           id: part.toolCallId,
           name,

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef } from 'react';
 import type { ComponentProps, ReactNode, Ref } from 'react';
 import type { TextRange } from '@stackunseen/ui-core/editing';
 import { validTextRange } from '@stackunseen/ui-core/editing';
@@ -79,6 +79,13 @@ export function PromptInput({
   const id = useId();
   const composing = useRef(false);
   const input = useRef<HTMLTextAreaElement>(null);
+  // Grow with the text, as chat composers do, up to the stylesheet's max-height; then it scrolls.
+  useLayoutEffect(() => {
+    const area = input.current;
+    if (!area) return;
+    area.style.height = 'auto';
+    area.style.height = `${area.scrollHeight + 2}px`;
+  }, [value]);
   const suggestions = useComposerSuggestions({
     id,
     value,

@@ -15,6 +15,6 @@ describe('compact contextual actions', () => {
     expect(edit).toHaveBeenCalledOnce();
     await userEvent.click(screen.getByRole('button', { name: 'Helpful' }));
     expect(feedback).toHaveBeenCalledWith(true);
-    expect(screen.getByRole('status')).toHaveTextContent('Feedback requested.');
+    expect(screen.getByRole('status')).toHaveTextContent('Feedback sent.');
   });
 });
