@@ -23,6 +23,11 @@ export interface CodeDiffProps extends VariantProps<'CodeDiff'> {
   copyable?: boolean;
   /** Trusted application rendering of an already bounded, visible source line. */
   renderLine?: (line: CodeDiffLine) => ReactNode;
+  /**
+   * Content under a line, such as review comments or a comment box. Return nothing for most lines.
+   * It spans both columns in the split view and stays in view when long lines scroll sideways.
+   */
+  annotate?: (line: CodeDiffLine) => ReactNode;
 }
 export interface CodeDiffLine {
   readonly kind: 'context' | 'added' | 'removed';
@@ -48,6 +53,7 @@ export function CodeDiff({
   variant = 'unified',
   copyable = true,
   renderLine,
+  annotate,
   error,
 }: CodeDiffProps) {
   const identityValid =
@@ -174,6 +180,66 @@ export function CodeDiff({
       : undefined;
   const additions = rows?.filter((row) => row.kind === 'added').length ?? 0;
   const removals = rows?.filter((row) => row.kind === 'removed').length ?? 0;
+  const lineOf = (row: DiffRow, side?: 'old' | 'next'): CodeDiffLine => ({
+    kind: row.kind,
+    text: row.text,
+    beforeLine: row.old,
+    afterLine: row.next,
+    side: side === 'old' || row.kind === 'removed' ? 'before' : 'after',
+  });
+  const note = (row: DiffRow, key: string) => {
+    const content = annotate?.(lineOf(row));
+    return content === undefined || content === null || content === false ? null : (
+      <div key={key} className={s.diffNote} data-part="code-diff-annotation">
+        {content}
+      </div>
+    );
+  };
+  // The split view as aligned blocks of rows, broken wherever a note spans both columns.
+  function splitBlocks() {
+    const blocks: ReactNode[] = [];
+    let start = 0;
+    const flush = (end: number) => {
+      if (end <= start) return;
+      const slice = paired.slice(start, end);
+      blocks.push(
+        <div key={`rows-${start}`} className={s.split}>
+          <div>
+            {start === 0 && <strong className={s.splitLabel}>Before</strong>}
+            <div
+              className={s.diff}
+              data-continued={start > 0 || undefined}
+              data-more={end < paired.length || undefined}
+            >
+              {slice.map((pair, index) => line(pair.before ?? pair.after!, start + index, 'old'))}
+            </div>
+          </div>
+          <div>
+            {start === 0 && <strong className={s.splitLabel}>After</strong>}
+            <div
+              className={s.diff}
+              data-continued={start > 0 || undefined}
+              data-more={end < paired.length || undefined}
+            >
+              {slice.map((pair, index) => line(pair.after ?? pair.before!, start + index, 'next'))}
+            </div>
+          </div>
+        </div>,
+      );
+    };
+    paired.forEach((pair, index) => {
+      const notes = [
+        pair.before && note(pair.before, `note-b-${index}`),
+        pair.after && pair.after !== pair.before && note(pair.after, `note-a-${index}`),
+      ].filter(Boolean);
+      if (!notes.length) return;
+      flush(index + 1);
+      blocks.push(...notes);
+      start = index + 1;
+    });
+    flush(paired.length);
+    return blocks;
+  }
   function line(row: DiffRow, index: number, side?: 'old' | 'next') {
     const blank =
       (side === 'old' && row.kind === 'added') || (side === 'next' && row.kind === 'removed');
@@ -211,19 +277,7 @@ export function CodeDiff({
         >
           {blank ? ' ' : row.kind === 'added' ? '+' : row.kind === 'removed' ? '−' : ' '}
         </span>
-        <code>
-          {blank
-            ? ' '
-            : renderLine
-              ? renderLine({
-                  kind: row.kind,
-                  text: row.text,
-                  beforeLine: row.old,
-                  afterLine: row.next,
-                  side: side === 'old' || row.kind === 'removed' ? 'before' : 'after',
-                })
-              : row.text || ' '}
-        </code>
+        <code>{blank ? ' ' : renderLine ? renderLine(lineOf(row, side)) : row.text || ' '}</code>
       </div>
     );
   }
@@ -294,22 +348,28 @@ export function CodeDiff({
       ) : (
         <div className={s.scroll} tabIndex={0} role="group" aria-label={`Changes in ${path}`}>
           {variant === 'split' ? (
-            <div className={s.split}>
-              <div>
-                <strong className={s.splitLabel}>Before</strong>
-                <div className={s.diff}>
-                  {paired.map((pair, index) => line(pair.before ?? pair.after!, index, 'old'))}
+            annotate ? (
+              <div className={s.splitBlocks}>{splitBlocks()}</div>
+            ) : (
+              <div className={s.split}>
+                <div>
+                  <strong className={s.splitLabel}>Before</strong>
+                  <div className={s.diff}>
+                    {paired.map((pair, index) => line(pair.before ?? pair.after!, index, 'old'))}
+                  </div>
+                </div>
+                <div>
+                  <strong className={s.splitLabel}>After</strong>
+                  <div className={s.diff}>
+                    {paired.map((pair, index) => line(pair.after ?? pair.before!, index, 'next'))}
+                  </div>
                 </div>
               </div>
-              <div>
-                <strong className={s.splitLabel}>After</strong>
-                <div className={s.diff}>
-                  {paired.map((pair, index) => line(pair.after ?? pair.before!, index, 'next'))}
-                </div>
-              </div>
-            </div>
+            )
           ) : (
-            <div className={s.diff}>{rows.map((row, index) => line(row, index))}</div>
+            <div className={s.diff}>
+              {rows.map((row, index) => [line(row, index), note(row, `note-${index}`)])}
+            </div>
           )}
           {/* A new or deleted file has no newline change worth reporting. */}
           {before !== '' && after !== '' && before.endsWith('\n') !== after.endsWith('\n') && (
