@@ -56,7 +56,8 @@ function Microphone(props: SVGProps<SVGSVGElement>) {
 }
 export interface IconButtonProps extends Omit<ButtonProps, 'children' | 'aria-label' | 'size'> {
   label: string;
-  icon: IconName;
+  /** A built-in icon name, or your own icon component (such as one from @radix-ui/react-icons). */
+  icon: IconName | IconComponent;
 }
 /** Secondary row actions: a stable hit target with a required accessible name. */
 export function IconButton({
@@ -144,7 +145,12 @@ export function IconButton({
           if (event.key === 'Enter' || event.key === ' ' || event.key === 'Escape') dismiss();
         }}
       >
-        <AIIcon name={icon} fallbackIcon={actions[icon]} />
+        {typeof icon === 'string' ? (
+          <AIIcon name={icon} fallbackIcon={actions[icon]} />
+        ) : (
+          // A host icon: no provider override applies, so the name only marks it as an icon.
+          <AIIcon name={'custom' as IconName} icon={icon} />
+        )}
         <span className={s.fallback}>{label}</span>
         {hasDescription && (
           <span id={id} hidden>
