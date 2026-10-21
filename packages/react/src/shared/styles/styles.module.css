@@ -1198,6 +1198,9 @@
   border-color: transparent;
   border-radius: 18px 4px 18px 18px;
 }
+.message:is([data-variant='bubble'], [data-variant='chat'])[data-role='user'] .prose:last-child {
+  margin-bottom: 0;
+}
 .message[data-variant='bubble'][data-role='user'] .messageAvatar,
 .message[data-variant='chat'] .messageAvatar {
   display: none;
