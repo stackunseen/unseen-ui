@@ -36,10 +36,10 @@ export interface PromptInputProps
   onSelectionChange?: (selection: TextRange) => void;
   /**
    * Offered when the message starts with "/". Choosing one removes the typed "/word" and calls
-   * onCommand, for actions such as turning on web search or starting a new chat.
+   * onCommand with the remaining message, for actions such as turning on web search.
    */
   commands?: readonly CommandOption[];
-  onCommand?: (command: CommandOption) => void;
+  onCommand?: (command: CommandOption, value: string) => void;
   /**
    * Offered after "@" (at the start or after a space). Choosing one replaces "@word" with
    * "@label " and calls onMention. Filter on your side with onMentionQueryChange for large sets.

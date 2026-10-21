@@ -49,7 +49,7 @@ export function useComposerSuggestions({
   onValueChange: (value: string) => void;
   input: React.RefObject<HTMLTextAreaElement | null>;
   commands?: readonly CommandOption[];
-  onCommand?: (command: CommandOption) => void;
+  onCommand?: (command: CommandOption, value: string) => void;
   mentions?: readonly CommandOption[];
   onMention?: (item: CommandOption) => void;
   onMentionQueryChange?: (query: string | null) => void;
@@ -92,7 +92,8 @@ export function useComposerSuggestions({
       const next = value.slice(0, trigger.start) + value.slice(trigger.end).replace(/^\s+/, '');
       caretAfter.current = trigger.start;
       onValueChange(next);
-      onCommand?.(option);
+      // The message without "/word", so the host can build on it before its state updates.
+      onCommand?.(option, next);
     } else {
       const inserted = `@${option.label} `;
       const next = value.slice(0, trigger.start) + inserted + value.slice(trigger.end);

@@ -51,7 +51,7 @@ describe('PromptInput commands and mentions', () => {
     expect(list).not.toHaveTextContent('/image');
     expect(box).toHaveAttribute('aria-activedescendant', screen.getByRole('option').id);
     await user.keyboard('{Enter}');
-    expect(onCommand).toHaveBeenCalledWith(expect.objectContaining({ id: 'search' }));
+    expect(onCommand).toHaveBeenCalledWith(expect.objectContaining({ id: 'search' }), '');
     expect(onSubmit).not.toHaveBeenCalled();
     expect(box).toHaveValue('');
     expect(screen.queryByRole('listbox')).toBeNull();
@@ -92,7 +92,7 @@ describe('PromptInput commands and mentions', () => {
     const box = screen.getByRole('textbox', { name: 'Message' });
     await user.type(box, '/');
     await user.click(screen.getByRole('option', { name: /image/ }));
-    expect(onCommand).toHaveBeenCalledWith(expect.objectContaining({ id: 'image' }));
+    expect(onCommand).toHaveBeenCalledWith(expect.objectContaining({ id: 'image' }), '');
     expect(box).toHaveFocus();
   });
 });
