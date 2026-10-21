@@ -35,5 +35,5 @@
 }
 .clear:disabled {
   cursor: not-allowed;
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
 }

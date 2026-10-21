@@ -51,8 +51,15 @@
   line-height: 1.5;
 }
 .input::placeholder {
-  color: var(--ai-muted, #52525b);
+  /* Lighter than typed text, so an empty field never passes for a filled one. */
+  color: color-mix(in srgb, var(--ai-muted, #52525b) 80%, var(--ai-surface, #fff));
   opacity: 1;
+}
+/* The browser's search clear button, in the theme's grey instead of system blue. */
+.input::-webkit-search-cancel-button {
+  filter: grayscale(1);
+  opacity: 0.6;
+  cursor: pointer;
 }
 .textarea {
   resize: none;
@@ -79,7 +86,7 @@
 .switch:disabled,
 .radioOption:has(input:disabled),
 .slider[data-disabled] {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .checkbox {

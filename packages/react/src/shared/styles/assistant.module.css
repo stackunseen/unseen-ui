@@ -307,7 +307,7 @@ a.chip:hover {
   background: var(--ai-surface-subtle, #f4f4f5);
 }
 .option:has(input:disabled) {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .option > .meta {

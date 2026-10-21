@@ -87,7 +87,7 @@
   color: var(--ai-text, #18181b);
 }
 .iconButton:disabled {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .badge {

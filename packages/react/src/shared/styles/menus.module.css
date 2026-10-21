@@ -34,7 +34,7 @@
 .trigger:disabled,
 .navigationControl:disabled,
 .contextTrigger[aria-disabled='true'] {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .trigger:focus-visible,
@@ -108,7 +108,7 @@
   outline-offset: -2px;
 }
 .item[data-disabled] {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   pointer-events: none;
 }
 .checkItem {

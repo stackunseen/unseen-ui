@@ -137,7 +137,7 @@
 }
 .toggle:disabled,
 .toggle[aria-disabled='true'] {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .toggleGroup[data-variant='segmented'] .toggle {
@@ -217,7 +217,7 @@ a.chip:hover {
 .chip:disabled,
 .chip[aria-disabled='true'],
 .chip[data-disabled] {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .chip[data-size='sm'] {

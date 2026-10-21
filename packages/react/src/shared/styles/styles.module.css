@@ -110,8 +110,15 @@
   border-color: var(--ai-danger, #991b1b);
 }
 .button:disabled {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
+}
+/* A filled action that cannot be used reads as neutral, not as a faded version of itself. */
+.button:is([data-variant='primary'], [data-variant='danger']):disabled {
+  opacity: 1;
+  border-color: var(--ai-border, #e4e4e7);
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-muted, #52525b);
 }
 .button:focus-visible {
   outline: 2px solid var(--ai-focus, #18181b);
@@ -292,7 +299,7 @@
   padding: 6px;
 }
 .composer textarea::placeholder {
-  color: var(--ai-muted, #52525b);
+  color: color-mix(in srgb, var(--ai-muted, #52525b) 80%, var(--ai-surface, #fff));
 }
 .composerFooter {
   display: grid;
@@ -492,7 +499,7 @@
   color: var(--ai-muted, #52525b);
 }
 .selectTrigger:disabled {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .selectContent {
@@ -587,7 +594,7 @@
   color: var(--ai-primary-text, #27272a);
 }
 .accordionTrigger:disabled {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: not-allowed;
 }
 .accordionChevron {
@@ -734,7 +741,7 @@
 .field input:disabled,
 .composer textarea:disabled {
   cursor: not-allowed;
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
 }
 .field input[aria-invalid='true'],
 .selectTrigger[aria-invalid='true'] {

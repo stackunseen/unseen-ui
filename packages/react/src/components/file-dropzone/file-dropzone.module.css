@@ -28,7 +28,7 @@
   cursor: not-allowed;
 }
 .zone[data-disabled] .icon {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
 }
 .zone:has(button:focus-visible) {
   border-color: var(--ai-focus, #18181b);

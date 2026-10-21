@@ -117,7 +117,7 @@
   color: var(--ai-primary-text, #27272a);
 }
 .item[aria-disabled='true'] {
-  opacity: var(--ai-disabled-opacity, 0.62);
+  opacity: var(--ai-disabled-opacity, 0.5);
   cursor: default;
 }
 .itemRow {
