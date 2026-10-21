@@ -255,11 +255,41 @@
   }
 }
 @container (max-width: 250px) {
-  .thread {
+  .root:not([data-variant='compact']) .thread {
     grid-template-columns: minmax(0, 1fr);
   }
-  .thread > .actions {
+  .root:not([data-variant='compact']) .thread > .actions {
     padding: 0 8px 8px;
+  }
+}
+/* Compact is the sidebar list: one line per thread, actions on hover or focus. */
+.root[data-variant='compact'] .thread {
+  align-items: center;
+  background: transparent;
+}
+.root[data-variant='compact'] .thread:hover,
+.root[data-variant='compact'] .thread:focus-within,
+.root[data-variant='compact'] .thread[data-selected='true'] {
+  background: var(--ai-surface-subtle);
+  border-color: transparent;
+}
+.root[data-variant='compact'] .threadSelect {
+  align-items: center;
+  min-height: 36px;
+}
+.root[data-variant='compact'] .threadSelect > span,
+.root[data-variant='compact'] .threadSelect strong {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* Hidden actions give their width back to the title. Focus inside the row shows them, so the
+   keyboard still reaches them, and an open menu keeps its trigger in place. */
+@media (hover: hover) and (pointer: fine) {
+  .root[data-variant='compact']
+    .thread:not(:hover, :focus-within, [data-selected='true'], :has([aria-expanded='true']))
+    > .actions {
+    display: none;
   }
 }
 .listHead {
