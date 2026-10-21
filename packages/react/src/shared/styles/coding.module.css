@@ -119,6 +119,12 @@
   background: var(--ai-danger-soft);
   color: var(--ai-danger);
 }
+/* The tint and the +/− marker carry the change; the code itself stays in the text colour, as on
+   GitHub, so long changes stay readable in both themes. */
+.added code,
+.removed code {
+  color: var(--ai-text);
+}
 .split {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
