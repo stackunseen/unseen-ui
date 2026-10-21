@@ -81,7 +81,10 @@
 .root[data-scroll-mode='panes'] .body {
   overflow: hidden;
 }
+/* Positioned, so absolutely placed descendants (such as a select's hidden native control) stay
+   inside the pane instead of stretching the page. */
 .root[data-scroll-mode='panes'] .pane {
+  position: relative;
   overflow: auto;
   scrollbar-gutter: stable;
   padding: 4px;
