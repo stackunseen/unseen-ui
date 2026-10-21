@@ -471,11 +471,12 @@ export const expandedCatalog: CatalogEntry[] = [
       'Code',
       'Table',
       'Footnotes',
+      'Inline citations',
       'Incomplete Markdown',
       'Live stream',
       'Unsafe content',
     ],
-    contract: 'text · state · headingLevel? · variant',
+    contract: 'text · state · headingLevel? · variant · citations?: Source[]',
     responsibility:
       'Optional /markdown entry; raw HTML stays text and remote Markdown images never auto-load.',
     code: '<MarkdownResponse text={markdown} state="complete" />',

@@ -444,6 +444,23 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
       content =
         state === 'Unavailable' ? (
           <Image src="javascript:alert(1)" alt="Sample generated image" />
+        ) : state === 'Queued' || state === 'Generating with progress' || state === 'Failed' ? (
+          <Image
+            alt="Bar chart of weekly sign-ups rising from 90 to 210"
+            width={480}
+            height={270}
+            state={state === 'Queued' ? 'queued' : state === 'Failed' ? 'failed' : 'loading'}
+            progress={state === 'Generating with progress' ? 0.45 : undefined}
+            preview={
+              state === 'Generating with progress' ? '/fixtures/sample-chart.png' : undefined
+            }
+            error={
+              state === 'Failed'
+                ? 'The image could not be created. Try a different prompt.'
+                : undefined
+            }
+            onRetry={state === 'Failed' ? () => setNotice('Retry requested.') : undefined}
+          />
         ) : (
           <Image
             src="/fixtures/sample-chart.png"

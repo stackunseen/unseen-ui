@@ -5,6 +5,29 @@ import { MarkdownResponse } from '@stackunseen/ui/markdown';
 import type { MessageData } from '@stackunseen/ui-core';
 
 import { markdownExamples } from '../lib/markdown-fixtures';
+import type { Source } from '@stackunseen/ui-core';
+
+// Sample sources for the inline citation example; the links point at example domains.
+const citationSources: Source[] = [
+  {
+    id: 'cite-policy',
+    title: 'Account review policy',
+    kind: 'document',
+    version: '2',
+    locator: 'Section 3',
+    access: 'available',
+    excerpt: 'Accounts inactive for 90 days are reviewed by their owner.',
+  },
+  {
+    id: 'cite-guide',
+    title: 'Retention guide',
+    kind: 'web',
+    version: '1',
+    locator: 'Inactive accounts',
+    access: 'available',
+    url: 'https://example.com/retention',
+  },
+];
 const chunks = [
   '# Streaming example\n\nA stable paragraph stays selectable.\n\n',
   'The next step is **review',
@@ -41,6 +64,7 @@ export function MarkdownSpecimen({
       }
       text={text ?? ''}
       state={responseState}
+      citations={state === 'Inline citations' ? citationSources : undefined}
     />
   );
   return (

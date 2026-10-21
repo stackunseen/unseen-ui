@@ -234,10 +234,12 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     name: 'Image',
     category: 'Artifacts',
     aliases: ['Generated image'],
-    description: 'A generated or attached image with loading and failure states.',
-    states: ['Ready', 'Loading', 'Unavailable'],
-    contract: 'src | base64 + mediaType · alt · caption? · state?',
-    responsibility: 'Alt text is required. SVG data and unsafe schemes are refused.',
+    description: 'A generated or attached image with queued, progress, partial and failure states.',
+    states: ['Ready', 'Queued', 'Loading', 'Generating with progress', 'Failed', 'Unavailable'],
+    contract:
+      'src | base64 + mediaType · alt · caption? · state?: queued | loading | ready | failed · progress? · preview? · error? · onRetry?',
+    responsibility:
+      'Alt text is required. Progress shows only when the host measured it; a partial preview is decorative. SVG data and unsafe schemes are refused.',
     code: '<Image src={url} alt="Weekly signups chart" />',
   }),
 ];

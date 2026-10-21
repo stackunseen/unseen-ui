@@ -225,6 +225,7 @@ export function Specimen({
           variant={resolveVariant('Tabs', presentation)}
           value={value || 'summary'}
           onValueChange={setValue}
+          orientation={variant === 'Vertical' ? 'vertical' : 'horizontal'}
           label="Report views"
           items={[
             {

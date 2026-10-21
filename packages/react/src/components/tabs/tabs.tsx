@@ -10,14 +10,25 @@ export function Tabs({
   onValueChange,
   items,
   label,
+  orientation = 'horizontal',
 }: VariantProps<'Tabs'> & {
   value: string;
   onValueChange: (value: string) => void;
   items: { value: string; label: string; content: ReactNode }[];
   label: string;
+  /**
+   * "vertical" lists the tabs beside the panel, as settings dialogs do; arrow keys then move up
+   * and down. It stacks on narrow containers.
+   */
+  orientation?: 'horizontal' | 'vertical';
 }) {
   return (
-    <TabsPrimitive.Root value={value} onValueChange={onValueChange}>
+    <TabsPrimitive.Root
+      value={value}
+      onValueChange={onValueChange}
+      orientation={orientation}
+      className={s.tabsRoot}
+    >
       <TabsPrimitive.List className={s.tabs} data-variant={variant} aria-label={label}>
         {items.map((item) => (
           <TabsPrimitive.Trigger className={s.tab} key={item.value} value={item.value}>

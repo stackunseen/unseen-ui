@@ -1,4 +1,6 @@
 export const markdownExamples: Record<string, string> = {
+  'Inline citations':
+    'Inactive accounts go to their owner for review after **90 days** [1]. Archive them only once the owner agrees [2].\n\nA marker inside code stays as written: `rows[1]`.',
   Markdown:
     '# Ready for review\n\nThree accounts need an **owner review**. Start with the records below, then confirm the decision.\n\n- [x] Read the current policy\n- [ ] Review the affected accounts\n- [ ] Confirm the next action\n\n> This is a synthetic example. No account changes have been made.\n\nSee the [React documentation](https://react.dev/) for component composition.',
   Code: '# Suggested query\n\nUse a read-only query to inspect the current records.\n\n```sql\nSELECT id, name, owner_id\nFROM accounts\nWHERE owner_id IS NULL\nORDER BY name;\n```\n\nReview the result before taking any action.',

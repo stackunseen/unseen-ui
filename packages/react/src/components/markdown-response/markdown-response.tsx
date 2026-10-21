@@ -1,11 +1,13 @@
 'use client';
 import { Component, createContext, createElement, memo, useContext, useId, useMemo } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { Components, ExtraProps, Options } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remend from 'remend';
 import { safeUrl } from '@stackunseen/ui-core';
+import type { Source } from '@stackunseen/ui-core';
+import { Citation } from '../citation/citation.js';
 import { StreamingResponse } from '../streaming-response/streaming-response.js';
 import type { StreamingResponseProps } from '../streaming-response/streaming-response.js';
 import type { MessageContentProps } from '../message-content/message-content.js';
@@ -20,6 +22,11 @@ export interface MarkdownResponseProps extends Omit<StreamingResponseProps, 'ren
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   /** Trusted application renderer for fenced code; Markdown cannot supply executable UI. */
   renderCodeBlock?: (props: MarkdownCodeBlockProps) => ReactNode;
+  /**
+   * Sources the text cites as [1], [2] and so on, in that order. Each marker becomes a citation
+   * that opens its source. Markers without a source, and anything inside code, stay as text.
+   */
+  citations?: readonly Source[];
 }
 const maxCharacters = 100_000;
 const StreamingContext = createContext(false);
@@ -32,6 +39,53 @@ export interface MarkdownExtensions {
   components?: Components;
 }
 const TaskContext = createContext('Task');
+const CitationContext = createContext<readonly Source[] | undefined>(undefined);
+
+type MdNode = { type: string; value?: string; children?: MdNode[]; data?: Record<string, unknown> };
+const citationMarker = /\[(\d{1,3})\]/g;
+// Code, links and definitions keep their brackets.
+const skipped = new Set(['code', 'inlineCode', 'link', 'linkReference', 'definition', 'html']);
+
+/** Turns [n] in plain text into a marked superscript that the sup renderer resolves. */
+function remarkCitations() {
+  return (tree: MdNode) => {
+    const walk = (node: MdNode) => {
+      if (!node.children || skipped.has(node.type)) return;
+      const next: MdNode[] = [];
+      for (const child of node.children) {
+        if (child.type !== 'text' || !child.value?.includes('[')) {
+          walk(child);
+          next.push(child);
+          continue;
+        }
+        let last = 0;
+        for (const match of child.value.matchAll(citationMarker)) {
+          const at = match.index ?? 0;
+          if (at > last) next.push({ type: 'text', value: child.value.slice(last, at) });
+          next.push({
+            type: 'citationMarker',
+            data: { hName: 'sup', hProperties: { dataCitation: match[1] } },
+            children: [{ type: 'text', value: match[0] }],
+          });
+          last = at + match[0].length;
+        }
+        if (last < child.value.length) next.push({ type: 'text', value: child.value.slice(last) });
+      }
+      node.children = next;
+    };
+    walk(tree);
+  };
+}
+
+function Superscript({ children, node: _node, ...props }: ComponentProps<'sup'> & ExtraProps) {
+  const citations = useContext(CitationContext);
+  const marker = (props as Record<string, unknown>)['data-citation'];
+  if (typeof marker !== 'string') return <sup {...props}>{children}</sup>;
+  const number = Number(marker);
+  const source = citations?.[number - 1];
+  // A number with no source reads as the text the model wrote.
+  return source ? <Citation source={source} number={number} variant="number" /> : <>[{marker}]</>;
+}
 const plugins = [remarkGfm];
 const elements = [
   'p',
@@ -129,9 +183,10 @@ const MarkdownContent = memo(function MarkdownContent({
   headingLevel,
   extensions,
   renderCodeBlock,
+  citations,
 }: { extensions?: MarkdownExtensions } & Pick<
   MarkdownResponseProps,
-  'text' | 'state' | 'headingLevel' | 'renderCodeBlock'
+  'text' | 'state' | 'headingLevel' | 'renderCodeBlock' | 'citations'
 >) {
   const id = useId();
   const prefix = `ai-md-${id.replace(/[^a-zA-Z0-9_-]/g, '')}-`;
@@ -190,6 +245,7 @@ const MarkdownContent = memo(function MarkdownContent({
           )}
         </span>
       ),
+      sup: Superscript,
       table: ({ children }) => (
         <div className={s.tableScroll} role="group" aria-label="Response table" tabIndex={0}>
           <table>{children}</table>
@@ -242,19 +298,23 @@ const MarkdownContent = memo(function MarkdownContent({
     <div className={s.markdown} data-part="markdown">
       <StreamingContext.Provider value={state === 'streaming'}>
         <CodeContext.Provider value={renderCodeBlock}>
-          <ReactMarkdown
-            remarkPlugins={
-              extensions?.remarkPlugins ? [...plugins, ...extensions.remarkPlugins] : plugins
-            }
-            remarkRehypeOptions={{ clobberPrefix: prefix }}
-            components={components}
-            allowedElements={elements}
-            urlTransform={(url, key) =>
-              key === 'href' && url.startsWith(`#${prefix}`) ? url : (linkUrl(url) ?? '')
-            }
-          >
-            {content}
-          </ReactMarkdown>
+          <CitationContext.Provider value={citations}>
+            <ReactMarkdown
+              remarkPlugins={[
+                ...plugins,
+                ...(citations?.length ? [remarkCitations] : []),
+                ...(extensions?.remarkPlugins ?? []),
+              ]}
+              remarkRehypeOptions={{ clobberPrefix: prefix }}
+              components={components}
+              allowedElements={elements}
+              urlTransform={(url, key) =>
+                key === 'href' && url.startsWith(`#${prefix}`) ? url : (linkUrl(url) ?? '')
+              }
+            >
+              {content}
+            </ReactMarkdown>
+          </CitationContext.Provider>
         </CodeContext.Provider>
       </StreamingContext.Provider>
     </div>
@@ -266,6 +326,7 @@ export function MarkdownResponse({
   headingLevel = 3,
   extensions,
   renderCodeBlock,
+  citations,
   ...props
 }: MarkdownResponseProps & { extensions?: MarkdownExtensions }) {
   return (
@@ -279,6 +340,7 @@ export function MarkdownResponse({
             headingLevel={headingLevel}
             extensions={extensions}
             renderCodeBlock={renderCodeBlock}
+            citations={citations}
           />
         </RenderBoundary>
       )}

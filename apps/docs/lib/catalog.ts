@@ -209,8 +209,8 @@ export const catalog: CatalogEntry[] = [
     name: 'Tabs',
     category: 'Shared controls',
     description: 'Switch between related views with a controlled selection.',
-    states: ['Default', 'Long labels'],
-    contract: 'value · onValueChange · items · label',
+    states: ['Default', 'Long labels', 'Vertical'],
+    contract: 'value · onValueChange · items · label · orientation?: horizontal | vertical',
     responsibility:
       'Provide stable item IDs and descriptive labels. Tabs use automatic activation.',
     code: '<Tabs value={tab} onValueChange={setTab} items={views} label="Report views" />',
