@@ -359,3 +359,13 @@ describe('RunBoard trailing content', () => {
       expect(screen.getByTestId(`trail-${card.run.id}`)).toHaveTextContent('+3 −1');
   });
 });
+
+describe('RunBoard hideLabel', () => {
+  it('keeps the name for assistive technology without a visible heading', () => {
+    const { container } = render(<RunBoard runs={cards} label="Tasks" hideLabel now="2026-10-21T12:00:00Z" />);
+    expect(screen.getByRole('region', { name: 'Tasks' })).toBeTruthy();
+    const heading = screen.getByRole('heading', { level: 2, name: 'Tasks' });
+    expect(heading.className).toMatch(/hiddenTitle/);
+    expect(container.querySelector('[data-part="run-board"]')).toBeTruthy();
+  });
+});

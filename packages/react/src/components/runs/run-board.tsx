@@ -56,6 +56,8 @@ export interface RunBoardProps extends VariantProps<'RunBoard'> {
   locale?: string;
   timeZone?: string;
   label?: string;
+  /** Keeps the label for screen readers only, when the page already shows what the list is. */
+  hideLabel?: boolean;
   emptyMessage?: string;
   /** Trusted extra content at the end of each card's title row, such as a DiffStat. */
   renderCardTrailing?: (card: RunCard) => ReactNode;
@@ -117,6 +119,7 @@ export function RunBoard({
   locale,
   timeZone,
   label = 'Runs',
+  hideLabel = false,
   emptyMessage = 'No runs.',
   renderCardTrailing,
 }: RunBoardProps) {
@@ -239,7 +242,7 @@ export function RunBoard({
       aria-labelledby={`${id}-title`}
     >
       <div className={r.boardHead}>
-        <h2 id={`${id}-title`} className={r.boardTitle}>
+        <h2 id={`${id}-title`} className={hideLabel ? r.hiddenTitle : r.boardTitle}>
           {label}
         </h2>
         {onFilterChange && (

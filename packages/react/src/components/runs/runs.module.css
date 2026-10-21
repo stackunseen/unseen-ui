@@ -554,3 +554,12 @@ span.treeToggle {
 .treeItem[data-stale] > .treeRow {
   border-inline-start: 2px dashed var(--ai-warning, #92400e);
 }
+/* hideLabel: the board keeps its name for assistive technology only. */
+.hiddenTitle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
