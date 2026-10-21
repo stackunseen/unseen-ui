@@ -1,0 +1,127 @@
+.root {
+  position: fixed;
+  z-index: var(--ai-launcher-z, 40);
+  inset-block-end: 20px;
+  inset-inline-end: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  color: var(--ai-text);
+}
+.root[data-placement='bottom-start'] {
+  inset-inline-end: auto;
+  inset-inline-start: 20px;
+  align-items: flex-start;
+}
+.bubble {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 56px;
+  block-size: 56px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ai-primary, #18181b);
+  color: var(--ai-primary-foreground, #fff);
+  box-shadow: var(--ai-shadow-popover, 0 10px 30px rgb(0 0 0 / 0.2));
+  cursor: pointer;
+}
+.bubble svg {
+  inline-size: 22px;
+  block-size: 22px;
+}
+.bubble:focus-visible,
+.close:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.badge {
+  position: absolute;
+  inset-block-start: -2px;
+  inset-inline-end: -2px;
+  min-inline-size: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--ai-danger);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  inline-size: min(400px, calc(100vw - 40px));
+  block-size: min(620px, calc(100dvh - 120px));
+  overflow: hidden;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: var(--ai-radius-card, 16px);
+  background: var(--ai-surface);
+  box-shadow: var(--ai-shadow-dialog, 0 18px 50px rgb(0 0 0 / 0.22));
+}
+.panel[hidden] {
+  display: none;
+}
+.panel:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: -2px;
+}
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px 10px 16px;
+  border-block-end: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.close {
+  display: grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.close:hover {
+  background: var(--ai-surface-subtle);
+}
+.body {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: auto;
+}
+/* On a phone the open panel takes the whole screen and the bubble steps aside. */
+@media (max-width: 480px) {
+  .root:has(.panel:not([hidden])) {
+    inset: 0;
+  }
+  .panel {
+    inline-size: 100vw;
+    block-size: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+  .root:has(.panel:not([hidden])) .bubble {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel:not([hidden]) {
+    animation: ai-launcher-open 160ms ease-out;
+  }
+}
+@keyframes ai-launcher-open {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}

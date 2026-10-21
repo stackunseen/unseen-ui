@@ -48,6 +48,7 @@ export const expandedCatalog: CatalogEntry[] = [
       'Folder, detailed-list and directory views with snapshot-bound opening and host windows.',
     states: [
       'Default',
+      'Changed files',
       'Selected file',
       'Selection pending',
       'Obsolete selection',

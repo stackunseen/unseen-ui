@@ -10,6 +10,8 @@ export interface WorkspaceFile {
   sizeBytes?: number;
   /** Host-reported epoch milliseconds, displayed in UTC. */
   modifiedAt?: number;
+  /** Lines changed in this file, as the host's diff counted them. */
+  lines?: { added: number; removed: number };
 }
 export interface WorkspaceFileSnapshot {
   workspaceId: string;
@@ -61,6 +63,13 @@ const fileSchema = z
     version: id.optional(),
     sizeBytes: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).optional(),
     modifiedAt: z.number().int().min(-8640000000000000).max(8640000000000000).optional(),
+    lines: z
+      .object({
+        added: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
+        removed: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 const pageSchema = z

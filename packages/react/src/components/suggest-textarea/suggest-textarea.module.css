@@ -1,0 +1,20 @@
+.root {
+  position: relative;
+}
+.mirror {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-color: transparent;
+  border-style: solid;
+  background: transparent;
+  pointer-events: none;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.typed {
+  color: transparent;
+}
+.ghost {
+  color: var(--ai-muted);
+}

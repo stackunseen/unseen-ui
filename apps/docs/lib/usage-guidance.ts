@@ -346,6 +346,17 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Showing files already attached.',
     'Attachment',
   ),
+  ChatLauncher: g(
+    'A chat a visitor opens from a corner of your website.',
+    'The main screen of a chat app.',
+    'Chat',
+  ),
+  SuggestTextarea: g(
+    'Writing where an AI suggests how the sentence continues.',
+    'A chat composer that sends on Enter.',
+    'PromptInput',
+    'Textarea',
+  ),
   WorkSummary: g(
     'The steps of one agent turn, collapsed to how long it took once done.',
     'Reasoning text, or runs across many threads.',

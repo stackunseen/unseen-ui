@@ -18,6 +18,7 @@ import type {
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/coding.module.css';
 import css from './file-explorer.module.css';
+import { DiffStat } from '../diff-stat/diff-stat.js';
 export type {
   WorkspaceFile,
   WorkspaceFileSnapshot,
@@ -181,6 +182,9 @@ export function FileExplorer({
           <span className={s.badge} data-tone={denied ? 'danger' : changeTone[file.change!]}>
             {denied ? `${file.access} access` : file.change}
           </span>
+        )}
+        {file.lines && !denied && (
+          <DiffStat added={file.lines.added} removed={file.lines.removed} />
         )}
       </button>
     );

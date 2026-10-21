@@ -88,6 +88,16 @@ export function FileSpecimen({
       path: `src/module-${i}.ts`,
       version: 'window-1',
     }));
+  if (state === 'Changed files')
+    files = files.slice(0, 3).map((file, index) => ({
+      ...file,
+      change: (['modified', 'added', 'deleted'] as const)[index]!,
+      lines: [
+        { added: 2, removed: 1 },
+        { added: 14, removed: 0 },
+        { added: 0, removed: 9 },
+      ][index]!,
+    }));
   if (state === 'Empty') files = [];
   const paged = ['Known pages', 'Unknown total', 'Unknown next', 'Invalid page'].includes(state);
   if (paged) files = pageIndex === 0 ? files.slice(0, 3) : files.slice(3);

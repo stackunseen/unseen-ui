@@ -150,7 +150,7 @@
   padding: var(--ai-workspace-padding);
   background: var(--ai-surface);
   border-inline-end: var(--ai-border-width, 1px) solid var(--ai-border);
-  box-shadow: var(--ai-shadow-lg, 0 12px 32px rgb(0 0 0 / 0.18));
+  box-shadow: var(--ai-shadow-dialog, 0 12px 32px rgb(0 0 0 / 0.18));
 }
 .navigation[data-drawer]:focus-visible {
   outline-offset: -2px;

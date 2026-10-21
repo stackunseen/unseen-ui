@@ -2,6 +2,8 @@
 import { Paperclip } from 'lucide-react';
 import { ModelSelector } from '@stackunseen/ui/assistant';
 import '@stackunseen/ui/assistant.css';
+import { ChatLauncher } from '@stackunseen/ui/chat';
+import '@stackunseen/ui/chat.css';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
@@ -407,6 +409,9 @@ export function Specimen({
           onNotice={setResult}
         />
       );
+      break;
+    case 'ChatLauncher':
+      preview = <ChatLauncherSpecimen key={variant} state={variant} />;
       break;
     case 'Chat':
       preview =
@@ -972,6 +977,37 @@ export function Specimen({
           {result}
         </p>
       )}
+    </div>
+  );
+}
+
+// The launcher is fixed to the viewport; the transform keeps it inside this preview box.
+function ChatLauncherSpecimen({ state }: { state: string }) {
+  const [open, setOpen] = useState(state === 'Open');
+  return (
+    <div
+      style={{
+        position: 'relative',
+        minHeight: 560,
+        transform: 'translateZ(0)',
+        overflow: 'hidden',
+      }}
+    >
+      <p>The bubble sits in the corner of the page; open it to chat.</p>
+      <ChatLauncher
+        open={open}
+        onOpenChange={setOpen}
+        title="Ask Acme"
+        unread={state === 'Unread' ? 2 : 0}
+      >
+        <div style={{ display: 'grid', gap: 12, padding: 16 }}>
+          <p style={{ margin: 0 }}>Hi! Ask about orders, returns or your account.</p>
+          <label style={{ display: 'grid', gap: 6 }}>
+            Message
+            <textarea rows={3} />
+          </label>
+        </div>
+      </ChatLauncher>
     </div>
   );
 }

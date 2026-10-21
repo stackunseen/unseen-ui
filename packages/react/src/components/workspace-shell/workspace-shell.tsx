@@ -104,7 +104,10 @@ export function WorkspaceShell({
     } else if (
       wasOpen.current &&
       drawer &&
-      navRef.current?.contains(document.activeElement) !== false
+      // Hiding the focused drawer drops focus to the body; that still counts as inside.
+      (document.activeElement === document.body ||
+        !document.activeElement ||
+        navRef.current?.contains(document.activeElement))
     ) {
       toggleRef.current?.focus();
     }

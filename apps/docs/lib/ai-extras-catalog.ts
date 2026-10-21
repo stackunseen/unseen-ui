@@ -27,6 +27,19 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     code: '<Reasoning summary={summary} state="complete" durationMs={3200} />',
   }),
   assistant({
+    name: 'SuggestTextarea',
+    category: 'Conversation',
+    aliases: ['AI autocomplete', 'Ghost text', 'Copilot textarea', 'Inline completion'],
+    description: 'A text area that shows an AI completion as ghost text; Tab accepts it.',
+    states: ['Suggesting', 'No suggestion'],
+    contract: 'value · onValueChange · suggestion? · onAccept? · onDismiss? · Textarea props',
+    responsibility:
+      'Fetch suggestions yourself, for the current text only, and clear them when the text changes or after Escape. The component never calls a model.',
+    keyboard:
+      'Tab accepts and Escape dismisses only while a suggestion shows at the end of the text; otherwise both keep their usual behaviour. Screen readers hear the suggestion as a description.',
+    code: '<SuggestTextarea value={draft} onValueChange={setDraft} suggestion={completion} />',
+  }),
+  assistant({
     name: 'WorkSummary',
     category: 'Execution',
     aliases: ['Worked for', 'Turn activity', 'Agent activity'],

@@ -12,6 +12,8 @@ import type {
 import type { ChatControlledProps } from './components/chat/chat.js';
 
 export { Chat } from './components/chat/chat.js';
+export { ChatLauncher } from './components/chat/chat-launcher.js';
+export type { ChatLauncherProps } from './components/chat/chat-launcher.js';
 export type {
   ChatProps,
   ChatBaseProps,

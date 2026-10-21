@@ -8,6 +8,7 @@ import {
   Plan,
   Reasoning,
   Sources,
+  SuggestTextarea,
   WorkSummary,
 } from '@stackunseen/ui/assistant';
 import {
@@ -87,6 +88,9 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
           defaultOpen={state !== 'Complete' ? undefined : true}
         />
       );
+      break;
+    case 'SuggestTextarea':
+      content = <SuggestSpecimen off={state === 'No suggestion'} />;
       break;
     case 'WorkSummary':
       content = (
@@ -462,6 +466,34 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
           {notice}
         </p>
       )}
+    </div>
+  );
+}
+
+// A stand-in completion model: a few phrases continue the text, as a real one would.
+const completions: Record<string, string> = {
+  'Thanks for ': 'the update on the launch.',
+  'Can we ': 'move the review to Thursday?',
+  'The tests ': 'pass on main, so this is ready to merge.',
+};
+function SuggestSpecimen({ off }: { off: boolean }) {
+  const [draft, setDraft] = useState(off ? 'Write anything' : 'Thanks for ');
+  const [dismissed, setDismissed] = useState<string>();
+  const key = Object.keys(completions).find((start) => draft === start);
+  const suggestion = !off && key && dismissed !== draft ? completions[key] : undefined;
+  return (
+    <div style={{ display: 'grid', gap: 8 }}>
+      <SuggestTextarea
+        aria-label="Reply"
+        rows={3}
+        value={draft}
+        onValueChange={setDraft}
+        suggestion={suggestion}
+        onDismiss={() => setDismissed(draft)}
+      />
+      <p style={{ margin: 0, fontSize: 13, opacity: 0.75 }}>
+        Try typing "Can we " or "The tests ", then press Tab.
+      </p>
     </div>
   );
 }

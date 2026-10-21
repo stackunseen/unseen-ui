@@ -83,6 +83,8 @@ export type GenericComponent =
   | 'Card'
   | 'Table'
   | 'Reasoning'
+  | 'ChatLauncher'
+  | 'SuggestTextarea'
   | 'WorkSummary'
   | 'ChainOfThought'
   | 'Plan'
@@ -641,6 +643,22 @@ export const catalog: CatalogEntry[] = [
     keyboard:
       'Helpful and Not helpful are toggle buttons; reasons are checkboxes; Enter in the form sends.',
     code: '<FeedbackCapture target={{ messageId, revision }} value={draft} onValueChange={setDraft} onSubmit={send} submission={submission} receipt={receipt} />',
+  },
+  {
+    name: 'ChatLauncher',
+    category: 'Conversation',
+    importPath: '/chat',
+    aliases: ['Chat widget', 'Chat bubble', 'Support chat', 'Assistant popup'],
+    description:
+      'A floating chat bubble for a website that opens a chat panel, full screen on phones.',
+    states: ['Closed', 'Open', 'Unread'],
+    contract:
+      'open · onOpenChange · title · children · label? · placement?: bottom-end | bottom-start · unread?',
+    responsibility:
+      'Put a Chat inside. The panel stays mounted while closed so the conversation and draft survive; count unread replies on your side.',
+    keyboard:
+      'The bubble reports aria-expanded. Opening focuses the composer; Escape or Close returns focus to the bubble. The panel is non-modal, so the page stays usable.',
+    code: '<ChatLauncher open={open} onOpenChange={setOpen} title="Ask Acme"><Chat {...chat} /></ChatLauncher>',
   },
   {
     name: 'Chat',
