@@ -12,6 +12,7 @@ export function Tabs({
   items,
   label,
   orientation = 'horizontal',
+  className = '',
 }: VariantProps<'Tabs'> & {
   value: string;
   onValueChange: (value: string) => void;
@@ -22,13 +23,15 @@ export function Tabs({
    * and down. It stacks on narrow containers.
    */
   orientation?: 'horizontal' | 'vertical';
+  /** Added to the root, for sizing it in your layout. */
+  className?: string;
 }) {
   return (
     <TabsPrimitive.Root
       value={value}
       onValueChange={onValueChange}
       orientation={orientation}
-      className={css.root}
+      className={`${css.root} ${className}`}
     >
       <TabsPrimitive.List className={s.tabs} data-variant={variant} aria-label={label}>
         {items.map((item) => (
