@@ -670,6 +670,15 @@
   background: var(--ai-warning-soft, #fef3c7);
   color: var(--ai-warning, #92400e);
 }
+/* A low-risk request reads as a question, not an alarm; high risk escalates. */
+.reviewIcon[data-risk='low'] {
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-muted, #52525b);
+}
+.reviewIcon[data-risk='high'] {
+  background: var(--ai-danger-soft, #fee2e2);
+  color: var(--ai-danger, #991b1b);
+}
 .definition {
   display: grid;
   grid-template-columns: 130px minmax(0, 1fr);

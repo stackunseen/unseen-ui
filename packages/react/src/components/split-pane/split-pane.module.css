@@ -135,3 +135,25 @@
     outline-color: Highlight;
   }
 }
+
+/* Narrow responsive panes: both panels stack at their natural height and the page scrolls.
+   A vertical split needs a definite height to resize, which a phone-width page rarely has. */
+.root[data-flow] {
+  height: auto;
+}
+.root[data-flow] .group {
+  height: auto !important;
+  overflow: visible !important;
+}
+.root[data-flow] .group > [data-panel] {
+  flex: none !important;
+  overflow: visible !important;
+}
+.root[data-flow] .pane,
+.root[data-flow] .content {
+  height: auto;
+  overflow: visible;
+}
+.root[data-flow] .separator {
+  display: none;
+}

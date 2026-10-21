@@ -73,6 +73,7 @@ export function TerminalOutput({
     focused = useRef<HTMLElement | null>(null);
   const [follow, setFollow] = useState(true),
     [jump, setJump] = useState(0);
+  const live = state === 'running' || state === 'unknown';
   const [feedback, setFeedback] = useState<{
     output: string;
     key: string;
@@ -201,13 +202,12 @@ export function TerminalOutput({
             </p>
           )}
           <div className={css.provenance}>
-            {model.context ? (
+            {/* A plain log has no session; say nothing rather than report a missing one. */}
+            {model.context && (
               <p>
                 Session: {model.context.sessionId} · Stream: {model.context.streamId} · Scope:{' '}
                 {model.context.version}
               </p>
-            ) : (
-              <p>Session identity not supplied.</p>
             )}
             {connection && (
               <p>Connection: {connection}. Process lifecycle is reported separately.</p>
@@ -277,25 +277,30 @@ export function TerminalOutput({
                 void copy();
               }}
             />
-            <Button
-              size="sm"
-              variant="ghost"
-              aria-pressed={!follow}
-              onClick={() => setFollow((value) => !value)}
-            >
-              {follow ? 'Pause following' : 'Resume following'}
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              disabled={!model.text}
-              onClick={() => {
-                setFollow(true);
-                setJump((value) => value + 1);
-              }}
-            >
-              Jump to latest
-            </Button>
+            {/* Following only means something while output is still arriving. */}
+            {live && (
+              <>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  aria-pressed={!follow}
+                  onClick={() => setFollow((value) => !value)}
+                >
+                  {follow ? 'Pause following' : 'Resume following'}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  disabled={!model.text}
+                  onClick={() => {
+                    setFollow(true);
+                    setJump((value) => value + 1);
+                  }}
+                >
+                  Jump to latest
+                </Button>
+              </>
+            )}
             {(onClear || onRequestClear) && (
               <IconButton
                 icon="close"
@@ -322,10 +327,12 @@ export function TerminalOutput({
               </Button>
             )}
           </div>
-          <p className={css.follow}>
-            {follow ? 'Following output.' : 'Following paused.'} Copy contains the retained plain
-            transcript.
-          </p>
+          {live && (
+            <p className={css.follow}>
+              {follow ? 'Following output.' : 'Following paused.'} Copy contains the retained plain
+              transcript.
+            </p>
+          )}
           {feedback?.output === output &&
             feedback.key === model.key &&
             feedback.attempt === copyAttempt.current &&

@@ -28,6 +28,25 @@ export type {
   ConversationSearchRequest,
   BranchChangeGuard,
 } from '@stackunseen/ui-core';
+// Data shapes that component props use, so apps need only @stackunseen/ui as a dependency.
+export type {
+  Step,
+  MessageData,
+  MessagePart,
+  ToolCallData,
+  ToolState,
+  ApprovalProposal,
+  ApprovalState,
+  Source,
+  SubmissionState,
+  ConnectionState,
+  Run,
+  RunLifecycle,
+  Artifact,
+  RuntimeSnapshot,
+  Measurement,
+  CommandReceipt,
+} from '@stackunseen/ui-core';
 export { ThreadList } from './components/thread-list/thread-list.js';
 export { BranchSwitcher } from './components/branch-switcher/branch-switcher.js';
 export { MessageQueue } from './components/message-queue/message-queue.js';

@@ -7,6 +7,12 @@ import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 
+const compactLabels: Record<string, string> = {
+  queued: 'Queued',
+  running: 'Running',
+  succeeded: 'Complete',
+};
+
 export function AgentSteps({
   variant = 'timeline',
   steps,
@@ -53,7 +59,12 @@ export function AgentSteps({
               ) : (
                 <strong>{step.label}</strong>
               )}
-              <StatusBadge state={step.state} />
+              {variant === 'compact' && !['failed', 'blocked'].includes(step.state) ? (
+                // The marker already shows progress; keep the words for screen readers only.
+                <span className={s.srOnly}>{compactLabels[step.state]}</span>
+              ) : (
+                <StatusBadge state={step.state} />
+              )}
             </div>
             {dependencies && (
               <div className={s.muted}>

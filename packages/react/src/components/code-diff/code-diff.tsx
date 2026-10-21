@@ -233,7 +233,11 @@ export function CodeDiff({
         <strong>{path}</strong>
         {rows && (
           <span className={s.muted}>
-            +{additions} added · −{removals} removed
+            {before === ''
+              ? `New file · +${additions}`
+              : after === ''
+                ? `Deleted · −${removals}`
+                : `+${additions} added · −${removals} removed`}
           </span>
         )}
         <span className={s.muted}>
@@ -307,7 +311,8 @@ export function CodeDiff({
           ) : (
             <div className={s.diff}>{rows.map((row, index) => line(row, index))}</div>
           )}
-          {before.endsWith('\n') !== after.endsWith('\n') && (
+          {/* A new or deleted file has no newline change worth reporting. */}
+          {before !== '' && after !== '' && before.endsWith('\n') !== after.endsWith('\n') && (
             <p className={s.notice}>
               Trailing newline {after.endsWith('\n') ? 'added' : 'removed'}.
             </p>

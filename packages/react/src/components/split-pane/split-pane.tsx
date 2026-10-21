@@ -266,6 +266,8 @@ export function SplitPane({
       data-part="split-pane"
       data-orientation={axis}
       data-presentation={presentation}
+      // A responsive pane that stacked because it is narrow flows at natural height.
+      data-flow={presentation === 'responsive' && narrow ? '' : undefined}
       data-disabled={locked || undefined}
     >
       <span id={descriptionId} className={s.srOnly}>

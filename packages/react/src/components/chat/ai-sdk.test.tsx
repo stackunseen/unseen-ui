@@ -82,7 +82,8 @@ describe('Chat on an AI SDK chat', () => {
       .closest('[data-part="approval"]') as HTMLElement;
     expect(card).toBeTruthy();
     expect(card).toHaveTextContent('Two accounts become read-only.');
-    expect(card).toHaveTextContent('Risk not assessed');
+    // Unknown risk is stated in Details rather than repeated in the summary line.
+    expect(card).toHaveTextContent('Not assessed');
     // The reply waits on the decision, so copy and regenerate are held back.
     expect(screen.queryByRole('button', { name: 'Regenerate' })).toBeNull();
     await user.click(within(card).getByRole('button', { name: /approve/i }));

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import type { ApprovalProposal, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
@@ -60,6 +60,11 @@ export function ApprovalCard({
   // Once the host settles the decision, or the proposal can no longer be decided, the outcome
   // replaces the decision buttons.
   const decided = status !== 'pending' || submission === 'acknowledged';
+  const summaryParts = [
+    proposal.target,
+    proposal.scopes.join(', '),
+    proposal.risk === 'unknown' ? '' : `${proposal.risk} risk`,
+  ].filter(Boolean);
   const heading = {
     pending: 'Review required',
     approved: 'Action approved',
@@ -71,7 +76,7 @@ export function ApprovalCard({
     <Panel data-part="approval" data-variant={variant} className={s.approval}>
       <div className={s.row}>
         <div className={s.approvalHeading}>
-          <span className={s.reviewIcon} aria-hidden="true">
+          <span className={s.reviewIcon} data-risk={proposal.risk} aria-hidden="true">
             <AIIcon name="warning" />
           </span>
           <div className={s.grow}>
@@ -81,13 +86,26 @@ export function ApprovalCard({
         </div>
         <StatusBadge state={status} />
       </div>
-      <p className={s.approvalSummary}>
-        <span>{proposal.target}</span> ·{' '}
-        <span>{proposal.scopes.join(', ') || 'No scopes supplied'}</span> ·{' '}
-        <span>{proposal.risk === 'unknown' ? 'Risk not assessed' : `${proposal.risk} risk`}</span>
-      </p>
+      {/* Only what the host supplied; unassessed risk and missing scopes are stated in Details. */}
+      {summaryParts.length > 0 && (
+        <p className={s.approvalSummary}>
+          {summaryParts.map((part, index) => (
+            <Fragment key={part}>
+              {index > 0 && ' · '}
+              <span>{part}</span>
+            </Fragment>
+          ))}
+        </p>
+      )}
       <p>{proposal.impact}</p>
       <dl className={s.definition} {...details.contentProps}>
+        {/* Supplied scopes are in the summary line; say so here only when there are none. */}
+        {proposal.scopes.length === 0 && (
+          <>
+            <dt>Scopes</dt>
+            <dd>None supplied</dd>
+          </>
+        )}
         <dt>Risk / version</dt>
         <dd>
           {proposal.risk === 'unknown' ? 'Not assessed' : proposal.risk} · v{proposal.version}

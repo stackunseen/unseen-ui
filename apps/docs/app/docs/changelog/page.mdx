@@ -4,6 +4,12 @@ Unseen UI is an experimental alpha. Prereleases are published on npm under the `
 
 ## Next prerelease (in the repository, not yet on npm)
 
+- **AI SDK approvals:** the card is titled with the tool row's label (from `describeTool`), its wording changes once you approve or reject, and the summary line shows only what is known. Unassessed risk and missing scopes are stated under Details instead.
+- **Types:** `Step`, `MessageData`, `ToolCallData`, `ApprovalProposal`, `Source`, `Measurement` and the other data shapes that props use now export from `@stackunseen/ui`, so apps need only that package.
+- **EmptyState:** takes `title`, `description`, `icon` and `actions` directly; the composed parts still work.
+- **SplitPane:** a responsive pane that stacks on a narrow screen now shows both panels at their natural height instead of collapsing to nothing.
+- **Quieter output:** TerminalOutput no longer reports a missing session for a plain log or offers "Pause following" after the process ends; CodeDiff says "New file" or "Deleted" and skips the newline note for them; compact AgentSteps keeps progress in the marker instead of repeating a badge on every step; a low-risk approval no longer shows a warning icon.
+
 - **Previews:** small components (Breadcrumb, Pagination, Stepper, ModelSelector, Persona, badges and others) sit centred in the component pages instead of in the top-left corner, and expandable rows (ToolCall, ToolGroup, Sources, ChainOfThought) use a centred column so opening them doesn't shift the layout.
 - **Plan:** finished steps show their tick again.
 - **Narrow screens:** StatusBadge and RunCompare keep words like "Succeeded" whole instead of splitting them; Checkpoint wraps its date as one line of text; MCPAppFrame moves its status and Close under the title rather than squeezing it.

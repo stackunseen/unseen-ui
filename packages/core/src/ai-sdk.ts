@@ -228,6 +228,19 @@ export function fromAiSdkChat(
           const settled = ['output-available', 'output-error', 'output-denied'].includes(
             part.state,
           );
+          const status =
+            decided === undefined && part.state === 'approval-requested'
+              ? 'pending'
+              : decided === false || part.state === 'output-denied'
+                ? 'rejected'
+                : 'approved';
+          // Without describeApproval, reuse the tool row's words rather than the function name.
+          const fallbackImpact = {
+            pending:
+              'The assistant asks to run this tool with the input shown. Nothing runs until you decide.',
+            approved: 'You approved this call. The tool row shows what happened.',
+            rejected: 'You rejected this call, so the tool did not run.',
+          }[status];
           approvals.push({
             toolCallId: part.toolCallId,
             approvalId: part.approval.id,
@@ -237,21 +250,16 @@ export function fromAiSdkChat(
               runId: message.id,
               toolCallId: part.toolCallId,
               actionDigest: `${name}:${fingerprint(inputText)}`,
-              title: described?.title ?? `Run ${name}`,
-              target: described?.target ?? name,
+              title: described?.title ?? words?.label ?? `Run ${name}`,
+              target: described?.target ?? words?.target ?? name,
               scopes: described?.scopes ?? [],
               impact:
                 described?.impact ??
-                part.approval.requestReason ??
-                'The assistant asks to run this tool with the input shown. Nothing runs until you decide.',
+                (status === 'pending' ? part.approval.requestReason : undefined) ??
+                fallbackImpact,
               expiresAt: '',
               risk: described?.risk ?? 'unknown',
-              status:
-                decided === undefined && part.state === 'approval-requested'
-                  ? 'pending'
-                  : decided === false || part.state === 'output-denied'
-                    ? 'rejected'
-                    : 'approved',
+              status,
             },
             submission:
               part.state === 'approval-requested'

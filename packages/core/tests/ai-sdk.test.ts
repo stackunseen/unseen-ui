@@ -271,4 +271,34 @@ describe('fromAiSdkChat', () => {
       ['Allow mail?', 'high', 'rejected', 'acknowledged'],
     ]);
   });
+
+  // Found while building the Pro chat template.
+  it('titles an AI SDK approval with the tool row label and words it by outcome', () => {
+    const part = (state: string, approved?: boolean) => ({
+      type: 'tool-archive_accounts',
+      toolCallId: 'c1',
+      state,
+      input: { accountIds: ['a', 'b'] },
+      approval: { id: 'ap1', ...(approved === undefined ? {} : { approved }) },
+    });
+    const describeTool = () => ({ label: 'Archive accounts', target: '2 accounts' });
+    const pending = fromAiSdkChat(
+      {
+        status: 'ready',
+        messages: [{ id: 'm1', role: 'assistant', parts: [part('approval-requested')] }],
+      },
+      { describeTool },
+    );
+    expect(pending.approvals[0]?.proposal.title).toBe('Archive accounts');
+    expect(pending.approvals[0]?.proposal.target).toBe('2 accounts');
+    expect(pending.approvals[0]?.proposal.impact).toMatch(/Nothing runs until you decide/);
+    const approved = fromAiSdkChat(
+      {
+        status: 'ready',
+        messages: [{ id: 'm1', role: 'assistant', parts: [part('approval-responded', true)] }],
+      },
+      { describeTool },
+    );
+    expect(approved.approvals[0]?.proposal.impact).toMatch(/You approved this call/);
+  });
 });
