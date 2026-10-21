@@ -22,6 +22,8 @@ export interface PromptInputProps
   disabledReason?: string;
   onCancel?: () => void;
   placeholder?: string;
+  /** The line under the box, in your words or language. Defaults to "Shift + Enter for a new line". */
+  hint?: string;
   /** Composition slots; uploads, validation and authoritative state remain with the host. */
   attachments?: ReactNode;
   toolbar?: ReactNode;
@@ -60,6 +62,7 @@ export function PromptInput({
   disabledReason,
   onCancel,
   placeholder = 'Ask a question or describe a task…',
+  hint = 'Shift + Enter for a new line',
   attachments,
   toolbar,
   submitDisabled = false,
@@ -212,7 +215,7 @@ export function PromptInput({
           id={`${id}-help`}
           data-hint={unavailableReason ? undefined : ''}
         >
-          {unavailableReason ?? 'Shift + Enter for a new line'}
+          {unavailableReason ?? hint}
         </span>
       </div>
     </form>

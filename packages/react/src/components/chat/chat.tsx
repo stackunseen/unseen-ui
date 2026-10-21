@@ -44,6 +44,8 @@ export interface ChatBaseProps extends VariantProps<'Chat'> {
   /** Shown above the transcript; also the accessible name. */
   title?: string;
   placeholder?: string;
+  /** The line under the composer; defaults to "Shift + Enter for a new line". */
+  composerHint?: string;
   emptyTitle?: string;
   emptyDescription?: string;
   /** Prompts shown before the first message when the host offers none. */
@@ -126,6 +128,7 @@ export function Chat(props: ChatProps) {
     variant = 'panel',
     title = 'Assistant',
     placeholder,
+    composerHint,
     emptyTitle = 'Start a conversation',
     emptyDescription = 'Ask a question or pick a suggestion.',
     starters = [],
@@ -415,6 +418,7 @@ export function Chat(props: ChatProps) {
           busy={busy}
           onCancel={cancel}
           placeholder={placeholder}
+          hint={composerHint}
           textareaRef={textarea}
           toolbar={toolbar}
           attachments={attachments}
