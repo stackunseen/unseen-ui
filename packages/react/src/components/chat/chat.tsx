@@ -44,7 +44,7 @@ export interface ChatBaseProps extends VariantProps<'Chat'> {
   /** Shown above the transcript; also the accessible name. */
   title?: string;
   placeholder?: string;
-  /** The line under the composer; defaults to "Shift + Enter for a new line". */
+  /** A line shown under the composer, such as a notice; see PromptInput `hint`. */
   composerHint?: string;
   emptyTitle?: string;
   emptyDescription?: string;

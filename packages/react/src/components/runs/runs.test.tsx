@@ -52,6 +52,36 @@ const cards: RunCard[] = [
 ];
 
 describe('RunBoard', () => {
+  it('keeps list rows to a title line and one line of summary and time', () => {
+    render(
+      <RunBoard
+        variant="list"
+        now={now}
+        runs={[
+          {
+            run: run('l1', 'succeeded'),
+            title: 'Today',
+            summary: 'acme/web-app · main',
+            updatedAt: '2026-10-15T08:05:00Z',
+          },
+          {
+            run: run('l2', 'succeeded'),
+            title: 'Earlier',
+            summary: 'acme/api · main',
+            updatedAt: '2026-09-02T08:05:00Z',
+          },
+          { run: run('l3', 'succeeded'), title: 'Last year', updatedAt: '2025-12-30T08:05:00Z' },
+        ]}
+      />,
+    );
+    const today = screen.getByText('8:05 AM');
+    expect(today.tagName).toBe('TIME');
+    expect(today).toHaveAttribute('title', 'Updated Oct 15, 2026, 8:05 AM');
+    expect(today.parentElement).toHaveTextContent('acme/web-app · main');
+    expect(screen.getByText('Sep 2')).toBeInTheDocument();
+    expect(screen.getByText('Dec 30, 2025')).toBeInTheDocument();
+    expect(document.querySelector('p')?.textContent ?? '').not.toContain('acme/web-app');
+  });
   it('groups runs, marks a silent running run stale from host clocks only, and keeps unknown cost explicit', () => {
     render(<RunBoard runs={cards} now={now} staleAfterMs={60_000} />);
     const board = screen.getByRole('region', { name: 'Runs' });

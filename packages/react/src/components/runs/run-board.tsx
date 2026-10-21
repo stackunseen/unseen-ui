@@ -1,5 +1,5 @@
 'use client';
-import { useId, useMemo } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
 import type { CommandReceipt, Measurement, Run, RunLifecycle } from '@stackunseen/ui-core';
@@ -7,7 +7,7 @@ import { Button } from '../button/button.js';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';
-import { MeasuredText, formatMoney, formatTime } from './shared.js';
+import { MeasuredText, formatMoney, formatShortTime, formatTime } from './shared.js';
 import type { Money, RunParty } from './shared.js';
 import s from '../../shared/styles/styles.module.css';
 import r from './runs.module.css';
@@ -126,6 +126,13 @@ export function RunBoard({
   emptyMessage = 'No runs.',
   renderCardTrailing,
 }: RunBoardProps) {
+  // Without a host time zone, times read in the viewer's own once the page runs; the first
+  // render uses UTC so server and browser agree.
+  const [viewerZone, setViewerZone] = useState<string>();
+  useEffect(() => setViewerZone(Intl.DateTimeFormat().resolvedOptions().timeZone), []);
+  const zone = timeZone ?? viewerZone;
+  // Short list times need a clock both renders agree on: the host's, or the browser's once running.
+  const shortClock = now ? Date.parse(now) : viewerZone ? Date.now() : undefined;
   const id = useId();
   const clock = now ?? (typeof window === 'undefined' ? undefined : new Date().toISOString());
   const shown = useMemo(() => runs.filter((card) => matches(card, filter)), [runs, filter]);
@@ -366,14 +373,24 @@ export function RunBoard({
                         </div>
                         {variant !== 'compact' && (
                           <div className={r.cardMeta}>
+                            {/* A list row keeps to two lines: what it is about and when, beside each other. */}
+                            {variant === 'list' && card.summary && <span>{card.summary}</span>}
                             {card.agent && <span>{card.agent.name}</span>}
                             {card.owner && <span>Owner: {card.owner.name}</span>}
-                            {card.updatedAt && (
-                              <span>Updated {formatTime(card.updatedAt, locale, timeZone)}</span>
-                            )}
+                            {card.updatedAt &&
+                              (variant === 'list' ? (
+                                <time
+                                  dateTime={card.updatedAt}
+                                  title={`Updated ${formatTime(card.updatedAt, locale, zone)}`}
+                                >
+                                  {formatShortTime(card.updatedAt, locale, zone, shortClock)}
+                                </time>
+                              ) : (
+                                <span>Updated {formatTime(card.updatedAt, locale, zone)}</span>
+                              ))}
                             {stale && card.heartbeatAt && (
                               <span className={r.stale}>
-                                No update since {formatTime(card.heartbeatAt, locale, timeZone)}
+                                No update since {formatTime(card.heartbeatAt, locale, zone)}
                               </span>
                             )}
                             {card.cost && (
@@ -387,7 +404,7 @@ export function RunBoard({
                             )}
                           </div>
                         )}
-                        {variant !== 'compact' && card.summary && (
+                        {variant !== 'compact' && variant !== 'list' && card.summary && (
                           <p className={r.cardSummary}>{card.summary}</p>
                         )}
                         {card.waitingOn && (

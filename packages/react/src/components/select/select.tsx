@@ -98,7 +98,11 @@ export function Select({
   const control = (
     <SelectPrimitive.Root
       value={value}
-      onValueChange={onValueChange}
+      // Inside a form, Radix's hidden native select reports "" when the value changes from code
+      // before its option exists. Items cannot have an empty value, so "" is never a real choice.
+      onValueChange={(next) => {
+        if (next !== '') onValueChange(next);
+      }}
       name={name}
       required={field.required}
       disabled={field.disabled}

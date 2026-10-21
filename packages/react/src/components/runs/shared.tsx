@@ -23,6 +23,30 @@ export function formatTime(value: string | undefined, locale = 'en-US', timeZone
     timeZone,
   }).format(time);
 }
+/** A list's time: the time today, the day this year, the full date before that. */
+export function formatShortTime(
+  value: string | undefined,
+  locale = 'en-US',
+  timeZone = 'UTC',
+  now?: number,
+) {
+  // Without a clock (server render), the full date: the same text either side of hydration.
+  if (now === undefined) return formatTime(value, locale, timeZone);
+  if (!value) return undefined;
+  const time = Date.parse(value);
+  if (!Number.isFinite(time)) return undefined;
+  const day = (at: number) =>
+    new Intl.DateTimeFormat('en-CA', { timeZone, dateStyle: 'short' }).format(at);
+  const year = (at: number) =>
+    new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric' }).format(at);
+  const options: Intl.DateTimeFormatOptions =
+    day(time) === day(now)
+      ? { timeStyle: 'short' }
+      : year(time) === year(now)
+        ? { month: 'short', day: 'numeric' }
+        : { dateStyle: 'medium' };
+  return new Intl.DateTimeFormat(locale, { ...options, timeZone }).format(time);
+}
 export function formatMoney(value: Money, locale = 'en-US') {
   try {
     return new Intl.NumberFormat(locale, { style: 'currency', currency: value.currency }).format(

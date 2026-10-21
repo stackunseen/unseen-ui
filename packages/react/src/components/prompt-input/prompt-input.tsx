@@ -22,7 +22,10 @@ export interface PromptInputProps
   disabledReason?: string;
   onCancel?: () => void;
   placeholder?: string;
-  /** The line under the box, in your words or language. Defaults to "Shift + Enter for a new line". */
+  /**
+   * A line shown under the box, such as a notice. Without one, "Shift + Enter for a new line" is
+   * still read to screen readers but not shown, as in ChatGPT.
+   */
   hint?: string;
   /** Composition slots; uploads, validation and authoritative state remain with the host. */
   attachments?: ReactNode;
@@ -62,7 +65,7 @@ export function PromptInput({
   disabledReason,
   onCancel,
   placeholder = 'Ask a question or describe a task…',
-  hint = 'Shift + Enter for a new line',
+  hint,
   attachments,
   toolbar,
   submitDisabled = false,
@@ -211,11 +214,11 @@ export function PromptInput({
           </div>
         </div>
         <span
-          className={variant === 'inline' && !unavailableReason ? s.srOnly : s.muted}
+          className={!unavailableReason && (variant === 'inline' || !hint) ? s.srOnly : s.muted}
           id={`${id}-help`}
           data-hint={unavailableReason ? undefined : ''}
         >
-          {unavailableReason ?? hint}
+          {unavailableReason ?? hint ?? 'Shift + Enter for a new line'}
         </span>
       </div>
     </form>
