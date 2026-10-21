@@ -98,10 +98,8 @@ describe('ExecutionTimeline controlled presentation', () => {
         timestamp,
         events[0]!.timestamp,
       ]);
-      expect(times.map((node) => node.textContent)).toEqual([
-        'Oct 1, 2026, 7:00 AM UTC',
-        'Oct 1, 2026, 7:00 AM UTC',
-      ]);
+      // Shown in the viewer's zone (UTC in tests), in the machine's date order.
+      for (const node of times) expect(node.textContent).toMatch(/2026.*7:00\s?(AM|am) UTC$/);
     },
   );
 

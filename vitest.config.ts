@@ -122,6 +122,8 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // Times render in the viewer's zone; tests pin it so their expected text holds anywhere.
+    env: { TZ: 'UTC' },
     setupFiles: ['./tests/setup.ts'],
     include: [
       'tests/**/*.test.{ts,tsx}',
