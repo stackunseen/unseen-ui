@@ -73,9 +73,10 @@
 .alertDialog {
   position: fixed;
   z-index: 101;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* Auto margins, not a transform, so text stays on whole pixels (see .dialog). */
+  inset: 0;
+  margin: auto;
+  block-size: fit-content;
   inline-size: min(480px, calc(100vw - 32px));
   max-block-size: calc(100dvh - 32px);
   overflow: auto;
