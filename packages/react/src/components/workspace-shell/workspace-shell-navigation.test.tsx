@@ -142,4 +142,58 @@ describe('WorkspaceShell responsive navigation', () => {
     expect(screen.queryByRole('button')).toBeNull();
     expect(screen.getByRole('navigation')).toBeVisible();
   });
+
+  it('starts closed on a narrow layout and reopens when it widens', () => {
+    let report = () => {};
+    let width = 400;
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(() => ({
+      width,
+      height: 600,
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: 600,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    }));
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: () => void) {
+          report = callback;
+        }
+        observe() {}
+        disconnect() {}
+      },
+    );
+    render(<Demo />);
+    // Open by default, but the phone layout shows the content first.
+    expect(screen.queryByRole('navigation')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Chats' })).not.toHaveFocus();
+    width = 1200;
+    act(() => report());
+    expect(screen.getByRole('navigation')).toBeVisible();
+  });
+
+  it('places the header above the main content only', () => {
+    setWidth(1200);
+    render(
+      <WorkspaceShell
+        navigationMode="responsive"
+        headerPlacement="main"
+        navigationOpen
+        onNavigationOpenChange={() => {}}
+        header={<span>Model picker</span>}
+        navigation={<a href="#a">A</a>}
+        main={<p>Messages</p>}
+      />,
+    );
+    const column = document.querySelector('[data-part="workspace-main-column"]')!;
+    expect(column.querySelector('[data-part="workspace-header"]')).toHaveTextContent(
+      'Model picker',
+    );
+    expect(column.querySelector('main')).toHaveTextContent('Messages');
+    expect(screen.getByRole('navigation').contains(column)).toBe(false);
+  });
 });

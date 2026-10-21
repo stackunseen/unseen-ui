@@ -37,6 +37,11 @@ export interface WorkspaceShellProps extends Omit<ComponentProps<'section'>, 'ch
   navigationBreakpoint?: number;
   /** Accessible name of the navigation toggle. */
   navigationToggleLabel?: string;
+  /**
+   * "span" (default) puts the header across the whole workspace. "main" puts it above the main
+   * content only, so navigation runs the full height, as in chat apps.
+   */
+  headerPlacement?: 'span' | 'main';
 }
 
 function hasSlot(value: ReactNode) {
@@ -67,6 +72,7 @@ export function WorkspaceShell({
   onNavigationOpenChange,
   navigationBreakpoint = 700,
   navigationToggleLabel = 'Navigation',
+  headerPlacement = 'span',
   className = '',
   ...props
 }: WorkspaceShellProps) {
@@ -77,12 +83,32 @@ export function WorkspaceShell({
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const [narrow, setNarrow] = useState(false);
+  // Read inside the observer without re-subscribing on every change.
+  const latest = useRef({ navigationOpen, onNavigationOpenChange });
+  latest.current = { navigationOpen, onNavigationOpenChange };
+  const autoClosed = useRef(false);
 
   // The layout's own width decides, so a shell inside a pane behaves like one on a phone.
+  // Crossing the breakpoint closes the navigation on the way down, so a phone starts with the
+  // content, and reopens it on the way up when the shell was the one that closed it.
   useIsomorphicLayoutEffect(() => {
     const root = rootRef.current;
     if (!responsive || !root || typeof ResizeObserver === 'undefined') return;
-    const measure = () => setNarrow(root.getBoundingClientRect().width < navigationBreakpoint);
+    let current: boolean | undefined;
+    const measure = () => {
+      const next = root.getBoundingClientRect().width < navigationBreakpoint;
+      if (next === current) return;
+      current = next;
+      const { navigationOpen: open, onNavigationOpenChange: change } = latest.current;
+      if (next && open && change) {
+        autoClosed.current = true;
+        change(false);
+      } else if (!next && !open && autoClosed.current && change) {
+        autoClosed.current = false;
+        change(true);
+      }
+      setNarrow(next);
+    };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(root);
@@ -115,15 +141,41 @@ export function WorkspaceShell({
   }, [drawerOpen, drawer]);
 
   const close = () => onNavigationOpenChange?.(false);
-  const toggle = responsive ? (
-    <IconButton
-      ref={toggleRef}
-      icon="sidebar"
-      label={navigationToggleLabel}
-      aria-expanded={navigationShown}
-      onClick={() => onNavigationOpenChange?.(!navigationOpen)}
-    />
-  ) : null;
+  const headerNode = (hasSlot(header) || responsive) && (
+    <header
+      role="group"
+      aria-label={headerLabel}
+      data-part="workspace-header"
+      className={responsive ? `${s.header} ${s.headerWithToggle}` : s.header}
+      inert={(headerPlacement === 'main' && drawerOpen) || undefined}
+    >
+      {responsive && (
+        <IconButton
+          ref={toggleRef}
+          icon="sidebar"
+          label={navigationToggleLabel}
+          aria-expanded={navigationShown}
+          onClick={() => {
+            // A person choosing the state ends any automatic close.
+            autoClosed.current = false;
+            onNavigationOpenChange?.(!navigationOpen);
+          }}
+        />
+      )}
+      {header}
+    </header>
+  );
+  const mainNode = (
+    <Main
+      data-part="workspace-main"
+      aria-label={mainLabel}
+      tabIndex={scrollMode === 'panes' ? 0 : undefined}
+      className={`${s.pane} ${s.main}`}
+      inert={drawerOpen || undefined}
+    >
+      {main}
+    </Main>
+  );
 
   return (
     <section
@@ -134,19 +186,10 @@ export function WorkspaceShell({
       data-variant={variant}
       data-scroll-mode={scrollMode}
       data-navigation-mode={responsive ? (drawer ? 'drawer' : 'collapsible') : 'inline'}
+      data-header-placement={headerPlacement}
       className={`${s.root} ${className}`}
     >
-      {(hasSlot(header) || toggle) && (
-        <header
-          role="group"
-          aria-label={headerLabel}
-          data-part="workspace-header"
-          className={toggle ? `${s.header} ${s.headerWithToggle}` : s.header}
-        >
-          {toggle}
-          {header}
-        </header>
-      )}
+      {headerPlacement === 'span' && headerNode}
       <div
         data-part="workspace-body"
         data-navigation={hasNavigation && navigationShown && !drawer}
@@ -179,15 +222,14 @@ export function WorkspaceShell({
         {drawerOpen && (
           <div className={s.scrim} data-part="workspace-scrim" aria-hidden="true" onClick={close} />
         )}
-        <Main
-          data-part="workspace-main"
-          aria-label={mainLabel}
-          tabIndex={scrollMode === 'panes' ? 0 : undefined}
-          className={`${s.pane} ${s.main}`}
-          inert={drawerOpen || undefined}
-        >
-          {main}
-        </Main>
+        {headerPlacement === 'main' ? (
+          <div className={s.mainColumn} data-part="workspace-main-column">
+            {headerNode}
+            {mainNode}
+          </div>
+        ) : (
+          mainNode
+        )}
         {hasInspector && (
           <Inspector
             data-part="workspace-inspector"

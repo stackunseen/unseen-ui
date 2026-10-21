@@ -107,7 +107,7 @@ export const genericCatalog: CatalogEntry[] = [
     importPath: '/workspace',
     states: ['Default', 'Responsive navigation', 'With inspector', 'Minimal', 'Long content'],
     contract:
-      'main · header? · navigation? · inspector? · footer? · mainAs? · scrollMode? · variant? · navigationMode?: inline | responsive · navigationOpen? · onNavigationOpenChange? · navigationBreakpoint?',
+      'main · header? · navigation? · inspector? · footer? · mainAs? · scrollMode? · variant? · navigationMode?: inline | responsive · navigationOpen? · onNavigationOpenChange? · navigationBreakpoint? · headerPlacement?: span | main',
     responsibility:
       'Supply real navigation and control visibility. Use mainAs="section" when embedding inside another main landmark.',
     keyboard:

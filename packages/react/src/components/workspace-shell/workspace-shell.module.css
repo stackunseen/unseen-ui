@@ -172,3 +172,18 @@
     opacity: 0;
   }
 }
+/* Header above the main content only, with navigation running the full height. */
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+.mainColumn > .header {
+  padding-inline: 0;
+  padding-block-start: 0;
+}
+.mainColumn > .main {
+  flex: 1 1 auto;
+  min-block-size: 0;
+}
