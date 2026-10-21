@@ -14,3 +14,5 @@ export { Persona } from './components/persona/persona.js';
 export type { PersonaProps, PersonaState } from './components/persona/persona.js';
 export { Image } from './components/image/image.js';
 export type { ImageProps } from './components/image/image.js';
+export { Video } from './components/video/video.js';
+export type { VideoProps } from './components/video/video.js';
