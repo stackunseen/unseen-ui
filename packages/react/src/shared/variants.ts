@@ -28,7 +28,7 @@ export const componentVariants = {
   TerminalOutput: ['console', 'log', 'compact'],
   TestResults: ['list', 'cards', 'compact'],
   PromptInput: ['standard', 'compact', 'inline'],
-  Message: ['plain', 'bubble', 'panel'],
+  Message: ['plain', 'bubble', 'panel', 'chat'],
   MessageActions: ['toolbar', 'compact', 'vertical'],
   StreamingResponse: ['cursor', 'dots', 'shimmer'],
   Suggestions: ['chips', 'cards', 'list'],

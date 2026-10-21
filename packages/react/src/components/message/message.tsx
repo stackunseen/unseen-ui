@@ -74,8 +74,10 @@ export function Message({
             renderTool={renderTool}
           />
         )}
-        {children}
+        {variant !== 'chat' && children}
       </div>
+      {/* In a chat, actions sit under the bubble rather than inside it. */}
+      {variant === 'chat' && children}
     </article>
   );
 }

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import type { CommandOption } from '../../shared/command-picker/command-picker.js';
 import c from '../../shared/styles/agent-controls.module.css';
@@ -58,6 +58,8 @@ export function useComposerSuggestions({
   const [active, setActive] = useState(0);
   const [dismissed, setDismissed] = useState<string>();
   const caretAfter = useRef<number | undefined>(undefined);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [side, setSide] = useState<'top' | 'bottom'>('top');
   const allow = { commands: Boolean(commands?.length), mentions: Boolean(mentions) };
 
   const read = () => {
@@ -74,6 +76,16 @@ export function useComposerSuggestions({
     return source.filter((option) => matches(option, trigger.query)).slice(0, 8);
   }, [trigger, commands, mentions]);
   const shown = open && options.length > 0;
+
+  // Open upwards like ChatGPT, unless the composer sits too near the top of the window for it.
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    const anchor = list?.offsetParent;
+    if (!list || !anchor) return;
+    const box = anchor.getBoundingClientRect();
+    const below = window.innerHeight - box.bottom;
+    setSide(list.offsetHeight + 6 > box.top && below > box.top ? 'bottom' : 'top');
+  }, [shown, options.length]);
 
   useEffect(() => setActive(0), [trigger?.kind, trigger?.query]);
   const mentionQuery = trigger?.kind === '@' && open ? trigger.query : null;
@@ -136,7 +148,7 @@ export function useComposerSuggestions({
   };
 
   const list = shown ? (
-    <div className={css.list} data-part="composer-suggestions">
+    <div ref={listRef} className={css.list} data-part="composer-suggestions" data-side={side}>
       <ul
         id={listId}
         role="listbox"

@@ -8,3 +8,27 @@
   background: var(--ai-surface, #fff);
   box-shadow: var(--ai-shadow-popover);
 }
+/* Not enough room above the composer, as at the top of an empty chat: open downwards. */
+.list[data-side='bottom'] {
+  bottom: auto;
+  top: calc(100% + 6px);
+}
+/* One line per option: the command, then its description, cut short when narrow. */
+.list li {
+  padding: 7px 10px;
+  align-items: center;
+}
+.list li > span {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.list li strong {
+  flex-shrink: 0;
+  font-weight: 500;
+}
+.list li small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -298,10 +298,16 @@
   justify-content: space-between;
   gap: 8px;
 }
+/* In a sidebar the list title reads like the date groups under it, as ChatGPT's "Chats". */
+.root[data-variant='compact'] > strong,
+.root[data-variant='compact'] > .listHead > strong,
 .groupLabel {
-  display: block;
-  margin: 10px 8px 4px;
+  padding-inline: 8px;
   color: var(--ai-muted);
   font-size: 12px;
   font-weight: 600;
+}
+.groupLabel {
+  display: block;
+  margin: 10px 0 4px;
 }

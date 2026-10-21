@@ -1181,7 +1181,8 @@
 .composer[data-variant='inline'][data-has-toolbar='true'] > .composerFooter {
   flex-basis: 100%;
 }
-.message[data-variant='bubble'] .messageBody {
+.message[data-variant='bubble'] .messageBody,
+.message[data-variant='chat'][data-role='user'] .messageBody {
   background: var(--ai-surface-subtle, #f4f4f5);
   border: 1px solid var(--ai-border, #e4e4e7);
   padding: 12px 16px;
@@ -1190,24 +1191,33 @@
 .message[data-variant='bubble'][data-role='user'] {
   flex-direction: row-reverse;
 }
-.message[data-variant='bubble'][data-role='user'] .messageBody {
+.message:is([data-variant='bubble'], [data-variant='chat'])[data-role='user'] .messageBody {
   flex: 0 1 auto;
   max-width: min(80%, 560px);
   padding: 10px 14px;
   border-color: transparent;
   border-radius: 18px 4px 18px 18px;
 }
-.message[data-variant='bubble'][data-role='user'] .messageAvatar {
+.message[data-variant='bubble'][data-role='user'] .messageAvatar,
+.message[data-variant='chat'] .messageAvatar {
   display: none;
 }
 /* The speaker stays available to assistive technology. */
-.message[data-variant='bubble'][data-role='user'] .messageLabel {
+.message[data-variant='bubble'][data-role='user'] .messageLabel,
+.message[data-variant='chat'] .messageLabel {
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+.message[data-variant='chat'] {
+  flex-direction: column;
+  gap: 4px;
+}
+.message[data-variant='chat'][data-role='user'] {
+  align-items: flex-end;
 }
 .message[data-variant='panel'] {
   padding: var(--ai-panel-padding, 16px);

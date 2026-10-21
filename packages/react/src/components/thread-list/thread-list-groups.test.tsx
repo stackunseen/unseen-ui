@@ -86,4 +86,10 @@ describe('ThreadList date groups and actions', () => {
     );
     expect(screen.queryByText('Bad date')).toBeNull();
   });
+
+  it('leaves out its search box when searchable is false', () => {
+    render(<ThreadList threads={threads} query="" searchable={false} onSelect={vi.fn()} />);
+    expect(screen.queryByRole('searchbox', { name: 'Search conversations' })).toBeNull();
+    expect(screen.getByRole('button', { name: /Launch plan/ })).toBeTruthy();
+  });
 });

@@ -50,6 +50,11 @@ export interface ChatBaseProps extends VariantProps<'Chat'> {
   starters?: readonly string[];
   sources?: readonly Source[];
   responseVariant?: MessageContentProps['responseVariant'];
+  /**
+   * How messages look: "plain" labels each speaker; "chat" puts your messages in right-aligned
+   * bubbles and replies in plain text, as ChatGPT does, with the speaker kept for screen readers.
+   */
+  messageVariant?: 'plain' | 'chat';
   /** Pass `renderMarkdownPart` from `@stackunseen/ui/markdown` to format replies. */
   renderTextPart?: MessageContentProps['renderTextPart'];
   /** Your view for a tool call; return undefined to keep the default card. */
@@ -126,6 +131,7 @@ export function Chat(props: ChatProps) {
     starters = [],
     sources: sourcesProp,
     responseVariant,
+    messageVariant = 'plain',
     renderTextPart,
     renderTool: customTool,
     maxPromptLength = 4000,
@@ -326,7 +332,7 @@ export function Chat(props: ChatProps) {
                 <Message
                   key={message.id}
                   value={message}
-                  variant="plain"
+                  variant={messageVariant}
                   tools={tools}
                   sources={sources}
                   responseVariant={responseVariant}

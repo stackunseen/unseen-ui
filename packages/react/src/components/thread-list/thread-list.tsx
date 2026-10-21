@@ -66,6 +66,11 @@ export interface ThreadListProps extends VariantProps<'ThreadList'>, NavigationS
   groupBy?: 'none' | 'date';
   /** The host clock for date groups (ISO 8601), so server and browser agree. */
   now?: string;
+  /**
+   * false leaves out the search box, for a sidebar that searches somewhere else, such as a
+   * "Search chats" dialog. The host still filters the threads it passes by `query`.
+   */
+  searchable?: boolean;
   /** Extra per-thread controls, such as a menu with Share or Move, after Rename and Archive. */
   rowActions?: (thread: ThreadSummary) => ReactNode;
 }
@@ -124,6 +129,7 @@ export function ThreadList(props: ThreadListProps) {
     onRequestRename,
     onRequestArchive,
     onRequestSearch,
+    searchable = true,
     pagination,
     onPageChange,
     onRequestPage,
@@ -346,23 +352,25 @@ export function ThreadList(props: ThreadListProps) {
       <Notice state={state} onReconcile={props.onReconcile} />
       {state.visible && state.valid && (
         <>
-          <div className={n.search}>
-            <AIIcon name="search" fallbackIcon={MagnifyingGlassIcon} />
-            <Input
-              type="search"
-              className={s.search}
-              aria-label="Search conversations"
-              placeholder="Search conversations…"
-              value={query}
-              maxLength={200}
-              disabled={state.locked || (onRequestSearch ? !scope : !onQueryChange)}
-              onChange={(e) => {
-                if (onRequestSearch && scope)
-                  onRequestSearch({ context: { ...scope }, query: e.target.value });
-                else if (!onRequestSearch) onQueryChange?.(e.target.value);
-              }}
-            />
-          </div>
+          {searchable && (
+            <div className={n.search}>
+              <AIIcon name="search" fallbackIcon={MagnifyingGlassIcon} />
+              <Input
+                type="search"
+                className={s.search}
+                aria-label="Search conversations"
+                placeholder="Search conversations…"
+                value={query}
+                maxLength={200}
+                disabled={state.locked || (onRequestSearch ? !scope : !onQueryChange)}
+                onChange={(e) => {
+                  if (onRequestSearch && scope)
+                    onRequestSearch({ context: { ...scope }, query: e.target.value });
+                  else if (!onRequestSearch) onQueryChange?.(e.target.value);
+                }}
+              />
+            </div>
+          )}
           {error && (
             <p role="alert" className={s.error}>
               {typeof error === 'string'

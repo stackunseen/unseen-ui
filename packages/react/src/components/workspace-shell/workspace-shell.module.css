@@ -74,7 +74,8 @@
 .footer > :last-child {
   margin-block-end: 0;
 }
-.root[data-scroll-mode='panes'] {
+/* Low specificity, so a host class that sets the height (such as 100dvh) wins. */
+.root:where([data-scroll-mode='panes']) {
   block-size: 100%;
 }
 .root[data-scroll-mode='panes'] .body {
