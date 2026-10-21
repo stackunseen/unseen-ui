@@ -9,6 +9,8 @@ import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import a from '../attachment/attachment.module.css';
+import type { CommandOption } from '../../shared/command-picker/command-picker.js';
+import { useComposerSuggestions } from './composer-suggestions.js';
 
 export interface PromptInputProps
   extends Omit<ComponentProps<'form'>, 'onSubmit' | 'onChange'>, VariantProps<'PromptInput'> {
@@ -32,6 +34,20 @@ export interface PromptInputProps
   /** UTF-16 selection against value, with an exclusive end. Invalid ranges are ignored. */
   selection?: TextRange;
   onSelectionChange?: (selection: TextRange) => void;
+  /**
+   * Offered when the message starts with "/". Choosing one removes the typed "/word" and calls
+   * onCommand, for actions such as turning on web search or starting a new chat.
+   */
+  commands?: readonly CommandOption[];
+  onCommand?: (command: CommandOption) => void;
+  /**
+   * Offered after "@" (at the start or after a space). Choosing one replaces "@word" with
+   * "@label " and calls onMention. Filter on your side with onMentionQueryChange for large sets.
+   */
+  mentions?: readonly CommandOption[];
+  onMention?: (item: CommandOption) => void;
+  /** The text after "@" while the mention list is open, or null when it closes. */
+  onMentionQueryChange?: (query: string | null) => void;
 }
 
 export function PromptInput({
@@ -52,12 +68,28 @@ export function PromptInput({
   textareaRef,
   selection,
   onSelectionChange,
+  commands,
+  onCommand,
+  mentions,
+  onMention,
+  onMentionQueryChange,
   className = '',
   ...props
 }: PromptInputProps) {
   const id = useId();
   const composing = useRef(false);
   const input = useRef<HTMLTextAreaElement>(null);
+  const suggestions = useComposerSuggestions({
+    id,
+    value,
+    onValueChange,
+    input,
+    commands,
+    onCommand,
+    mentions,
+    onMention,
+    onMentionQueryChange,
+  });
   useEffect(() => {
     if (selection && validTextRange(selection, value))
       input.current?.setSelectionRange(selection.from, selection.to);
@@ -90,6 +122,10 @@ export function PromptInput({
         submit();
       }}
     >
+      {suggestions.list}
+      <span className={s.srOnly} aria-live="polite">
+        {suggestions.announcement}
+      </span>
       {attachments && <div className={a.composerAttachments}>{attachments}</div>}
       <label htmlFor={id} className={s.srOnly}>
         Message
@@ -107,12 +143,20 @@ export function PromptInput({
         placeholder={placeholder}
         rows={variant === 'inline' ? 1 : variant === 'compact' ? 2 : 3}
         aria-describedby={`${id}-help`}
+        {...suggestions.textareaProps}
         onChange={(e) => {
           const next = e.currentTarget.value;
           const range = { from: e.currentTarget.selectionStart, to: e.currentTarget.selectionEnd };
           onValueChange(next);
           if (validTextRange(range, next)) onSelectionChange?.(range);
+          suggestions.read();
         }}
+        onKeyUp={(e) => {
+          // Arrow keys and Home/End move the caret into or out of a "/" or "@" word.
+          if (!['ArrowUp', 'ArrowDown', 'Enter', 'Tab', 'Escape'].includes(e.key))
+            suggestions.read();
+        }}
+        onClick={() => suggestions.read()}
         onSelect={(e) => {
           const range = { from: e.currentTarget.selectionStart, to: e.currentTarget.selectionEnd };
           if (validTextRange(range, value)) onSelectionChange?.(range);
@@ -124,6 +168,7 @@ export function PromptInput({
           composing.current = false;
         }}
         onKeyDown={(e) => {
+          if (suggestions.onKeyDown(e)) return;
           if (
             e.key === 'Enter' &&
             !e.shiftKey &&

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import css from './tabs.module.css';
 
 export function Tabs({
   variant = 'underline',
@@ -27,7 +28,7 @@ export function Tabs({
       value={value}
       onValueChange={onValueChange}
       orientation={orientation}
-      className={s.tabsRoot}
+      className={css.root}
     >
       <TabsPrimitive.List className={s.tabs} data-variant={variant} aria-label={label}>
         {items.map((item) => (

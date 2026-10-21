@@ -1,0 +1,32 @@
+.root[data-orientation='vertical'] {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: minmax(120px, max-content) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.root[data-orientation='vertical'] > [role='tablist'] {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  border: 0;
+}
+.root[data-orientation='vertical'] > [role='tablist'] > [role='tab'] {
+  text-align: start;
+  border-bottom: 0;
+  border-radius: var(--ai-control-radius, 10px);
+}
+.root[data-orientation='vertical'] > [role='tablist'] > [data-state='active'] {
+  background: var(--ai-surface-subtle, #f4f4f5);
+}
+.root[data-orientation='vertical'] > [role='tabpanel'] {
+  padding-top: 0;
+}
+@container (max-width: 480px) {
+  .root[data-orientation='vertical'] > [role='tablist'] {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .root[data-orientation='vertical'] > * {
+    grid-column: 1 / -1;
+  }
+}

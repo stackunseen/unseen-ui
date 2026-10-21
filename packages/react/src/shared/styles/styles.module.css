@@ -263,6 +263,7 @@
   }
 }
 .composer {
+  position: relative;
   border: var(--ai-border-width, 1px) solid var(--ai-control-border, #71717a);
   border-radius: var(--ai-composer-radius, 16px);
   padding: 8px 10px;
@@ -2021,38 +2022,5 @@
   .radio,
   .toolChoice {
     min-height: 44px;
-  }
-}
-/* Vertical tabs: a side list beside the panel, stacking when the container is narrow. */
-.tabsRoot[data-orientation='vertical'] {
-  container-type: inline-size;
-  display: grid;
-  grid-template-columns: minmax(120px, max-content) minmax(0, 1fr);
-  gap: 16px;
-  align-items: start;
-}
-.tabsRoot[data-orientation='vertical'] > .tabs {
-  flex-direction: column;
-  flex-wrap: nowrap;
-  border: 0;
-}
-.tabsRoot[data-orientation='vertical'] > .tabs > .tab {
-  text-align: start;
-  border-bottom: 0;
-  border-radius: var(--ai-control-radius, 10px);
-}
-.tabsRoot[data-orientation='vertical'] > .tabs > .tab[data-state='active'] {
-  background: var(--ai-surface-subtle, #f4f4f5);
-}
-.tabsRoot[data-orientation='vertical'] > .tabContent {
-  padding-top: 0;
-}
-@container (max-width: 480px) {
-  .tabsRoot[data-orientation='vertical'] > .tabs {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .tabsRoot[data-orientation='vertical'] > :is(.tabs, .tabContent) {
-    grid-column: 1 / -1;
   }
 }

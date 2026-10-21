@@ -8,6 +8,7 @@ import { ToolCall } from '../tool-call/tool-call.js';
 import { Button } from '../button/button.js';
 import { Message, MessageActions } from '../message/message.js';
 import { PromptInput } from '../prompt-input/prompt-input.js';
+import type { PromptInputProps } from '../prompt-input/prompt-input.js';
 import { Suggestions } from '../suggestions/suggestions.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -57,6 +58,12 @@ export interface ChatBaseProps extends VariantProps<'Chat'> {
   /** Composition slots for the composer. */
   toolbar?: ReactNode;
   attachments?: ReactNode;
+  /** "/" commands and "@" mentions in the composer; see PromptInput. */
+  commands?: PromptInputProps['commands'];
+  onCommand?: PromptInputProps['onCommand'];
+  mentions?: PromptInputProps['mentions'];
+  onMention?: PromptInputProps['onMention'];
+  onMentionQueryChange?: PromptInputProps['onMentionQueryChange'];
   /** Ratings already recorded, by message id. */
   feedback?: Readonly<Record<string, 'helpful' | 'unhelpful'>>;
   onFeedback?: (messageId: string, helpful: boolean) => void;
@@ -124,6 +131,11 @@ export function Chat(props: ChatProps) {
     maxPromptLength = 4000,
     toolbar,
     attachments,
+    commands,
+    onCommand,
+    mentions,
+    onMention,
+    onMentionQueryChange,
     feedback,
     onFeedback,
     onEdit,
@@ -400,6 +412,11 @@ export function Chat(props: ChatProps) {
           textareaRef={textarea}
           toolbar={toolbar}
           attachments={attachments}
+          commands={commands}
+          onCommand={onCommand}
+          mentions={mentions}
+          onMention={onMention}
+          onMentionQueryChange={onMentionQueryChange}
           submitDisabled={draft.trim().length > maxPromptLength}
           submitDisabledReason={`Keep the message under ${maxPromptLength.toLocaleString('en-US')} characters.`}
         />
