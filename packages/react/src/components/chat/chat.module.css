@@ -69,8 +69,11 @@
   z-index: 1;
   pointer-events: none;
 }
-.jump > * {
+/* Specific enough to win over the ghost button's transparent fill, so text never shows through. */
+.root .jump > button {
   pointer-events: auto;
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
+  border-radius: 999px;
   background: var(--ai-surface, #fff);
   box-shadow: var(--ai-shadow-popover, 0 4px 12px rgb(0 0 0 / 0.08));
 }
