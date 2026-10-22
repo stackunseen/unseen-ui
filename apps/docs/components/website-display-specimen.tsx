@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { Sparkles } from 'lucide-react';
 import { Avatar, DiffStat, ElapsedTime, Stat, StatGroup, Tag, ToggleGroup } from '@stackunseen/ui';
 import type { ToggleGroupOption } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
+import { StarIcon } from '@radix-ui/react-icons';
 
 const topics: ToggleGroupOption[] = [
   { value: 'all', label: 'All', count: 24 },
@@ -76,7 +76,7 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
             <Tag tone="warning">Draft</Tag>
           </>
         ) : state === 'With icon' ? (
-          <Tag tone="primary" icon={<Sparkles size={12} />}>
+          <Tag tone="primary" icon={<StarIcon width={12} height={12} aria-hidden="true" />}>
             New in alpha.3
           </Tag>
         ) : state === 'Custom hue' ? (

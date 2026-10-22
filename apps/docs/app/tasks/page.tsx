@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { ExamplePage } from '../../components/example-page';
 import { componentTasks } from '../../lib/tasks';
 import { pageMetadata } from '../../lib/site-seo';
@@ -23,7 +23,8 @@ export default function Page() {
               <span>{task.description}</span>
               <small>{task.components.slice(0, 5).join(' · ')}</small>
               <em>
-                {task.components.length} components <ArrowRight size={14} aria-hidden="true" />
+                {task.components.length} components{' '}
+                <ArrowRightIcon width={14} height={14} aria-hidden="true" />
               </em>
             </Link>
           </li>

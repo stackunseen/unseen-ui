@@ -14,7 +14,6 @@ import { Panel } from '../panel/panel.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { Skeleton } from '../skeleton/skeleton.js';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
-import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import local from './model-controls.module.css';
@@ -302,9 +301,7 @@ export function ModelControls({
   return (
     <Panel className={`${s.modelControls} ${local.root}`} data-variant={variant}>
       <div className={s.row}>
-        <strong className={s.grow}>
-          <AIIcon name="assistant" /> Model controls
-        </strong>
+        <strong className={s.grow}>Model controls</strong>
         {onRefresh && (
           <IconButton
             icon="retry"

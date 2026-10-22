@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
   'Documentation',
@@ -47,7 +47,7 @@ export default function Page() {
         {guides.map(([href, title, description]) => (
           <Link key={href} href={href}>
             <strong>
-              {title} <ArrowRight size={17} aria-hidden="true" />
+              {title} <ArrowRightIcon width={17} height={17} aria-hidden="true" />
             </strong>
             <span>{description.replace(/`/g, '')}</span>
           </Link>

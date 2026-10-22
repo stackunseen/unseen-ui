@@ -421,7 +421,7 @@ export function Chart({
             title: 'Chart data',
             content: (
               <DataTable
-                caption={`${heading} — ${measurement}`}
+                caption={`${heading}: ${measurement}`}
                 columns={[
                   { id: 'label', label: 'Label' },
                   ...model.groups.map((group) => ({

@@ -1,5 +1,11 @@
 'use client';
-import { ArrowUpRight, Check, Code2, Layers3, Workflow } from 'lucide-react';
+import {
+  ArrowTopRightIcon,
+  CheckIcon,
+  CodeIcon,
+  LayersIcon,
+  Share2Icon,
+} from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle, Card } from '@stackunseen/ui';
 import s from './templates.module.css';
@@ -22,7 +28,7 @@ export function Templates() {
 
       <div className="pattern-list template-options">
         <Link prefetch={false} href="/templates/saas-admin/">
-          <Layers3 size={28} aria-hidden="true" />
+          <LayersIcon width={28} height={28} aria-hidden="true" />
           <div>
             <h2>SaaS admin</h2>
             <p>
@@ -30,12 +36,13 @@ export function Templates() {
               rejected saves and lost acknowledgements.
             </p>
             <span>
-              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+              Open the local template{' '}
+              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
             </span>
           </div>
         </Link>
         <Link prefetch={false} href="/templates/marketing/">
-          <Layers3 size={28} aria-hidden="true" />
+          <LayersIcon width={28} height={28} aria-hidden="true" />
           <div>
             <h2>Marketing website</h2>
             <p>
@@ -43,12 +50,13 @@ export function Templates() {
               form. Built from reusable marketing blocks.
             </p>
             <span>
-              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+              Open the local template{' '}
+              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
             </span>
           </div>
         </Link>
         <Link prefetch={false} href="/patterns/agent-workbench/">
-          <Workflow size={28} aria-hidden="true" />
+          <Share2Icon width={28} height={28} aria-hidden="true" />
           <div>
             <h2>Agent Workbench</h2>
             <p>
@@ -56,12 +64,13 @@ export function Templates() {
               cancellation and recovery are interactive.
             </p>
             <span>
-              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+              Open the local template{' '}
+              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
             </span>
           </div>
         </Link>
         <Link prefetch={false} href="/patterns/coding-studio/">
-          <Code2 size={28} aria-hidden="true" />
+          <CodeIcon width={28} height={28} aria-hidden="true" />
           <div>
             <h2>Coding Studio</h2>
             <p>
@@ -69,7 +78,8 @@ export function Templates() {
               use a disclosed local simulation.
             </p>
             <span>
-              Open the local template <ArrowUpRight size={16} aria-hidden="true" />
+              Open the local template{' '}
+              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
             </span>
           </div>
         </Link>
@@ -79,7 +89,7 @@ export function Templates() {
         <div className={s.summary}>
           <div className={s.identity}>
             <span className={s.mark} aria-hidden="true">
-              <Layers3 size={24} />
+              <LayersIcon width={24} height={24} />
             </span>
             <span className={s.tag}>LOCAL REFERENCE APP</span>
           </div>
@@ -92,7 +102,7 @@ export function Templates() {
           </p>
           <div className={s.actions}>
             <Link prefetch={false} className={s.previewLink} href="/templates/relay/">
-              Explore Relay <ArrowUpRight size={17} aria-hidden="true" />
+              Explore Relay <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
             </Link>
             <Link prefetch={false} className={s.setupLink} href="#relay-setup">
               Run it locally
@@ -132,7 +142,8 @@ export function Templates() {
             </li>
           </ol>
           <p className={s.workflowFootnote}>
-            <Check size={16} aria-hidden="true" /> No external account or API key required
+            <CheckIcon width={16} height={16} aria-hidden="true" /> No external account or API key
+            required
           </p>
         </div>
       </Card>
@@ -167,7 +178,8 @@ pnpm template:dev`}</code>
             Adapt the theme, icons and sample data. The source guide maps screens to components.
           </p>
           <Link prefetch={false} className={s.textLink} href="/getting-started/#customize">
-            Theme and icon customization <ArrowUpRight size={15} aria-hidden="true" />
+            Theme and icon customization{' '}
+            <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
           </Link>
         </section>
         <section className={s.map} aria-labelledby="relay-components-title">
@@ -180,7 +192,7 @@ pnpm template:dev`}</code>
                 {group.components.map((component) => (
                   <li key={component}>
                     <Link prefetch={false} href={componentHref(component)}>
-                      {component} <ArrowUpRight size={13} aria-hidden="true" />
+                      {component} <ArrowTopRightIcon width={13} height={13} aria-hidden="true" />
                     </Link>
                   </li>
                 ))}

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowTopRightIcon } from '@radix-ui/react-icons';
 import { ExamplePage } from '../../../components/example-page';
 import { TaskExamples } from '../../../components/task-examples';
 import { CodePanel } from '../../../components/code-panel';
@@ -116,7 +116,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     <span className="directory-text">
                       <strong>
                         {entry.name}
-                        <ArrowUpRight size={16} aria-hidden="true" />
+                        <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
                       </strong>
                       <span>{entry.description}</span>
                     </span>

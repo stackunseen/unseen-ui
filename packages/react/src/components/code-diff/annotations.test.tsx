@@ -79,3 +79,23 @@ describe('CodeDiff annotations', () => {
     expect(screen.getByText('After', { selector: 'strong' })).toBeVisible();
   });
 });
+
+describe('CodeDiff versions', () => {
+  it('states base and next versions in the header unless the page says it once', () => {
+    const { rerender } = render(
+      <CodeDiff path="a.txt" before={before} after={after} baseVersion="main" nextVersion="task" />,
+    );
+    expect(screen.getByText('main → task')).toBeTruthy();
+    rerender(
+      <CodeDiff
+        path="a.txt"
+        before={before}
+        after={after}
+        baseVersion="main"
+        nextVersion="task"
+        showVersions={false}
+      />,
+    );
+    expect(screen.queryByText('main → task')).toBeNull();
+  });
+});

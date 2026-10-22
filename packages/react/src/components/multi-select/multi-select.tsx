@@ -53,7 +53,7 @@ export function MultiSelect<T extends MultiSelectOption>({
                   <li key={item} className={s.chip}>
                     <span>
                       {label}
-                      {!option && <small> — details unavailable</small>}
+                      {!option && <small> (details unavailable)</small>}
                     </span>
                     <Button
                       size="sm"

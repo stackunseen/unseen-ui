@@ -4,14 +4,13 @@
  * one framed stage per example and an outline column on wide screens.
  */
 
-/* Header: translucent, borderless, pill navigation. */
+/* Header: solid page colour with a hairline, pill navigation. A blur behind it did the same job
+   as the solid colour, as decoration. */
 .web-header {
   min-height: 56px;
   padding: 8px 24px;
   gap: 24px;
-  background: color-mix(in srgb, var(--ai-canvas) 86%, transparent);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  background: var(--ai-canvas);
   border-bottom-color: color-mix(in srgb, var(--ai-border) 70%, transparent);
 }
 .web-brand {

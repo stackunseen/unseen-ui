@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { HomeShowcase } from '../components/home-showcase';
 import { HomeAppExample } from '../components/home-app-example';
 import { HomeHeroDemo } from '../components/home-hero-demo';
@@ -42,7 +42,7 @@ export default function Page() {
                 Browse components
               </Link>
               <Link className="web-button secondary" href="/getting-started/">
-                Get started <ArrowRight size={16} aria-hidden="true" />
+                Get started <ArrowRightIcon width={16} height={16} aria-hidden="true" />
               </Link>
             </div>
             <p className="home-intro-meta">
@@ -55,7 +55,7 @@ export default function Page() {
           <div className="home-section-heading">
             <h2 id="home-tasks-title">Explore by what you are building</h2>
             <Link href="/tasks/">
-              All tasks <ArrowRight size={16} aria-hidden="true" />
+              All tasks <ArrowRightIcon width={16} height={16} aria-hidden="true" />
             </Link>
           </div>
           <ul>
@@ -118,19 +118,20 @@ export default function Page() {
             <li>
               <span>01</span>
               <Link href="/getting-started/">
-                Set up your workspace <ArrowRight size={17} aria-hidden="true" />
+                Set up your workspace <ArrowRightIcon width={17} height={17} aria-hidden="true" />
               </Link>
             </li>
             <li>
               <span>02</span>
               <Link href="/docs/integration/">
-                Connect state and callbacks <ArrowRight size={17} aria-hidden="true" />
+                Connect state and callbacks{' '}
+                <ArrowRightIcon width={17} height={17} aria-hidden="true" />
               </Link>
             </li>
             <li>
               <span>03</span>
               <Link href="/customize/">
-                Customize the theme <ArrowRight size={17} aria-hidden="true" />
+                Customize the theme <ArrowRightIcon width={17} height={17} aria-hidden="true" />
               </Link>
             </li>
           </ol>

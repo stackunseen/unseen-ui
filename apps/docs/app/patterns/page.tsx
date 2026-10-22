@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Workflow } from 'lucide-react';
+import { ArrowRightIcon, Share2Icon } from '@radix-ui/react-icons';
 import { ExamplePage } from '../../components/example-page';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
@@ -75,12 +75,12 @@ export default function Page() {
       <div className="pattern-list">
         {recipes.map((recipe) => (
           <Link key={recipe.href} href={recipe.href}>
-            <Workflow size={28} aria-hidden="true" />
+            <Share2Icon width={28} height={28} aria-hidden="true" />
             <div>
               <h3>{recipe.title}</h3>
               <p>{recipe.description}</p>
               <span>
-                Try the recipe <ArrowRight size={16} aria-hidden="true" />
+                Try the recipe <ArrowRightIcon width={16} height={16} aria-hidden="true" />
               </span>
             </div>
           </Link>

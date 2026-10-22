@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useReducer, useRef, useState, useSyncExternalStore } from 'react';
-import { Code2, Files, GitBranch, RotateCcw } from 'lucide-react';
+import { CodeIcon, ResetIcon, Share1Icon, StackIcon } from '@radix-ui/react-icons';
 import {
   Button,
   CodeDiff,
@@ -125,7 +125,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
     <div className={s.editorView}>
       <div className={s.fileBar}>
         <span>
-          <Code2 size={16} aria-hidden="true" /> <strong>{current.path}</strong>
+          <CodeIcon width={16} height={16} aria-hidden="true" /> <strong>{current.path}</strong>
           <span className={s.muted}>{changed ? 'Draft · not applied' : baseVersion(state)}</span>
         </span>
         <div className={s.toolbar}>
@@ -179,7 +179,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
   );
   const review = !changes.length ? (
     <div className={s.empty}>
-      <GitBranch size={26} aria-hidden="true" />
+      <Share1Icon width={26} height={26} aria-hidden="true" />
       <h2>No draft changes</h2>
       <p>Run the sample task or edit a file to prepare a change.</p>
       <Button
@@ -357,11 +357,11 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
       <div className={s.application} data-template-preview="coding">
         <header className={s.topbar}>
           <div className={s.project}>
-            <Code2 size={21} aria-hidden="true" />
+            <CodeIcon width={21} height={21} aria-hidden="true" />
             <div>
               <strong>search-web</strong>
               <span>
-                <GitBranch size={13} aria-hidden="true" /> fix/query-normalization
+                <Share1Icon width={13} height={13} aria-hidden="true" /> fix/query-normalization
               </span>
             </div>
           </div>
@@ -422,7 +422,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
               aria-controls="coding-files"
               onClick={() => setFilesPreference(!showFiles)}
             >
-              <Files size={15} aria-hidden="true" /> Files
+              <StackIcon width={15} height={15} aria-hidden="true" /> Files
             </Button>
             <Button
               size="sm"
@@ -436,7 +436,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
               Run sample tests
             </Button>
             <Button size="sm" variant="ghost" onClick={reset}>
-              <RotateCcw size={15} aria-hidden="true" /> Reset demo
+              <ResetIcon width={15} height={15} aria-hidden="true" /> Reset demo
             </Button>
           </div>
         </header>

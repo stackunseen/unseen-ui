@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { RotateCcw } from 'lucide-react';
+import { ResetIcon } from '@radix-ui/react-icons';
 import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import type { CatalogEntry } from '../lib/catalog';
 import { catalogStyles } from '../lib/catalog';
@@ -391,7 +391,7 @@ export function ComponentDetail({
               </Button>
             )}
             <Button variant="ghost" onClick={() => setReset((value) => value + 1)}>
-              <RotateCcw size={15} aria-hidden="true" /> Reset example
+              <ResetIcon width={15} height={15} aria-hidden="true" /> Reset example
             </Button>
           </div>
           <Tabs

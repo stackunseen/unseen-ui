@@ -205,6 +205,23 @@
 .board[data-variant='compact'] .card {
   padding: 8px 10px;
 }
+/* A list reads as rows: dividers between runs instead of a bordered box around each one. */
+.board[data-variant='list'] .cards {
+  gap: 0;
+}
+.board[data-variant='list'] .card {
+  padding: 10px 4px;
+  border-width: 0 0 1px;
+  border-radius: 0;
+  background: transparent;
+}
+.board[data-variant='list'] .card[data-selected] {
+  background: var(--ai-surface-subtle, #f4f4f5);
+}
+.board[data-variant='list'] .columnTitle {
+  letter-spacing: normal;
+  text-transform: none;
+}
 .cardHead {
   display: flex;
   flex-wrap: wrap;

@@ -10,7 +10,13 @@ import {
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, Moon, Search, Sun, X } from 'lucide-react';
+import {
+  Cross2Icon,
+  HamburgerMenuIcon,
+  MagnifyingGlassIcon,
+  MoonIcon,
+  SunIcon,
+} from '@radix-ui/react-icons';
 import { BrandMark } from './brand-mark';
 import { AITheme, IconsProvider, LinkProvider } from '@stackunseen/ui';
 import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
@@ -138,7 +144,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   href="/components/#component-search"
                   aria-label="Find a component"
                 >
-                  <Search size={18} aria-hidden="true" />
+                  <MagnifyingGlassIcon width={18} height={18} aria-hidden="true" />
                 </a>
                 <button
                   className="web-icon"
@@ -147,9 +153,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   onClick={() => setAppearance(dark ? 'light' : 'dark')}
                 >
                   {dark ? (
-                    <Sun size={18} aria-hidden="true" />
+                    <SunIcon width={18} height={18} aria-hidden="true" />
                   ) : (
-                    <Moon size={18} aria-hidden="true" />
+                    <MoonIcon width={18} height={18} aria-hidden="true" />
                   )}
                 </button>
                 <button
@@ -170,9 +176,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   }}
                 >
                   {menuOpen ? (
-                    <X size={20} aria-hidden="true" />
+                    <Cross2Icon width={20} height={20} aria-hidden="true" />
                   ) : (
-                    <Menu size={20} aria-hidden="true" />
+                    <HamburgerMenuIcon width={20} height={20} aria-hidden="true" />
                   )}
                 </button>
               </div>

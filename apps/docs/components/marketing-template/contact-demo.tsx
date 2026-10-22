@@ -1,7 +1,7 @@
 'use client';
 import { useId, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowTopRightIcon } from '@radix-ui/react-icons';
 import { Button, Field, Input, Textarea } from '@stackunseen/ui';
 import { MarketingContact } from '@stackunseen/ui/marketing';
 import s from './marketing-template.module.css';
@@ -71,7 +71,7 @@ export function ContactDemo() {
       }
       actions={
         <Button type="submit" className={s.actionButton}>
-          Prepare a draft <ArrowUpRight size={16} aria-hidden="true" />
+          Prepare a draft <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
         </Button>
       }
     >

@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
-import { ChevronDown, CircleDot, PanelRight, Plus, RotateCcw } from 'lucide-react';
+import {
+  ChevronDownIcon,
+  PlusIcon,
+  RadiobuttonIcon,
+  ResetIcon,
+  ViewVerticalIcon,
+} from '@radix-ui/react-icons';
 import { Button, RuntimeProvider, StatusBadge, Tabs, useRuntimeSelector } from '@stackunseen/ui';
 import { SplitPane } from '@stackunseen/ui/layout';
 import type { ApprovalProposal, SubmissionState } from '@stackunseen/ui-core';
@@ -141,7 +147,7 @@ function WorkbenchRun({
     <div className={s.app} data-template-preview="workbench">
       <header className={s.appHeader}>
         <div className={s.workspaceName}>
-          <CircleDot size={18} aria-hidden="true" />
+          <RadiobuttonIcon width={18} height={18} aria-hidden="true" />
           <strong>Fieldwork</strong>
           <span>Customer operations</span>
         </div>
@@ -160,7 +166,7 @@ function WorkbenchRun({
               }}
               disabled={reviews.length >= 8}
             >
-              <Plus size={15} aria-hidden="true" /> New review
+              <PlusIcon width={15} height={15} aria-hidden="true" /> New review
             </Button>
             <button
               ref={reviewsButton}
@@ -169,7 +175,7 @@ function WorkbenchRun({
               aria-controls={reviewsId}
               onClick={() => setReviewsOpen(!reviewsOpen)}
             >
-              Reviews <ChevronDown size={16} aria-hidden="true" />
+              Reviews <ChevronDownIcon width={16} height={16} aria-hidden="true" />
             </button>
           </div>
           <div id={reviewsId} className={s.reviewNavigation} data-open={reviewsOpen}>
@@ -225,7 +231,7 @@ function WorkbenchRun({
                 aria-label="Reset this review"
                 title="Reset this review"
               >
-                <RotateCcw size={16} aria-hidden="true" />
+                <ResetIcon width={16} height={16} aria-hidden="true" />
               </Button>
               <Button
                 variant="outline"
@@ -233,7 +239,7 @@ function WorkbenchRun({
                 aria-pressed={inspectorOpen}
                 onClick={() => setInspectorOpen(!inspectorOpen)}
               >
-                <PanelRight size={16} aria-hidden="true" /> Inspector
+                <ViewVerticalIcon width={16} height={16} aria-hidden="true" /> Inspector
               </Button>
             </div>
           </div>

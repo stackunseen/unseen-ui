@@ -1,7 +1,14 @@
 'use client';
 
 import { useMemo, useRef, useState } from 'react';
-import { Activity, ArrowUpRight, BookOpen, CheckCircle2, Search, ShieldCheck } from 'lucide-react';
+import {
+  ActivityLogIcon,
+  ArrowTopRightIcon,
+  CheckCircledIcon,
+  LockClosedIcon,
+  MagnifyingGlassIcon,
+  ReaderIcon,
+} from '@radix-ui/react-icons';
 import {
   Accordion,
   AgentSteps,
@@ -116,8 +123,8 @@ export function WorkbenchConversation({
       )}
       {run.lifecycle === 'succeeded' && (
         <p role="status" className={s.runNotice}>
-          <CheckCircle2 size={15} aria-hidden="true" /> Review complete. The inspector contains the
-          acknowledged result and report.
+          <CheckCircledIcon width={15} height={15} aria-hidden="true" /> Review complete. The
+          inspector contains the acknowledged result and report.
         </p>
       )}
       <div className={s.composer}>
@@ -140,7 +147,7 @@ export function WorkbenchConversation({
           placeholder="Describe an account review…"
           toolbar={
             <span className={s.composerContext}>
-              <BookOpen size={14} aria-hidden="true" /> Operations handbook
+              <ReaderIcon width={14} height={14} aria-hidden="true" /> Operations handbook
             </span>
           }
         />
@@ -165,7 +172,7 @@ export function WorkbenchInspector({
     <div className={s.inspector}>
       <div className={s.inspectorHeading}>
         <h3>
-          <Activity size={16} aria-hidden="true" /> Inspector
+          <ActivityLogIcon width={16} height={16} aria-hidden="true" /> Inspector
         </h3>
         <span>Host events</span>
       </div>
@@ -198,7 +205,7 @@ export function WorkbenchInspector({
                 )}
                 {!steps.length && (
                   <div className={s.emptyInspector}>
-                    <ShieldCheck size={24} aria-hidden="true" />
+                    <LockClosedIcon width={24} height={24} aria-hidden="true" />
                     <h4>
                       {run.lifecycle === 'running'
                         ? 'Reviewing demo accounts'
@@ -387,7 +394,7 @@ export function WorkbenchAccounts() {
           <p>The fixed dataset used by this review.</p>
         </div>
         <label className={s.search}>
-          <Search size={16} aria-hidden="true" />
+          <MagnifyingGlassIcon width={16} height={16} aria-hidden="true" />
           <input
             ref={searchInput}
             aria-label="Search demo accounts"
@@ -424,7 +431,7 @@ export function WorkbenchAccounts() {
                     }}
                   >
                     {account.name}
-                    <ArrowUpRight size={14} aria-hidden="true" />
+                    <ArrowTopRightIcon width={14} height={14} aria-hidden="true" />
                   </button>
                   <small>
                     {account.id} · {account.plan}
@@ -494,7 +501,7 @@ export function WorkbenchActivity({ review }: { review: WorkbenchReview }) {
       <p>Public events for the selected review. No private reasoning is shown.</p>
       {run.lifecycle === 'queued' ? (
         <div className={s.recordsEmpty}>
-          <Activity size={24} aria-hidden="true" />
+          <ActivityLogIcon width={24} height={24} aria-hidden="true" />
           <h4>No activity yet</h4>
           <p>Send a review request to begin.</p>
         </div>

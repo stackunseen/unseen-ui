@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
+import { ArrowRightIcon, ArrowTopRightIcon, CheckIcon } from '@radix-ui/react-icons';
 import {
   AgentSteps,
   Button,
@@ -63,7 +63,7 @@ function Tile({
       <footer className="home-tile-footer">
         <span>{group}</span>
         <Link prefetch={false} href={componentHref(name)}>
-          {name} <ArrowUpRight size={14} aria-hidden="true" />
+          {name} <ArrowTopRightIcon width={14} height={14} aria-hidden="true" />
         </Link>
       </footer>
     </article>
@@ -105,12 +105,14 @@ export function HomeShowcase() {
               onClick={() => setTheme(updateShowcaseTheme(theme, { primary: color.value }))}
             >
               <span style={{ background: color.value }}>
-                {theme.seeds.primary === color.value && <Check size={12} aria-hidden="true" />}
+                {theme.seeds.primary === color.value && (
+                  <CheckIcon width={12} height={12} aria-hidden="true" />
+                )}
               </span>
             </button>
           ))}
           <Link prefetch={false} className="web-text-link" href="/customize/">
-            Theme Studio <ArrowRight size={14} aria-hidden="true" />
+            Theme Studio <ArrowRightIcon width={14} height={14} aria-hidden="true" />
           </Link>
         </div>
       </div>

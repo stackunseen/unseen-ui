@@ -5,16 +5,16 @@ import type { MouseEvent, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import {
-  ArrowLeft,
-  ArrowRight,
-  Blocks,
-  BookOpen,
-  Code2,
-  Menu,
-  Palette,
-  Search,
-  X,
-} from 'lucide-react';
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CodeIcon,
+  ColorWheelIcon,
+  ComponentInstanceIcon,
+  Cross2Icon,
+  HamburgerMenuIcon,
+  MagnifyingGlassIcon,
+  ReaderIcon,
+} from '@radix-ui/react-icons';
 import { Accordion } from '@stackunseen/ui';
 import '@stackunseen/ui/terminal.css';
 import 'katex/dist/katex.min.css';
@@ -65,13 +65,13 @@ function subscribe(listener: () => void) {
   };
 }
 const browserSearch = () => window.location.search;
-const workspaces: { view: GalleryView; label: string; icon: typeof Blocks }[] = [
-  { view: 'components', label: 'Components', icon: Blocks },
-  { view: 'workbench', label: 'Agent workbench', icon: Code2 },
-  { view: 'coding', label: 'Coding studio', icon: Code2 },
-  { view: 'templates', label: 'Templates', icon: Blocks },
-  { view: 'theme', label: 'Theme studio', icon: Palette },
-  { view: 'design', label: 'Design foundations', icon: BookOpen },
+const workspaces: { view: GalleryView; label: string; icon: typeof ComponentInstanceIcon }[] = [
+  { view: 'components', label: 'Components', icon: ComponentInstanceIcon },
+  { view: 'workbench', label: 'Agent workbench', icon: CodeIcon },
+  { view: 'coding', label: 'Coding studio', icon: CodeIcon },
+  { view: 'templates', label: 'Templates', icon: ComponentInstanceIcon },
+  { view: 'theme', label: 'Theme studio', icon: ColorWheelIcon },
+  { view: 'design', label: 'Design foundations', icon: ReaderIcon },
 ];
 function focusContent() {
   requestAnimationFrame(() => {
@@ -207,12 +207,12 @@ export function Gallery({
   const groupNames = sectionGroups(section);
   const destinations: {
     section: GallerySection;
-    icon: typeof Blocks;
+    icon: typeof ComponentInstanceIcon;
     location: GalleryLocation;
   }[] = [
     {
       section: 'ui',
-      icon: Blocks,
+      icon: ComponentInstanceIcon,
       location: changeGalleryLocation(location, {
         view: 'components',
         component: componentSection(entry) === 'ui' ? entry.name : 'Button',
@@ -220,7 +220,7 @@ export function Gallery({
     },
     {
       section: 'ai',
-      icon: Code2,
+      icon: CodeIcon,
       location: changeGalleryLocation(location, {
         view: 'components',
         component: componentSection(entry) === 'ai' ? entry.name : 'PromptInput',
@@ -228,7 +228,7 @@ export function Gallery({
     },
     {
       section: 'customize',
-      icon: Palette,
+      icon: ColorWheelIcon,
       location: changeGalleryLocation(location, { view: view === 'design' ? 'design' : 'theme' }),
     },
   ];
@@ -266,11 +266,15 @@ export function Gallery({
           aria-controls="library-navigation"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+          {menuOpen ? (
+            <Cross2Icon width={20} height={20} aria-hidden="true" />
+          ) : (
+            <HamburgerMenuIcon width={20} height={20} aria-hidden="true" />
+          )}
         </button>
         <span>Browse {view === 'components' ? 'components' : 'the library'}</span>
         <Link href="/components/">
-          Component index <ArrowRight size={14} aria-hidden="true" />
+          Component index <ArrowRightIcon width={14} height={14} aria-hidden="true" />
         </Link>
       </nav>
       <div className="site-body">
@@ -291,7 +295,7 @@ export function Gallery({
                   navigate(next);
                 }}
               >
-                <Icon size={16} aria-hidden="true" />
+                <Icon width={16} height={16} aria-hidden="true" />
                 <span>{sectionLabels[item]}</span>
                 {componentSections.some((collection) => collection === item) && (
                   <small aria-hidden="true">{sectionCatalog(item).length}</small>
@@ -301,7 +305,7 @@ export function Gallery({
           </nav>
           <div className="library-search">
             <label className="search-field">
-              <Search size={16} aria-hidden="true" />
+              <MagnifyingGlassIcon width={16} height={16} aria-hidden="true" />
               <input
                 ref={searchInput}
                 type="search"
@@ -443,7 +447,7 @@ export function Gallery({
                       onNavigate={navigate}
                       aria-label={`Previous component: ${previous.name}`}
                     >
-                      <ArrowLeft size={15} aria-hidden="true" />
+                      <ArrowLeftIcon width={15} height={15} aria-hidden="true" />
                     </LocalLink>
                   )}
                   {next && (
@@ -452,7 +456,7 @@ export function Gallery({
                       onNavigate={navigate}
                       aria-label={`Next component: ${next.name}`}
                     >
-                      <ArrowRight size={15} aria-hidden="true" />
+                      <ArrowRightIcon width={15} height={15} aria-hidden="true" />
                     </LocalLink>
                   )}
                 </nav>

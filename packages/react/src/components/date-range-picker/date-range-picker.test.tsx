@@ -49,7 +49,7 @@ describe('DateRangePicker', () => {
     await waitFor(() => expect(day('2024-02-01')).toHaveFocus());
     expect(within(dialog).getByRole('button', { name: 'Done' })).toBeDisabled();
     await user.keyboard('{Enter}{ArrowRight}{ArrowRight}{Enter}');
-    expect(trigger).toHaveTextContent('Thursday, February 1, 2024 — Saturday, February 3, 2024');
+    expect(trigger).toHaveTextContent('Thursday, February 1, 2024 – Saturday, February 3, 2024');
     expect(within(dialog).getByRole('status')).toHaveTextContent('Selected range');
     expect(dialog).toBeVisible();
     await user.click(within(dialog).getByRole('button', { name: 'Done' }));

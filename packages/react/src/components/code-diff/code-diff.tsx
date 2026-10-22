@@ -21,6 +21,11 @@ export interface CodeDiffProps extends VariantProps<'CodeDiff'> {
   status?: 'ready' | 'loading' | 'conflict' | 'denied' | 'error' | 'unavailable';
   error?: string;
   copyable?: boolean;
+  /**
+   * Shows "base → next" in the header. Turn it off when a page lists several diffs of the same pair
+   * and states the comparison once; the versions still bind copies and feedback.
+   */
+  showVersions?: boolean;
   /** Trusted application rendering of an already bounded, visible source line. */
   renderLine?: (line: CodeDiffLine) => ReactNode;
   /**
@@ -52,6 +57,7 @@ export function CodeDiff({
   status = 'ready',
   variant = 'unified',
   copyable = true,
+  showVersions = true,
   renderLine,
   annotate,
   error,
@@ -294,9 +300,11 @@ export function CodeDiff({
                 : `+${additions} added · −${removals} removed`}
           </span>
         )}
-        <span className={s.muted}>
-          {baseVersion} → {nextVersion}
-        </span>
+        {showVersions && (
+          <span className={s.muted}>
+            {baseVersion} → {nextVersion}
+          </span>
+        )}
         {copyable && status === 'ready' && (
           <div className={s.row}>
             <Button

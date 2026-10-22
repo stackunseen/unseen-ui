@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowTopRightIcon } from '@radix-ui/react-icons';
 import { featuredApp } from '../lib/first-release';
 
 export function HomeAppExample() {
@@ -12,7 +12,7 @@ export function HomeAppExample() {
           <h2 id="home-app-title">Explore a working admin app.</h2>
         </div>
         <Link prefetch={false} className="web-text-link" href={featuredApp.href}>
-          Open {featuredApp.name} <ArrowUpRight size={17} aria-hidden="true" />
+          Open {featuredApp.name} <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
         </Link>
       </div>
       <figure className="home-template-figure">
@@ -35,7 +35,7 @@ export function HomeAppExample() {
             local demo and reset on reload.
           </p>
           <Link prefetch={false} className="web-text-link" href={featuredApp.href}>
-            Try the app <ArrowUpRight size={17} aria-hidden="true" />
+            Try the app <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
           </Link>
         </figcaption>
       </figure>

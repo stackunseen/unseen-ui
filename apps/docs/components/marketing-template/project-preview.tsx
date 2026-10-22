@@ -1,6 +1,13 @@
 'use client';
 import { useState } from 'react';
-import { ArrowUpRight, Circle, FileText, Folder, LayoutGrid, PanelLeft } from 'lucide-react';
+import {
+  ArchiveIcon,
+  ArrowTopRightIcon,
+  CircleIcon,
+  FileTextIcon,
+  GridIcon,
+  ViewVerticalIcon,
+} from '@radix-ui/react-icons';
 import { Tabs } from '@stackunseen/ui';
 import s from './marketing-template.module.css';
 
@@ -11,15 +18,15 @@ export function ProjectPreview() {
     <div className={s.preview} role="group" aria-label="Folio sample project">
       <div className={s.previewTop}>
         <span>
-          <Folder size={16} aria-hidden="true" /> Studio workspace
+          <ArchiveIcon width={16} height={16} aria-hidden="true" /> Studio workspace
         </span>
         <span className={s.previewSample}>SAMPLE</span>
       </div>
       <div className={s.previewBody}>
         <div className={s.previewRail} aria-hidden="true">
-          <PanelLeft size={18} />
-          <LayoutGrid size={18} />
-          <FileText size={18} />
+          <ViewVerticalIcon width={18} height={18} />
+          <GridIcon width={18} height={18} />
+          <FileTextIcon width={18} height={18} />
         </div>
         <div className={s.previewMain}>
           <div className={s.previewBreadcrumb}>Projects / Fieldwork</div>
@@ -49,10 +56,12 @@ export function ProjectPreview() {
                     <div className={s.previewTasks}>
                       <span className={s.smallLabel}>UP NEXT</span>
                       <p>
-                        <Circle size={14} aria-hidden="true" /> Gather interview notes
+                        <CircleIcon width={14} height={14} aria-hidden="true" /> Gather interview
+                        notes
                       </p>
                       <p>
-                        <Circle size={14} aria-hidden="true" /> Review the first concept
+                        <CircleIcon width={14} height={14} aria-hidden="true" /> Review the first
+                        concept
                       </p>
                     </div>
                   </div>
@@ -77,11 +86,12 @@ export function ProjectPreview() {
                     <div className={s.previewTasks}>
                       <span className={s.smallLabel}>LINKED DOCUMENT</span>
                       <p>
-                        <FileText size={14} aria-hidden="true" /> Interview observations
+                        <FileTextIcon width={14} height={14} aria-hidden="true" /> Interview
+                        observations
                       </p>
                       <p>
-                        <ArrowUpRight size={14} aria-hidden="true" /> Sample content, no external
-                        files
+                        <ArrowTopRightIcon width={14} height={14} aria-hidden="true" /> Sample
+                        content, no external files
                       </p>
                     </div>
                   </div>

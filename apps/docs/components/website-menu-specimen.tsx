@@ -36,7 +36,7 @@ export function WebsiteMenuSpecimen({ name, state }: WebsiteSpecimenProps) {
       <>
         <ContextMenu.Root>
           <ContextMenu.Trigger className="generic-context-target">
-            Project preview — right-click or focus and press Shift+F10.
+            Project preview. Right-click, or focus and press Shift+F10.
           </ContextMenu.Trigger>
           <ContextMenu.Content>
             <ContextMenu.Item onSelect={() => setNotice('Rename requested for the local sample.')}>

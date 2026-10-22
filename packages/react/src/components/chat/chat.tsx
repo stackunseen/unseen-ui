@@ -245,7 +245,6 @@ export function Chat(props: ChatProps) {
     >
       {variant === 'panel' && (
         <header className={css.header}>
-          <AIIcon name="assistant" />
           <h2 className={css.title}>{title}</h2>
         </header>
       )}

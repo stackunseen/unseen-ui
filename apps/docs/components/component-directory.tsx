@@ -1,6 +1,11 @@
 'use client';
 import { useEffect, useRef, useSyncExternalStore } from 'react';
-import { ArrowUpRight, LayoutGrid, List, Search } from 'lucide-react';
+import {
+  ArrowTopRightIcon,
+  GridIcon,
+  ListBulletIcon,
+  MagnifyingGlassIcon,
+} from '@radix-ui/react-icons';
 import Link from 'next/link';
 import {
   componentSections,
@@ -71,7 +76,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
       )}
       <div className="directory-tools">
         <label id="component-search" className="directory-search">
-          <Search size={18} aria-hidden="true" />
+          <MagnifyingGlassIcon width={18} height={18} aria-hidden="true" />
           <span className="sr-only">Search the component catalog</span>
           <input
             ref={input}
@@ -144,7 +149,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
             aria-pressed={view === 'gallery'}
             onClick={() => update({ view: 'gallery' }, true)}
           >
-            <LayoutGrid size={16} aria-hidden="true" />
+            <GridIcon width={16} height={16} aria-hidden="true" />
             Gallery
           </button>
           <button
@@ -152,7 +157,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
             aria-pressed={view === 'list'}
             onClick={() => update({ view: 'list' }, true)}
           >
-            <List size={16} aria-hidden="true" />
+            <ListBulletIcon width={16} height={16} aria-hidden="true" />
             List
           </button>
         </div>
@@ -216,7 +221,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
                           <span className="directory-text">
                             <strong>
                               {entry.name}
-                              <ArrowUpRight size={16} aria-hidden="true" />
+                              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
                             </strong>
                             <span>{entry.description}</span>
                           </span>

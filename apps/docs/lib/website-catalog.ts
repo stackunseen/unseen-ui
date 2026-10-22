@@ -177,7 +177,7 @@ export const websiteCatalog: CatalogEntry[] = [
       'Provide a visible explanation of the context action. Essential actions should also be discoverable without a context menu.',
     keyboard:
       'Focus the trigger and press Shift+F10 or the Context Menu key. Arrow keys navigate; Escape returns to the trigger.',
-    code: '<ContextMenu.Root><ContextMenu.Trigger>Project preview — right-click or press Shift+F10</ContextMenu.Trigger><ContextMenu.Content><ContextMenu.Item onSelect={requestRename}>Rename project</ContextMenu.Item></ContextMenu.Content></ContextMenu.Root>',
+    code: '<ContextMenu.Root><ContextMenu.Trigger>Project preview. Right-click or press Shift+F10</ContextMenu.Trigger><ContextMenu.Content><ContextMenu.Item onSelect={requestRename}>Rename project</ContextMenu.Item></ContextMenu.Content></ContextMenu.Root>',
   }),
   entry({
     name: 'NavigationMenu',

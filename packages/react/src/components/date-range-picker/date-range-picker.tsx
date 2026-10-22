@@ -15,8 +15,8 @@ import s from './date-range-picker.module.css';
 const defaultLabels: DateRangePickerLabels = {
   title: 'Choose date range',
   placeholder: 'Choose start and end dates',
-  chooseEnd: (start) => `${start} — Choose end date`,
-  selected: (start, end) => `${start} — ${end}`,
+  chooseEnd: (start) => `${start}. Choose the end date`,
+  selected: (start, end) => `${start} – ${end}`,
   invalid: 'Date range unavailable. Check the dates, bounds and locale.',
   clear: 'Clear range',
   done: 'Done',

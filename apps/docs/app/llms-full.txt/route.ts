@@ -36,7 +36,7 @@ export function GET() {
       .join('\n');
   });
   const body = [
-    '# Unseen UI — full component reference',
+    '# Unseen UI: full component reference',
     '',
     'Install: `npm install @stackunseen/ui`. Import `@stackunseen/ui/styles.css` once; optional entries name their own stylesheet (for example `@stackunseen/ui/chat.css`). React 19.3 is a peer.',
     '',

@@ -1,5 +1,5 @@
 'use client';
-import { Paperclip } from 'lucide-react';
+import { FilePlusIcon } from '@radix-ui/react-icons';
 import { ModelSelector } from '@stackunseen/ui/assistant';
 import '@stackunseen/ui/assistant.css';
 import { ChatLauncher } from '@stackunseen/ui/chat';
@@ -178,7 +178,7 @@ export function Specimen({
               {longLabels
                 ? 'Input parameters for the customer-account reconciliation workflow'
                 : 'Input parameters'}{' '}
-              <span className="sr-only">— {presentation ?? 'divided'} style</span>
+              <span className="sr-only">, {presentation ?? 'divided'} style</span>
             </>
           ),
           content: (
@@ -189,7 +189,7 @@ export function Specimen({
           value: 'output',
           title: (
             <>
-              Execution results <span className="sr-only">— {presentation ?? 'divided'} style</span>
+              Execution results <span className="sr-only">, {presentation ?? 'divided'} style</span>
             </>
           ),
           content: <p>Three synthetic records are available for review.</p>,
@@ -315,7 +315,7 @@ export function Specimen({
                   aria-label="Attach files"
                   onClick={() => setResult('Attachment picker requested in demo.')}
                 >
-                  <Paperclip size={16} aria-hidden="true" />
+                  <FilePlusIcon width={16} height={16} aria-hidden="true" />
                 </Button>
                 <ModelSelector
                   variant="ghost"
@@ -734,7 +734,7 @@ export function Specimen({
               ? {
                   ...sourceValue,
                   title:
-                    'Operations handbook — account retention and cross-workspace review requirements',
+                    'Operations handbook: account retention and cross-workspace review requirements',
                 }
               : sourceValue
           }
@@ -805,7 +805,7 @@ export function Specimen({
           variant={resolveVariant('MCPServerCard', presentation)}
           name={
             longLabels
-              ? 'Customer relationship management — operations sandbox workspace'
+              ? 'Customer relationship management: operations sandbox workspace'
               : 'CRM sandbox'
           }
           status={
@@ -861,7 +861,7 @@ export function Specimen({
             {
               id: '1',
               label: longLabels
-                ? 'Operations handbook — retention rules and quarterly access review reference'
+                ? 'Operations handbook: retention rules and quarterly access review reference'
                 : 'Operations handbook',
               state: 'included' as const,
             },
@@ -919,7 +919,7 @@ export function Specimen({
       preview = (
         <ArtifactPreview
           variant={resolveVariant('ArtifactPreview', presentation)}
-          tableLabel={`Account review summary — ${presentation ?? 'document'} table preview`}
+          tableLabel={`Account review summary, ${presentation ?? 'document'} table preview`}
           artifact={
             variant === 'Table'
               ? {

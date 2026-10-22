@@ -15,7 +15,7 @@ import {
   ExclamationTriangleIcon,
   FileTextIcon,
   InfoCircledIcon,
-  MagicWandIcon,
+  ChatBubbleIcon,
   PauseIcon,
   Pencil1Icon,
   PersonIcon,
@@ -33,7 +33,8 @@ const defaults = {
   close: Cross2Icon,
   send: ArrowUpIcon,
   stop: StopIcon,
-  assistant: MagicWandIcon,
+  // A neutral speaker mark: sparkles and wands read as a generic "AI" decoration.
+  assistant: ChatBubbleIcon,
   user: PersonIcon,
   info: InfoCircledIcon,
   tool: CodeIcon,
