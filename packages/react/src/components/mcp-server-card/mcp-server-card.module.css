@@ -1,0 +1,25 @@
+/* mcp-server-card: styles that only this component uses (moved from the shared sheet). */
+.serverCard[data-variant='row'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  align-items: center;
+  padding-block: 14px;
+}
+.serverCard[data-variant='row'] > .row {
+  grid-column: 1 / -1;
+}
+.serverCard[data-variant='row'] > .trailingActions {
+  margin-block-start: 0;
+}
+.serverCard[data-variant='card'] > p {
+  padding-inline-start: calc(24px + var(--ai-gap, 12px));
+}
+.serverCard[data-variant='compact'] {
+  padding: 12px;
+  border-inline: 0;
+  border-radius: 0;
+}
+.serverCard[data-variant='compact'] > p {
+  margin-block: 6px;
+}

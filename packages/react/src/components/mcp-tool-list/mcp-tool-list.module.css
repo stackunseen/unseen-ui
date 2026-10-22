@@ -1,0 +1,15 @@
+/* mcp-tool-list: styles that only this component uses (moved from the shared sheet). */
+.mcpTools > .field {
+  margin-bottom: 12px;
+}
+.mcpTools[data-variant='cards'] > .list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+.mcpTools[data-variant='cards'] .item {
+  padding: 16px;
+  background: var(--ai-surface, #fff);
+  border: 1px solid var(--ai-border, #e4e4e7);
+  border-radius: var(--ai-radius, 12px);
+}

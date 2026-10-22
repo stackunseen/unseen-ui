@@ -1,0 +1,37 @@
+/* execution-timeline: styles that only this component uses (moved from the shared sheet). */
+.timeline .table {
+  min-width: 520px;
+}
+.timeline {
+  display: grid;
+  gap: 16px;
+}
+.timeline > .field {
+  max-width: 220px;
+}
+.timeline[data-variant='timeline'] .list {
+  margin-inline-start: 5px;
+  border-inline-start: 2px solid var(--ai-border, #e4e4e7);
+  padding-inline-start: 18px;
+}
+.timeline[data-variant='timeline'] .item {
+  position: relative;
+  align-items: flex-start;
+}
+.timeline[data-variant='timeline'] .item::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -25px;
+  top: 17px;
+  height: 12px;
+  width: 12px;
+  border: 2px solid var(--ai-surface, #fff);
+  background: var(--ai-primary, #18181b);
+  border-radius: 50%;
+}
+.timeline[data-variant='compact'] .item {
+  padding-block: 8px;
+}
+.timeline[data-variant='compact'] .item strong {
+  font-size: var(--ai-font-size-meta, 13px);
+}

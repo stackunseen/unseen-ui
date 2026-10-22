@@ -3,6 +3,7 @@ import { StatusBadge } from '../status-badge/status-badge.js';
 import { Select } from '../select/select.js';
 import type { DetailLevel, DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './execution-timeline.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
 export interface TimelineEntry {
@@ -35,9 +36,9 @@ export function ExecutionTimeline({
   }) {
   const shown = filter === 'failed' ? entries.filter((e) => e.state === 'failed') : entries;
   return (
-    <div className={s.timeline} data-variant={variant} data-detail={detail}>
+    <div className={own.timeline} data-variant={variant} data-detail={detail}>
       {onFilterChange && (
-        <label className={s.field}>
+        <label className={s.field + ' ' + own.field}>
           Show events
           <Select
             value={filter}
@@ -56,7 +57,7 @@ export function ExecutionTimeline({
           role="region"
           aria-label="Execution event table"
         >
-          <table className={s.table}>
+          <table className={s.table + ' ' + own.table}>
             <caption>Execution events</caption>
             <thead>
               <tr>
@@ -92,10 +93,10 @@ export function ExecutionTimeline({
           </table>
         </div>
       ) : (
-        <ol className={s.list}>
+        <ol className={s.list + ' ' + own.list}>
           {shown.length === 0 && <li className={s.muted}>No matching events.</li>}
           {shown.map((e) => (
-            <li key={e.id} className={s.item}>
+            <li key={e.id} className={s.item + ' ' + own.item}>
               <div className={s.grow}>
                 <strong>{e.label}</strong>
                 <div className={s.muted}>

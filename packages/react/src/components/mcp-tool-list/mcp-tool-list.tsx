@@ -3,6 +3,7 @@ import { useId } from 'react';
 import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './mcp-tool-list.module.css';
 
 export interface MCPTool {
   id: string;
@@ -27,8 +28,8 @@ export function MCPToolList({
     `${tool.name} ${tool.description}`.toLowerCase().includes(query.toLowerCase()),
   );
   return (
-    <div className={s.mcpTools} data-variant={variant}>
-      <label htmlFor={id} className={s.field}>
+    <div className={own.mcpTools} data-variant={variant}>
+      <label htmlFor={id} className={s.field + ' ' + own.field}>
         Filter tools
         <input
           id={id}
@@ -61,9 +62,9 @@ export function MCPToolList({
           {!filtered.length && <p className={s.muted}>No matching tools.</p>}
         </>
       ) : (
-        <ul className={s.list}>
+        <ul className={s.list + ' ' + own.list}>
           {filtered.map((tool) => (
-            <li key={tool.id} className={s.item}>
+            <li key={tool.id} className={s.item + ' ' + own.item}>
               <div>
                 <strong>{tool.name}</strong>
                 <p className={s.muted}>{tool.description}</p>

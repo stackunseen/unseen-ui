@@ -4,6 +4,7 @@ import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './permission-request.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 import { permissionTone, ScopedPermissionRequest } from './scoped-permission-request.js';
 import type { ScopedPermissionRequestProps } from './scoped-permission-request.js';
@@ -45,9 +46,9 @@ function LegacyPermissionRequest({
     !!resource.trim() && scopes.length > 0 && scopes.every((scope) => !!scope.trim());
   const Heading = `h${headingLevel}` as const;
   return (
-    <Panel data-part="permission-request" data-variant={variant} className={s.permission}>
-      <div className={s.row}>
-        <Heading className={`${s.title} ${s.grow}`}>
+    <Panel data-part="permission-request" data-variant={variant} className={own.permission}>
+      <div className={s.row + ' ' + own.row}>
+        <Heading className={`${s.title + ' ' + own.title} ${s.grow}`}>
           {resource.trim() ? `Connect to ${resource}` : 'Connection access request'}
         </Heading>
         <span
@@ -66,7 +67,11 @@ function LegacyPermissionRequest({
           The host must provide the resource and requested scopes before you can allow access.
         </p>
       )}
-      <div className={`${s.actions} ${a.footer}`} role="group" aria-label="Permission decision">
+      <div
+        className={`${s.actions + ' ' + own.actions} ${a.footer}`}
+        role="group"
+        aria-label="Permission decision"
+      >
         <Button
           variant="outline"
           disabled={pending || status !== 'requested'}

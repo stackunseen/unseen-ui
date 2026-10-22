@@ -1,0 +1,21 @@
+/* permission-request: styles that only this component uses (moved from the shared sheet). */
+.permission[data-variant='banner'] {
+  border-width: 1px;
+  border-inline-start-width: 4px;
+  border-radius: 4px;
+}
+.permission[data-variant='compact'] {
+  padding: 12px 16px;
+  border-inline: 0;
+  border-radius: 0;
+}
+.permission > .row > .title {
+  margin: 0;
+}
+.permission[data-variant='compact'] .title {
+  margin-top: 0;
+  font-size: 14px;
+}
+.permission[data-variant='banner'] .actions {
+  justify-content: flex-end;
+}

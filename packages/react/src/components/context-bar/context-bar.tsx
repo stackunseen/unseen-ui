@@ -5,6 +5,7 @@ import { IconButton } from '../icon-button/icon-button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './context-bar.module.css';
 
 export function ContextBar({
   variant = 'list',
@@ -38,12 +39,12 @@ export function ContextBar({
       onFocusCapture={(event) => {
         focused.current = event.target as HTMLElement;
       }}
-      className={s.contextBar}
+      className={own.contextBar}
       data-variant={variant}
     >
-      <ul className={s.list} aria-label="Context items">
+      <ul className={s.list + ' ' + own.list} aria-label="Context items">
         {items.map((item) => (
-          <li key={item.id} className={s.item}>
+          <li key={item.id} className={s.item + ' ' + own.item}>
             <AIIcon name="document" />
             <div className={s.grow}>
               <strong>{item.label}</strong>
@@ -63,7 +64,7 @@ export function ContextBar({
         ))}
       </ul>
       {valid ? (
-        <div className={s.usage}>
+        <div className={own.usage}>
           <div className={s.row}>
             <span className={s.muted}>
               {usage.kind === 'estimated' ? 'Estimated context' : 'Context usage'}

@@ -5,6 +5,7 @@ import { AIIcon } from '../../providers/icons/icons.js';
 import { SummaryHeading } from '../../shared/summary-heading.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './mcp-server-card.module.css';
 
 const serverTone = {
   connected: 'success',
@@ -30,8 +31,8 @@ export function MCPServerCard({
   pending?: boolean;
 }) {
   return (
-    <Panel className={s.serverCard} data-variant={variant}>
-      <div className={s.row}>
+    <Panel className={own.serverCard} data-variant={variant}>
+      <div className={s.row + ' ' + own.row}>
         <SummaryHeading
           icon={
             <span className={s.sourceIcon} aria-hidden="true">
@@ -51,7 +52,7 @@ export function MCPServerCard({
           : 'Tool availability unknown'}
       </p>
       {((status !== 'connected' && onConnect) || (status === 'connected' && onDisconnect)) && (
-        <div className={`${s.actions} ${s.trailingActions}`}>
+        <div className={`${s.actions} ${s.trailingActions + ' ' + own.trailingActions}`}>
           {status !== 'connected' && onConnect && (
             <Button size="sm" variant="outline" disabled={pending} onClick={onConnect}>
               {pending

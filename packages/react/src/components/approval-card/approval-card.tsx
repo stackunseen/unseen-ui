@@ -74,15 +74,15 @@ export function ApprovalCard({
     superseded: 'Proposal changed',
   }[status];
   return (
-    <Panel data-part="approval" data-variant={variant} className={s.approval}>
+    <Panel data-part="approval" data-variant={variant} className={own.approval}>
       <div className={s.row}>
-        <div className={s.approvalHeading}>
+        <div className={own.approvalHeading}>
           <span className={own.reviewIcon} data-risk={proposal.risk} aria-hidden="true">
             <AIIcon name="warning" />
           </span>
           <div className={s.grow}>
             <span className={own.eyebrow}>{heading}</span>
-            <h3 className={s.title}>{proposal.title}</h3>
+            <h3 className={s.title + ' ' + own.title}>{proposal.title}</h3>
           </div>
         </div>
         <StatusBadge state={status} />
@@ -99,7 +99,7 @@ export function ApprovalCard({
         </p>
       )}
       <p>{proposal.impact}</p>
-      <dl className={s.definition} {...details.contentProps}>
+      <dl className={s.definition + ' ' + own.definition} {...details.contentProps}>
         {/* Supplied scopes are in the summary line; say so here only when there are none. */}
         {proposal.scopes.length === 0 && (
           <>

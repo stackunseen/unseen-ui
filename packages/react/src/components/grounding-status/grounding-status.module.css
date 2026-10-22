@@ -1,0 +1,61 @@
+/* grounding-status: styles that only this component uses (moved from the shared sheet). */
+.grounding[data-variant='ring'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 16px;
+  align-items: center;
+}
+.grounding[data-variant='ring'] > strong {
+  grid-column: 1;
+  margin: 0;
+}
+.grounding[data-variant='ring'] > .row {
+  grid-column: 1;
+  margin: 0;
+}
+.grounding[data-variant='ring'] > p {
+  grid-column: 1;
+  margin: 0;
+}
+.grounding[data-variant='ring'] > small {
+  grid-column: 1 / -1;
+}
+.grounding[data-variant='ring'] > .ring {
+  grid-column: 2;
+  grid-row: 1 / 4;
+}
+.grounding[data-variant='text'] {
+  padding: 12px 0;
+  border-inline: 0;
+  border-radius: 0;
+}
+.ring {
+  position: relative;
+  height: 76px;
+  width: 76px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.ring svg {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  fill: none;
+  stroke: var(--ai-border, #e4e4e7);
+  stroke-width: 4;
+}
+.ring circle:last-child {
+  stroke: var(--ai-primary, #18181b);
+  transform: rotate(-90deg);
+  transform-origin: center;
+  stroke-linecap: round;
+}
+.ring span {
+  font-weight: 600;
+  z-index: 1;
+  background: var(--ai-surface, #fff);
+  border-radius: 50%;
+  padding: 4px;
+}

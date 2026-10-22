@@ -1,0 +1,23 @@
+/* context-bar: styles that only this component uses (moved from the shared sheet). */
+.usage {
+  margin-top: 16px;
+}
+.contextBar[data-variant='chips'] > .list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.contextBar[data-variant='chips'] .item {
+  padding: 8px 12px;
+  border: 1px solid var(--ai-border, #e4e4e7);
+  border-radius: 12px;
+  background: var(--ai-surface, #fff);
+  max-width: 100%;
+}
+.contextBar[data-variant='compact'] .item {
+  padding-block: 6px;
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.contextBar[data-variant='compact'] .usage {
+  margin-top: 8px;
+}

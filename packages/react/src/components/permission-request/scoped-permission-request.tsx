@@ -18,6 +18,7 @@ import { receiptMessage } from '../../shared/decision-contracts.js';
 import { useDisclosure } from '../../shared/disclosure.js';
 import { useDecisionExpiry } from '../../shared/decision-expiry.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './permission-request.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
@@ -77,9 +78,9 @@ export function ScopedPermissionRequest({
       onDecision(current);
   }
   return (
-    <Panel data-part="permission-request" data-variant={variant} className={s.permission}>
-      <div className={s.row}>
-        <Heading className={`${s.title} ${s.grow}`}>
+    <Panel data-part="permission-request" data-variant={variant} className={own.permission}>
+      <div className={s.row + ' ' + own.row}>
+        <Heading className={`${s.title + ' ' + own.title} ${s.grow}`}>
           {value ? `Connect to ${value.target.resource}` : 'Connection access request'}
         </Heading>
         {value && (
@@ -164,7 +165,11 @@ export function ScopedPermissionRequest({
           </p>
         </div>
       )}
-      <div className={`${s.actions} ${a.footer}`} role="group" aria-label="Permission decision">
+      <div
+        className={`${s.actions + ' ' + own.actions} ${a.footer}`}
+        role="group"
+        aria-label="Permission decision"
+      >
         {value && (
           <Button variant="ghost" size="sm" {...details.triggerProps}>
             {details.open ? 'Hide details' : 'Details'}
@@ -185,7 +190,11 @@ export function ScopedPermissionRequest({
         (invalidReceipt ||
           !receipt ||
           ['accepted', 'unknown', 'not-found'].includes(receipt.outcome)) && (
-          <div className={`${s.actions} ${a.footer}`} role="group" aria-label="Permission recovery">
+          <div
+            className={`${s.actions + ' ' + own.actions} ${a.footer}`}
+            role="group"
+            aria-label="Permission recovery"
+          >
             <Button
               size="sm"
               variant="outline"

@@ -3,6 +3,7 @@ import type { Grounding } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './grounding-status.module.css';
 
 export function GroundingStatus({
   value,
@@ -18,7 +19,7 @@ export function GroundingStatus({
       ? value.supported / value.total
       : undefined;
   return (
-    <Panel className={s.grounding} data-variant={variant}>
+    <Panel className={own.grounding} data-variant={variant}>
       <strong>{value.kind === 'coverage' ? 'Source coverage' : 'Grounding'}</strong>
       {value.kind === 'unknown' ? (
         <p className={s.muted}>Not measured</p>
@@ -28,7 +29,7 @@ export function GroundingStatus({
             <p>{value.label}</p>
           ) : coverage !== undefined ? (
             <>
-              <div className={s.row}>
+              <div className={s.row + ' ' + own.row}>
                 <span>
                   {value.supported} of {value.total} claims linked
                 </span>
@@ -36,7 +37,7 @@ export function GroundingStatus({
               </div>
               {variant === 'ring' ? (
                 <div
-                  className={s.ring}
+                  className={own.ring}
                   role="progressbar"
                   aria-label="Claims with source links"
                   aria-valuemin={0}
