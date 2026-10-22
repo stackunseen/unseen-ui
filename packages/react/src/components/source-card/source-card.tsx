@@ -47,6 +47,7 @@ export function SourceCard({
             <div className={`${s.actions} ${s.trailingActions}`}>
               <a
                 className={s.button}
+                data-button=""
                 data-variant="outline"
                 data-size="sm"
                 href={url}

@@ -1,0 +1,75 @@
+/* agent-card: styles that only this component uses (moved from the shared sheet). */
+.agentIcon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-primary-text, #27272a);
+  border-radius: 6px;
+  font-size: 14px;
+}
+.agentCard[data-variant='card'] > .agentDetails {
+  padding-inline-start: calc(24px + var(--ai-gap, 12px));
+}
+.agentCard {
+  container-type: inline-size;
+}
+.agentCard[data-variant='row'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 24px;
+  align-items: center;
+  padding-block: 14px;
+}
+.agentCard[data-variant='row'] > .row {
+  grid-column: 1;
+}
+.agentCard[data-variant='row'] > .agentDetails {
+  grid-column: 1;
+}
+.agentCard[data-variant='row'] > .trailingActions {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  margin-block-start: 0;
+}
+@container (max-width: 360px) {
+  .agentCard[data-variant='row'] > .trailingActions {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+.agentCard[data-variant='row'] .agentDetails p {
+  margin: 4px 0;
+}
+.agentCard[data-variant='profile'] {
+  text-align: center;
+  padding: 24px;
+}
+.agentCard[data-variant='profile'] > .row {
+  flex-direction: column;
+}
+.agentCard[data-variant='profile'] > .trailingActions {
+  justify-content: center;
+}
+.agentCard[data-variant='profile'] [data-part='summary-heading'] {
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+}
+.agentCard[data-variant='profile'] .agentIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+}
+@media (max-width: 480px) {
+  .agentCard[data-variant='row'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .agentCard[data-variant='row'] > [data-button] {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+}

@@ -21,3 +21,24 @@ describe('Button variants', () => {
     );
   });
 });
+
+describe('Button styling hook', () => {
+  it('always carries data-button, whatever data-part the caller sets, so containers can style it', () => {
+    render(
+      <>
+        <Button>Plain</Button>
+        <Button data-part="copy-button">Copy</Button>
+        <Button href="/docs">Link</Button>
+        <Button asChild>
+          <span>Slotted</span>
+        </Button>
+      </>,
+    );
+    for (const name of ['Plain', 'Copy', 'Link', 'Slotted'])
+      expect(screen.getByText(name).closest('[data-button]')).not.toBeNull();
+    expect(screen.getByText('Copy').closest('[data-button]')).toHaveAttribute(
+      'data-part',
+      'copy-button',
+    );
+  });
+});

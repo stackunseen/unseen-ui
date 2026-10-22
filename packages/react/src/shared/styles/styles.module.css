@@ -275,7 +275,6 @@
   padding-block: var(--ai-message-padding, 6px);
 }
 .messageAvatar,
-.agentIcon,
 .sourceIcon {
   display: grid;
   place-items: center;
@@ -906,63 +905,7 @@
     padding: 12px;
   }
 }
-.messageActions[data-variant='compact'] {
-  gap: 2px;
-  width: fit-content;
-  max-width: 100%;
-  margin-inline-start: -6px;
-}
-.messageActions[data-variant='compact'] .button {
-  min-height: 32px;
-  padding: 6px 8px;
-}
-.messageActions[data-variant='vertical'] {
-  flex-direction: column;
-  align-items: stretch;
-  border-inline-start: 2px solid var(--ai-border, #e4e4e7);
-  padding-inline-start: 8px;
-  width: fit-content;
-  max-width: 100%;
-}
-.messageActions > [role='status']:empty {
-  display: none;
-}
-.messageActions > [role='status']:not(:empty) {
-  flex-basis: 100%;
-}
-@media (any-pointer: coarse) {
-  .messageActions[data-variant='compact'] {
-    gap: 8px;
-  }
-}
-.messageActions[data-variant='vertical'] .button {
-  justify-content: flex-start;
-}
-.suggestions[data-variant='chips'] .button {
-  border-radius: 24px;
-}
-.suggestions[data-variant='cards'] {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
-}
-.suggestions[data-variant='cards'] .button {
-  flex-direction: column-reverse;
-  align-items: flex-start;
-  text-align: start;
-  min-height: 96px;
-  padding: 16px;
-}
-.suggestions[data-variant='list'] {
-  display: grid;
-  gap: 0;
-}
-.suggestions[data-variant='list'] .button {
-  justify-content: space-between;
-  border: 0;
-  border-bottom: 1px solid var(--ai-border, #e4e4e7);
-  border-radius: 0;
-  padding-block: 14px;
-}
+
 .attachment[data-variant='tile'] {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -1011,8 +954,7 @@
   padding: 4px 8px;
 }
 @media (any-pointer: coarse) {
-  .attachment[data-variant='compact'] .button,
-  .messageActions[data-variant='compact'] .button {
+  .attachment[data-variant='compact'] .button {
     min-height: 44px;
   }
 }
@@ -1026,58 +968,6 @@
   padding-inline: 0;
 }
 
-/* Align card descriptions with the title, not the icon. */
-.agentCard[data-variant='card'] > .agentDetails {
-  padding-inline-start: calc(24px + var(--ai-gap, 12px));
-}
-.agentCard {
-  container-type: inline-size;
-}
-.agentCard[data-variant='row'] {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 8px 24px;
-  align-items: center;
-  padding-block: 14px;
-}
-.agentCard[data-variant='row'] > .row,
-.agentCard[data-variant='row'] > .agentDetails {
-  grid-column: 1;
-}
-.agentCard[data-variant='row'] > .trailingActions {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  margin-block-start: 0;
-}
-@container (max-width: 360px) {
-  .agentCard[data-variant='row'] > .trailingActions {
-    grid-column: 1 / -1;
-    grid-row: auto;
-  }
-}
-.agentCard[data-variant='row'] .agentDetails p {
-  margin: 4px 0;
-}
-.agentCard[data-variant='profile'] {
-  text-align: center;
-  padding: 24px;
-}
-.agentCard[data-variant='profile'] > .row {
-  flex-direction: column;
-}
-.agentCard[data-variant='profile'] > .trailingActions {
-  justify-content: center;
-}
-.agentCard[data-variant='profile'] [data-part='summary-heading'] {
-  flex: none;
-  flex-direction: column;
-  align-items: center;
-}
-.agentCard[data-variant='profile'] .agentIcon {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-}
 .steps[data-variant='cards'] {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
@@ -1253,15 +1143,6 @@
 }
 
 @media (max-width: 480px) {
-  .agentCard[data-variant='row'] {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .agentCard[data-variant='row'] > .button {
-    grid-column: 1;
-    grid-row: auto;
-    justify-self: start;
-  }
-
   .dialog[data-layout='sheet'] {
     padding: 18px;
   }
@@ -1315,7 +1196,6 @@
     min-height: 44px;
   }
 
-  .messageActions[data-variant='compact'] .button,
   .attachment[data-variant='compact'] .button,
   .selectTrigger,
   .accordionTrigger,

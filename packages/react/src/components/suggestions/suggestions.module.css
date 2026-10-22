@@ -1,0 +1,26 @@
+/* suggestions: styles that only this component uses (moved from the shared sheet). */
+.suggestions[data-variant='chips'] [data-button] {
+  border-radius: 24px;
+}
+.suggestions[data-variant='cards'] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+}
+.suggestions[data-variant='cards'] [data-button] {
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  text-align: start;
+  min-height: 96px;
+  padding: 16px;
+}
+.suggestions[data-variant='list'] {
+  display: grid;
+  gap: 0;
+}
+.suggestions[data-variant='list'] [data-button] {
+  justify-content: space-between;
+  border: 0;
+  border-bottom: 1px solid var(--ai-border, #e4e4e7);
+  border-radius: 0;
+  padding-block: 14px;
+}

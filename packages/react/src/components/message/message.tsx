@@ -18,6 +18,7 @@ import { validTimestamp } from '@stackunseen/ui-core';
 import m from '../message-content/message-content.module.css';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './message.module.css';
 
 export interface MessageProps
   extends ComponentProps<'article'>, VariantProps<'Message'>, Omit<MessageContentProps, 'value'> {
@@ -143,7 +144,7 @@ export function MessageActions({
       role="group"
       aria-label="Message actions"
       data-part="message-actions"
-      className={`${s.actions} ${s.messageActions}`}
+      className={`${s.actions} ${own.messageActions}`}
       data-variant={variant}
     >
       {iconActions ? (

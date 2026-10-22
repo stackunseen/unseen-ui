@@ -3,6 +3,7 @@ import { Button } from '../button/button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './suggestions.module.css';
 
 export function Suggestions({
   variant = 'chips',
@@ -21,7 +22,7 @@ export function Suggestions({
   const occurrences = new Map<string, number>();
   return (
     <div
-      className={`${s.actions} ${s.suggestions}`}
+      className={`${s.actions} ${own.suggestions}`}
       data-variant={variant}
       aria-label="Suggested prompts"
       role="group"

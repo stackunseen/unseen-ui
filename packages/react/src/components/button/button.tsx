@@ -35,6 +35,9 @@ export function Button({
   ...props
 }: ButtonProps) {
   const presentation = {
+    // A stable styling hook: components style the Buttons they contain with [data-button], so those
+    // rules can live in their own stylesheets (see ADR 0028). data-part stays free for callers.
+    'data-button': '',
     'data-variant': variant,
     'data-size': size,
     className: `${s.button} ${className}`,

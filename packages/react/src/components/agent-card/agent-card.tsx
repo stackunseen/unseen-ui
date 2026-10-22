@@ -7,6 +7,7 @@ import { AIIcon } from '../../providers/icons/icons.js';
 import { SummaryHeading } from '../../shared/summary-heading.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './agent-card.module.css';
 
 export function AgentCard({
   variant = 'card',
@@ -25,11 +26,11 @@ export function AgentCard({
   onSelect?: () => void;
 }) {
   return (
-    <Panel className={s.agentCard} data-variant={variant} data-selected={selected}>
-      <div className={s.row}>
+    <Panel className={own.agentCard} data-variant={variant} data-selected={selected}>
+      <div className={s.row + ' ' + own.row}>
         <SummaryHeading
           icon={
-            <span className={s.agentIcon} aria-hidden="true">
+            <span className={own.agentIcon} aria-hidden="true">
               <AIIcon name="assistant" />
             </span>
           }
@@ -38,12 +39,12 @@ export function AgentCard({
         </SummaryHeading>
         <StatusBadge state={state} />
       </div>
-      <div className={s.agentDetails}>
+      <div className={own.agentDetails}>
         <p className={s.muted}>{description}</p>
         {activity && <p>{activity}</p>}
       </div>
       {onSelect && (
-        <div className={`${s.actions} ${s.trailingActions}`}>
+        <div className={`${s.actions} ${s.trailingActions + ' ' + own.trailingActions}`}>
           <Button size="sm" variant="outline" aria-pressed={selected} onClick={onSelect}>
             Inspect agent
           </Button>

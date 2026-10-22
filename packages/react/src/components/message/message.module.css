@@ -1,0 +1,41 @@
+/* message: styles that only this component uses (moved from the shared sheet). */
+.messageActions[data-variant='compact'] {
+  gap: 2px;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline-start: -6px;
+}
+.messageActions[data-variant='compact'] [data-button] {
+  min-height: 32px;
+  padding: 6px 8px;
+}
+.messageActions[data-variant='vertical'] {
+  flex-direction: column;
+  align-items: stretch;
+  border-inline-start: 2px solid var(--ai-border, #e4e4e7);
+  padding-inline-start: 8px;
+  width: fit-content;
+  max-width: 100%;
+}
+.messageActions > [role='status']:empty {
+  display: none;
+}
+.messageActions > [role='status']:not(:empty) {
+  flex-basis: 100%;
+}
+@media (any-pointer: coarse) {
+  .messageActions[data-variant='compact'] {
+    gap: 8px;
+  }
+}
+.messageActions[data-variant='vertical'] [data-button] {
+  justify-content: flex-start;
+}
+@media (any-pointer: coarse) {
+  .messageActions[data-variant='compact'] [data-button] {
+    min-height: 44px;
+  }
+  .messageActions[data-variant='compact'] [data-button] {
+    min-height: 44px;
+  }
+}
