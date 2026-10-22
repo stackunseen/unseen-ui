@@ -68,6 +68,22 @@
   cursor: default;
   color: var(--ai-muted);
 }
+/* The list view: plain rows with a divider between them, not a card inside the panel's card. */
+.rows {
+  gap: 0;
+}
+.row {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.row + .row {
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.row > p {
+  margin: 0;
+  padding: 0 10px 8px;
+}
 .card,
 .inspector {
   min-width: 0;

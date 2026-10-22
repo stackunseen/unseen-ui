@@ -320,9 +320,9 @@ export function FileExplorer({
       ) : variant === 'folders' ? (
         folderView(model.root)
       ) : variant === 'list' ? (
-        <ul className={css.files} aria-label="File details list">
+        <ul className={`${css.files} ${css.rows}`} aria-label="File details list">
           {model.filtered.map((file) => (
-            <li className={css.card} key={file.id}>
+            <li className={css.row} key={file.id}>
               {fileButton(file, true)}
               {metadata(file)}
             </li>
