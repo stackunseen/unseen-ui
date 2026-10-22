@@ -21,10 +21,15 @@ export interface ModelSelectorProps {
   disabled?: boolean;
   /** `ghost` reads as quiet text, for a composer toolbar. */
   variant?: 'outline' | 'ghost';
+  /** Shows a search field. Defaults to on only for long lists (more than seven models). */
+  searchable?: boolean;
   className?: string;
 }
 
-/** A compact model picker. The host validates the chosen model when the request runs. */
+/**
+ * A compact model picker, laid out like ChatGPT's: each model on a row with its description, a
+ * check beside the current one. The host validates the chosen model when the request runs.
+ */
 export function ModelSelector({
   models,
   value,
@@ -32,6 +37,7 @@ export function ModelSelector({
   label = 'Model',
   disabled = false,
   variant = 'outline',
+  searchable = models.length > 7,
   className = '',
 }: ModelSelectorProps) {
   const id = useId();
@@ -52,6 +58,8 @@ export function ModelSelector({
     }
     return [...map];
   }, [models, query]);
+  // Provider headings help only when there is more than one provider to tell apart.
+  const providers = new Set(models.map((model) => model.provider ?? 'Models')).size;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
@@ -65,19 +73,21 @@ export function ModelSelector({
         {current?.name ?? 'Choose a model'}
         <ChevronDownIcon aria-hidden="true" />
       </PopoverTrigger>
-      <PopoverContent title={label}>
-        <input
-          className={s.search}
-          type="search"
-          aria-label="Search models"
-          placeholder="Search models…"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
+      <PopoverContent title={label} align="start" className={s.modelMenu}>
+        {searchable && (
+          <input
+            className={s.search}
+            type="search"
+            aria-label="Search models"
+            placeholder="Search models…"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        )}
         {groups.length === 0 && <p className={s.meta}>No models match.</p>}
         {groups.map(([provider, options]) => (
           <fieldset key={provider} className={s.picker}>
-            <legend>{provider}</legend>
+            <legend className={providers > 1 ? undefined : s.srOnly}>{provider}</legend>
             {options.map((model) => (
               <label
                 key={model.id}
@@ -96,13 +106,13 @@ export function ModelSelector({
                     setOpen(false);
                   }}
                 />
-                <span className={s.optionMark} aria-hidden="true">
-                  {model.id === value && <CheckIcon />}
-                </span>
                 <span className={s.label}>{model.name}</span>
                 {(model.description || model.disabledReason) && (
                   <span className={s.meta}>{model.disabledReason ?? model.description}</span>
                 )}
+                <span className={s.optionMark} aria-hidden="true">
+                  {model.id === value && <CheckIcon />}
+                </span>
               </label>
             ))}
           </fieldset>
