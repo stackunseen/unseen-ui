@@ -141,12 +141,25 @@ export function inspectArchive(bytes, expected) {
     throw new Error('Packed React dependency does not match core.');
   for (const value of Object.values(manifest.exports ?? {})) {
     for (const target of typeof value === 'string' ? [value] : Object.values(value)) {
-      if (
-        typeof target !== 'string' ||
-        !target.startsWith('./dist/') ||
-        !files.has(`package/${target.slice(2)}`)
-      )
+      if (typeof target !== 'string' || !target.startsWith('./dist/'))
         throw new Error(`Missing or invalid exported file: ${target}`);
+      const path = `package/${target.slice(2)}`;
+      // A subpath pattern such as ./dist/styles/*.css must match at least one packed file; the
+      // star stands for one path without "..".
+      const found = path.includes('*')
+        ? (path.match(/\*/g) ?? []).length === 1 &&
+          [...files.keys()].some((name) => {
+            const [before, after] = path.split('*');
+            const middle = name.slice(before.length, name.length - after.length);
+            return (
+              name.length > before.length + after.length &&
+              name.startsWith(before) &&
+              name.endsWith(after) &&
+              !middle.split('/').includes('..')
+            );
+          })
+        : files.has(path);
+      if (!found) throw new Error(`Missing or invalid exported file: ${target}`);
     }
   }
   const bins =

@@ -142,6 +142,14 @@ test('archive includes only approved files with real exported targets and exact 
   assert.throws(() =>
     inspectArchive(fixture(manifest(0, { exports: { '.': './dist/missing.js' } })), manifest()),
   );
+  // Subpath patterns are accepted when at least one packed file matches, and rejected otherwise.
+  const patterned = manifest(0, {
+    exports: { '.': './dist/index.js', './styles/*.css': './dist/styles/*.css' },
+  });
+  assert.doesNotThrow(() =>
+    inspectArchive(fixture(patterned, { 'package/dist/styles/core.css': 'a{}' }), patterned),
+  );
+  assert.throws(() => inspectArchive(fixture(patterned), patterned), /Missing or invalid exported/);
   assert.throws(() => inspectArchive(fixture(manifest(1)), manifest(1)));
   assert.throws(
     () => inspectArchive(fixture(), manifest(0, { license: 'Apache-2.0' })),
