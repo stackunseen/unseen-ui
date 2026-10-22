@@ -67,7 +67,7 @@ export async function browserSmokeJourneys(initialPage, options, auditPage) {
               .click();
             await example.getByText(/The host confirmed the original decision/).waitFor();
             const before = permission
-              ? 'Permission: requested · unknown snapshot'
+              ? 'Permission requested · unknown snapshot'
               : 'Last acknowledged owner: Implementation agent';
             await example.getByText(before, { exact: true }).waitFor();
             await example.getByText('Local host changes: 1', { exact: true }).waitFor();
@@ -75,7 +75,7 @@ export async function browserSmokeJourneys(initialPage, options, auditPage) {
               .getByRole('button', { name: 'Refresh host snapshot', exact: true })
               .click();
             await example
-              .getByText(permission ? 'Permission: granted' : 'Current owner: Review agent', {
+              .getByText(permission ? 'Permission granted' : 'Current owner: Review agent', {
                 exact: true,
               })
               .waitFor();
