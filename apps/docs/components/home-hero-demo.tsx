@@ -33,7 +33,8 @@ export function HomeHeroDemo() {
         {...useAiSdkChat(plain)}
         title="Assistant"
         placeholder="Ask the simulated assistant…"
-        style={{ ['--ai-chat-height' as string]: '460px' }}
+        // Tall enough to show the question, the tool call and the approval together.
+        style={{ ['--ai-chat-height' as string]: '640px' }}
       />
       <figcaption>
         <span>

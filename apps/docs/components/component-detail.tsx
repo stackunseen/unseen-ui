@@ -15,7 +15,8 @@ import { componentGuidance, rendererPeers } from '../lib/component-guidance';
 import { isReleaseComponent } from '../lib/first-release';
 import { catalog } from '../lib/catalog';
 import { navigationGroup } from '../lib/gallery-navigation';
-import { componentHref } from '../lib/site-paths';
+import { componentHref, componentSlug } from '../lib/site-paths';
+import { PropsTable } from './props-table';
 import { tasksFor } from '../lib/tasks';
 import { componentImport } from '../lib/component-import';
 import { guidanceFor } from '../lib/usage-guidance';
@@ -629,10 +630,7 @@ export function ComponentDetail({
               </Link>
             )}
           </div>
-          <p className="explorer-note">
-            These are the main props for the example. The package's TypeScript declarations include
-            the full API.
-          </p>
+          <PropsTable slug={componentSlug(entry.name)} />
         </section>
         <section
           id="component-customization"

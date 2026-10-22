@@ -85,7 +85,12 @@ export function FirstExample() {
 
 The value and callback stay in your application. To save to a server, replace the local update with your host's validation and receipt handling. Read [Connect to your app](/docs/integration/) before wiring tools, approvals or execution.
 
-### Start a new project
+### Other ways to start
+
+Already have a project? The steps above are all you need. To start fresh, or to begin from a ready-made chat, open one of these.
+
+<details className="setup-entries">
+<summary>Start a new Next.js or Vite project</summary>
 
 Next.js (App Router):
 
@@ -109,7 +114,10 @@ Then add the chat below as a component and render it from your page. In Next.js,
 npx @stackunseen/ui init
 ```
 
-<h3 id="shadcn">With the shadcn CLI</h3>
+</details>
+
+<details className="setup-entries" id="shadcn">
+<summary>Add starters with the shadcn CLI</summary>
 
 If your project already uses shadcn/ui, add the same starters from the Unseen UI registry. Each one installs `@stackunseen/ui` at this release and writes one small file into your components folder; the components themselves stay in the package, so updates arrive as new versions.
 
@@ -129,7 +137,10 @@ npx shadcn@latest add https://unseenui.com/r/theme.json
 }
 ```
 
-### Or start with a whole chat
+</details>
+
+<details className="setup-entries">
+<summary>Start from a whole chat</summary>
 
 `@stackunseen/ui/chat` composes the transcript, streaming reply, tool cards, suggestions and composer, and ships a local host that streams deterministic replies so you can see it work before anything is connected. Swap the host for your server when you are ready; see the [Chat guide](/components/chat/).
 
@@ -144,6 +155,8 @@ export function Demo() {
   return <Chat host={host} title="Assistant" />;
 }
 ```
+
+</details>
 
 <h2 id="optional-renderers">3. Add only the entries you need</h2>
 
@@ -185,9 +198,10 @@ Follow each component's usage guide for its required values and callbacks. There
 
 ## 5. Notes for Next.js apps
 
-Three things that only come up with a server-rendering router. Skip this section until you need it.
+Three things that only come up with a server-rendering router. Open one when you need it.
 
-### Compound parts in Server Components
+<details className="setup-entries">
+<summary>Compound parts in Server Components</summary>
 
 Compound components such as `Card.Header`, `Sidebar.Group`, `Tooltip.Trigger` and `NavigationMenu.List` are undefined when imported into a Next.js Server Component, because the client reference proxy does not carry static properties. Every part is also a top-level named export, so import those there:
 
@@ -197,7 +211,10 @@ import { Card, CardHeader, CardTitle, CardContent } from '@stackunseen/ui';
 
 The property form (`Card.Header`) works in Client Components. Button, Tag, Stat, Stepper, Matrix, Progress, Card, Table, Breadcrumb and the marketing blocks render in Server Components. Controls with local state or handlers are Client Components that a Server Component can render: Select, Avatar, ToggleGroup, Chip, Accordion, Sidecar, Popover, Tooltip, the menus and the dialogs.
 
-### Router links
+</details>
+
+<details className="setup-entries">
+<summary>Router links</summary>
 
 Chip, ToggleGroup in links mode, Stepper, Card and Button with `href`, and Matrix render native anchors by default. In Next.js that is a full document load on every filter click. Wrap the app once in `LinkProvider` with the router's link and every one of them renders it instead, with prefetching and client-side navigation:
 
@@ -210,7 +227,10 @@ import { LinkProvider } from '@stackunseen/ui';
 
 The provider is a Client Component that a root layout can render; the components inside keep rendering on the server. `useLinkComponent` returns the same component for anchors you render yourself. Disabled links stay native and have no destination.
 
-### Dark code panels on a light page
+</details>
+
+<details className="setup-entries">
+<summary>Dark code panels on a light page</summary>
 
 Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (or any component) to render it dark inside a light page. The nested provider inherits the parent theme's colours and scopes its tokens to that subtree, and portals opened from inside it keep the same appearance.
 
@@ -219,3 +239,5 @@ Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (
   <HighlightedCodeBlock code={code} language="tsx" />
 </AITheme>
 ```
+
+</details>

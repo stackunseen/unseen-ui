@@ -1,34 +1,13 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { HomeShowcase } from '../components/home-showcase';
-import { HomeFinder } from '../components/home-finder';
 import { HomeAppExample } from '../components/home-app-example';
 import { HomeHeroDemo } from '../components/home-hero-demo';
 import { componentTasks } from '../lib/tasks';
 import { LegacyGalleryRedirect } from '../components/legacy-gallery-redirect';
-import { aliases } from '../lib/catalog';
 import { releaseCatalog } from '../lib/first-release';
-import { componentSection, navigationGroup } from '../lib/gallery-navigation';
-import { componentHref } from '../lib/site-paths';
 import { siteOrigin } from '../lib/site-seo';
 export default function Page() {
-  const entries = releaseCatalog.map((entry) => ({
-    name: entry.name,
-    description: entry.description,
-    href: componentHref(entry.name),
-    section: componentSection(entry),
-    group: navigationGroup(entry),
-    terms: [
-      entry.name,
-      entry.description,
-      entry.category,
-      navigationGroup(entry),
-      ...(entry.aliases ?? []),
-      ...(aliases[entry.name] ?? []),
-    ]
-      .join(' ')
-      .toLowerCase(),
-  }));
   return (
     <>
       <LegacyGalleryRedirect />
@@ -52,10 +31,7 @@ export default function Page() {
         <section className="home-hero" aria-labelledby="home-title">
           <div className="home-intro">
             <p className="home-intro-pill">Experimental alpha · React 19</p>
-            <h1 id="home-title">
-              The hard states, handled.
-              <span>AI interfaces that wait for your server.</span>
-            </h1>
+            <h1 id="home-title">AI interfaces that wait for your server.</h1>
             <p className="home-intro-description">
               {releaseCatalog.length} React components for chat, tools, approvals, forms and
               layouts. Streaming, failures, unknown outcomes and pending decisions each have a
@@ -94,6 +70,7 @@ export default function Page() {
             ))}
           </ul>
         </section>
+        <HomeShowcase />
         <section className="home-why" aria-labelledby="home-why-title">
           <div className="home-section-heading">
             <h2 id="home-why-title">Why Unseen UI</h2>
@@ -131,8 +108,6 @@ export default function Page() {
             entry under 3 KiB gzip.
           </p>
         </section>
-        <HomeShowcase />
-        <HomeFinder entries={entries} />
         <HomeAppExample />
         <section className="home-start" aria-labelledby="home-start-title">
           <div>

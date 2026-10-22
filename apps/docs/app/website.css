@@ -1728,3 +1728,52 @@
 .detail-notes code {
   font-size: 12.5px;
 }
+
+/* "All props" on component pages, generated from the package manifest. */
+.props-table {
+  margin-top: 16px;
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.props-table > summary {
+  padding: 12px 0;
+  cursor: pointer;
+  font-weight: 550;
+}
+.props-table table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.props-table th,
+.props-table td {
+  padding: 8px 12px 8px 0;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  text-align: left;
+  vertical-align: top;
+}
+.props-table thead th {
+  color: var(--ai-muted);
+  font-weight: 600;
+}
+.props-table tbody th {
+  font-weight: 400;
+  white-space: nowrap;
+}
+.props-table td {
+  color: var(--ai-muted);
+}
+.props-table code {
+  font-size: 12.5px;
+}
+.props-required {
+  margin-inline-start: 6px;
+  color: var(--ai-warning);
+  font-size: 11px;
+}
+.props-table > p {
+  color: var(--ai-muted);
+  font-size: 13.5px;
+}

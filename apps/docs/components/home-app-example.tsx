@@ -30,9 +30,6 @@ export function HomeAppExample() {
           ))}
         </Link>
         <figcaption>
-          <p className="home-template-note">
-            Screenshot in the sample theme. Open the app to try your colors and borders.
-          </p>
           <p>
             Search and edit customers, manage sample roles and save settings. Changes stay in a
             local demo and reset on reload.
