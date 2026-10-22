@@ -27,6 +27,7 @@ import {
   Notice,
   Pagination,
 } from '../../shared/conversation-navigation/conversation-navigation.js';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface MessageQueueProps extends VariantProps<'MessageQueue'>, NavigationStateProps {
   items: readonly QueuedMessage[];
@@ -272,6 +273,8 @@ export function MessageQueue(props: MessageQueueProps) {
                         </div>
                       )}
                     </div>
+                    {/* Every row here is queued unless it says otherwise, so only other states get a tag. */}
+                    {(item.pending || item.state !== 'queued') && (
                     <span className={`${s.tag} ${n.state}`}>
                       <AIIcon
                         name={
@@ -292,8 +295,9 @@ export function MessageQueue(props: MessageQueueProps) {
                         ? 'Awaiting confirmation'
                         : item.state === 'outcome-unknown'
                           ? 'Send outcome unknown'
-                          : item.state}
+                          : stateLabel(item.state)}
                     </span>
+                    )}
                     {item.state === 'outcome-unknown' && (
                       <p className={s.warning}>
                         Reconcile the original send with the host. It will not be retried

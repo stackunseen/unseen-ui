@@ -88,7 +88,7 @@ describe('terminal snapshots and scoped controls', () => {
       expect(clear).toHaveBeenCalledWith(context);
       expect(legacy).not.toHaveBeenCalled();
       expect(screen.getByText('current output')).toBeVisible();
-      expect(screen.getByRole('status')).toHaveTextContent('running');
+      expect(screen.getByRole('status')).toHaveTextContent('Running');
     },
   );
   it.each(['loading', 'denied', 'unavailable', 'error', 'unknown'] as const)(

@@ -128,19 +128,19 @@ describe('gallery scoped host examples', () => {
     const user = userEvent.setup();
     render(<PermissionSpecimen state="Default" />);
     await user.click(screen.getByRole('button', { name: 'Allow access' }));
-    expect(screen.getByText('Permission: requested')).toBeVisible();
+    expect(screen.getByText('Permission requested')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Allow access' })).toBeDisabled();
     await user.click(screen.getByRole('button', { name: 'Simulate lost acknowledgement' }));
     await user.click(screen.getByRole('button', { name: 'Check original decision' }));
-    expect(screen.queryByText('Permission: granted')).not.toBeInTheDocument();
+    expect(screen.queryByText('Permission granted')).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Refresh host snapshot' }));
-    expect(screen.getByText('Permission: granted')).toBeVisible();
+    expect(screen.getByText('Permission granted')).toBeVisible();
   });
   it('historical permission lookup does not grant the replacement scope', async () => {
     render(<PermissionSpecimen state="Scope changed" />);
     await userEvent.click(screen.getByRole('button', { name: 'Check original decision' }));
     expect(screen.getByText(/requests accounts:write$/)).toBeVisible();
-    expect(screen.getByText('Permission: requested')).toBeVisible();
+    expect(screen.getByText('Permission requested')).toBeVisible();
     expect(screen.queryByText(/Host-confirmed grant/)).not.toBeInTheDocument();
   });
   it('requires a recipient acknowledgement before changing ownership', async () => {

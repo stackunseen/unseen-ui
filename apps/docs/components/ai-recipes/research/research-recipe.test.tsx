@@ -217,7 +217,7 @@ describe('research answer composition', () => {
     render(<ResearchRecipe />);
     await user.click(screen.getByRole('button', { name: 'Evidence for cohort' }));
     const evidence = screen.getByRole('group', { name: 'Evidence' });
-    expect(within(evidence).getByText('supports')).toBeVisible();
+    expect(within(evidence).getByText('Supports')).toBeVisible();
     expect(screen.getByText(/Bound to claim revision 1/)).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Context and host responsibility' }));
     expect(screen.getByText('Context usage unknown')).toBeVisible();

@@ -19,6 +19,7 @@ import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/coding.module.css';
 import css from './file-explorer.module.css';
 import { DiffStat } from '../diff-stat/diff-stat.js';
+import { stateLabel } from '../../shared/labels.js';
 export type {
   WorkspaceFile,
   WorkspaceFileSnapshot,
@@ -180,7 +181,7 @@ export function FileExplorer({
         <span data-part="file-name">{full ? file.path : pathParts(file.path)!.at(-1)}</span>
         {(denied || file.change) && (
           <span className={s.badge} data-tone={denied ? 'danger' : changeTone[file.change!]}>
-            {denied ? `${file.access} access` : file.change}
+            {denied ? stateLabel(`${file.access} access`) : stateLabel(file.change!)}
           </span>
         )}
         {file.lines && !denied && (

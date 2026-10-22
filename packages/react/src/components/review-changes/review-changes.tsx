@@ -12,6 +12,7 @@ import type {
   ReviewFileOperation,
   ProposedHunk,
 } from './review-contract.js';
+import { stateLabel } from '../../shared/labels.js';
 export type {
   ReviewChangesContract,
   ReviewFileOperation,
@@ -141,7 +142,7 @@ function LegacyReviewChanges({
       <div className={s.header}>
         <strong>Review changes</strong>
         <span role="status" className={s.tag}>
-          {state}
+          {stateLabel(state)}
         </span>
       </div>
       {!changes.length ? (

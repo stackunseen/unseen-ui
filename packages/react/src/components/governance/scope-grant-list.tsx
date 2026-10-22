@@ -141,23 +141,24 @@ export function ScopeGrantList({
                       Granted {formatTime(grant.grantedAt, locale, timeZone)}
                       {grant.grantedBy ? ` by ${grant.grantedBy}` : ''}
                     </span>
-                    {expiryText && (
-                      <span className={status === 'expired' ? g.warn : undefined}>
+                    {/* The badge already says Expired; the line keeps only the time left. */}
+                    {expiryText && status !== 'expired' && (
+                      <span>
                         {expiryText}
                       </span>
                     )}
                     {!grant.expiresAt && <span>No expiry</span>}
-                    {grant.uses && (
-                      <span>
-                        Used{' '}
-                        <MeasuredText
-                          measurement={grant.uses}
-                          format={(value) => String(value)}
-                          unknownLabel="an unknown number of"
-                        />
-                        {grant.maxUses !== undefined ? ` of ${grant.maxUses}` : ''} times
-                      </span>
-                    )}
+                    {grant.uses &&
+                      (grant.uses.kind === 'unknown' ? (
+                        // "Uses not counted (reason)" reads better than an unknown number mid-sentence.
+                        <MeasuredText measurement={grant.uses} format={String} unknownLabel="Uses not counted" />
+                      ) : (
+                        <span>
+                          Used{' '}
+                          <MeasuredText measurement={grant.uses} format={(value) => String(value)} />
+                          {grant.maxUses !== undefined ? ` of ${grant.maxUses}` : ''} times
+                        </span>
+                      ))}
                     {grant.sourceProposalId && <span>From approval {grant.sourceProposalId}</span>}
                   </div>
                 )}

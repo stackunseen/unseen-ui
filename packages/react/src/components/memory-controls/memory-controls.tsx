@@ -5,6 +5,7 @@ import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import c from '../../shared/styles/coding.module.css';
 import n from '../../shared/styles/navigation.module.css';
+import { stateLabel } from '../../shared/labels.js';
 export interface MemoryRecord {
   id: string;
   version: string;
@@ -57,7 +58,7 @@ export function MemoryControls({ items, onRequest, variant = 'list' }: MemoryCon
             <li key={item.id} className={c.test} data-memory-id={item.id}>
               <div className={s.header}>
                 <strong>{item.label}</strong>
-                <span className={s.tag}>{item.state}</span>
+                <span className={s.tag}>{stateLabel(item.state)}</span>
                 <div className={n.actions} role="group" aria-label={`Actions for ${item.label}`}>
                   <IconButton
                     icon="edit"

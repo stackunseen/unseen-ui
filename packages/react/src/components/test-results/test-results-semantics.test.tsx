@@ -33,8 +33,8 @@ describe('test result disclosure semantics', () => {
       await user.keyboard(' ');
       expect(screen.getByRole('group', { name: 'Test details: upload' })).toBeVisible();
       expect(screen.queryByRole('region')).not.toBeInTheDocument();
-      expect(screen.getByText('failed')).toBeVisible();
-      expect(screen.getByText('running')).toBeVisible();
+      expect(screen.getByText('Failed')).toBeVisible();
+      expect(screen.getByText('Running')).toBeVisible();
     },
   );
 
@@ -76,8 +76,8 @@ describe('test result disclosure semantics', () => {
       expect(diagnostic).toHaveAccessibleDescription(
         'Showing the first 12,000 characters. Additional diagnostics were omitted.',
       );
-      expect(screen.queryByText('failed')).not.toBeInTheDocument();
-      expect(screen.getByText('running')).toBeVisible();
+      expect(screen.queryByText('Failed')).not.toBeInTheDocument();
+      expect(screen.getByText('Running')).toBeVisible();
     },
   );
 
@@ -141,7 +141,7 @@ describe('test result disclosure semantics', () => {
         ]}
       />,
     );
-    for (const state of ['passed', 'failed', 'running', 'queued', 'skipped']) {
+    for (const state of ['Passed', 'Failed', 'Running', 'Queued', 'Skipped']) {
       expect(screen.getByText(state)).toBeVisible();
     }
     expect(screen.getAllByText(/ms$/).map((node) => node.textContent)).toEqual(['0ms', '1.5ms']);

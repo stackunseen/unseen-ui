@@ -62,7 +62,7 @@ describe('devtools entry', () => {
       <PackageInfo name="react" currentVersion="18.3.1" newVersion="19.0.0" changeType="major" />,
     );
     expect(screen.getByText('18.3.1 → 19.0.0')).toBeVisible();
-    expect(screen.getByText('major')).toBeVisible();
+    expect(screen.getByText('Major')).toBeVisible();
   });
 
   it('renders nested schema fields with required markers', () => {

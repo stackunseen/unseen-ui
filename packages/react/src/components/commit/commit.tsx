@@ -4,6 +4,7 @@ import { ObservationTime } from '../../shared/observation-time/observation-time.
 import { useDisclosure } from '../../shared/disclosure.js';
 import { useCopy } from '../../shared/copy.js';
 import s from '../../shared/styles/devtools.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface CommitFile {
   path: string;
@@ -98,7 +99,7 @@ export function Commit({
                 <span className={`${s.mono} ${s.remove}`}>−{file.deletions}</span>
               )}
               <span className={s.badge} data-tone={statusTone[file.status]}>
-                {file.status}
+                {stateLabel(file.status)}
               </span>
             </li>
           ))}

@@ -56,7 +56,7 @@ function LegacyPermissionRequest({
           className={s.badge}
           data-tone={pending ? undefined : permissionTone[status]}
         >
-          {pending ? 'Sending permission request…' : `Permission: ${status}`}
+          {pending ? 'Sending permission request…' : `Permission ${status}`}
         </span>
       </div>
       <p className={s.approvalSummary}>

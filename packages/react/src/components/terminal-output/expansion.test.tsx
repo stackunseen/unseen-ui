@@ -25,6 +25,6 @@ describe('coding and workflow contracts', () => {
     expect(screen.getByRole('group', { name: 'Terminal output' }).textContent).not.toContain(
       '\u001b',
     );
-    expect(screen.getByRole('status')).toHaveTextContent('unknown');
+    expect(screen.getByRole('status')).toHaveTextContent('Unknown');
   });
 });

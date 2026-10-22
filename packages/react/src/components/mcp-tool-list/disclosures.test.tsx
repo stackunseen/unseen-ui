@@ -27,13 +27,13 @@ describe('repeated evidence and MCP disclosures', () => {
         onQueryChange={query}
       />,
     );
-    await userEvent.click(screen.getByRole('button', { name: 'Search records allowed' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Write records denied' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Search records Allowed' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Write records Denied' }));
     expect(screen.queryByRole('region')).not.toBeInTheDocument();
-    expect(screen.getByRole('group', { name: 'Search records allowed' })).toHaveTextContent(
+    expect(screen.getByRole('group', { name: 'Search records Allowed' })).toHaveTextContent(
       'Read records.',
     );
-    expect(screen.getByRole('group', { name: 'Write records denied' })).toHaveTextContent(
+    expect(screen.getByRole('group', { name: 'Write records Denied' })).toHaveTextContent(
       'Change records.',
     );
     await userEvent.type(screen.getByRole('searchbox', { name: 'Filter tools' }), 'search');

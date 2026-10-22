@@ -448,6 +448,8 @@ button.status:hover {
 }
 .compareTable th,
 .compareTable td {
+  /* Row names and column heads line up with the values under them, not centered. */
+  text-align: start;
   padding: 8px 10px;
   border-bottom: 1px solid var(--ai-border, #e4e4e7);
   vertical-align: top;

@@ -6,6 +6,7 @@ import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
 import c from '../../shared/styles/coding.module.css';
 import a from '../../shared/styles/action-layout.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface RunSpan {
   id: string;
@@ -46,7 +47,7 @@ export function RunInspector({
       <div className={s.root}>
         {detail === 'full' && (
           <p className={s.muted}>
-            {span.kind}
+            {stateLabel(span.kind)}
             {span.parentId ? ` · Parent ${span.parentId}` : ''}
           </p>
         )}

@@ -28,13 +28,13 @@ describe('repeated evidence and MCP disclosures', () => {
       />,
     );
     const root = screen.getByRole('group', { name: 'Evidence' });
-    await userEvent.click(within(root).getByRole('button', { name: 'Annual report · supports' }));
+    await userEvent.click(within(root).getByRole('button', { name: 'Annual report · Supports' }));
     await userEvent.click(
-      within(root).getByRole('button', { name: 'Pricing policy · contradicts' }),
+      within(root).getByRole('button', { name: 'Pricing policy · Contradicts' }),
     );
     expect(within(root).queryByRole('region')).not.toBeInTheDocument();
-    const report = within(root).getByRole('group', { name: 'Annual report · supports' });
-    const policy = within(root).getByRole('group', { name: 'Pricing policy · contradicts' });
+    const report = within(root).getByRole('group', { name: 'Annual report · Supports' });
+    const policy = within(root).getByRole('group', { name: 'Pricing policy · Contradicts' });
     expect(within(report).getByText('Page 18 · 2025')).toBeVisible();
     expect(within(policy).getByText('Section 4.2 · 2025')).toBeVisible();
     expect(within(report).getByRole('link')).toHaveAccessibleName(

@@ -6,6 +6,7 @@ import s from '../../shared/styles/agent-controls.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 import { ScopedAgentHandoff } from './scoped-agent-handoff.js';
 import type { ScopedAgentHandoffProps } from './scoped-agent-handoff.js';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface HandoffRequest {
   id: string;
@@ -51,7 +52,7 @@ function LegacyAgentHandoff({ value, onDecision, variant = 'card' }: LegacyAgent
           {value.from} → {value.to}
         </strong>
         <span role="status" className={s.tag}>
-          {value.state}
+          {stateLabel(value.state)}
         </span>
       </div>
       <p className={s.muted}>

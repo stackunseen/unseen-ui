@@ -5,6 +5,7 @@ import { Accordion } from '../accordion/accordion.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/coding.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 const RESULT_LIMIT = 300;
 const DIAGNOSTIC_LIMIT = 12_000;
@@ -54,7 +55,7 @@ export function TestResults({ results, onOpenFile, loading, variant = 'list' }: 
                         : undefined
                   }
                 >
-                  {result.state}
+                  {stateLabel(result.state)}
                 </span>
                 {result.durationMs !== undefined &&
                   Number.isFinite(result.durationMs) &&

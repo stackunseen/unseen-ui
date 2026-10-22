@@ -15,6 +15,7 @@ import type {
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/coding.module.css';
 import css from './terminal-output.module.css';
+import { stateLabel } from '../../shared/labels.js';
 export type {
   TerminalContext,
   TerminalAvailability,
@@ -167,8 +168,8 @@ export function TerminalOutput({
             className={s.badge}
             data-tone={exitCode === undefined ? undefined : exitCode === 0 ? 'success' : 'danger'}
           >
-            {state}
-            {exitCode !== undefined ? ` · exit ${exitCode}` : ''}
+            {stateLabel(state)}
+            {exitCode !== undefined ? ` · Exit ${exitCode}` : ''}
           </span>
         )}
       </div>
@@ -210,7 +211,7 @@ export function TerminalOutput({
               </p>
             )}
             {connection && (
-              <p>Connection: {connection}. Process lifecycle is reported separately.</p>
+              <p>Connection: {stateLabel(connection)}. Process lifecycle is reported separately.</p>
             )}
             {status === 'stale' && <p>Historical terminal output. Host actions are paused.</p>}
           </div>

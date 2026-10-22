@@ -74,11 +74,16 @@
 .meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px 12px;
+  gap: 2px 6px;
   color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
   line-height: 1.5;
   overflow-wrap: anywhere;
+}
+/* Facts in a meta line are split by a middle dot, as in the rest of the library. */
+.meta > * + *::before {
+  content: '·';
+  margin-inline-end: 6px;
 }
 .warn {
   color: var(--ai-warning, #92400e);

@@ -1,4 +1,5 @@
 import s from '../../shared/styles/devtools.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface PackageDependency {
   name: string;
@@ -50,7 +51,7 @@ export function PackageInfo({
         </div>
         {changeType && (
           <span className={s.badge} data-tone={tone[changeType]}>
-            {changeType}
+            {stateLabel(changeType)}
           </span>
         )}
       </div>

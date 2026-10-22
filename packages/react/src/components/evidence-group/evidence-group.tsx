@@ -4,6 +4,7 @@ import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import { SourceCard } from '../source-card/source-card.js';
+import { stateLabel } from '../../shared/labels.js';
 export function EvidenceGroup({
   variant = 'stack',
   sources,
@@ -26,7 +27,7 @@ export function EvidenceGroup({
               value: source.id,
               title: (
                 <span>
-                  {source.title} · {relationships?.[source.id] ?? 'related'}
+                  {source.title} · {stateLabel(relationships?.[source.id] ?? 'related')}
                 </span>
               ),
               content: <SourceCard source={source} />,
@@ -36,7 +37,7 @@ export function EvidenceGroup({
           <div className={s.collection}>
             {sources.map((source) => (
               <div key={source.id}>
-                <span className={s.muted}>{relationships?.[source.id] ?? 'Related source'}</span>
+                <span className={s.muted}>{stateLabel(relationships?.[source.id] ?? 'related')}</span>
                 <SourceCard source={source} />
               </div>
             ))}

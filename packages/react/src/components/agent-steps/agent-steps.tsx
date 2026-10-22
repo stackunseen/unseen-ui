@@ -60,8 +60,10 @@ export function AgentSteps({
               ) : (
                 <strong>{step.label}</strong>
               )}
-              {variant === 'compact' && !['failed', 'blocked'].includes(step.state) ? (
-                // The marker already shows progress; keep the words for screen readers only.
+              {(variant === 'compact' && !['failed', 'blocked'].includes(step.state)) ||
+              step.state === 'succeeded' ? (
+                // The marker already shows progress, and a finished step's check needs no badge;
+                // keep the words for screen readers only.
                 <span className={s.srOnly}>{compactLabels[step.state]}</span>
               ) : (
                 <StatusBadge state={step.state} />

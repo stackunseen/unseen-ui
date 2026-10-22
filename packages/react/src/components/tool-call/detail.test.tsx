@@ -77,7 +77,7 @@ describe('detail level defaults to compact', () => {
     expect(container.textContent).not.toContain('Parent s1');
     expect(container.textContent).not.toContain('Duration:');
     rerender(<RunInspector runId="r" spans={spans} variant="cards" detail="full" />);
-    expect(container.textContent).toContain('tool · Parent s1');
+    expect(container.textContent).toContain('Tool · Parent s1');
     expect(container.textContent).toContain('Duration: 940ms');
   });
 

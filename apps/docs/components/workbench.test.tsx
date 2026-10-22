@@ -206,6 +206,6 @@ describe('Agent workbench template', () => {
       screen.getByText('Access was revoked. Start a new authorized review.'),
     ).toBeInTheDocument();
     await user.click(screen.getByRole('tab', { name: 'Context' }));
-    expect(screen.getByText(/excluded.*Access revoked by the demo host/)).toBeInTheDocument();
+    expect(screen.getByText(/Excluded.*Access revoked by the demo host/)).toBeInTheDocument();
   });
 });

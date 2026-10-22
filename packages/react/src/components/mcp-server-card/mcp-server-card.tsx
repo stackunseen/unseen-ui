@@ -6,6 +6,7 @@ import { SummaryHeading } from '../../shared/summary-heading.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import own from './mcp-server-card.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 const serverTone = {
   connected: 'success',
@@ -43,7 +44,7 @@ export function MCPServerCard({
           {name}
         </SummaryHeading>
         <span className={s.badge} data-tone={serverTone[status]}>
-          {status}
+          {status === 'auth-required' ? 'Sign-in required' : stateLabel(status)}
         </span>
       </div>
       <p className={s.muted}>

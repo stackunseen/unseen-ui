@@ -30,7 +30,7 @@ function Fields({ fields, depth = 0 }: { fields: readonly SchemaField[]; depth?:
         <li key={field.name}>
           <span className={s.mono}>{field.name}</span>{' '}
           <span className={`${s.meta} ${s.mono}`}>{field.type}</span>
-          {field.required && <span className={s.error}> required</span>}
+          {field.required && <span className={`${s.error} ${s.meta}`}> required</span>}
           {field.description && <div className={s.meta}>{field.description}</div>}
           {!!field.children?.length &&
             (depth < MAX_DEPTH ? (

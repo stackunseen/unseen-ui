@@ -10,6 +10,7 @@ import { MeasuredText, formatDuration, formatMoney } from './shared.js';
 import type { RunSummary, RunEffect } from './run-summary-card.js';
 import s from '../../shared/styles/styles.module.css';
 import r from './runs.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface RunCompareSide {
   label: string;
@@ -203,7 +204,7 @@ export function RunCompare({
           {effectRows.map((row) => (
             <tr key={row.key} data-same={row.same || undefined}>
               <th scope="row">
-                <span className={r.effectKind}>{row.kind}</span> {row.label}
+                <span className={r.effectKind}>{stateLabel(row.kind)}</span> {row.label}
               </th>
               <td data-effect={row.left}>{effectText[row.left]}</td>
               <td data-effect={row.right}>{effectText[row.right]}</td>

@@ -253,7 +253,7 @@ export function CodeTabs({
 
   if (files.length === 1)
     return (
-      <div {...props} className={`${s.root} ${className}`} data-part="code-tabs">
+      <div {...props} className={`${s.root} ${className}`} data-part="code-tabs" data-copy={copy || undefined}>
         {tourBar}
         <figure ref={pane} className={s.figure}>
           <figcaption className={s.caption}>
@@ -266,7 +266,7 @@ export function CodeTabs({
     );
 
   return (
-    <div {...props} className={`${s.root} ${className}`} data-part="code-tabs">
+    <div {...props} className={`${s.root} ${className}`} data-part="code-tabs" data-copy={copy || undefined}>
       {tourBar}
       <div className={s.viewer} data-orientation={narrow ? 'horizontal' : 'vertical'}>
         <div

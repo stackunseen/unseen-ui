@@ -10,6 +10,7 @@ import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import g from './governance.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface ApprovalBatchItem {
   proposalId: string;
@@ -173,7 +174,7 @@ export function ApprovalBatch({
                   <span className={g.meta}>
                     <span>{proposal.impact}</span>
                     <span>
-                      {proposal.risk === 'unknown' ? 'Risk not assessed' : `Risk ${proposal.risk}`}
+                      {proposal.risk === 'unknown' ? 'Risk not assessed' : `${stateLabel(proposal.risk)} risk`}
                     </span>
                     <span>Version {proposal.version}</span>
                     {isDropped && (

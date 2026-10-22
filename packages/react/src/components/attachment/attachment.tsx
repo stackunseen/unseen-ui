@@ -125,18 +125,45 @@ function AttachmentRoot({
     </AttachmentContext.Provider>
   );
 }
+const typeNames: Record<string, string> = {
+  'text/plain': 'Text',
+  'text/markdown': 'Markdown',
+  'text/csv': 'CSV',
+  'application/json': 'JSON',
+  'application/pdf': 'PDF',
+};
+/** "CSV" rather than "text/csv": a short name people know, or the media type when there is none. */
+function typeName(mediaType: string | undefined) {
+  if (!mediaType) return undefined;
+  const known = typeNames[mediaType.toLowerCase()];
+  if (known) return known;
+  const [kind, subtype = ''] = mediaType.toLowerCase().split('/');
+  const short = subtype.replace(/^(x-|vnd\.)/, '').split(/[+.;]/)[0] ?? '';
+  if (short && short.length <= 5) return kind === 'image' ? `${short.toUpperCase()} image` : short.toUpperCase();
+  return mediaType;
+}
 function AttachmentInfo() {
   const { name, state, detail, mediaType, sizeBytes, access, reference, resource } =
     useAttachment();
   const matched = matchesReference(reference, resource);
-  const metadata = [mediaType, byteCount(sizeBytes) ? formatSize(sizeBytes) : undefined]
+  const metadata = [typeName(mediaType), byteCount(sizeBytes) ? formatSize(sizeBytes) : undefined]
     .filter(Boolean)
     .join(' · ');
   return (
     <div className={`${s.grow} ${a.info}`} data-part="attachment-info">
       <strong>{name}</strong>
       {metadata && <div className={s.muted}>{metadata}</div>}
-      <div className={access === 'available' && matched ? s.muted : s.warning} role="status">
+      {/* "Ready" is the normal end state, so it is announced but not shown; others show. */}
+      <div
+        className={
+          access === 'available' && matched
+            ? state === 'ready'
+              ? s.srOnly
+              : s.muted
+            : s.warning
+        }
+        role="status"
+      >
         {!matched
           ? 'Attachment version unavailable. The host must resolve this file.'
           : state === 'removed'

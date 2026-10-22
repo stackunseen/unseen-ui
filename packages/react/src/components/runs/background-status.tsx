@@ -50,14 +50,20 @@ export function BackgroundStatus({
         />
       </span>
       <span className={r.statusText} role="status" aria-live="polite">
-        <span>
-          <MeasuredText measurement={running} format={(value) => String(value)} unknownLabel="?" />{' '}
-          running
-        </span>
-        <span>
-          <MeasuredText measurement={waiting} format={(value) => String(value)} unknownLabel="?" />{' '}
-          waiting for you
-        </span>
+        {/* Zero counts say nothing; an unknown count still shows, as "?". */}
+        {idle && <span>Nothing running</span>}
+        {runningCount !== 0 && (
+          <span>
+            <MeasuredText measurement={running} format={(value) => String(value)} unknownLabel="?" />{' '}
+            running
+          </span>
+        )}
+        {waitingCount !== 0 && (
+          <span>
+            <MeasuredText measurement={waiting} format={(value) => String(value)} unknownLabel="?" />{' '}
+            waiting for you
+          </span>
+        )}
         {stale && lastHeartbeatAt && (
           <span className={r.stale}>
             No update since {formatTime(lastHeartbeatAt, locale, timeZone)}

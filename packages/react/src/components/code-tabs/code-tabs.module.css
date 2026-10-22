@@ -190,3 +190,8 @@
     outline-offset: -2px;
   }
 }
+
+/* With the file's own Copy button shown, the code block's copy would be a second one. */
+.root[data-copy] [data-part='code-block'] [data-part='icon-button'] {
+  display: none;
+}

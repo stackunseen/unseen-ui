@@ -6,6 +6,7 @@ import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import own from './context-bar.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 export function ContextBar({
   variant = 'list',
@@ -49,7 +50,7 @@ export function ContextBar({
             <div className={s.grow}>
               <strong>{item.label}</strong>
               <div className={s.muted}>
-                {item.state}
+                {stateLabel(item.state)}
                 {item.reason ? ` · ${item.reason}` : ''}
               </div>
             </div>

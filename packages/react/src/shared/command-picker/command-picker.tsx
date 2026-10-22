@@ -6,6 +6,7 @@ import s from '../styles/agent-controls.module.css';
 import { Input } from '../../components/input/input.js';
 import type { DocumentSnapshot, VersionedTextTarget } from '@stackunseen/ui-core/editing';
 import { sameDocumentIdentity, validTextRange } from '@stackunseen/ui-core/editing';
+import { stateLabel } from '../labels.js';
 
 export interface CommandOption {
   id: string;
@@ -127,7 +128,7 @@ export function SearchPicker<T extends CommandOption>({
                     <small className={s.muted}>{reason ?? item.description}</small>
                     {reference && (
                       <small className={s.muted}>
-                        {(item as unknown as ReferenceOption).kind} ·{' '}
+                        {stateLabel((item as unknown as ReferenceOption).kind)} ·{' '}
                         {(item as unknown as ReferenceOption).version}
                         {target?.range &&
                           ` · UTF-16 ${target.range.from}–${target.range.to} (end exclusive)`}

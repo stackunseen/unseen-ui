@@ -85,7 +85,7 @@ export function ScopedPermissionRequest({
         </Heading>
         {value && (
           <span role="status" className={s.badge} data-tone={permissionTone[value.status]}>
-            Permission: {value.status}
+            Permission {value.status}
             {value.freshness !== 'current' ? ` · ${value.freshness} snapshot` : ''}
           </span>
         )}

@@ -4,6 +4,10 @@ import { describe, expect, it, vi } from 'vitest';
 import { MCPServerCard } from './mcp-server-card.js';
 import { componentVariants } from '../../shared/variants.js';
 
+// The card shows host states as words: auth-required reads as Sign-in required.
+const statusLabel = (status: string) =>
+  status === 'auth-required' ? 'Sign-in required' : status[0]!.toUpperCase() + status.slice(1);
+
 describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => {
   it('sends connect intent through the current callback and waits for host status', async () => {
     const user = userEvent.setup();
@@ -20,7 +24,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
       />,
     );
     expect(screen.getByText('CRM sandbox')).toBeVisible();
-    expect(screen.getByText('disconnected')).toBeVisible();
+    expect(screen.getByText('Disconnected')).toBeVisible();
     expect(screen.queryByRole('button', { name: 'Disconnect' })).not.toBeInTheDocument();
     rerender(
       <MCPServerCard
@@ -37,7 +41,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
     expect(currentConnect).toHaveBeenCalledTimes(1);
     expect(originalConnect).not.toHaveBeenCalled();
     expect(disconnect).not.toHaveBeenCalled();
-    expect(screen.getByText('disconnected')).toBeVisible();
+    expect(screen.getByText('Disconnected')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Connect' })).toBeEnabled();
 
     rerender(
@@ -48,7 +52,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
         onDisconnect={disconnect}
       />,
     );
-    expect(screen.getByText('connected')).toBeVisible();
+    expect(screen.getByText('Connected')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Disconnect' })).toBeEnabled();
     expect(screen.queryByRole('button', { name: 'Connect' })).not.toBeInTheDocument();
   });
@@ -82,7 +86,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
     expect(currentDisconnect).toHaveBeenCalledTimes(1);
     expect(originalDisconnect).not.toHaveBeenCalled();
     expect(connect).not.toHaveBeenCalled();
-    expect(screen.getByText('connected')).toBeVisible();
+    expect(screen.getByText('Connected')).toBeVisible();
   });
 
   it('presents authorization as a host intent and disables it while pending', async () => {
@@ -98,7 +102,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
     );
     await user.click(screen.getByRole('button', { name: 'Authorize connection' }));
     expect(connect).toHaveBeenCalledTimes(1);
-    expect(screen.getByText('auth-required')).toBeVisible();
+    expect(screen.getByText('Sign-in required')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Authorize connection' })).toBeEnabled();
     rerender(
       <MCPServerCard
@@ -112,7 +116,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
     expect(screen.getByRole('button', { name: /^Connecting/ })).toBeDisabled();
     await user.click(screen.getByRole('button', { name: /^Connecting/ }));
     expect(connect).toHaveBeenCalledTimes(1);
-    expect(screen.getByText('auth-required')).toBeVisible();
+    expect(screen.getByText('Sign-in required')).toBeVisible();
   });
 
   it.each(['disconnected', 'unknown'] as const)(
@@ -129,7 +133,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
           onConnect={connect}
         />,
       );
-      expect(screen.getByText(status)).toBeVisible();
+      expect(screen.getByText(statusLabel(status))).toBeVisible();
       const pending = screen.getByRole('button', { name: /^Connecting/ });
       expect(pending).toBeDisabled();
       await user.click(pending);
@@ -138,10 +142,10 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
         <MCPServerCard variant={variant} name="CRM sandbox" status={status} onConnect={connect} />,
       );
       expect(connect).not.toHaveBeenCalled();
-      expect(screen.getByText(status)).toBeVisible();
+      expect(screen.getByText(statusLabel(status))).toBeVisible();
       await user.click(screen.getByRole('button', { name: 'Connect' }));
       expect(connect).toHaveBeenCalledTimes(1);
-      expect(screen.getByText(status)).toBeVisible();
+      expect(screen.getByText(statusLabel(status))).toBeVisible();
     },
   );
 
@@ -160,7 +164,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
     expect(button).toBeDisabled();
     await userEvent.click(button);
     expect(disconnect).not.toHaveBeenCalled();
-    expect(screen.getByText('connected')).toBeVisible();
+    expect(screen.getByText('Connected')).toBeVisible();
   });
 
   it('exposes no action when the current host state has no applicable callback', () => {
@@ -184,7 +188,7 @@ describe.each(componentVariants.MCPServerCard)('MCPServerCard %s', (variant) => 
         />,
       );
       expect(screen.queryByRole('button')).not.toBeInTheDocument();
-      expect(screen.getByText(status)).toBeVisible();
+      expect(screen.getByText(statusLabel(status))).toBeVisible();
     }
     expect(callback).not.toHaveBeenCalled();
   });

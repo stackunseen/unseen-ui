@@ -36,7 +36,7 @@ describe.each(variants)('%s scoped permission', (variant) => {
     expect(onDecision).toHaveBeenCalledExactlyOnceWith(expected);
     expect(Object.isFrozen(onDecision.mock.calls[0]![0].target.scopes)).toBe(true);
     expect(Object.isFrozen(value.target)).toBe(false);
-    expect(screen.getByText('Permission: requested')).toBeVisible();
+    expect(screen.getByText('Permission requested')).toBeVisible();
     expect(screen.queryByText(/Host-confirmed grant/)).not.toBeInTheDocument();
   });
   it('emits scoped denial independently of allowance', async () => {
@@ -77,7 +77,7 @@ describe.each(variants)('%s scoped permission', (variant) => {
     replacement.access.state = 'revoked';
     replacement.status = 'revoked';
     rerender(<PermissionRequest {...props} value={replacement} />);
-    expect(screen.getByText('Permission: revoked')).toBeVisible();
+    expect(screen.getByText('Permission revoked')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Allow access' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Deny access' })).toBeDisabled();
     await userEvent.click(screen.getByRole('button', { name: 'Check original decision' }));
@@ -90,7 +90,7 @@ describe.each(variants)('%s scoped permission', (variant) => {
         submission={{ state: 'acknowledged', original, receipt: permissionReceipt(original) }}
       />,
     );
-    expect(screen.getByText('Permission: revoked')).toBeVisible();
+    expect(screen.getByText('Permission revoked')).toBeVisible();
     expect(screen.queryByText(/Host-confirmed grant/)).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Allow access' })).toBeDisabled();
   });
@@ -141,7 +141,7 @@ describe.each(variants)('%s scoped permission', (variant) => {
           variant={variant}
         />,
       );
-      expect(screen.getByText('Permission: requested')).toBeVisible();
+      expect(screen.getByText('Permission requested')).toBeVisible();
       expect(screen.getByRole('button', { name: 'Allow access' })).toBeDisabled();
       expect(screen.getByRole('button', { name: 'Check original decision' })).toBeEnabled();
     },

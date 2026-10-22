@@ -4,6 +4,7 @@ import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import own from './mcp-tool-list.module.css';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface MCPTool {
   id: string;
@@ -48,7 +49,7 @@ export function MCPToolList({
               title: (
                 <span className={s.row}>
                   <span>{tool.name}</span>
-                  <span className={s.muted}>{tool.availability}</span>
+                  <span className={s.muted}>{stateLabel(tool.availability)}</span>
                 </span>
               ),
               content: (
@@ -69,7 +70,7 @@ export function MCPToolList({
                 <strong>{tool.name}</strong>
                 <p className={s.muted}>{tool.description}</p>
                 <small>
-                  {tool.availability} · {tool.schemaSummary ?? 'Schema unavailable'}
+                  {stateLabel(tool.availability)} · {tool.schemaSummary ?? 'Schema unavailable'}
                 </small>
               </div>
             </li>
