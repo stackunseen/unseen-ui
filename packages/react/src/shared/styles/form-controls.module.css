@@ -195,7 +195,9 @@
   display: flex;
   align-items: start;
   gap: 8px;
-  min-block-size: var(--ai-control-height, 36px);
+  /* The whole label row is the target, so 24px (WCAG 2.5.8) is enough with a mouse; touch gets
+     44px below. A taller minimum left label-only options with a gap their neighbours lacked. */
+  min-block-size: 24px;
   min-inline-size: 0;
   cursor: pointer;
   overflow-wrap: anywhere;
