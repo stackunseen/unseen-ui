@@ -189,19 +189,15 @@ export function FileExplorer({
       </button>
     );
   }
+  // Only what the host supplied: three "unknown"s on every row is noise, not information.
   function metadata(file: WorkspaceFile) {
-    return (
-      <p className={s.muted}>
-        Version: {file.version ?? 'Not supplied'} · Size:{' '}
-        {file.sizeBytes === undefined
-          ? 'Unknown'
-          : `${file.sizeBytes.toLocaleString('en-US')} bytes`}{' '}
-        · Modified:{' '}
-        {file.modifiedAt === undefined
-          ? 'Not supplied'
-          : `${new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }).format(file.modifiedAt)} UTC`}
-      </p>
-    );
+    const parts = [
+      file.version !== undefined && `Version: ${file.version}`,
+      file.sizeBytes !== undefined && `Size: ${file.sizeBytes.toLocaleString('en-US')} bytes`,
+      file.modifiedAt !== undefined &&
+        `Modified: ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }).format(file.modifiedAt)} UTC`,
+    ].filter(Boolean);
+    return parts.length ? <p className={s.muted}>{parts.join(' · ')}</p> : null;
   }
   function folderView(folder: FileFolder, depth = 0): ReactNode {
     return (
@@ -259,15 +255,18 @@ export function FileExplorer({
       : (page.pageIndex + 1) * page.pageSize < total);
   return frame(
     <>
-      <p className={s.muted}>
-        {model.files.length} files in this window
-        {page
-          ? ` · Page ${page.pageIndex + 1} · Total: ${total === undefined ? 'Unknown' : total}`
-          : ''}
-        {model.context
-          ? ` · Workspace: ${model.context.workspaceId} · Snapshot: ${model.context.version}`
-          : ''}
-      </p>
+      {/* The window only needs describing when it is a page of more, or a snapshot. */}
+      {(page || model.context) && (
+        <p className={s.muted}>
+          {model.files.length} files in this window
+          {page
+            ? ` · Page ${page.pageIndex + 1} · Total: ${total === undefined ? 'Unknown' : total}`
+            : ''}
+          {model.context
+            ? ` · Workspace: ${model.context.workspaceId} · Snapshot: ${model.context.version}`
+            : ''}
+        </p>
+      )}
       {status !== 'ready' && (
         <p role="status" className={s.muted}>
           {status === 'stale'

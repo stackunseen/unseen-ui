@@ -24,6 +24,9 @@ describe('FileExplorer as a changed-files list', () => {
     expect(button).toHaveTextContent('added');
     expect(button).toHaveTextContent('+14');
     expect(screen.getByText('14 lines added, 0 removed')).toBeInTheDocument();
+    // Nothing the host did not supply: no "Not supplied" rows, no window count without paging.
+    expect(screen.queryByText(/Not supplied|Unknown/)).toBeNull();
+    expect(screen.queryByText(/files in this window/)).toBeNull();
   });
 
   it('rejects negative or fractional line counts', () => {
