@@ -47,7 +47,9 @@ try {
     process.env.UI_CSS_OUT = outDir;
     await build({ root, configFile: join(root, 'vite.config.ts'), logLevel: 'silent' });
     const files = await readdir(outDir);
-    sheets[name] = files.includes('entry.css') ? await readFile(join(outDir, 'entry.css'), 'utf8') : '';
+    sheets[name] = files.includes('entry.css')
+      ? await readFile(join(outDir, 'entry.css'), 'utf8')
+      : '';
   }
 } finally {
   delete process.env.UI_CSS_ENTRY;

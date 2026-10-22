@@ -139,7 +139,8 @@ function typeName(mediaType: string | undefined) {
   if (known) return known;
   const [kind, subtype = ''] = mediaType.toLowerCase().split('/');
   const short = subtype.replace(/^(x-|vnd\.)/, '').split(/[+.;]/)[0] ?? '';
-  if (short && short.length <= 5) return kind === 'image' ? `${short.toUpperCase()} image` : short.toUpperCase();
+  if (short && short.length <= 5)
+    return kind === 'image' ? `${short.toUpperCase()} image` : short.toUpperCase();
   return mediaType;
 }
 function AttachmentInfo() {
@@ -156,11 +157,7 @@ function AttachmentInfo() {
       {/* "Ready" is the normal end state, so it is announced but not shown; others show. */}
       <div
         className={
-          access === 'available' && matched
-            ? state === 'ready'
-              ? s.srOnly
-              : s.muted
-            : s.warning
+          access === 'available' && matched ? (state === 'ready' ? s.srOnly : s.muted) : s.warning
         }
         role="status"
       >

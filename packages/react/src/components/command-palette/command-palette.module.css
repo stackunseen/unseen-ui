@@ -22,7 +22,16 @@
   border-radius: var(--ai-radius, 12px);
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #18181b);
-  font-family: var(--ai-font-family, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif);
+  font-family: var(
+    --ai-font-family,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI Variable Text',
+    'Segoe UI',
+    system-ui,
+    sans-serif
+  );
   font-size: var(--ai-font-size, 14px);
   line-height: 1.5;
   box-shadow: var(--ai-shadow-dialog, 0 12px 40px rgb(0 0 0 / 0.16));

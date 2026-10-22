@@ -24,7 +24,14 @@ const annotate = (line: CodeDiffLine) =>
 describe('CodeDiff annotations', () => {
   it('puts a note directly under its line in the unified view', () => {
     const { container } = render(
-      <CodeDiff path="a.txt" before={before} after={after} baseVersion="a" nextVersion="b" annotate={annotate} />,
+      <CodeDiff
+        path="a.txt"
+        before={before}
+        after={after}
+        baseVersion="a"
+        nextVersion="b"
+        annotate={annotate}
+      />,
     );
     const notes = container.querySelectorAll('[data-part="code-diff-annotation"]');
     expect(notes).toHaveLength(2);

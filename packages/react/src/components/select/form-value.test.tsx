@@ -12,7 +12,12 @@ describe('Select in a form', () => {
     const onValueChange = vi.fn();
     const { container } = render(
       <form>
-        <Select aria-label="Branch" value="develop" onValueChange={onValueChange} options={branches} />
+        <Select
+          aria-label="Branch"
+          value="develop"
+          onValueChange={onValueChange}
+          options={branches}
+        />
       </form>,
     );
     // In Chromium this happens when the value changes from code before its option exists.

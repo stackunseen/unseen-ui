@@ -54,13 +54,21 @@ export function BackgroundStatus({
         {idle && <span>Nothing running</span>}
         {runningCount !== 0 && (
           <span>
-            <MeasuredText measurement={running} format={(value) => String(value)} unknownLabel="?" />{' '}
+            <MeasuredText
+              measurement={running}
+              format={(value) => String(value)}
+              unknownLabel="?"
+            />{' '}
             running
           </span>
         )}
         {waitingCount !== 0 && (
           <span>
-            <MeasuredText measurement={waiting} format={(value) => String(value)} unknownLabel="?" />{' '}
+            <MeasuredText
+              measurement={waiting}
+              format={(value) => String(value)}
+              unknownLabel="?"
+            />{' '}
             waiting for you
           </span>
         )}

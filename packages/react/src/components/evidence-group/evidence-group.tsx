@@ -37,7 +37,9 @@ export function EvidenceGroup({
           <div className={s.collection}>
             {sources.map((source) => (
               <div key={source.id}>
-                <span className={s.muted}>{stateLabel(relationships?.[source.id] ?? 'related')}</span>
+                <span className={s.muted}>
+                  {stateLabel(relationships?.[source.id] ?? 'related')}
+                </span>
                 <SourceCard source={source} />
               </div>
             ))}

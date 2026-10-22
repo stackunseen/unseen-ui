@@ -275,28 +275,28 @@ export function MessageQueue(props: MessageQueueProps) {
                     </div>
                     {/* Every row here is queued unless it says otherwise, so only other states get a tag. */}
                     {(item.pending || item.state !== 'queued') && (
-                    <span className={`${s.tag} ${n.state}`}>
-                      <AIIcon
-                        name={
-                          item.pending
-                            ? 'pending'
-                            : item.state === 'sending'
-                              ? 'running'
-                              : item.state === 'failed' || item.state === 'outcome-unknown'
-                                ? 'warning'
-                                : item.state === 'cancelled'
-                                  ? 'close'
-                                  : item.state === 'sent'
-                                    ? 'check'
-                                    : 'pending'
-                        }
-                      />
-                      {item.pending
-                        ? 'Awaiting confirmation'
-                        : item.state === 'outcome-unknown'
-                          ? 'Send outcome unknown'
-                          : stateLabel(item.state)}
-                    </span>
+                      <span className={`${s.tag} ${n.state}`}>
+                        <AIIcon
+                          name={
+                            item.pending
+                              ? 'pending'
+                              : item.state === 'sending'
+                                ? 'running'
+                                : item.state === 'failed' || item.state === 'outcome-unknown'
+                                  ? 'warning'
+                                  : item.state === 'cancelled'
+                                    ? 'close'
+                                    : item.state === 'sent'
+                                      ? 'check'
+                                      : 'pending'
+                          }
+                        />
+                        {item.pending
+                          ? 'Awaiting confirmation'
+                          : item.state === 'outcome-unknown'
+                            ? 'Send outcome unknown'
+                            : stateLabel(item.state)}
+                      </span>
                     )}
                     {item.state === 'outcome-unknown' && (
                       <p className={s.warning}>
