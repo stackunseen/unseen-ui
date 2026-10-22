@@ -194,7 +194,7 @@ export function ModelControls({
       {model?.unavailableReason && <p className={s.warning}>{model.unavailableReason}</p>}
       {rangeValid && (
         <div className={`${s.temperatureControl} ${local.temperature}`}>
-          <label className={`${s.toolChoice} ${local.choice}`}>
+          <label className={`${local.toolChoice} ${local.choice}`}>
             <input
               type="checkbox"
               checked={hasTemperature}
@@ -249,7 +249,7 @@ export function ModelControls({
         const checked = value.toolIds.includes(tool.id);
         const supported = !!model?.toolIds.includes(tool.id) && tool.available;
         return (
-          <label className={`${s.toolChoice} ${local.choice}`} key={tool.id}>
+          <label className={`${local.toolChoice} ${local.choice}`} key={tool.id}>
             <input
               type="checkbox"
               checked={checked}
@@ -279,7 +279,7 @@ export function ModelControls({
       {value.toolIds
         .filter((toolId) => !capabilities?.tools.some((tool) => tool.id === toolId))
         .map((toolId, index) => (
-          <label className={`${s.toolChoice} ${local.choice}`} key={toolId}>
+          <label className={`${local.toolChoice} ${local.choice}`} key={toolId}>
             <input
               type="checkbox"
               checked
@@ -338,7 +338,7 @@ export function ModelControls({
             <p className={s.warning}>Capability metadata is incomplete. Settings are read-only.</p>
           )}
           {!!issues.length && (
-            <div className={s.settingsIssues} role="status">
+            <div className={local.settingsIssues} role="status">
               <strong>Review unsupported settings</strong>
               <ul>
                 {issues.map((issue) => (
@@ -372,7 +372,7 @@ export function ModelControls({
               ]}
             />
           ) : (
-            <div className={s.modelBody}>
+            <div className={local.modelBody}>
               {selection}
               {tools}
               <UsageDetails value={usage} modelId={value.modelId} />

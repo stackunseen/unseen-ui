@@ -7,6 +7,7 @@ import { StatusBadge } from '../status-badge/status-badge.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './approval-card.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 import { useDisclosure } from '../../shared/disclosure.js';
@@ -76,11 +77,11 @@ export function ApprovalCard({
     <Panel data-part="approval" data-variant={variant} className={s.approval}>
       <div className={s.row}>
         <div className={s.approvalHeading}>
-          <span className={s.reviewIcon} data-risk={proposal.risk} aria-hidden="true">
+          <span className={own.reviewIcon} data-risk={proposal.risk} aria-hidden="true">
             <AIIcon name="warning" />
           </span>
           <div className={s.grow}>
-            <span className={s.eyebrow}>{heading}</span>
+            <span className={own.eyebrow}>{heading}</span>
             <h3 className={s.title}>{proposal.title}</h3>
           </div>
         </div>

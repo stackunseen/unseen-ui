@@ -8,6 +8,7 @@ import { IconButton } from '../icon-button/icon-button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './prompt-input.module.css';
 import a from '../attachment/attachment.module.css';
 import type { CommandOption } from '../../shared/command-picker/command-picker.js';
 import { useComposerSuggestions } from './composer-suggestions.js';
@@ -126,7 +127,7 @@ export function PromptInput({
   return (
     <form
       {...props}
-      className={`${s.composer} ${className}`}
+      className={`${own.composer} ${className}`}
       data-variant={variant}
       data-has-attachments={!!attachments}
       data-has-toolbar={!!toolbar}
@@ -194,10 +195,10 @@ export function PromptInput({
           }
         }}
       />
-      <div className={s.composerFooter}>
-        <div className={s.composerControls} data-part="composer-controls">
+      <div className={own.composerFooter}>
+        <div className={own.composerControls} data-part="composer-controls">
           {toolbar && <div className={a.composerToolbar}>{toolbar}</div>}
-          <div className={s.composerSubmit} data-part="composer-submit">
+          <div className={own.composerSubmit} data-part="composer-submit">
             {busy && onCancel ? (
               <Button size="sm" variant="outline" onClick={onCancel}>
                 <AIIcon name="stop" /> Stop response

@@ -42,7 +42,7 @@ export function Modal({
       {trigger !== undefined && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
         <ThemeSurface>
-          <Dialog.Overlay className={s.overlay} />
+          <Dialog.Overlay className={styles.overlay} />
           <Dialog.Content
             className={`${s.dialog} ${className}`}
             style={{

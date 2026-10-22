@@ -4,3 +4,11 @@
   border: 0;
   background: transparent;
 }
+
+/* Moved from the shared sheet: only this component used these. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(2 6 23 / 0.5);
+  z-index: 100;
+}

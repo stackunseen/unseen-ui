@@ -90,7 +90,7 @@ export function ContextInspector({
   ).length;
   function details(item: InspectedContextItem) {
     return (
-      <div className={s.contextDetails}>
+      <div className={context.contextDetails}>
         <p className={s.muted}>
           Version {item.version} · {item.selected ? 'Selected by user' : 'Not selected by user'}
         </p>
@@ -219,7 +219,7 @@ export function ContextInspector({
                       <th scope="row">
                         <div className={context.cellContent}>
                           {item.label}
-                          <span className={s.metadataLine}>v{item.version}</span>
+                          <span className={context.metadataLine}>v{item.version}</span>
                         </div>
                       </th>
                       <td>{item.selected ? 'Selected' : 'Not selected'}</td>

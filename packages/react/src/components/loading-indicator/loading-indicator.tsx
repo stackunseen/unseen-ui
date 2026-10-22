@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 
 import type { VariantProps } from '../../shared/variants.js';
 
-import s from '../../shared/styles/styles.module.css';
+import own from './loading-indicator.module.css';
 
 import labels from '../../shared/styles/presentation-labels.module.css';
 
@@ -25,15 +25,15 @@ export function LoadingIndicator({
     <span
       {...props}
       role="status"
-      className={`${s.loading} ${labels.loading} ${className}`}
+      className={`${own.loading} ${labels.loading} ${className}`}
       data-variant={variant}
       data-size={size}
     >
-      <span className={s.loadingVisual} aria-hidden="true">
+      <span className={own.loadingVisual} aria-hidden="true">
         {variant === 'spinner' ? (
-          <span className={s.loadingSpinner} />
+          <span className={own.loadingSpinner} />
         ) : (
-          [0, 1, 2].map((i) => <span key={i} className={s.loadingMark} />)
+          [0, 1, 2].map((i) => <span key={i} className={own.loadingMark} />)
         )}
       </span>
       <span>{label}</span>

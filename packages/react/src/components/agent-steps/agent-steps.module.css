@@ -1,0 +1,28 @@
+/* agent-steps: styles that only this component uses (moved from the shared sheet). */
+.stepMarker {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--ai-control-border, #71717a);
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--ai-surface, #fff);
+  color: var(--ai-muted, #52525b);
+}
+.stepMarker[data-state='succeeded'] {
+  background: var(--ai-success-soft, #dcfce7);
+  color: var(--ai-success, #166534);
+  border-color: var(--ai-success, #166534);
+}
+.stepMarker[data-state='running'] {
+  background: var(--ai-primary, #18181b);
+  color: var(--ai-primary-foreground, #fff);
+  border-color: var(--ai-primary, #18181b);
+}
+@media (forced-colors: active) {
+  .stepMarker {
+    border: 1px solid ButtonText;
+  }
+}

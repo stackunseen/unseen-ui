@@ -1,0 +1,12 @@
+/* tool-call: styles that only this component uses (moved from the shared sheet). */
+.toolIcon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-primary-text, #27272a);
+  border-radius: 6px;
+  font-size: 14px;
+}

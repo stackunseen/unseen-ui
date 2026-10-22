@@ -1,0 +1,27 @@
+/* citation: styles that only this component uses (moved from the shared sheet). */
+.citation[data-presentation='inline'] {
+  padding: 2px 4px;
+  min-height: 28px;
+  border-radius: 4px;
+  color: var(--ai-primary-text, #27272a);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+.citation[data-presentation='number'] {
+  min-width: 32px;
+  min-height: 32px;
+  padding: 4px;
+  border-radius: 50%;
+  color: var(--ai-primary-text, #27272a);
+}
+@media (any-pointer: coarse) {
+  .citation[data-presentation='inline'] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .citation[data-presentation='number'] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

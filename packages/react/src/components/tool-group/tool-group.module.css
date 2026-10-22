@@ -1,0 +1,4 @@
+/* tool-group: styles that only this component uses (moved from the shared sheet). */
+.toolList {
+  display: grid;
+}

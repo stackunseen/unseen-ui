@@ -17,3 +17,14 @@
   max-inline-size: min(42ch, calc(100cqi - 2 * var(--ai-field-gap, 8px)));
   overflow-wrap: anywhere;
 }
+
+/* Moved from the shared sheet: only this component used these. */
+.contextDetails p {
+  margin-block: 6px;
+}
+.metadataLine {
+  display: block;
+  font-size: var(--ai-font-size-caption, 12px);
+  font-weight: normal;
+  color: var(--ai-muted, #52525b);
+}

@@ -1,0 +1,103 @@
+/* skeleton: styles that only this component uses (moved from the shared sheet). */
+.skeleton {
+  padding-block: 8px;
+}
+.skeletonLayout {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.skeletonLines {
+  display: grid;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.skeletonLine {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: var(--ai-border, #e4e4e7);
+  border-radius: 5px;
+}
+.skeletonAvatar {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: var(--ai-border, #e4e4e7);
+  border-radius: 5px;
+}
+.skeletonLine {
+  height: 12px;
+}
+.skeletonLine:first-child {
+  width: 62%;
+  height: 16px;
+}
+.skeletonLine:last-child {
+  width: 80%;
+}
+.skeletonAvatar {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.skeleton[data-shape='card'] {
+  border: 1px solid var(--ai-border, #e4e4e7);
+  padding: 20px;
+  border-radius: var(--ai-radius, 12px);
+}
+.skeleton[data-shape='card'] .skeletonAvatar {
+  border-radius: 8px;
+  height: 64px;
+  width: 52px;
+}
+.skeleton[data-variant='shimmer'] .skeletonLine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--ai-surface, #fff), transparent);
+  opacity: 0.65;
+  animation: loading-shimmer 1.8s ease-in-out infinite;
+}
+.skeleton[data-variant='shimmer'] .skeletonAvatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--ai-surface, #fff), transparent);
+  opacity: 0.65;
+  animation: loading-shimmer 1.8s ease-in-out infinite;
+}
+.skeleton[data-variant='pulse'] .skeletonLayout {
+  animation: loading-breathe 1.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeletonLayout {
+    animation: none !important;
+  }
+  .skeletonLine::after {
+    animation: none !important;
+  }
+  .skeletonAvatar::after {
+    animation: none !important;
+  }
+  .skeletonLine::after {
+    display: none;
+  }
+  .skeletonAvatar::after {
+    display: none;
+  }
+}
+@keyframes loading-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes loading-breathe {
+  50% {
+    opacity: 0.4;
+  }
+}

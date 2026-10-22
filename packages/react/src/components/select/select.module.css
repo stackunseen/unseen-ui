@@ -54,3 +54,61 @@
     min-block-size: 44px;
   }
 }
+
+/* Moved from the shared sheet: only this component used these. */
+.selectContent {
+  z-index: 110;
+  min-width: var(--radix-select-trigger-width);
+  max-width: calc(100vw - 24px);
+  max-height: min(320px, var(--radix-select-content-available-height));
+  overflow: hidden;
+  border: 1px solid var(--ai-border, #e4e4e7);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface, #fff);
+  color: var(--ai-text, #18181b);
+  box-shadow: var(--ai-shadow-popover, 0 4px 16px rgb(0 0 0 / 0.1));
+}
+.selectViewport {
+  padding: 4px;
+}
+.selectItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--ai-control-height, 36px);
+  padding-block: 8px;
+  padding-inline: 12px 36px;
+  border-radius: max(2px, calc(var(--ai-radius, 12px) - 4px));
+  font-size: var(--ai-font-size-meta, 13px);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.selectItem[data-state='checked'] {
+  color: var(--ai-primary-text, #27272a);
+  font-weight: 600;
+}
+.selectItem[data-highlighted] {
+  outline: none;
+  background: var(--ai-surface-subtle, #f4f4f5);
+}
+@media (forced-colors: active) {
+  .selectItem[data-highlighted] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+.selectItem[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.selectIndicator {
+  position: absolute;
+  inset-inline-end: 10px;
+  display: flex;
+}
+.selectScroll {
+  display: flex;
+  justify-content: center;
+  padding: 4px;
+  color: var(--ai-muted, #52525b);
+}

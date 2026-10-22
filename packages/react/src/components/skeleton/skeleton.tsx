@@ -5,6 +5,7 @@ import type { ComponentProps } from 'react';
 import type { VariantProps } from '../../shared/variants.js';
 
 import s from '../../shared/styles/styles.module.css';
+import own from './skeleton.module.css';
 
 export interface SkeletonProps
   extends Omit<ComponentProps<'div'>, 'children'>, VariantProps<'Skeleton'> {
@@ -26,16 +27,16 @@ export function Skeleton({
     <div
       {...props}
       role="status"
-      className={`${s.skeleton} ${className}`}
+      className={`${own.skeleton} ${className}`}
       data-variant={variant}
       data-shape={shape}
     >
       <span className={s.srOnly}>{label}</span>
-      <div aria-hidden="true" className={s.skeletonLayout}>
-        {shape !== 'text' && <span className={s.skeletonAvatar} />}
-        <div className={s.skeletonLines}>
+      <div aria-hidden="true" className={own.skeletonLayout}>
+        {shape !== 'text' && <span className={own.skeletonAvatar} />}
+        <div className={own.skeletonLines}>
           {Array.from({ length: count }, (_, i) => (
-            <span key={i} className={s.skeletonLine} />
+            <span key={i} className={own.skeletonLine} />
           ))}
         </div>
       </div>

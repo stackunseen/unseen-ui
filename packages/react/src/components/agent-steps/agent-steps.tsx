@@ -6,6 +6,7 @@ import { Accordion } from '../accordion/accordion.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './agent-steps.module.css';
 
 const compactLabels: Record<string, string> = {
   queued: 'Queued',
@@ -38,7 +39,7 @@ export function AgentSteps({
           className={s.step}
           aria-current={step.state === 'running' ? 'step' : undefined}
         >
-          <span className={s.stepMarker} data-state={step.state} aria-hidden="true">
+          <span className={own.stepMarker} data-state={step.state} aria-hidden="true">
             <AIIcon
               name={
                 step.state === 'succeeded' ? 'check' : step.state === 'failed' ? 'warning' : 'idle'

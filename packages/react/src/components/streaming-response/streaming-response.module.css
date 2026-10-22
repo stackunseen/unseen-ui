@@ -20,3 +20,19 @@
 .root > .error {
   margin-block: var(--ai-field-gap, 8px) 0;
 }
+
+/* Moved from the shared sheet: only this component used these. */
+.cursor {
+  display: inline-block;
+  width: 5px;
+  height: 14px;
+  margin-left: 4px;
+  background: var(--ai-primary, #18181b);
+  vertical-align: middle;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.3;
+  }
+}

@@ -2,7 +2,6 @@
 import type { ReactNode } from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import type { VariantProps } from '../../shared/variants.js';
-import s from '../../shared/styles/styles.module.css';
 import css from './tabs.module.css';
 
 export function Tabs({
@@ -33,15 +32,15 @@ export function Tabs({
       orientation={orientation}
       className={`${css.root} ${className}`}
     >
-      <TabsPrimitive.List className={s.tabs} data-variant={variant} aria-label={label}>
+      <TabsPrimitive.List className={css.tabs} data-variant={variant} aria-label={label}>
         {items.map((item) => (
-          <TabsPrimitive.Trigger className={s.tab} key={item.value} value={item.value}>
+          <TabsPrimitive.Trigger className={css.tab} key={item.value} value={item.value}>
             {item.label}
           </TabsPrimitive.Trigger>
         ))}
       </TabsPrimitive.List>
       {items.map((item) => (
-        <TabsPrimitive.Content className={s.tabContent} key={item.value} value={item.value}>
+        <TabsPrimitive.Content className={css.tabContent} key={item.value} value={item.value}>
           {item.content}
         </TabsPrimitive.Content>
       ))}

@@ -1,0 +1,73 @@
+/* loading-indicator: styles that only this component uses (moved from the shared sheet). */
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.loadingVisual {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 24px;
+  min-width: 24px;
+  color: var(--ai-primary-text, #27272a);
+}
+.loadingSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ai-border, #e4e4e7);
+  border-top-color: currentColor;
+  border-inline-end-color: currentColor;
+  border-radius: 50%;
+  animation: loading-spin 900ms linear infinite;
+}
+.loadingMark {
+  width: 5px;
+  height: 5px;
+  background: currentColor;
+  border-radius: 50%;
+  animation: loading-breathe 1.2s ease-in-out infinite;
+}
+.loadingMark:nth-child(2) {
+  animation-delay: 0.16s;
+}
+.loadingMark:nth-child(3) {
+  animation-delay: 0.32s;
+}
+.loading[data-variant='bars'] .loadingMark {
+  width: 3px;
+  height: 18px;
+  border-radius: 2px;
+}
+.loading[data-size='small'] {
+  font-size: var(--ai-font-size-caption, 12px);
+  gap: 6px;
+}
+.loading[data-size='small'] .loadingVisual {
+  transform: scale(0.8);
+}
+.loading[data-size='large'] .loadingVisual {
+  transform: scale(1.3);
+  margin: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .loadingSpinner {
+    animation: none !important;
+  }
+  .loadingMark {
+    animation: none !important;
+  }
+}
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loading-breathe {
+  50% {
+    opacity: 0.4;
+  }
+}

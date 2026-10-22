@@ -3,6 +3,7 @@ import type { Measurement } from '@stackunseen/ui-core';
 import { Progress } from '../progress/progress.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './trust.module.css';
 import { formatStamp, wholePercent } from './shared.js';
 
 export interface Usage {
@@ -114,7 +115,7 @@ export function UsageMeter({
       </span>
     );
   return (
-    <div {...common} className={s.stack}>
+    <div {...common} className={own.stack}>
       <div className={s.row}>
         <strong>{label}</strong>
         <span className={s.muted}>

@@ -43,14 +43,14 @@ export function StreamingResponse({
         <>
           {renderContent({ text, state })}
           {state === 'streaming' && variant === 'cursor' && (
-            <span className={s.cursor} aria-hidden="true" />
+            <span className={r.cursor} aria-hidden="true" />
           )}
         </>
       ) : (
         <p className={s.prose}>
           {text || (state === 'streaming' ? 'Preparing a response…' : 'No response content.')}
           {state === 'streaming' && variant === 'cursor' && (
-            <span className={s.cursor} aria-hidden="true" />
+            <span className={r.cursor} aria-hidden="true" />
           )}
         </p>
       )}

@@ -9,6 +9,7 @@ import { Panel } from '../panel/panel.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './trust.module.css';
 import ac from '../../shared/styles/agent-controls.module.css';
 
 /** What the feedback is about, by exact revision or attempt, so the host never files it elsewhere. */
@@ -100,7 +101,7 @@ export function FeedbackCapture({
     });
   }
   const body = (
-    <form onSubmit={submit} className={s.stack} aria-labelledby={`${id}-label`}>
+    <form onSubmit={submit} className={own.stack} aria-labelledby={`${id}-label`}>
       <strong id={`${id}-label`}>{label}</strong>
       <div className={s.actions} role="group" aria-label="Helpfulness">
         <Button
@@ -129,7 +130,7 @@ export function FeedbackCapture({
       {value.helpful === false && (
         <fieldset className={s.fieldset}>
           <legend className={s.muted}>What went wrong?</legend>
-          <div className={s.stack}>
+          <div className={own.stack}>
             {reasons.map((reason) => (
               <label key={reason.id} className={ac.row}>
                 <Checkbox
@@ -144,7 +145,7 @@ export function FeedbackCapture({
         </fieldset>
       )}
       {value.helpful !== null && (
-        <label className={s.stack}>
+        <label className={own.stack}>
           <span className={s.muted}>
             {value.helpful ? 'Anything to add? (optional)' : 'What should it have said? (optional)'}
           </span>

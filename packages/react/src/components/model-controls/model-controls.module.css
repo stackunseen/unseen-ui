@@ -28,3 +28,44 @@
   grid-column: 1 / -1;
   margin: 0;
 }
+
+/* Moved from the shared sheet: only this component used these. */
+.modelBody {
+  display: grid;
+  gap: 16px;
+}
+.toolChoice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.toolChoice input {
+  accent-color: var(--ai-primary, #18181b);
+  width: 18px;
+  height: 18px;
+  margin: 2px 0;
+  flex-shrink: 0;
+}
+.toolChoice small {
+  display: block;
+  color: var(--ai-muted, #52525b);
+}
+.settingsIssues {
+  padding: 12px;
+  margin-block: 12px;
+  border: 1px solid var(--ai-warning, #92400e);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-warning-soft, #fef3c7);
+  color: var(--ai-warning, #92400e);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.settingsIssues ul {
+  margin-block: 8px 12px;
+  padding-inline-start: 20px;
+}
+@media (any-pointer: coarse) {
+  .toolChoice {
+    min-height: 44px;
+  }
+}

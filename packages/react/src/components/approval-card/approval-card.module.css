@@ -1,0 +1,29 @@
+/* approval-card: styles that only this component uses (moved from the shared sheet). */
+.reviewIcon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-primary-text, #27272a);
+  border-radius: 6px;
+  font-size: 14px;
+}
+.eyebrow {
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-meta, 13px);
+  font-weight: 500;
+}
+.reviewIcon {
+  background: var(--ai-warning-soft, #fef3c7);
+  color: var(--ai-warning, #92400e);
+}
+.reviewIcon[data-risk='low'] {
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-muted, #52525b);
+}
+.reviewIcon[data-risk='high'] {
+  background: var(--ai-danger-soft, #fee2e2);
+  color: var(--ai-danger, #991b1b);
+}

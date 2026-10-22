@@ -1,0 +1,10 @@
+/* accordion: styles that only this component uses (moved from the shared sheet). */
+.accordionHeading {
+  margin: 0;
+  font: inherit;
+}
+.accordionContent {
+  overflow: hidden;
+  font-size: var(--ai-font-size-meta, 13px);
+  color: var(--ai-muted, #52525b);
+}

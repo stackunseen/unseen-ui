@@ -5,6 +5,7 @@ import { Button } from '../button/button.js';
 import { Modal } from '../modal/modal.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './citation.module.css';
 import { SourceCard } from '../source-card/source-card.js';
 export type CitationReference = Pick<
   Extract<MessagePart, { type: 'source' }>,
@@ -44,7 +45,7 @@ export function Citation({ source, reference, number, variant = 'chip' }: Citati
       trigger={
         <Button
           variant={variant === 'inline' ? 'ghost' : 'outline'}
-          className={s.citation}
+          className={own.citation}
           data-presentation={variant}
           aria-label={`Source ${number}: ${title}`}
         >

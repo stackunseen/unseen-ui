@@ -74,10 +74,12 @@ export function Select({
         value={option.value}
         disabled={option.disabled}
         textValue={option.label}
-        className={`${s.selectItem} ${selectStyles.option}`}
+        className={`${selectStyles.selectItem} ${selectStyles.option}`}
       >
         <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
-        <SelectPrimitive.ItemIndicator className={`${s.selectIndicator} ${selectStyles.indicator}`}>
+        <SelectPrimitive.ItemIndicator
+          className={`${selectStyles.selectIndicator} ${selectStyles.indicator}`}
+        >
           <AIIcon name="check" />
         </SelectPrimitive.ItemIndicator>
       </SelectPrimitive.Item>
@@ -125,19 +127,19 @@ export function Select({
       <SelectPrimitive.Portal>
         <ThemeSurface>
           <SelectPrimitive.Content
-            className={s.selectContent}
+            className={selectStyles.selectContent}
             position="popper"
             sideOffset={6}
             collisionPadding={12}
             onCloseAutoFocus={onCloseAutoFocus}
           >
-            <SelectPrimitive.ScrollUpButton className={s.selectScroll}>
+            <SelectPrimitive.ScrollUpButton className={selectStyles.selectScroll}>
               <AIIcon name="collapse" />
             </SelectPrimitive.ScrollUpButton>
-            <SelectPrimitive.Viewport className={s.selectViewport}>
+            <SelectPrimitive.Viewport className={selectStyles.selectViewport}>
               {optionItems}
             </SelectPrimitive.Viewport>
-            <SelectPrimitive.ScrollDownButton className={s.selectScroll}>
+            <SelectPrimitive.ScrollDownButton className={selectStyles.selectScroll}>
               <AIIcon name="expand" />
             </SelectPrimitive.ScrollDownButton>
           </SelectPrimitive.Content>

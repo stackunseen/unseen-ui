@@ -8,6 +8,7 @@ import { StatusBadge } from '../status-badge/status-badge.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './connection-status.module.css';
 import actions from '../../shared/styles/action-layout.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
@@ -56,7 +57,7 @@ export function ConnectionStatus({
   const canRefresh = value.adapter.snapshot && !!onRefresh;
   const showRecovery = interrupted || submission !== 'idle';
   return (
-    <Panel className={s.connectionStatus} data-variant={variant} data-interrupted={interrupted}>
+    <Panel className={own.connectionStatus} data-variant={variant} data-interrupted={interrupted}>
       <div className={s.row}>
         <strong className={s.grow}>
           <AIIcon name={interrupted ? 'warning' : 'check'} /> {label}

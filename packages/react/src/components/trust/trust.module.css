@@ -1,0 +1,5 @@
+/* trust: styles that only this component uses (moved from the shared sheet). */
+.stack {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+}

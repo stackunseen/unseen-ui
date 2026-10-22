@@ -5,6 +5,7 @@ import { StatusBadge } from '../status-badge/status-badge.js';
 import { Accordion } from '../accordion/accordion.js';
 import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './tool-group.module.css';
 import { ToolCall } from '../tool-call/tool-call.js';
 import { ToolContext, ToolDetailContext } from '../tool-call/tool-context.js';
 export function ToolGroup({
@@ -24,7 +25,7 @@ export function ToolGroup({
         </div>
       )}
       {variant === 'list' ? (
-        <div className={s.toolList}>
+        <div className={own.toolList}>
           {tools.map((tool) => (
             <ToolCall key={tool.id} value={tool} variant="row" detail={detail} />
           ))}

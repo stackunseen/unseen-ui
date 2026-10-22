@@ -1,0 +1,17 @@
+/* connection-status: styles that only this component uses (moved from the shared sheet). */
+.connectionStatus {
+  min-width: 0;
+}
+.connectionStatus[data-variant='banner'] {
+  border-inline-start: 4px solid var(--ai-success, #166534);
+}
+.connectionStatus[data-variant='banner'][data-interrupted='true'] {
+  border-inline-start-color: var(--ai-warning, #92400e);
+}
+.connectionStatus[data-variant='compact'] {
+  padding: 12px;
+  background: var(--ai-surface-subtle, #f4f4f5);
+}
+.connectionStatus[data-variant='compact'] > p {
+  margin-block: 8px;
+}

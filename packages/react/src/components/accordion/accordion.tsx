@@ -4,6 +4,7 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './accordion.module.css';
 
 export interface AccordionItem {
   value: string;
@@ -57,7 +58,7 @@ export function Accordion({
           className={s.accordionItem}
         >
           <AccordionPrimitive.Header asChild>
-            <Heading className={s.accordionHeading}>
+            <Heading className={own.accordionHeading}>
               <AccordionPrimitive.Trigger className={s.accordionTrigger}>
                 <span>{item.title}</span>
                 <AIIcon name="expand" className={s.accordionChevron} />
@@ -68,7 +69,7 @@ export function Accordion({
             asChild
             forceMount={item.keepMounted ? true : undefined}
             role={region ? 'region' : 'group'}
-            className={s.accordionContent}
+            className={own.accordionContent}
           >
             <AccordionContent>
               <div className={s.accordionBody}>{item.content}</div>

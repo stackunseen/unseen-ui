@@ -1,0 +1,111 @@
+/* prompt-input: styles that only this component uses (moved from the shared sheet). */
+.composer {
+  position: relative;
+  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #71717a);
+  border-radius: var(--ai-composer-radius, 16px);
+  padding: 8px 10px;
+  background: var(--ai-field-background, var(--ai-surface, #fff));
+}
+.composer:has(textarea:focus-visible) {
+  outline: 2px solid var(--ai-focus, #18181b);
+  outline-offset: -1px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai-focus, #18181b) 22%, transparent);
+}
+.composer textarea:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.composer textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  max-height: 240px;
+  resize: none;
+  color: var(--ai-text, #18181b);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  line-height: 1.6;
+  padding: 6px;
+}
+.composer textarea::placeholder {
+  color: color-mix(in srgb, var(--ai-muted, #52525b) 80%, var(--ai-surface, #fff));
+}
+.composerFooter {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.composerControls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 0;
+}
+.composerControls > :first-child:not(.composerSubmit) {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+.composerSubmit {
+  display: flex;
+  flex: 0 0 auto;
+  max-width: 100%;
+  margin-inline-start: auto;
+}
+.composerFooter > span {
+  font-size: var(--ai-font-size-caption, 12px);
+  overflow-wrap: anywhere;
+}
+.composer:not(:focus-within) [data-hint] {
+  opacity: 0;
+}
+.composerSubmit > button {
+  border-radius: 999px;
+}
+.composer textarea:disabled {
+  cursor: not-allowed;
+  opacity: var(--ai-disabled-opacity, 0.5);
+}
+.composer[data-variant='standard'] {
+  padding: 12px;
+}
+.composer[data-variant='compact'] {
+  padding: 8px;
+  border-radius: var(--ai-control-radius, 10px);
+}
+.composer[data-variant='inline'] {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  border-radius: var(--ai-composer-radius, 16px);
+}
+.composer[data-variant='inline'][data-has-attachments='true'] {
+  flex-wrap: wrap;
+}
+.composer[data-variant='inline'][data-has-toolbar='true'] {
+  flex-wrap: wrap;
+}
+.composer[data-variant='inline'] textarea {
+  min-height: 40px;
+  flex: 1;
+}
+.composer[data-variant='inline'] > .composerFooter {
+  flex: 0 1 auto;
+}
+.composer[data-variant='inline'][data-has-toolbar='true'] > .composerFooter {
+  flex-basis: 100%;
+}
+@media (max-width: 480px) {
+  .composer[data-variant='inline'] {
+    flex-wrap: wrap;
+    border-radius: var(--ai-composer-radius, 16px);
+  }
+  .composer[data-variant='inline'] textarea {
+    flex-basis: 100%;
+  }
+  .composer[data-variant='inline'] > .composerFooter {
+    flex-basis: 100%;
+    width: 100%;
+  }
+}

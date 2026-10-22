@@ -12,6 +12,7 @@ import { SummaryHeading } from '../../shared/summary-heading.js';
 import { useDisclosure } from '../../shared/disclosure.js';
 import type { DetailProps, VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
+import own from './tool-call.module.css';
 import css from './tools.module.css';
 import { ToolResult } from '../tool-result/tool-result.js';
 import { ToolContext, ToolDetailContext } from './tool-context.js';
@@ -35,7 +36,7 @@ function ToolSummary() {
     <div className={s.row}>
       <SummaryHeading
         icon={
-          <span className={s.toolIcon} aria-hidden="true">
+          <span className={own.toolIcon} aria-hidden="true">
             <AIIcon name="tool" />
           </span>
         }
