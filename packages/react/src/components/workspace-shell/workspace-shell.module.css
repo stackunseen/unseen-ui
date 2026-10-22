@@ -86,8 +86,10 @@
 .root[data-scroll-mode='panes'] .pane {
   position: relative;
   overflow: auto;
-  scrollbar-gutter: stable;
-  padding: 4px;
+  /* Room for focus rings and the scrollbar. A host whose panes scroll their own content (a chat
+     transcript, a sidebar list) sets these to 0 and auto, so nothing is reserved twice. */
+  scrollbar-gutter: var(--ai-workspace-pane-gutter, stable);
+  padding: var(--ai-workspace-pane-padding, 4px);
 }
 .pane:focus-visible {
   outline: 2px solid var(--ai-focus);

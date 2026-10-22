@@ -888,6 +888,14 @@
   /* Conversation text reads at 16px, as in ChatGPT; the rest of the interface stays smaller. */
   font-size: var(--ai-font-size-message, 16px);
 }
+/* A Markdown reply reads at the same size, not at the interface's smaller --ai-font-size. */
+.message[data-variant='chat'] [data-part='markdown'] {
+  font-size: inherit;
+}
+/* Copy, retry and the rest sit just under the text, as in ChatGPT. */
+.message[data-variant='chat'] [data-part='message-actions'] {
+  margin-top: 0;
+}
 .message[data-variant='chat'][data-role='user'] {
   align-items: flex-end;
 }

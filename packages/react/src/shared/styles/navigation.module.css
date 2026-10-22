@@ -20,7 +20,8 @@
   min-width: 0;
   max-height: var(--ai-navigation-height, 360px);
   overflow: auto;
-  scrollbar-gutter: stable;
+  /* A host that lets the list grow (--ai-navigation-height: none) sets this to auto. */
+  scrollbar-gutter: var(--ai-navigation-gutter, stable);
 }
 .threadWindow:focus-visible,
 .queueText:focus-visible {
@@ -239,10 +240,12 @@
   border-color: var(--ai-primary);
 }
 .root[data-variant='compact'] .threadSelect {
-  padding: 6px 8px;
+  /* --ai-list-inset lines the sidebar list up with a host's own navigation items. */
+  padding: 6px var(--ai-list-inset, 8px);
 }
 .root[data-variant='compact'] .thread > .actions {
-  padding: 4px 4px 4px 0;
+  /* 1px + a 32px button + 1px: no taller than the row, so showing them never moves the list. */
+  padding: 1px 4px 1px 0;
 }
 .root[data-variant='compact'] .queueItem {
   padding: 8px;
@@ -273,9 +276,13 @@
   background: var(--ai-surface-subtle);
   border-color: transparent;
 }
+/* Rows are 36px with their 1px borders and 1px apart, the rhythm of a sidebar's own links. */
+.root[data-variant='compact'] .threads {
+  gap: 1px;
+}
 .root[data-variant='compact'] .threadSelect {
   align-items: center;
-  min-height: 36px;
+  min-height: 34px;
 }
 .root[data-variant='compact'] .threadSelect > span,
 .root[data-variant='compact'] .threadSelect strong {
@@ -298,11 +305,12 @@
   justify-content: space-between;
   gap: 8px;
 }
-/* In a sidebar the list title reads like the date groups under it, as ChatGPT's "Chats". */
+/* In a sidebar the list title reads like the date groups under it, as ChatGPT's "Chats". Labels
+   start where row titles do: the inset plus the row's border. */
 .root[data-variant='compact'] > strong,
 .root[data-variant='compact'] > .listHead > strong,
 .groupLabel {
-  padding-inline: 8px;
+  padding-inline: calc(var(--ai-list-inset, 8px) + var(--ai-border-width, 1px));
   color: var(--ai-muted);
   font-size: 12px;
   font-weight: 600;

@@ -87,7 +87,8 @@
 .scroll {
   max-height: 420px;
   overflow: auto;
-  scrollbar-gutter: stable;
+  /* No reserved gutter: added and removed rows run to both edges of the card, and only a diff
+     long enough to scroll gives room to its scrollbar. */
   min-width: 0;
 }
 .diff {
