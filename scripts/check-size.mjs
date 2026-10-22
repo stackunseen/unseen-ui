@@ -29,6 +29,16 @@ console.log(JSON.stringify(metrics, null, 2));
 if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 25600)
   throw new Error('Initial bundle budget exceeded.');
 
+// Per-entry stylesheets (ADR 0028): core for the root entry, then what each other entry adds.
+const sheetDir = 'packages/react/dist/styles';
+const sheets = (await readdir(sheetDir)).filter((name) => name.endsWith('.css'));
+if (!sheets.includes('core.css')) throw new Error('dist/styles/core.css is missing; run the package build.');
+for (const name of sheets) {
+  const gzip = gzipSync(await readFile(join(sheetDir, name))).length;
+  console.log(JSON.stringify({ entryCss: name, gzipBytes: gzip }));
+  if (gzip > (name === 'core.css' ? 22528 : 4096)) throw new Error(`${name} is over its CSS budget.`);
+}
+
 const markdownResult = await build({
   configFile: false,
   logLevel: 'silent',

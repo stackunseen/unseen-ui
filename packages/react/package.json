@@ -48,6 +48,7 @@
       "import": "./dist/markdown.js"
     },
     "./styles.css": "./dist/styles.css",
+    "./styles/*.css": "./dist/styles/*.css",
     "./terminal.css": "./dist/terminal.css",
     "./rich-markdown": {
       "types": "./dist/rich-markdown.d.ts",
@@ -250,7 +251,7 @@
     "zod": "4.6.5"
   },
   "scripts": {
-    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && vite build --mode assistant && vite build --mode devtools && vite build --mode media && vite build --mode navigation && vite build --mode mcp-apps && vite build --mode chat && tsc -p tsconfig.build.json",
+    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && vite build --mode assistant && vite build --mode devtools && vite build --mode media && vite build --mode navigation && vite build --mode mcp-apps && vite build --mode chat && node ../../scripts/split-css.mjs && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

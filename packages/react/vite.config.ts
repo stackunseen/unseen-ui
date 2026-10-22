@@ -51,7 +51,27 @@ function scopedName(name: string, file: string) {
   return `${name}_${hash.slice(0, 4)}`;
 }
 
+/** The entries built in the base mode; their styles share `styles.css` (see ADR 0028). */
+export const baseEntries = {
+  index: 'src/index.ts',
+  theme: 'src/theme.ts',
+  status: 'src/status.tsx',
+  markdown: 'src/markdown.tsx',
+  'rich-markdown': 'src/rich-markdown.tsx',
+  math: 'src/math.tsx',
+  mermaid: 'src/mermaid.tsx',
+  code: 'src/code.ts',
+  highlight: 'src/highlight.tsx',
+  terminal: 'src/terminal.tsx',
+  viewport: 'src/viewport.tsx',
+  layout: 'src/layout.ts',
+  sidecar: 'src/sidecar.tsx',
+  workspace: 'src/workspace-shell.tsx',
+  upload: 'src/upload-attachment.tsx',
+} as const;
+
 export default defineConfig(({ mode }) => {
+  const cssEntry = process.env.UI_CSS_ENTRY;
   const optional = [
     'application',
     'marketing',
@@ -109,32 +129,22 @@ export default defineConfig(({ mode }) => {
     build: {
       // Optional entries have their own CSS and chunks; the base graph stays unchanged.
       emptyOutDir: !optional,
+      // scripts/split-css.mjs builds one base entry at a time for its stylesheet only.
+      ...(cssEntry ? { outDir: process.env.UI_CSS_OUT, emptyOutDir: true } : {}),
       lib: {
         entry: optional
           ? {
               [mode]: `src/${mode}.${['editor', 'artifact-editor', 'conversation-flow', 'mcp-apps', 'chat'].includes(mode) ? 'tsx' : 'ts'}`,
             }
-          : {
-              index: 'src/index.ts',
-              theme: 'src/theme.ts',
-              status: 'src/status.tsx',
-              markdown: 'src/markdown.tsx',
-              'rich-markdown': 'src/rich-markdown.tsx',
-              math: 'src/math.tsx',
-              mermaid: 'src/mermaid.tsx',
-              code: 'src/code.ts',
-              highlight: 'src/highlight.tsx',
-              terminal: 'src/terminal.tsx',
-              viewport: 'src/viewport.tsx',
-              layout: 'src/layout.ts',
-              sidecar: 'src/sidecar.tsx',
-              workspace: 'src/workspace-shell.tsx',
-              upload: 'src/upload-attachment.tsx',
-              // Internal relative dependency shared by root and optional portals.
-              '_overlay-direction': 'src/shared/overlay-direction.ts',
-            },
+          : cssEntry
+            ? { [cssEntry]: baseEntries[cssEntry as keyof typeof baseEntries] }
+            : {
+                ...baseEntries,
+                // Internal relative dependency shared by root and optional portals.
+                '_overlay-direction': 'src/shared/overlay-direction.ts',
+              },
         formats: ['es'],
-        cssFileName: optional ? mode : 'styles',
+        cssFileName: optional ? mode : cssEntry ? 'entry' : 'styles',
       },
       rolldownOptions: {
         ...(optional ? { output: { chunkFileNames: `optional/${mode}/[name]-[hash].js` } } : {}),

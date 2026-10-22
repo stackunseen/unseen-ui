@@ -55,6 +55,15 @@ Ordinary components come from the package root. Heavier features live in their o
 
 Load `styles.css` first, then any entry stylesheet. There are no `/button` or `/icons` subpaths; use named imports from the root.
 
+`styles.css` holds the styles of every base entry. To load less, import `styles/core.css` instead (about 21 KB gzip instead of 25 KB), then one sheet for each base entry you use, after it: `styles/layout.css`, `styles/markdown.css`, `styles/rich-markdown.css`, `styles/code.css`, `styles/highlight.css`, `styles/math.css`, `styles/mermaid.css`, `styles/terminal.css`, `styles/viewport.css`, `styles/sidecar.css`, `styles/workspace.css` or `styles/upload.css`. Optional entry sheets such as `chat.css` follow as before.
+
+```ts
+import '@stackunseen/ui/styles/core.css';
+import '@stackunseen/ui/styles/layout.css';
+import '@stackunseen/ui/styles/markdown.css';
+import '@stackunseen/ui/chat.css';
+```
+
 ## How the components behave
 
 Components are controlled: you pass in state and get callbacks back. Your server decides what's allowed and runs the actions, so an approval card or a clicked button is a request, not proof that anything happened. The package makes no network calls, holds no credentials and doesn't connect to a model. Model and tool output is rendered as text, or through sanitized renderers, never as HTML or code.
