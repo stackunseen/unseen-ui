@@ -144,12 +144,13 @@ function cssUsage() {
       else if (name.endsWith('.css')) {
         const css = readFileSync(full, 'utf8');
         const where = path.relative(path.join(pkgDir, 'src'), full).replaceAll('\\', '/');
+        // Prettier may wrap a long var() over several lines, so whitespace is allowed throughout.
         for (const match of css.matchAll(
-          /var\((--ai-[a-z0-9-]+)\s*(?:,\s*([^;{}]*?))?\)(?=[\s;,)}])/g,
+          /var\(\s*(--ai-[a-z0-9-]+)\s*(?:,\s*([^;{}]*?))?\s*\)(?=[\s;,)}])/g,
         )) {
           const entry = usage.get(match[1]) ?? { fallbacks: new Map(), files: new Set() };
           if (match[2] && !match[2].includes('var(')) {
-            const fallback = match[2].trim();
+            const fallback = match[2].replace(/\s+/g, ' ').replace(/,\s*$/, '').trim();
             entry.fallbacks.set(fallback, (entry.fallbacks.get(fallback) ?? 0) + 1);
           }
           entry.files.add(where);
