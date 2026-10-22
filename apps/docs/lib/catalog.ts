@@ -648,6 +648,8 @@ export const catalog: CatalogEntry[] = [
     name: 'ChatLauncher',
     category: 'Conversation',
     importPath: '/chat',
+    // One look; the placement is a prop, not a presentation.
+    presentations: ['default'],
     aliases: ['Chat widget', 'Chat bubble', 'Support chat', 'Assistant popup'],
     description:
       'A floating chat bubble for a website that opens a chat panel, full screen on phones.',
