@@ -364,8 +364,8 @@ async function journeys(page, { origin, output }, audit) {
               }),
             );
           if ((await page.locator('h1').count()) !== 1) throw new Error('Expected one H1');
-          if (!typography.includes('instrumentSans'))
-            throw new Error('The site does not use its self-hosted Instrument Sans family');
+          if (!typography.includes('hankenGrotesk'))
+            throw new Error('The site does not use its self-hosted Hanken Grotesk family');
           const footer = await page.locator('.web-footer').boundingBox();
           if (route !== '/' && footer.height > (width === 320 ? 112 : 80))
             throw new Error('Internal footer is too tall');

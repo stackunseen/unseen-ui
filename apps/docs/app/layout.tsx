@@ -10,9 +10,11 @@ import './home.css';
 import './polish.css';
 import { SiteShell } from '../components/site-shell';
 import { pageMetadata, siteDescription, siteOrigin } from '../lib/site-seo';
-const instrumentSans = localFont({
-  src: './fonts/instrument-sans-latin.woff2',
-  weight: '400 700',
+// Hanken Grotesk (SIL Open Font License, public/fonts/hanken-grotesk-OFL.txt), self-hosted:
+// the variable Latin file from @fontsource-variable/hanken-grotesk 5.3.0.
+const hankenGrotesk = localFont({
+  src: './fonts/hanken-grotesk-latin.woff2',
+  weight: '100 900',
   style: 'normal',
   display: 'swap',
   variable: '--font-unseen',
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
 };
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={instrumentSans.variable}>
+    <html lang="en" className={hankenGrotesk.variable}>
       <body>
         <SiteShell>{children}</SiteShell>
       </body>
