@@ -11,6 +11,7 @@ import own from './approval-card.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 import { useDisclosure } from '../../shared/disclosure.js';
+import { stateLabel } from '../../shared/labels.js';
 
 export interface ApprovalCardProps extends VariantProps<'ApprovalCard'> {
   proposal: ApprovalProposal;
@@ -64,7 +65,7 @@ export function ApprovalCard({
   const summaryParts = [
     proposal.target,
     proposal.scopes.join(', '),
-    proposal.risk === 'unknown' ? '' : `${proposal.risk} risk`,
+    proposal.risk === 'unknown' ? '' : `${stateLabel(proposal.risk)} risk`,
   ].filter(Boolean);
   const heading = {
     pending: 'Review required',
@@ -109,7 +110,8 @@ export function ApprovalCard({
         )}
         <dt>Risk / version</dt>
         <dd>
-          {proposal.risk === 'unknown' ? 'Not assessed' : proposal.risk} · v{proposal.version}
+          {proposal.risk === 'unknown' ? 'Not assessed' : stateLabel(proposal.risk)} · v
+          {proposal.version}
         </dd>
         <dt>Expires</dt>
         <dd>
