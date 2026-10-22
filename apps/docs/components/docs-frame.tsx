@@ -6,6 +6,7 @@ const docsLinks: readonly FrameLink[] = [
   ['Overview', '/docs/'],
   ['Getting started', '/getting-started/'],
   ['Themes and icons', '/docs/customization/'],
+  ['Design tokens', '/docs/tokens/'],
   ['Connect to your app', '/docs/integration/'],
   ['Migrate from AI Elements', '/docs/migrate-from-ai-elements/'],
   ['Changelog', '/docs/changelog/'],

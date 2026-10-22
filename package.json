@@ -29,6 +29,8 @@
     "format:check": "prettier --check packages apps examples tests scripts *.json *.ts *.mjs",
     "check:packages": "node scripts/check-packages.mjs",
     "check:size": "node scripts/check-size.mjs",
+    "manifest": "node scripts/component-manifest.mjs",
+    "check:manifest": "node scripts/component-manifest.mjs --check",
     "storybook": "storybook dev -p 6006 --no-open",
     "build:storybook": "storybook build --output-dir output/storybook",
     "uploads:serve": "node examples/upload-host/serve.mjs",

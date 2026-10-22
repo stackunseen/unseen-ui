@@ -1,0 +1,34 @@
+{
+  "$comment": "The naming rules every public API follows, with the deliberate exceptions. Read by scripts/component-manifest.mjs into packages/react/manifest.json.",
+  "rules": {
+    "names": "Components and their parts are PascalCase; hooks start with use; acronyms stay in capitals (AIIcon, MCPServerCard).",
+    "values": "A controlled value is value with onValueChange; open state is open with onOpenChange, and defaultOpen when uncontrolled.",
+    "state": "state is a lifecycle: streaming, running, complete, failed. status is whether host data is there: ready, loading, denied, unavailable, error, stale.",
+    "labels": "States render as words (\"Connected\", \"Needs review\"), never as the raw value.",
+    "progress": "loading is data on its way; pending is a request waiting for the host; busy is an action of this component in progress.",
+    "styling": "Style through --ai-* variables, className on the root and data-part hooks; generated class names are not an API.",
+    "hosts": "A clicked button is a request: components show the host's answer, never an assumed outcome."
+  },
+  "exceptions": [
+    {
+      "api": "useAiSdkChat, fromAiSdkChat",
+      "rule": "names",
+      "reason": "Named after the product \"AI SDK\"."
+    },
+    {
+      "api": "Chart, GeneratedUI, WorkflowGraph: state",
+      "rule": "state",
+      "reason": "One prop carries both streaming and availability, so it is named for the lifecycle."
+    },
+    {
+      "api": "CodeEditor: onChange",
+      "rule": "values",
+      "reason": "It reports an edit request for the host to apply, not a new value."
+    },
+    {
+      "api": "AIForm: values, onValueChange",
+      "rule": "values",
+      "reason": "A form holds several values at once."
+    }
+  ]
+}

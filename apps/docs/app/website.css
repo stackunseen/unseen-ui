@@ -1681,3 +1681,50 @@
 .web-article th code {
   font-size: 12.5px;
 }
+
+/* Design tokens page */
+.web-article .token-table th[scope='row'] {
+  color: var(--ai-text);
+  font-weight: 400;
+}
+.token-set-by {
+  display: inline-block;
+  margin-inline-start: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--ai-surface-subtle);
+  color: var(--ai-muted);
+  font-size: 11px;
+}
+.token-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.token-swatch > span {
+  width: 14px;
+  height: 14px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 4px;
+}
+
+/* "Good to know" on component pages: deliberate behaviour, short and quiet. */
+.detail-notes {
+  margin-top: 12px;
+}
+.detail-notes h2 {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.detail-notes ul {
+  margin: 0;
+  padding-inline-start: 18px;
+  color: var(--ai-muted);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.detail-notes code {
+  font-size: 12.5px;
+}

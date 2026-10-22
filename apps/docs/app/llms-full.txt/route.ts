@@ -4,6 +4,7 @@ import { navigationGroup } from '../../lib/gallery-navigation';
 import { isReleaseComponent } from '../../lib/first-release';
 import { siteOrigin } from '../../lib/site-seo';
 import { componentImport } from '../../lib/component-import';
+import { behaviourNotes } from '../../lib/behaviour-notes';
 
 export const dynamic = 'force-static';
 
@@ -24,6 +25,7 @@ export function GET() {
       entry.responsibility ? `- Host responsibility: ${entry.responsibility}` : '',
       entry.keyboard ? `- Keyboard: ${entry.keyboard}` : '',
       entry.states?.length ? `- Documented states: ${entry.states.join(', ')}` : '',
+      ...(behaviourNotes[entry.name] ?? []).map((note) => `- Good to know: ${note}`),
       '',
       '```tsx',
       entry.code,

@@ -98,7 +98,8 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     name: 'ModelSelector',
     category: 'Model controls',
     aliases: ['Model picker'],
-    description: 'A compact, searchable model picker grouped by provider.',
+    description:
+      'A compact model picker: each model with its description, and a check on the current one.',
     states: ['Default', 'Unavailable model'],
     contract: 'models · value · onValueChange · label? · disabled?',
     responsibility: 'The host validates the chosen model when the request runs.',

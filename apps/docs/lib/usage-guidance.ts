@@ -594,7 +594,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'ContextInspector',
   ),
   ModelSelector: g(
-    'Picking a model from a searchable, grouped list.',
+    'Picking the model for the next request.',
     'Settings beyond the model.',
     'ModelControls',
   ),

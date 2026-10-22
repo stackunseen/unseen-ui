@@ -21,6 +21,7 @@ import { componentImport } from '../lib/component-import';
 import { guidanceFor } from '../lib/usage-guidance';
 import { patternsUsing } from '../lib/pattern-usage';
 import { registryCommand, registryItemsFor } from '../lib/registry-items';
+import { behaviourNotes } from '../lib/behaviour-notes';
 
 const managers = [
   ['pnpm', 'pnpm add'],
@@ -223,6 +224,9 @@ export function ComponentDetail({
     '',
     entry.description,
     '',
+    ...(behaviourNotes[entry.name]
+      ? ['## Good to know', '', ...behaviourNotes[entry.name]!.map((note) => `- ${note}`), '']
+      : []),
     '## Installation',
     '',
     '```bash',
@@ -267,6 +271,18 @@ export function ComponentDetail({
             </div>
           </div>
           <p>{entry.description}</p>
+          {behaviourNotes[entry.name] && (
+            <div className="detail-notes">
+              <h2>Good to know</h2>
+              <ul>
+                {behaviourNotes[entry.name]!.map((note) => (
+                  <li key={note}>
+                    <InlineCode text={note} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {usedIn.length > 0 && (
             <p className="detail-used-in">
               Used in{' '}
@@ -689,5 +705,22 @@ export function ComponentDetail({
         ))}
       </nav>
     </div>
+  );
+}
+
+/** A note with `code` spans, rendered as code instead of showing the backticks. */
+function InlineCode({ text }: { text: string }) {
+  return (
+    <>
+      {text
+        .split(/(`[^`]+`)/)
+        .map((part, index) =>
+          part.startsWith('`') && part.endsWith('`') ? (
+            <code key={index}>{part.slice(1, -1)}</code>
+          ) : (
+            part
+          ),
+        )}
+    </>
   );
 }

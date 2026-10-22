@@ -1,0 +1,339 @@
+{
+  "$comment": "What each --ai-* CSS variable is for. Naming rules live in conventions.json. scripts/component-manifest.mjs fails when a stylesheet reads a variable that is not listed here, or when one listed here is no longer read. Theme colours take their light and dark values from defaultTheme; set theme variables through AITheme or themeToCSS, and the rest directly on a wrapper.",
+  "variables": {
+    "--ai-canvas": {
+      "group": "colour",
+      "purpose": "Page background behind panels.",
+      "setBy": "theme"
+    },
+    "--ai-surface": {
+      "group": "colour",
+      "purpose": "Panels, cards, menus and dialogs.",
+      "setBy": "theme"
+    },
+    "--ai-surface-subtle": {
+      "group": "colour",
+      "purpose": "Quiet fills: hover rows, code, chips, user bubbles.",
+      "setBy": "theme"
+    },
+    "--ai-text": { "group": "colour", "purpose": "Body text.", "setBy": "theme" },
+    "--ai-muted": {
+      "group": "colour",
+      "purpose": "Secondary text: meta lines, captions, placeholders.",
+      "setBy": "theme"
+    },
+    "--ai-border": {
+      "group": "colour",
+      "purpose": "Dividers and panel outlines.",
+      "setBy": "theme"
+    },
+    "--ai-control-border": {
+      "group": "colour",
+      "purpose": "Outlines of inputs, selects and checkboxes; 3:1 against the surface.",
+      "setBy": "theme"
+    },
+    "--ai-primary": {
+      "group": "colour",
+      "purpose": "Primary buttons and the strongest emphasis.",
+      "setBy": "theme"
+    },
+    "--ai-primary-hover": {
+      "group": "colour",
+      "purpose": "Primary buttons on hover.",
+      "setBy": "theme"
+    },
+    "--ai-primary-foreground": {
+      "group": "colour",
+      "purpose": "Text and icons on a primary fill.",
+      "setBy": "theme"
+    },
+    "--ai-primary-soft": {
+      "group": "colour",
+      "purpose": "Selected and active fills: chosen chips, current rows.",
+      "setBy": "theme"
+    },
+    "--ai-primary-text": {
+      "group": "colour",
+      "purpose": "Primary-coloured text, readable on the surface and on the soft fill.",
+      "setBy": "theme"
+    },
+    "--ai-secondary": { "group": "colour", "purpose": "Secondary brand fill.", "setBy": "theme" },
+    "--ai-secondary-hover": {
+      "group": "colour",
+      "purpose": "Secondary fill on hover.",
+      "setBy": "theme"
+    },
+    "--ai-secondary-foreground": {
+      "group": "colour",
+      "purpose": "Text on a secondary fill.",
+      "setBy": "theme"
+    },
+    "--ai-secondary-soft": {
+      "group": "colour",
+      "purpose": "Soft secondary fill.",
+      "setBy": "theme"
+    },
+    "--ai-secondary-text": {
+      "group": "colour",
+      "purpose": "Secondary-coloured text.",
+      "setBy": "theme"
+    },
+    "--ai-accent": {
+      "group": "colour",
+      "purpose": "Accent fill for highlights such as the Persona orb.",
+      "setBy": "theme"
+    },
+    "--ai-accent-foreground": {
+      "group": "colour",
+      "purpose": "Text on an accent fill.",
+      "setBy": "theme"
+    },
+    "--ai-success": {
+      "group": "colour",
+      "purpose": "Success text and icons: Complete, Passed, Connected.",
+      "setBy": "theme"
+    },
+    "--ai-success-soft": { "group": "colour", "purpose": "Success badge fill.", "setBy": "theme" },
+    "--ai-warning": {
+      "group": "colour",
+      "purpose": "Warning text: Needs review, Unconfirmed, Cannot be undone.",
+      "setBy": "theme"
+    },
+    "--ai-warning-soft": { "group": "colour", "purpose": "Warning badge fill.", "setBy": "theme" },
+    "--ai-danger": {
+      "group": "colour",
+      "purpose": "Errors and destructive actions.",
+      "setBy": "theme"
+    },
+    "--ai-danger-soft": {
+      "group": "colour",
+      "purpose": "Error badge fill and removed diff lines.",
+      "setBy": "theme"
+    },
+    "--ai-focus": {
+      "group": "colour",
+      "purpose": "Keyboard focus rings; 3:1 against the surfaces.",
+      "setBy": "theme"
+    },
+
+    "--ai-radius": {
+      "group": "shape",
+      "purpose": "Corners of panels, menus and dialogs.",
+      "setBy": "theme"
+    },
+    "--ai-control-radius": {
+      "group": "shape",
+      "purpose": "Corners of inputs and selects.",
+      "setBy": "theme"
+    },
+    "--ai-button-radius": {
+      "group": "shape",
+      "purpose": "Corners of buttons; follows the control radius unless set.",
+      "setBy": "theme"
+    },
+    "--ai-composer-radius": {
+      "group": "shape",
+      "purpose": "Corners of the message composer.",
+      "setBy": "theme"
+    },
+    "--ai-radius-card": {
+      "group": "shape",
+      "purpose": "Corners of Card and Stat surfaces.",
+      "setBy": "theme"
+    },
+    "--ai-radius-pill": {
+      "group": "shape",
+      "purpose": "Corners of chips and segmented controls.",
+      "setBy": "theme"
+    },
+    "--ai-radius-tag": { "group": "shape", "purpose": "Corners of tag labels.", "setBy": "theme" },
+    "--ai-border-width": {
+      "group": "shape",
+      "purpose": "Width of borders and dividers.",
+      "setBy": "theme"
+    },
+    "--ai-field-background": {
+      "group": "colour",
+      "purpose": "Fill of text fields: the surface, or the subtle surface when fields are tinted.",
+      "setBy": "theme"
+    },
+    "--ai-shadow-popover": {
+      "group": "elevation",
+      "purpose": "Shadow under menus, popovers and floating buttons.",
+      "setBy": "theme"
+    },
+    "--ai-shadow-dialog": {
+      "group": "elevation",
+      "purpose": "Shadow under dialogs and sheets.",
+      "setBy": "theme"
+    },
+    "--ai-shadow-panel": {
+      "group": "elevation",
+      "purpose": "Optional shadow on raised panels; none unless a host sets it."
+    },
+    "--ai-control-height": {
+      "group": "spacing",
+      "purpose": "Height of buttons, inputs and menu rows; 32px when compact.",
+      "setBy": "theme"
+    },
+    "--ai-gap": {
+      "group": "spacing",
+      "purpose": "Space between blocks inside a component.",
+      "setBy": "theme"
+    },
+    "--ai-field-gap": {
+      "group": "spacing",
+      "purpose": "Space between a label, its control and its help text.",
+      "setBy": "theme"
+    },
+    "--ai-panel-padding": {
+      "group": "spacing",
+      "purpose": "Inner padding of panels and cards.",
+      "setBy": "theme"
+    },
+    "--ai-row-gap": { "group": "spacing", "purpose": "Space between rows in page-level layouts." },
+    "--ai-activity-gap": {
+      "group": "spacing",
+      "purpose": "Space between lines of an assistant's activity (tool calls, reasoning)."
+    },
+    "--ai-matrix-flip": {
+      "group": "colour",
+      "purpose": "Matrix fill level at which cell text switches to the primary foreground; computed by the theme.",
+      "setBy": "theme"
+    },
+
+    "--ai-font-family": {
+      "group": "type",
+      "purpose": "Interface typeface; inherits the page font when unset."
+    },
+    "--ai-font-mono": {
+      "group": "type",
+      "purpose": "Monospace typeface for code, paths and identifiers."
+    },
+    "--ai-font-size": { "group": "type", "purpose": "Body text size of the interface." },
+    "--ai-font-size-message": {
+      "group": "type",
+      "purpose": "Conversation text in the chat message variant, as in ChatGPT."
+    },
+    "--ai-font-size-heading": { "group": "type", "purpose": "Component titles." },
+    "--ai-font-size-meta": { "group": "type", "purpose": "Meta lines: times, sizes, counts." },
+    "--ai-font-size-caption": { "group": "type", "purpose": "Captions, badges and small buttons." },
+    "--ai-disabled-opacity": { "group": "type", "purpose": "Opacity of disabled controls." },
+
+    "--ai-ease": { "group": "motion", "purpose": "Easing curve of transitions." },
+    "--ai-duration-fast": {
+      "group": "motion",
+      "purpose": "Short transitions: hover, open and close."
+    },
+    "--ai-duration-base": { "group": "motion", "purpose": "Longer transitions such as progress." },
+
+    "--ai-chat-height": {
+      "group": "component",
+      "purpose": "Height of Chat; set 100% to fill a parent."
+    },
+    "--ai-message-padding": {
+      "group": "component",
+      "purpose": "Inner padding of the panel message variant."
+    },
+    "--ai-launcher-z": {
+      "group": "component",
+      "purpose": "Stacking level of the ChatLauncher bubble and panel."
+    },
+    "--ai-list-inset": {
+      "group": "component",
+      "purpose": "Left inset of compact ThreadList rows and labels, to line up with a host's navigation."
+    },
+    "--ai-navigation-height": {
+      "group": "component",
+      "purpose": "Maximum height of the ThreadList scroll area; none lets it grow."
+    },
+    "--ai-navigation-gutter": {
+      "group": "component",
+      "purpose": "Scrollbar room of the ThreadList; auto when the list grows inside another scroller."
+    },
+    "--ai-workspace-padding": { "group": "component", "purpose": "WorkspaceShell outer padding." },
+    "--ai-workspace-gap": {
+      "group": "component",
+      "purpose": "Space between WorkspaceShell panes."
+    },
+    "--ai-workspace-navigation-width": {
+      "group": "component",
+      "purpose": "Width of the WorkspaceShell navigation pane."
+    },
+    "--ai-workspace-inspector-width": {
+      "group": "component",
+      "purpose": "Width of the WorkspaceShell inspector pane."
+    },
+    "--ai-workspace-pane-padding": {
+      "group": "component",
+      "purpose": "Inner padding of scrolling WorkspaceShell panes; 0 when their content scrolls itself."
+    },
+    "--ai-workspace-pane-gutter": {
+      "group": "component",
+      "purpose": "Scrollbar room of WorkspaceShell panes; auto when their content scrolls itself."
+    },
+    "--ai-sidecar-width": { "group": "component", "purpose": "Width of the Sidecar panel." },
+    "--ai-sidecar-inset": {
+      "group": "component",
+      "purpose": "Distance of the Sidecar from the viewport edge.",
+      "setBy": "Sidecar inset prop"
+    },
+    "--ai-sidecar-inset-top": {
+      "group": "component",
+      "purpose": "Top offset of the Sidecar, below a fixed header.",
+      "setBy": "Sidecar inset prop"
+    },
+    "--ai-sidecar-inset-bottom": {
+      "group": "component",
+      "purpose": "Bottom offset of the Sidecar.",
+      "setBy": "Sidecar inset prop"
+    },
+    "--ai-sidecar-sheet-height": {
+      "group": "component",
+      "purpose": "Height of the Sidecar as a bottom sheet on small screens.",
+      "setBy": "Sidecar prop"
+    },
+    "--ai-chip-height": { "group": "component", "purpose": "Height of Chip." },
+    "--ai-chip-padding-inline": { "group": "component", "purpose": "Side padding of Chip." },
+    "--ai-chip-font-size": { "group": "component", "purpose": "Text size of Chip." },
+    "--ai-chip-active-background": {
+      "group": "component",
+      "purpose": "Fill of a selected Chip.",
+      "setBy": "Chip swatch"
+    },
+    "--ai-chip-active-color": {
+      "group": "component",
+      "purpose": "Text of a selected Chip.",
+      "setBy": "Chip swatch"
+    },
+    "--ai-stepper-segment-height": {
+      "group": "component",
+      "purpose": "Height of Stepper progress segments."
+    },
+    "--ai-stepper-segment-gap": {
+      "group": "component",
+      "purpose": "Space between Stepper segments."
+    },
+    "--ai-persona-size": {
+      "group": "component",
+      "purpose": "Diameter of the Persona orb.",
+      "setBy": "Persona size prop"
+    },
+    "--ai-preview-height": { "group": "component", "purpose": "Height of WebPreview frames." },
+    "--ai-matrix-cell-width": { "group": "component", "purpose": "Width of Matrix cells." },
+    "--ai-matrix-cell-height": { "group": "component", "purpose": "Height of Matrix cells." },
+    "--ai-matrix-header-height": {
+      "group": "component",
+      "purpose": "Height of the Matrix column header row."
+    },
+    "--ai-matrix-end-padding": {
+      "group": "component",
+      "purpose": "Space after the last Matrix column."
+    },
+    "--ai-matrix-max-level": {
+      "group": "component",
+      "purpose": "Highest Matrix level, for the fill scale.",
+      "setBy": "Matrix"
+    }
+  }
+}
