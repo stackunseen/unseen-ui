@@ -25,14 +25,13 @@
   "files": [
     "dist",
     "bin",
-    "manifest.json",
     "README.md"
   ],
   "sideEffects": [
     "**/*.css"
   ],
   "exports": {
-    "./manifest.json": "./manifest.json",
+    "./manifest.json": "./dist/manifest.json",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
@@ -253,7 +252,7 @@
     "zod": "4.6.5"
   },
   "scripts": {
-    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && vite build --mode assistant && vite build --mode devtools && vite build --mode media && vite build --mode navigation && vite build --mode mcp-apps && vite build --mode chat && node ../../scripts/split-css.mjs && tsc -p tsconfig.build.json",
+    "build": "vite build && vite build --mode application && vite build --mode marketing && vite build --mode editor && vite build --mode artifact-editor && vite build --mode conversation-flow && vite build --mode assistant && vite build --mode devtools && vite build --mode media && vite build --mode navigation && vite build --mode mcp-apps && vite build --mode chat && node ../../scripts/split-css.mjs && tsc -p tsconfig.build.json && node -e \"require('node:fs').copyFileSync('manifest.json', 'dist/manifest.json')\"",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
