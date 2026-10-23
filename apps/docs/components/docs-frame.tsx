@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { FrameLinks } from './frame-links';
+import { NavResizer } from './nav-resizer';
 
 type FrameLink = readonly [label: string, href: string];
 const docsLinks: readonly FrameLink[] = [
@@ -40,6 +41,7 @@ export function DocsFrame({
           <br />
           APIs may change.
         </p>
+        <NavResizer navSelector=".web-docs-nav" />
       </aside>
       <main id="main-content" className={mainClassName} tabIndex={-1}>
         {children}

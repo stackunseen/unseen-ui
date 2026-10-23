@@ -38,6 +38,7 @@ import { ComponentDetail } from './component-detail';
 import { siteGalleryHref } from '../lib/site-paths';
 import { useSiteTheme } from './site-shell';
 import { ExampleLoading } from './example-loading';
+import { NavResizer } from './nav-resizer';
 
 const ThemeEditor = dynamic(() => import('./theme-editor').then((m) => m.ThemeEditor), {
   loading: ExampleLoading,
@@ -422,6 +423,8 @@ export function Gallery({
               </div>
             )}
           </nav>
+          {/* Inside the aside so the handle belongs to the navigation landmark. */}
+          <NavResizer navSelector=".explorer-sidebar" current={`${view}:${entry.name}`} />
         </aside>
         <main id="main-content" className="main-content explorer-main" tabIndex={-1}>
           {view !== 'components' && (

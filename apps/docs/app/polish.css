@@ -313,3 +313,111 @@
 .explorer-main .detail-frame .detail-toolbar > button:last-child {
   margin-inline-start: auto;
 }
+
+/*
+ * Pinned left navigation (component pages and docs pages). From 961px it sits below the header for
+ * the full height of the window, so the footer never pushes it up; the content and footer start
+ * after it. Its width is one shared setting the reader can drag or step with the keyboard.
+ */
+:root {
+  --docs-nav-width: 264px;
+  --web-header-height: 64px;
+}
+.nav-resizer {
+  display: none;
+}
+@media (min-width: 961px) {
+  .explorer-site .explorer-sidebar,
+  .web-docs-nav {
+    position: fixed;
+    z-index: 5;
+    top: var(--web-header-height);
+    bottom: 0;
+    left: 0;
+    width: var(--docs-nav-width);
+    height: auto;
+    flex-basis: auto;
+    /* A fixed grid child sizes by align-self; stretch fills the space between top and bottom. */
+    align-self: stretch;
+  }
+  .explorer-site .site-body {
+    padding-inline-start: var(--docs-nav-width);
+  }
+  .web-docs-layout {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline-start: var(--docs-nav-width);
+  }
+  body:has(.explorer-sidebar, .web-docs-nav) .web-footer {
+    margin-inline-start: var(--docs-nav-width);
+  }
+  /* Only the list scrolls; the sections and search above it stay put. */
+  .explorer-site .explorer-sidebar {
+    overflow: hidden;
+  }
+  .explorer-library {
+    --nav-bg: var(--ai-surface);
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .web-docs-nav {
+    --nav-bg: var(--ai-canvas);
+  }
+  /* Soft shadows at an edge only while there is more to scroll that way. */
+  .explorer-library,
+  .web-docs-nav {
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--ai-text) 22%, transparent) transparent;
+    background:
+      linear-gradient(var(--nav-bg) 30%, transparent) center top / 100% 32px no-repeat local,
+      linear-gradient(transparent, var(--nav-bg) 70%) center bottom / 100% 32px no-repeat local,
+      linear-gradient(color-mix(in srgb, var(--ai-text) 10%, transparent), transparent) center top /
+        100% 10px no-repeat scroll,
+      linear-gradient(transparent, color-mix(in srgb, var(--ai-text) 10%, transparent)) center
+        bottom / 100% 10px no-repeat scroll;
+    background-color: var(--nav-bg);
+  }
+  .nav-resizer {
+    display: block;
+    position: fixed;
+    z-index: 6;
+    top: var(--web-header-height);
+    bottom: 0;
+    left: calc(var(--docs-nav-width) - 4px);
+    width: 8px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+  .nav-resizer::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: 3px;
+    width: 2px;
+    background: transparent;
+  }
+  @media (hover: hover) {
+    .nav-resizer:hover::after {
+      background: var(--ai-control-border);
+    }
+  }
+  /* Doubled class: the theme's own focus ring loads after this sheet on some pages. */
+  .nav-resizer.nav-resizer:focus-visible {
+    outline: none;
+  }
+  .nav-resizer.nav-resizer:focus-visible::after,
+  html[data-nav-resizing] .nav-resizer::after {
+    background: var(--ai-focus, var(--ai-primary));
+  }
+  /* While dragging, the whole page shows the resize cursor and text is not selected by accident. */
+  html[data-nav-resizing] {
+    cursor: col-resize;
+    user-select: none;
+  }
+}
+@media (min-width: 961px) and (prefers-reduced-motion: no-preference) {
+  .nav-resizer::after {
+    transition: background-color 120ms ease-out;
+  }
+}

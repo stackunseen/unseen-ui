@@ -10,6 +10,7 @@ import './home.css';
 import './polish.css';
 import { SiteShell } from '../components/site-shell';
 import { pageMetadata, siteDescription, siteOrigin } from '../lib/site-seo';
+import { navWidthScript } from '../lib/nav-width';
 // Hanken Grotesk (SIL Open Font License, public/fonts/hanken-grotesk-OFL.txt), self-hosted:
 // the variable Latin file from @fontsource-variable/hanken-grotesk 5.3.0.
 const hankenGrotesk = localFont({
@@ -27,6 +28,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={hankenGrotesk.variable}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: navWidthScript }} />
+      </head>
       <body>
         <SiteShell>{children}</SiteShell>
       </body>

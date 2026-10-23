@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { ResetIcon } from '@radix-ui/react-icons';
 import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import { TableOfContents } from '@stackunseen/ui/navigation';
+import '@stackunseen/ui/navigation.css';
 import type { CatalogEntry } from '../lib/catalog';
 import { catalogStyles } from '../lib/catalog';
 import type { GalleryLocation } from '../lib/gallery-location';
