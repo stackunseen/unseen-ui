@@ -92,9 +92,7 @@ export function MemoryControls({ items, onRequest, variant = 'list' }: MemoryCon
         </ul>
       )}
       {items.length > 100 && (
-        <p className={s.muted}>
-          Showing the first 100 memories. Request a different host data window to inspect more.
-        </p>
+        <p className={s.muted}>Showing the first 100 memories. Load more to see the rest.</p>
       )}
     </div>
   );

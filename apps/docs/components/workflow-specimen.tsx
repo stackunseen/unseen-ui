@@ -40,7 +40,7 @@ export function WorkflowSpecimen({
   let edges: GraphEdge[] = fixtureEdges.map((edge, i) => ({
     ...edge,
     label: long
-      ? `Connection ${i + 1}: continue the current deployment review when the host reports the declared condition`
+      ? `Connection ${i + 1}: continue the current deployment review when the server reports the declared condition`
       : ['Code path', 'Test path', 'Ready for review', 'Checks available'][i],
     kind: edge.from === 'plan' ? 'branch' : 'dependency',
   }));
@@ -152,7 +152,7 @@ export function WorkflowSpecimen({
   function inspect(next: GraphSelection) {
     if (state === 'Selection pending') setRequest({ selection: next, version });
     else setSelection(next);
-    onEvent(`Host received ${next.kind} inspection intent.`);
+    onEvent(`Opened the ${next.kind} details.`);
   }
   const current =
     request?.version === version &&
@@ -170,7 +170,7 @@ export function WorkflowSpecimen({
         onEdgeSelect={(edge) => inspect({ kind: 'edge', id: edge.id })}
         variant={resolveVariant('WorkflowGraph', presentation)}
         title="Agent workflow"
-        source="Synthetic host workflow"
+        source="Sample server workflow"
         version={`v${version}`}
         state={availability}
         error="Workflow history could not be loaded."
@@ -179,7 +179,7 @@ export function WorkflowSpecimen({
         <div className={styles.controls}>
           <p>
             {current
-              ? 'Inspection request awaiting synthetic host acknowledgement.'
+              ? 'Inspection request awaiting sample server acknowledgement.'
               : 'Request is obsolete; current snapshot inspection is required.'}
           </p>
           <Button
@@ -188,7 +188,7 @@ export function WorkflowSpecimen({
               if (current && request) {
                 setSelection(request.selection);
                 setRequest(undefined);
-                onEvent('Synthetic host acknowledged current inspection.');
+                onEvent('Sample server acknowledged current inspection.');
               }
             }}
           >
@@ -201,7 +201,7 @@ export function WorkflowSpecimen({
           variant="outline"
           onClick={() => {
             setVersion((value) => value + 1);
-            onEvent('Synthetic host replaced the immutable workflow snapshot.');
+            onEvent('Sample server replaced the immutable workflow snapshot.');
           }}
         >
           Replace workflow snapshot

@@ -51,7 +51,7 @@ const outcomes: Record<RunOutcome, { state: string; label: string; text: string 
   unknown: {
     state: 'outcome-unknown',
     label: 'Outcome unknown',
-    text: 'The host has not confirmed how this run ended. Check before acting on its effects.',
+    text: 'How this run ended isn’t confirmed yet. Check before acting on what it changed.',
   },
 };
 /** Root-relative app paths or http(s) URLs; anything else is shown as plain text. */

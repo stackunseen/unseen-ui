@@ -157,11 +157,11 @@ export function FileSpecimen({
           pagination={pagination}
           onPageChange={(index) => {
             setPageIndex(index);
-            onEvent('Synthetic host replaced the file page.');
+            onEvent('Sample server replaced the file page.');
           }}
           onRefresh={() => {
             setRevision((value) => value + 1);
-            onEvent('Synthetic host refreshed the file snapshot.');
+            onEvent('Sample server refreshed the file snapshot.');
           }}
           onRequestOpen={
             state === 'Read-only'
@@ -169,7 +169,7 @@ export function FileSpecimen({
               : (next) => {
                   if (state === 'Selection pending') setRequest(next);
                   else setSelection(next);
-                  onEvent('Host received file opening intent. No filesystem read occurred.');
+                  onEvent('Open requested. This example doesn’t read any files.');
                 }
           }
         />
@@ -178,7 +178,7 @@ export function FileSpecimen({
         <div className={styles.controls}>
           <p>
             {current
-              ? 'Opening request awaiting synthetic host acknowledgement.'
+              ? 'Opening request awaiting sample server acknowledgement.'
               : 'Opening request is obsolete; request the current file snapshot.'}
           </p>
           <Button
@@ -187,7 +187,7 @@ export function FileSpecimen({
               if (current) {
                 setSelection(request);
                 setRequest(undefined);
-                onEvent('Synthetic host acknowledged file inspection.');
+                onEvent('Sample server acknowledged file inspection.');
               }
             }}
           >
@@ -215,7 +215,7 @@ export function FileSpecimen({
           {revoked ? 'Restore file access' : 'Revoke file access'}
         </Button>
       </div>
-      <p>Synthetic file metadata and acknowledgements. This fixture does not read a filesystem.</p>
+      <p>Synthetic file metadata and acknowledgements. This sample does not read a filesystem.</p>
     </div>
   );
 }

@@ -15,11 +15,11 @@ function setup() {
   return user;
 }
 async function controls(user: ReturnType<typeof setup>) {
-  await user.click(screen.getByRole('button', { name: 'Simulated host controls' }));
+  await user.click(screen.getByRole('button', { name: 'Simulated server controls' }));
 }
 
 describe('recoverable chat recipe accessibility and behavior', () => {
-  it('passes scoped axe structure checks with host settings open', async () => {
+  it('passes scoped axe structure checks with server settings open', async () => {
     const user = setup();
     await controls(user);
     const result = await axe.run(screen.getByRole('region', { name: 'Recoverable chat recipe' }), {
@@ -33,7 +33,7 @@ describe('recoverable chat recipe accessibility and behavior', () => {
     ).toEqual([]);
   });
 
-  it('discloses simulation, uses named controls, and lets keyboard users access host settings', async () => {
+  it('discloses simulation, uses named controls, and lets keyboard users access server settings', async () => {
     const user = setup();
     expect(screen.getByText(/No provider, network or durable backend/)).toBeVisible();
     expect(screen.getByRole('textbox', { name: 'Message' })).toBeEnabled();
@@ -41,7 +41,7 @@ describe('recoverable chat recipe accessibility and behavior', () => {
       'tabindex',
       '0',
     );
-    const trigger = screen.getByRole('button', { name: 'Simulated host controls' });
+    const trigger = screen.getByRole('button', { name: 'Simulated server controls' });
     trigger.focus();
     await user.keyboard('{Enter}');
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
@@ -102,11 +102,11 @@ describe('recoverable chat recipe accessibility and behavior', () => {
     await waitFor(() =>
       expect(screen.getByRole('group', { name: 'Original request' })).toHaveFocus(),
     );
-    expect(screen.getByText('Received by host')).toBeVisible();
-    expect(screen.queryByText('Stopped by host')).not.toBeInTheDocument();
+    expect(screen.getByText('Received by server')).toBeVisible();
+    expect(screen.queryByText('Stopped by server')).not.toBeInTheDocument();
     expect(screen.getByText(/Requests dispatched: 1 · original receipt lookups: 1/)).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Apply received request' }));
-    expect(screen.getByText('Stopped by host')).toBeVisible();
+    expect(screen.getByText('Stopped by server')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Continue in new attempt' })).toBeEnabled();
   });
 

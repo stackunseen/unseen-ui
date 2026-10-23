@@ -37,7 +37,7 @@ const grants: ScopeGrant[] = [
     scopes: ['files:write'],
     target: 'Repository',
     grantedAt: '2026-10-14T09:00:00.000Z',
-    uses: { kind: 'unknown', reason: 'the host does not count file writes' },
+    uses: { kind: 'unknown', reason: 'the server does not count file writes' },
     status: 'active',
   },
 ];
@@ -69,7 +69,7 @@ export function GovernanceSpecimen({
         onRevoke={(request) => {
           setReceipts([{ commandId: request.grantId, status: 'submitting' }]);
           onNotice(
-            `Revoke requested for ${request.grantId} (version ${request.version}). Waiting for the host.`,
+            `Revoke requested for ${request.grantId} (version ${request.version}). Waiting for the server.`,
           );
         }}
       />
@@ -118,14 +118,14 @@ export function GovernanceSpecimen({
             ? {
                 commandId: 'plan-7',
                 status: 'acknowledged',
-                message: 'The host queued the plan as run plan-7-r1.',
+                message: 'The plan is queued as run plan-7-r1.',
               }
             : undefined
         }
         onDecision={(decision) => {
           setSubmission('submitting');
           onNotice(
-            `${decision.decision === 'run' ? 'Run' : 'Cancel'} requested for ${decision.planId} v${decision.version}, skipping ${decision.skippedIds.length}. Waiting for the host.`,
+            `${decision.decision === 'run' ? 'Run' : 'Cancel'} requested for ${decision.planId} v${decision.version}, skipping ${decision.skippedIds.length}. Waiting for the server.`,
           );
           window.setTimeout(() => setSubmission('acknowledged'), 900);
         }}
@@ -180,14 +180,14 @@ export function GovernanceSpecimen({
               covered: proposals
                 .filter((item) => item.status === 'pending' && !excluded.includes(item.id))
                 .map((item) => item.id),
-              message: 'The host applied the decision to the covered proposals.',
+              message: 'The decision was applied to the included proposals.',
             }
           : undefined
       }
       onDecision={(decision) => {
         setSubmission('submitting');
         onNotice(
-          `${decision.decision} requested for ${decision.items.length} proposals. Waiting for the host.`,
+          `${decision.decision} requested for ${decision.items.length} proposals. Waiting for the server.`,
         );
         window.setTimeout(() => setSubmission('acknowledged'), 900);
       }}

@@ -63,8 +63,8 @@ describe('message part composition', () => {
       />,
     );
     expect(screen.queryByText('Private.txt')).toBeNull();
-    expect(screen.getByText(/Attachment version unavailable/)).toBeVisible();
-    expect(screen.getByText(/Tool result unavailable/)).toBeVisible();
+    expect(screen.getByText(/version of the attachment isn’t available/)).toBeVisible();
+    expect(screen.getByText(/tool result isn’t available/)).toBeVisible();
     expect(screen.getByText(/Unsupported content: New visualization/)).toBeVisible();
   });
 });

@@ -71,7 +71,12 @@ export function WorkbenchConversation({
               state: snapshot.connection,
               recovery: 'none',
               freshness: 'stale',
-              adapter: { name: 'In-memory demo host', version: '1', resume: false, snapshot: true },
+              adapter: {
+                name: 'In-memory demo server',
+                version: '1',
+                resume: false,
+                snapshot: true,
+              },
               cursor: { streamId, sequence: lastSequence },
               detail: snapshot.diagnostic ?? undefined,
             }}
@@ -147,7 +152,7 @@ export function WorkbenchConversation({
           placeholder="Describe an account review…"
           toolbar={
             <span className={s.composerContext}>
-              <ReaderIcon width={14} height={14} aria-hidden="true" /> Operations handbook
+              <ReaderIcon width={15} height={15} aria-hidden="true" /> Operations handbook
             </span>
           }
         />
@@ -172,7 +177,7 @@ export function WorkbenchInspector({
     <div className={s.inspector}>
       <div className={s.inspectorHeading}>
         <h3>
-          <ActivityLogIcon width={16} height={16} aria-hidden="true" /> Inspector
+          <ActivityLogIcon width={15} height={15} aria-hidden="true" /> Inspector
         </h3>
         <span>Host events</span>
       </div>
@@ -205,7 +210,7 @@ export function WorkbenchInspector({
                 )}
                 {!steps.length && (
                   <div className={s.emptyInspector}>
-                    <LockClosedIcon width={24} height={24} aria-hidden="true" />
+                    <LockClosedIcon width={30} height={30} aria-hidden="true" />
                     <h4>
                       {run.lifecycle === 'running'
                         ? 'Reviewing demo accounts'
@@ -213,7 +218,7 @@ export function WorkbenchInspector({
                     </h4>
                     <p>
                       {run.lifecycle === 'running'
-                        ? 'The demo host is streaming a response. Its execution steps will appear when the search completes.'
+                        ? 'The demo server is streaming a response. Its execution steps will appear when the search completes.'
                         : 'Tool results, owner decisions and the final report appear here.'}
                     </p>
                   </div>
@@ -265,7 +270,8 @@ export function WorkbenchInspector({
                             Lose the next decision acknowledgement
                           </label>
                           <p>
-                            Send a decision, then check its recorded status. The host executes once.
+                            Send a decision, then check its recorded status. The server executes
+                            once.
                           </p>
                           <div className={s.recoveryActions}>
                             <Button
@@ -328,7 +334,7 @@ export function WorkbenchInspector({
                           ? 'excluded'
                           : 'included',
                         reason: sources.some((source) => source.access === 'revoked')
-                          ? 'Access revoked by the demo host'
+                          ? 'Access revoked by the demo server'
                           : 'Fixed synthetic context for this template',
                       },
                     ]}
@@ -394,7 +400,7 @@ export function WorkbenchAccounts() {
           <p>The fixed dataset used by this review.</p>
         </div>
         <label className={s.search}>
-          <MagnifyingGlassIcon width={16} height={16} aria-hidden="true" />
+          <MagnifyingGlassIcon width={15} height={15} aria-hidden="true" />
           <input
             ref={searchInput}
             aria-label="Search demo accounts"
@@ -431,7 +437,7 @@ export function WorkbenchAccounts() {
                     }}
                   >
                     {account.name}
-                    <ArrowTopRightIcon width={14} height={14} aria-hidden="true" />
+                    <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
                   </button>
                   <small>
                     {account.id} · {account.plan}
@@ -483,7 +489,7 @@ export function WorkbenchAccounts() {
             {detail.owner} owns this {detail.plan.toLowerCase()} account. Its last recorded activity
             was {detail.days} days ago.{' '}
             {archived(detail.id)
-              ? 'Archival was acknowledged by the demo host.'
+              ? 'Archival was acknowledged by the demo server.'
               : 'It meets the 90-day threshold for an owner review.'}
           </p>
           <p>Record: {detail.id} · Workspace: CRM sandbox</p>
@@ -501,7 +507,7 @@ export function WorkbenchActivity({ review }: { review: WorkbenchReview }) {
       <p>Public events for the selected review. No private reasoning is shown.</p>
       {run.lifecycle === 'queued' ? (
         <div className={s.recordsEmpty}>
-          <ActivityLogIcon width={24} height={24} aria-hidden="true" />
+          <ActivityLogIcon width={30} height={30} aria-hidden="true" />
           <h4>No activity yet</h4>
           <p>Send a review request to begin.</p>
         </div>
@@ -517,7 +523,7 @@ export function WorkbenchActivity({ review }: { review: WorkbenchReview }) {
             .map((tool) => (
               <li key={tool.id}>
                 <strong>Demo accounts searched</strong>
-                <span>3 fixed records returned by the simulated host.</span>
+                <span>3 fixed records returned by the simulated server.</span>
                 <StatusBadge state={tool.state} />
               </li>
             ))}
@@ -548,7 +554,7 @@ export function WorkbenchActivity({ review }: { review: WorkbenchReview }) {
           {!!artifacts.length && (
             <li>
               <strong>Review report prepared</strong>
-              <span>The host acknowledged the decision and produced a synthetic report.</span>
+              <span>The server acknowledged the decision and produced a synthetic report.</span>
             </li>
           )}
           {run.lifecycle === 'cancelled' && (

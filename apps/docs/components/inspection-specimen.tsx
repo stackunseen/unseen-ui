@@ -48,10 +48,12 @@ export function InspectionSpecimen({
         status={state === 'Loading' ? 'loading' : state === 'Error' ? 'failed' : 'ready'}
         stale={state === 'Stale'}
         error={
-          state === 'Error' ? 'The capability endpoint is unavailable in this fixture.' : undefined
+          state === 'Error' ? 'The capability endpoint is unavailable in this sample.' : undefined
         }
         onRefresh={() =>
-          setNotice('Capability refresh requested. The host must return a new capability snapshot.')
+          setNotice(
+            'Capability refresh requested. The server must return a new capability snapshot.',
+          )
         }
       />
     );
@@ -108,7 +110,7 @@ export function InspectionSpecimen({
             state === 'Connected'
               ? 'The simulated stream is connected.'
               : state === 'Resumed'
-                ? 'The host resumed after sequence 42. No new attempt was created.'
+                ? 'Picked up after event 42. No new attempt was started.'
                 : connectionInfo.detail,
           adapter:
             state === 'Snapshot unavailable'
@@ -126,20 +128,20 @@ export function InspectionSpecimen({
                 ? 'failed'
                 : 'idle'
         }
-        error={state === 'Error' ? 'Recovery failed in this fixture.' : undefined}
+        error={state === 'Error' ? 'Recovery failed in this sample.' : undefined}
         onResume={
           state === 'Snapshot unavailable'
             ? undefined
             : (cursor) =>
                 setNotice(
-                  `Resume requested after ${cursor.streamId} sequence ${cursor.sequence}. Waiting for host acknowledgement.`,
+                  `Resume requested after ${cursor.streamId} sequence ${cursor.sequence}. Waiting for server acknowledgement.`,
                 )
         }
         onRefresh={
           state === 'Snapshot unavailable'
             ? undefined
             : () =>
-                setNotice('Snapshot refresh requested. The host supplies the current run state.')
+                setNotice('Snapshot refresh requested. The server supplies the current run state.')
         }
       />
     );

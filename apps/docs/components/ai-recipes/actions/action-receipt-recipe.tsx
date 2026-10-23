@@ -59,7 +59,7 @@ export function ActionReceiptRecipe() {
   return (
     <section className={s.recipe} aria-label="Action receipts recipe">
       <header className={s.header}>
-        <p className={s.boundary}>Simulated host · fixed local records · no live side effects</p>
+        <p className={s.boundary}>Simulated server · fixed local records · no live side effects</p>
         <Button size="sm" variant="outline" onClick={store.reset}>
           Start a new simulation
         </Button>
@@ -162,11 +162,11 @@ export function ActionReceiptRecipe() {
             </div>
           ) : (
             <p className={s.boundary}>
-              The host must confirm the exact access before an action decision becomes available.
+              The server must confirm the exact access before an action decision becomes available.
             </p>
           )}
           {host.decision.state === 'submitting' && (
-            <div className={s.buttons} role="group" aria-label="Host decision acknowledgement">
+            <div className={s.buttons} role="group" aria-label="Server decision acknowledgement">
               <Button
                 size="sm"
                 variant="outline"
@@ -214,7 +214,7 @@ export function ActionReceiptRecipe() {
       </div>
       <ActionControls host={host} send={store.send} />
       <p className={s.boundary}>
-        A real host must validate the reviewer, scope, versions and expiry, retain the original
+        A real server must validate the reviewer, scope, versions and expiry, retain the original
         commands, and prevent duplicate execution. Reloading clears this simulation.
       </p>
     </section>

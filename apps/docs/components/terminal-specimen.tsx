@@ -79,7 +79,7 @@ export function TerminalSpecimen({
   return (
     <div data-part="terminal-fixture">
       <p className="fixture-label">
-        Synthetic host · optional xterm engine is real; process and acknowledgements are simulated.
+        Sample server · optional xterm engine is real; process and acknowledgements are simulated.
       </p>
       {state === 'Live versions' && (
         <div className="specimen-controls">
@@ -113,7 +113,7 @@ export function TerminalSpecimen({
         state={processState}
         context={state === 'Invalid context' ? { ...context, version: '' } : context}
         status={availability}
-        error={state === 'Error' ? 'Public fixture output could not be loaded.' : undefined}
+        error={state === 'Error' ? 'Public sample output could not be loaded.' : undefined}
         command="public fixture"
         exitCode={state === 'Failed' ? 1 : state === 'Default' ? 0 : undefined}
         connection={connection}

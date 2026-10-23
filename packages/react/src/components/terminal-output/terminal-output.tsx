@@ -213,17 +213,17 @@ export function TerminalOutput({
             {connection && (
               <p>Connection: {stateLabel(connection)}. Process lifecycle is reported separately.</p>
             )}
-            {status === 'stale' && <p>Historical terminal output. Host actions are paused.</p>}
+            {status === 'stale' && <p>Earlier output. Actions are paused.</p>}
           </div>
           {submission !== 'idle' && (
             <p className={s.notice} role="status">
               {submission === 'submitting'
                 ? 'Requesting terminal action…'
                 : submission === 'acknowledged'
-                  ? 'Terminal request received. Waiting for host state.'
+                  ? 'Request received. Waiting for the terminal to update.'
                   : submission === 'outcome-unknown'
-                    ? 'Terminal action outcome unknown. Reconcile with the host before submitting again.'
-                    : 'Terminal action request failed. The previous host state is retained.'}
+                    ? 'It’s not clear whether that worked. Check before trying again.'
+                    : 'That didn’t work. The terminal is unchanged.'}
             </p>
           )}
           {model.truncated && <p className={s.notice}>Showing the last 64,000 characters.</p>}

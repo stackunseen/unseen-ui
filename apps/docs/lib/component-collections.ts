@@ -16,7 +16,7 @@ export const sectionLabels: Record<GallerySection, string> = {
 };
 export const collectionDescriptions: Record<ComponentSection, string> = {
   ui: 'Controls, navigation, layout and rich content for React interfaces.',
-  ai: 'Conversation, execution, generated output and review interfaces driven by your host.',
+  ai: 'Conversation, execution, generated output and review interfaces driven by your server.',
   application:
     'Controlled compositions for page structure, organizations, lists and unsaved changes.',
   marketing: 'Reusable website navigation, sections and contact layouts.',

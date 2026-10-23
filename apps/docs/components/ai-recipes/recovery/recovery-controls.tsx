@@ -23,12 +23,12 @@ export function RecoveryControls({ host, state }: { host: RecoveryHost; state: R
       items={[
         {
           value: 'host',
-          title: 'Simulated host controls',
+          title: 'Simulated server controls',
           keepMounted: true,
           content: (
             <div className={s.controlBody}>
               <p className={s.muted}>
-                Each button delivers a fixed host observation. Nothing advances on a timer.
+                Each button delivers a fixed server observation. Nothing advances on a timer.
               </p>
               <label className={s.field}>
                 <span>Next request acknowledgement</span>
@@ -51,7 +51,7 @@ export function RecoveryControls({ host, state }: { host: RecoveryHost; state: R
                 />
                 Original receipt lookup unavailable
               </label>
-              <div className={s.actions} role="group" aria-label="Host event delivery">
+              <div className={s.actions} role="group" aria-label="Server event delivery">
                 <Button
                   size="sm"
                   variant="outline"

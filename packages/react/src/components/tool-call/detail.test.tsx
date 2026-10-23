@@ -32,11 +32,11 @@ describe('detail level defaults to compact', () => {
   it('ToolCall hides the revision and host duration until detail is full', () => {
     const { rerender, container } = render(<ToolCall value={tool} />);
     expect(screen.getByRole('button', { name: 'Input' })).toBeVisible();
-    expect(container.textContent).not.toContain('Host duration');
+    expect(container.textContent).not.toContain('Took');
     expect(container.textContent).toContain('3 found');
     rerender(<ToolCall value={tool} detail="full" />);
     expect(screen.getByRole('button', { name: 'Input · revision 2' })).toBeVisible();
-    expect(container.textContent).toContain('Host duration: 820 ms');
+    expect(container.textContent).toContain('Took 820 ms');
   });
 
   it('ToolGroup passes the level to every call, in both layouts', async () => {
@@ -119,11 +119,11 @@ describe('detail level defaults to compact', () => {
         <ExecutionTimeline entries={entries} variant={variant} />,
       );
       expect(container.textContent).toContain('820 ms');
-      expect(container.textContent).not.toContain('Host duration unknown');
+      expect(container.textContent).not.toContain('Duration unknown');
       unmount();
       const full = render(<ExecutionTimeline entries={entries} variant={variant} detail="full" />);
-      expect(full.container.textContent).toContain('Host duration 820 ms');
-      expect(full.container.textContent).toContain('Host duration unknown');
+      expect(full.container.textContent).toContain('Took 820 ms');
+      expect(full.container.textContent).toContain('Duration unknown');
       full.unmount();
     }
   });

@@ -136,10 +136,10 @@ describe('file projections and controlled current identities', () => {
     const { rerender } = render(
       <FileExplorer {...props} context={undefined} onRequestOpen={() => {}} />,
     );
-    expect(screen.getByText(/Scoped file opening requires/)).toBeVisible();
+    expect(screen.getByText(/Files can’t be opened until/)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Open src/search.ts' })).toBeDisabled();
     rerender(<FileExplorer {...props} onSelect={undefined} />);
-    expect(screen.getByText(/no host handler supplied/)).toBeVisible();
+    expect(screen.getByText(/isn’t set up here/)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Open src/search.ts' })).toBeDisabled();
   });
   it.each(['stale', 'refreshing'] as const)(

@@ -112,16 +112,16 @@ export function CodeEditor(props: CodeEditorProps) {
           : status === 'stale'
             ? 'Document is stale. Refresh its revision before editing.'
             : status === 'conflict'
-              ? 'Document conflict. Resolve it in the host before editing.'
+              ? 'This document changed elsewhere. Resolve the conflict before editing.'
               : status === 'error'
-                ? 'The host reported a document error.'
+                ? 'There’s a problem with this document.'
                 : commandState.status === 'pending'
-                  ? 'Edit request pending host acknowledgement.'
+                  ? 'Waiting for your edit to be confirmed.'
                   : commandState.status === 'unknown'
                     ? 'Edit outcome unknown. Check the original request before continuing.'
                     : !writable
                       ? 'Read-only document.'
-                      : 'Draft edits are controlled by the host. Tab moves out of the editor.';
+                      : 'Edits are managed by the app. Tab moves out of the editor.';
   return (
     <section
       className={`${css.root} ${props.className ?? ''}`}
@@ -272,15 +272,13 @@ export function CodeEditor(props: CodeEditorProps) {
         <p role="status" className={css.notice}>
           {currentReceipt
             ? receipt.result === 'rejected'
-              ? `Host rejected the edit: ${receipt.reason}`
-              : `Host acknowledged the edit at revision ${receipt.nextVersion}.`
-            : 'Edit receipt belongs to a different revision.'}
+              ? `Edit rejected: ${receipt.reason}`
+              : `Edit saved as revision ${receipt.nextVersion}.`
+            : 'That confirmation is for a different revision.'}
         </p>
       ) : null}
       {busy ? (
-        <span className={css.notice}>
-          Further edits are unavailable until the host resolves this request.
-        </span>
+        <span className={css.notice}>You can edit again once this request is resolved.</span>
       ) : null}
     </section>
   );

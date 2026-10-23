@@ -92,7 +92,7 @@ export function Chart({
   if (!['ready', 'streaming', 'stale', 'denied', 'unavailable', 'error'].includes(state))
     return frame(
       <p role="status" className={g.error}>
-        Chart availability is unknown. Request a current host snapshot.
+        Chart data isn’t available. Try loading it again.
       </p>,
     );
   if (['denied', 'unavailable', 'error'].includes(state))

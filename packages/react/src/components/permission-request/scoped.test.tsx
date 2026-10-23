@@ -109,7 +109,7 @@ describe.each(variants)('%s scoped permission', (variant) => {
         submission={{ state: 'acknowledged', original, receipt: mismatched }}
       />,
     );
-    expect(screen.getByText(/receipt does not match/)).toBeVisible();
+    expect(screen.getByText(/confirmation doesn’t match/)).toBeVisible();
     await userEvent.click(screen.getByRole('button', { name: 'Check original decision' }));
     rerender(
       <PermissionRequest
@@ -123,7 +123,7 @@ describe.each(variants)('%s scoped permission', (variant) => {
         }
       />,
     );
-    expect(screen.getByText(/receipt does not match/)).toBeVisible();
+    expect(screen.getByText(/confirmation doesn’t match/)).toBeVisible();
     await userEvent.click(screen.getByRole('button', { name: 'Check original decision' }));
     expect(onReconcile).toHaveBeenNthCalledWith(2, original);
   });

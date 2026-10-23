@@ -73,7 +73,7 @@ describe('controlled application patterns', () => {
     );
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled();
     expect(screen.queryByRole('button', { name: 'Save changes' })).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'Check original receipt' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Check if it went through' }));
     expect(reconcile).toHaveBeenCalledOnce();
     expect(save).toHaveBeenCalledOnce();
   });

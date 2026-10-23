@@ -177,7 +177,7 @@ describe('message part composition', () => {
     expect(screen.getByRole('button', { name: /Source 1:/ })).toHaveFocus();
     rerender(<Message value={value} sources={[{ ...source, version: 'new-version' }]} />);
     await user.click(screen.getByRole('button', { name: 'Source 1: Source unavailable' }));
-    expect(screen.getByText(/Source version or location unavailable/)).toBeVisible();
+    expect(screen.getByText(/version or location isn’t available/)).toBeVisible();
   });
   it('keeps rich failures distinct from completion and retains partial text', () => {
     render(

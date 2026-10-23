@@ -47,7 +47,7 @@ describe('citation resource lifecycle', () => {
       expect(screen.getByRole('dialog')).toBe(dialog);
       expect(close).toHaveFocus();
       expect(within(dialog).getByRole('status')).toHaveTextContent(
-        'Source version or location unavailable.',
+        'This source’s version or location isn’t available.',
       );
       expect(within(dialog).queryByRole('link')).toBeNull();
       expect(within(dialog).queryByText(original.excerpt!)).toBeNull();

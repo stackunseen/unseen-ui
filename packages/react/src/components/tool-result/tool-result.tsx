@@ -139,8 +139,8 @@ export function ToolResult({
       )}
       {!Renderer && shown && shown.length > limit && (
         <p className={s.muted}>
-          Preview truncated at {limit.toLocaleString('en-US')} characters. Full output remains with
-          the host.
+          Preview truncated at {limit.toLocaleString('en-US')} characters. The full output is kept
+          by the app.
         </p>
       )}
       {error && onRetry && (

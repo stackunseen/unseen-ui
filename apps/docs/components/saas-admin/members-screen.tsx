@@ -62,7 +62,7 @@ export function MembersScreen({
         </section>
       )}
       <p className={s.muted}>
-        The demo host keeps at least one owner. Your application server must enforce its own
+        The demo server keeps at least one owner. Your application server must enforce its own
         authorization rules.
       </p>
     </div>

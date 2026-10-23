@@ -33,7 +33,7 @@ const commands = [
     description: 'Summarize the current draft without changing files.',
   },
   { id: 'plan', label: 'plan', description: 'Show the sample implementation plan.' },
-  { id: 'tests', label: 'tests', description: 'Load the matching sample test fixture.' },
+  { id: 'tests', label: 'tests', description: 'Load the matching sample tests.' },
 ];
 
 export function CodingStudioAssistant({
@@ -354,7 +354,7 @@ export function CodingStudioAssistant({
                   </label>
                   <p className={s.muted}>
                     Access and effort settings are acknowledged by the local demo. They do not
-                    change real host permissions or model behavior.
+                    change real server permissions or model behavior.
                   </p>
                 </div>
               ),

@@ -141,7 +141,7 @@ describe('generated surface composition and host ownership', () => {
         onAction={() => {}}
       />,
     );
-    expect(screen.getByRole('status')).toHaveTextContent('host form snapshots exceed');
+    expect(screen.getByRole('status')).toHaveTextContent('more fields than can be shown');
     expect(screen.queryByRole('textbox')).toBeNull();
   });
   it('retains correctable rows above a declared count while within the global control bound', async () => {
@@ -272,7 +272,7 @@ describe('generated surface composition and host ownership', () => {
       );
       expect(screen.queryByLabelText(/Project/)).toBeNull();
       expect(
-        screen.getByText('The form version changed. Request a current host snapshot.'),
+        screen.getByText('The form changed. Reload it to get the latest version.'),
       ).toBeInTheDocument();
     },
   );
@@ -418,7 +418,7 @@ describe('generated surface composition and host ownership', () => {
     expect(screen.queryByText(/Old completion/)).toBeNull();
     expect(screen.getByRole('button')).toBeDisabled();
     rerender(<GeneratedUI surface={actionSurface} state="ready" />);
-    expect(screen.getByText(/No host action handler/)).toBeInTheDocument();
+    expect(screen.getByText(/Actions aren’t set up here/)).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeDisabled();
   });
   it('binds form drafts and receipts to surface, version, node and draft', () => {

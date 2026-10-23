@@ -99,7 +99,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'RadioGroup',
   ),
   Combobox: g(
-    'One choice, or several with type="multiple", from a long list people search, including host-loaded results.',
+    'One choice, or several with type="multiple", from a long list people search, including results loaded from your server.',
     'Short lists where scanning is faster than typing.',
     'Select',
     'ToggleGroup',
@@ -133,7 +133,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
   ),
   AlertDialog: g(
     'Confirming a destructive or irreversible action before it happens.',
-    'Agent actions that need a reviewed proposal and a host receipt.',
+    'Agent actions that need a reviewed proposal and your server’s confirmation.',
     'ApprovalCard',
     'Modal',
   ),
@@ -244,7 +244,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
   ),
   // Data display
   Card: g(
-    'A grouped surface with heading, actions, body and footer, or a whole-card link with href.',
+    'A box with a heading, actions, body and footer, or a whole-card link with href.',
     'Interactive controls inside a linked card.',
     'Accordion',
     'Table',
@@ -304,7 +304,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
   ),
   // Conversation
   Chat: g(
-    'A complete chat surface you can drive from a host, the AI SDK or controlled props.',
+    'A complete chat you can connect to your server, the AI SDK or your own state.',
     'Custom layouts that need the pieces arranged differently.',
     'PromptInput',
     'Message',
@@ -374,7 +374,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'BranchSwitcher',
   ),
   SlashCommandMenu: g(
-    'Invoking host commands from the composer with "/".',
+    'Running your app’s commands from the composer with "/".',
     'Referencing files or people.',
     'MentionPicker',
   ),
@@ -390,7 +390,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
   ),
   MessageQueue: g('Drafts waiting to send while a run is busy.', 'Sent messages.', 'Message'),
   FeedbackCapture: g(
-    'Feedback with reasons and a correction, recorded by the host.',
+    'Feedback with reasons and a correction, saved by your server.',
     'One-click thumbs only.',
     'MessageActions',
   ),
@@ -423,13 +423,13 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'AgentSteps',
   ),
   Plan: g(
-    'A proposed plan with steps and a host-owned action.',
+    'A proposed plan with its steps and a button to run it.',
     'What already happened.',
     'AgentSteps',
     'DryRunPreview',
   ),
   ChainOfThought: g(
-    'Public, host-reported steps of a run or a task log, with their sources or files.',
+    'The public steps of a run or a task log, with their sources or files.',
     'Private reasoning.',
     'Reasoning',
   ),
@@ -461,7 +461,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'RunBoard',
   ),
   RunSummaryCard: g(
-    'What a run did, read afterwards, with effects and receipts.',
+    'What a run did, read afterwards, with what it changed.',
     'Live progress.',
     'AgentSteps',
   ),
@@ -548,12 +548,12 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'ConfidenceNote',
   ),
   ProvenanceBadge: g(
-    'Where content came from, and whether the host verified a signature.',
+    'Where content came from, and whether your server verified a signature.',
     'Source details.',
     'SourceCard',
   ),
   ConfidenceNote: g(
-    'A host calibration with scope, method and date.',
+    'A calibrated confidence score with its scope, method and date.',
     'Usage numbers.',
     'UsageMeter',
   ),
@@ -569,7 +569,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'MCPServerCard',
   ),
   MCPAppFrame: g(
-    'Rendering an MCP App view in a sandbox with a host bridge.',
+    'Showing an MCP App view in a sandbox, connected to your app through a bridge.',
     'Plain tool output.',
     'ToolResult',
   ),
@@ -606,13 +606,13 @@ export const usageGuidance: Record<string, UsageGuidance> = {
   AgentCard: g('One agent with its capabilities and activity.', 'Runs across agents.', 'RunBoard'),
   AuditTrail: g('Searchable history of actions with outcomes.', 'Live runs.', 'RunBoard'),
   PolicyStatus: g(
-    'Attested policy results with authority, time and scope.',
+    'Policy check results with who checked, when and what they covered.',
     'Permissions people can change.',
     'ScopeGrant',
   ),
   // Generated UI and forms
   GeneratedUI: g(
-    'Rendering a validated surface a model described.',
+    'Showing a screen a model described, once it has been checked.',
     'Interfaces you write yourself.',
     'AIForm',
     'Chart',
@@ -645,7 +645,7 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'TerminalOutput',
   ),
   WebPreview: g(
-    'A sandboxed preview of a host page with an address bar.',
+    'A sandboxed preview of a web page with an address bar.',
     'MCP App views.',
     'MCPAppFrame',
   ),
@@ -654,18 +654,14 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Attached files of any type.',
     'Attachment',
   ),
-  FileExplorer: g(
-    'Browsing a file tree with snapshot-bound opening.',
-    'Showing one file.',
-    'CodeTabs',
-  ),
+  FileExplorer: g('Browsing a file tree and opening files.', 'Showing one file.', 'CodeTabs'),
   CodeDiff: g(
     'Unified or split comparison of code.',
     'Comparing artifact versions.',
     'ArtifactDiff',
   ),
   TerminalOutput: g(
-    'Bounded process output with follow and stop.',
+    'Process output that follows along, with a stop button.',
     'Errors with frames.',
     'StackTrace',
   ),

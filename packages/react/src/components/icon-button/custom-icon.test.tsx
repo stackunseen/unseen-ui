@@ -13,6 +13,6 @@ describe('IconButton with a host icon', () => {
     const svg = screen.getByTestId('star');
     expect(button.contains(svg)).toBe(true);
     expect(svg.getAttribute('aria-hidden')).toBe('true');
-    expect(svg.getAttribute('width')).toBe('16');
+    expect(svg.getAttribute('width')).toBe('15');
   });
 });

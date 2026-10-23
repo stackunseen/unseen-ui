@@ -130,14 +130,10 @@ export function ArtifactEditor({
         <p className={s.metadata}>Read-only access. Saving and draft edits are unavailable.</p>
       )}
       {onSave && !saveCommand && (
-        <p className={s.metadata}>
-          Saving is unavailable until the host supplies a command for this draft.
-        </p>
+        <p className={s.metadata}>Saving isn’t available for this draft yet.</p>
       )}
       {onExport && !exportCommand && (
-        <p className={s.metadata}>
-          Export is unavailable until the host supplies a command for this draft.
-        </p>
+        <p className={s.metadata}>Export isn’t available for this draft yet.</p>
       )}
       <p className={s.metadata}>
         Draft {draft.version} · Based on {draft.base.version}

@@ -33,7 +33,7 @@ export function referenceUnavailableReason(item: ReferenceOption): string | unde
   if (typeof item.resource.text !== 'string' || item.resource.text.length > 100_000)
     return 'Reference content is invalid or exceeds the bounded source window.';
   if (!sameDocumentIdentity(item.target, item.resource) || item.target.version !== item.version)
-    return 'Reference revision is stale. Refresh the host search.';
+    return 'These results are out of date. Search again.';
   if (
     item.target.digest !== undefined &&
     (typeof item.target.digest !== 'string' ||
@@ -103,7 +103,7 @@ export function SearchPicker<T extends CommandOption>({
             items.slice(0, 200).map((item, index) => {
               const reason =
                 items.filter((option) => option.id === item.id).length !== 1
-                  ? 'Option identity is ambiguous. Refresh the host search.'
+                  ? 'Some results clash. Search again.'
                   : reference
                     ? referenceUnavailableReason(item as unknown as ReferenceOption)
                     : item.disabledReason;
@@ -155,7 +155,7 @@ export function SearchPicker<T extends CommandOption>({
         </p>
       )}
       {items.length > 200 && (
-        <p className={s.muted}>Showing the first 200 options. Refine the host search.</p>
+        <p className={s.muted}>Showing the first 200 results. Type more to narrow them down.</p>
       )}
     </div>
   );

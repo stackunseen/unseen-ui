@@ -362,7 +362,7 @@ describe('controlled repeatable and multistep forms', () => {
     );
     expect(screen.queryByText('Old secret receipt')).toBeNull();
     expect(screen.getByRole('button', { name: 'Receipt unavailable' })).toBeDisabled();
-    expect(screen.getByRole('status')).toHaveTextContent('does not match');
+    expect(screen.getByRole('status')).toHaveTextContent('doesn’t match');
     rerender(
       <AIForm
         {...props}
@@ -387,7 +387,7 @@ describe('controlled repeatable and multistep forms', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
     expect(submit).toHaveBeenCalledExactlyOnceWith({ project: 'Example' });
     rerender(<AIForm {...defaults} status="complete" receipt="Saved by host" />);
-    expect(screen.getByRole('status')).toHaveTextContent('Saved by host');
+    expect(screen.getByRole('status')).toHaveTextContent('Saved');
   });
   it('rejects disabled select values without rendering native option dropdowns', async () => {
     const submit = vi.fn();
@@ -494,7 +494,7 @@ describe('controlled repeatable and multistep forms', () => {
         onStepChange={navigate}
       />,
     );
-    expect(screen.getByRole('status')).toHaveTextContent('selected form step is unavailable');
+    expect(screen.getByRole('status')).toHaveTextContent('step isn’t available');
     expect(screen.queryByRole('textbox')).toBeNull();
     expect(navigate).not.toHaveBeenCalled();
   });

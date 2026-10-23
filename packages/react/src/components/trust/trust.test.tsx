@@ -95,7 +95,7 @@ describe('ProvenanceBadge', () => {
       />,
     );
     expect(badge().textContent).toContain('Signed: Tool · search_accounts');
-    expect(badge().textContent).toContain('verified by the host');
+    expect(badge().textContent).toContain('verified');
     expect(badge()).toHaveAttribute('data-tone', 'success');
     rerender(
       <ProvenanceBadge
@@ -108,7 +108,7 @@ describe('ProvenanceBadge', () => {
       />,
     );
     expect(badge().textContent).toContain('Origin: Imported');
-    expect(badge().textContent).toContain('did not verify');
+    expect(badge().textContent).toContain('hasn’t been verified');
   });
 
   it('labels an unexpected origin as unknown', () => {
@@ -201,7 +201,7 @@ describe('FeedbackCapture', () => {
     await user.click(screen.getByRole('button', { name: 'Helpful' }));
     expect(screen.queryByRole('checkbox')).toBeNull();
     rerender(<Harness onSubmit={() => {}} submission="acknowledged" />);
-    expect(screen.getByRole('status')).toHaveTextContent('Feedback recorded by the host.');
+    expect(screen.getByRole('status')).toHaveTextContent('Feedback saved.');
     expect(screen.getByRole('button', { name: 'Helpful' })).toBeDisabled();
   });
 });

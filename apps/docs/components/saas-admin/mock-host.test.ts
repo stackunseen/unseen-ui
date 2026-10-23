@@ -17,7 +17,7 @@ const create = (id = 'create-1'): AdminCommand => ({
 });
 const host = () => createSaaSAdminHost({ wait: async () => {} });
 
-describe('local SaaS admin host', () => {
+describe('local SaaS admin server', () => {
   it('binds local deletion to the record version and organization and deduplicates lost receipts', async () => {
     const service = host();
     const command: AdminCommand = {
@@ -45,7 +45,7 @@ describe('local SaaS admin host', () => {
     expect(service.read().organizations[0]!.customers).toHaveLength(5);
     expect(service.read().organizations[1]!.customers).toHaveLength(1);
   });
-  it('creates immutable scoped records only when the host completes', async () => {
+  it('creates immutable scoped records only when the server completes', async () => {
     let release!: () => void;
     const service = createSaaSAdminHost({
       wait: () =>
@@ -101,7 +101,7 @@ describe('local SaaS admin host', () => {
     expect(await service.receipt(command)).toMatchObject({ status: 'rejected' });
     expect(service.read()).toBe(initial);
   });
-  it('validates fields, duplicate emails and unknown organizations at the host boundary', async () => {
+  it('validates fields, duplicate emails and unknown organizations at the server boundary', async () => {
     const service = host();
     expect(
       validateCustomer({

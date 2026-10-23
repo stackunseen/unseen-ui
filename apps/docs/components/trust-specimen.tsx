@@ -52,7 +52,7 @@ export function TrustSpecimen({
       setSubmission('acknowledged');
       setReceipt({ commandId: 'fb-2', status: 'acknowledged', at });
       setPending(false);
-      onNotice('The simulated host recorded the feedback for message m1, revision 3.');
+      onNotice('The simulated server recorded the feedback for message m1, revision 3.');
     }, 700);
     return () => clearTimeout(timer);
   }, [pending, onNotice]);
@@ -132,8 +132,8 @@ export function TrustSpecimen({
               method="eval pass rate"
             />
             <p className="component-guidance">
-              The host reported no calibration, so the note renders nothing. This caption is part of
-              the example, not the component.
+              The server reported no calibration, so the note renders nothing. This caption is part
+              of the example, not the component.
             </p>
           </>
         );

@@ -113,7 +113,7 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
         {state === 'Running' ? 'Working · ' : 'Worked for '}
         {state === 'Running' ? (
           <ElapsedTime startedAt={startedAt} />
-        ) : state === 'Measured by host' ? (
+        ) : state === 'Measured by server' ? (
           <ElapsedTime startedAt={0} durationMs={95_000} />
         ) : (
           <ElapsedTime startedAt="2026-10-21T10:00:00Z" endedAt="2026-10-21T10:02:05Z" />

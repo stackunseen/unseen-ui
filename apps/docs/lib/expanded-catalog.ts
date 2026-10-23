@@ -4,48 +4,47 @@ export const expandedCatalog: CatalogEntry[] = [
   {
     name: 'SlashCommandMenu',
     category: 'Conversation',
-    description: 'Search and invoke host-provided slash commands with the keyboard.',
+    description: 'Find and run your app’s slash commands from the keyboard.',
     states: ['Default', 'Empty', 'Loading', 'Error', 'Unavailable'],
     contract: 'items · query · onQueryChange · onSelect · status?',
-    responsibility: 'Provide command IDs and enforce availability when executing the selection.',
+    responsibility: 'Give each command an ID, and check it’s allowed when your app runs it.',
     code: '<SlashCommandMenu items={commands} query={query} onQueryChange={setQuery} onSelect={invokeCommand} />',
   },
   {
     name: 'MentionPicker',
     category: 'Context',
-    description: 'Find versioned files, symbols, people and sources for @ references.',
+    description: 'Type @ to add files, symbols, people or sources.',
     states: ['Default', 'Empty', 'Loading', 'Error', 'Unavailable'],
     contract: 'items · query · onQueryChange · onSelect',
     responsibility:
-      'Resolve permissions and versions. Selection does not guarantee inclusion in model context.',
+      'Check permissions and versions in your app. Picking something doesn’t guarantee the model sees it.',
     code: '<MentionPicker items={references} query={query} onQueryChange={setQuery} onSelect={addReference} />',
   },
   {
     name: 'AccessModeSelector',
     category: 'Human review',
-    description: 'Request an access mode while keeping confirmed permissions visible.',
+    description: 'Ask for a different access level while keeping current permissions in view.',
     states: ['Default', 'Pending', 'Stale', 'Error'],
     contract: 'modes · value · scope · version · status · onRequest',
     responsibility:
-      'Authorize and acknowledge the version-bound request on the server; the UI never grants access.',
+      'Your server authorizes the request and confirms it; the component never grants access.',
     code: '<AccessModeSelector modes={modes} value={mode} scope="Workspace" version="policy-4" status="ready" onRequest={requestMode} />',
   },
   {
     name: 'VoiceControl',
     category: 'Voice',
-    description: 'Microphone choice, capture controls, measured level and transcription states.',
+    description: 'Pick a microphone, record, watch the input level and follow the transcription.',
     states: voiceStates,
     contract:
       'capture / legacy state · transcription · status · connection · submission · scoped start/stop/cancel/device requests · devices?',
     responsibility:
-      'Own microphone permission, recording, device cleanup and transcription. The gallery simulates capture.',
+      'Your app handles microphone permission, recording, releasing the device and transcription. The examples here only pretend to record.',
     code: '<VoiceControl capture={capture} transcription={transcription} status={status} onRequestStart={startVoice} onRequestStop={stopVoice} onRequestCancel={cancelVoice} />',
   },
   {
     name: 'FileExplorer',
     category: 'Coding workspace',
-    description:
-      'Folder, detailed-list and directory views with snapshot-bound opening and host windows.',
+    description: 'Browse files as folders, a detailed list or a directory tree.',
     states: [
       'Default',
       'Changed files',
@@ -85,13 +84,13 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'files · context? · selection? · onRequestOpen? · expandedPaths · query? · pagination? · status',
     responsibility:
-      'Provide current bounded public file windows, versions and authorization. Acknowledge opening/page requests against scope. Folder view uses disclosures; compact groups directories. UI never reads a filesystem.',
+      'Pass the files to show, a page at a time, with their versions and who may open them, and confirm each open request. The component never reads a filesystem.',
     code: '<FileExplorer files={files} context={snapshot} selection={selection} expandedPaths={folders} onExpandedPathsChange={setFolders} onRequestOpen={requestOpen} />',
   },
   {
     name: 'CodeDiff',
     category: 'Coding workspace',
-    description: 'Readable unified and split comparisons with line numbers and explicit limits.',
+    description: 'Code changes, inline or side by side, with line numbers and clear size limits.',
     states: [
       'Default',
       'No changes',
@@ -114,13 +113,14 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'path · before · after · baseVersion · nextVersion · status? · error? · copyable? · renderLine?',
     responsibility:
-      'Supply immutable text versions and access state. Copy is read-only; the host owns patch application. Optional HighlightedCodeDiff uses the /highlight entry.',
+      'Pass the before and after text and whether it can be read. Copying never changes files; applying a patch is up to your app. For syntax colors, use HighlightedCodeDiff from the /highlight entry.',
     code: '<CodeDiff path="src/search.ts" before={original} after={updated} baseVersion="a1" nextVersion="b2" />',
   },
   {
     name: 'TerminalOutput',
     category: 'Coding workspace',
-    description: 'Bounded process output with selection-aware following and host stop controls.',
+    description:
+      'Process output that follows new lines (unless you’re selecting text), with a stop button.',
     states: [
       'Default',
       'Running',
@@ -148,7 +148,7 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'output · state · context? · status? · connection? · submission? · scoped stop/clear · optional /terminal input/resize',
     responsibility:
-      'Own process, transport, authorization and version-bound acknowledgements. Plain output is the base; /terminal adds optional bounded xterm rendering. No shell is executed here.',
+      'Your app runs the process, streams the output and authorizes stops. The main entry shows plain output; /terminal adds a full xterm view. Nothing here runs a shell.',
     code: '<TerminalOutput output={output} state={processState} command="pnpm test" onStop={requestStop} />',
   },
   {
@@ -158,13 +158,13 @@ export const expandedCatalog: CatalogEntry[] = [
     states: ['Default', 'Failed', 'Running', 'Empty', 'Loading'],
     contract: 'results · onOpenFile? · loading?',
     responsibility:
-      'Supply runner results and measured durations; skipped or queued tests are not passes.',
+      'Pass the results and durations from your test runner. Skipped or waiting tests never count as passed.',
     code: '<TestResults results={tests} onOpenFile={openFile} />',
   },
   {
     name: 'ThreadList',
     category: 'Conversation',
-    description: 'Search, select, rename and archive host-owned conversations.',
+    description: 'Search, open, rename and archive conversations.',
     states: [
       'Default',
       'Date groups',
@@ -188,13 +188,13 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'threads · query · context? · status? · pagination? · actions? · groupBy?: none | date · now? · rowActions? · scoped requests or legacy callbacks',
     responsibility:
-      'Persist and acknowledge edits by version; provide pages and restored scroll offsets.',
+      'Save edits on your server and confirm them, and load the list a page at a time.',
     code: '<ThreadList threads={threads} query={query} onQueryChange={setQuery} onSelect={openThread} />',
   },
   {
     name: 'BranchSwitcher',
     category: 'Conversation',
-    description: 'Navigate explicit conversation branches and their parent versions.',
+    description: 'Move between versions of a conversation created by edits and retries.',
     states: [
       'Default',
       'Missing',
@@ -212,14 +212,13 @@ export const expandedCatalog: CatalogEntry[] = [
       'Invalid window',
     ],
     contract: 'branches · value · context? · changeGuard? · scoped request or onValueChange',
-    responsibility:
-      'Resolve durable branches and preserve unsent drafts before changing the selected branch.',
+    responsibility: 'Keep branches on your server, and save any unsent draft before switching.',
     code: '<BranchSwitcher branches={branches} value={branchId} onValueChange={selectBranch} />',
   },
   {
     name: 'MessageQueue',
     category: 'Conversation',
-    description: 'Review and edit queued drafts with explicit reorder and removal requests.',
+    description: 'Review, reorder and remove messages waiting to send.',
     states: [
       'Default',
       'Sending',
@@ -245,13 +244,13 @@ export const expandedCatalog: CatalogEntry[] = [
     ],
     contract: 'items · context? · status? · pagination? · scoped requests or legacy callbacks',
     responsibility:
-      'Acknowledge changes against queue item versions; preserve unknown execution outcomes.',
+      'Confirm each change against the item’s version, and keep showing results you aren’t sure of yet.',
     code: '<MessageQueue items={queue} onEdit={editQueued} onCancel={removeQueued} onMove={moveQueued} />',
   },
   {
     name: 'AgentHandoff',
     category: 'Agents',
-    description: 'Versioned ownership transfer with accept, decline and access states.',
+    description: 'Hand work from one agent or person to another, with accept and decline.',
     states: [
       'Default',
       'Pending',
@@ -267,24 +266,24 @@ export const expandedCatalog: CatalogEntry[] = [
     ],
     contract: 'value: HandoffSnapshot · commandId · submission · onDecision · onReconcile?',
     responsibility:
-      'Authenticate the recipient and acknowledge the exact ownership, context and access versions on the host. Keep original receipts separate from current ownership; an accepted request alone does not transfer work.',
+      'Check who the recipient is on your server and confirm exactly what is being handed over. Accepting a request doesn’t move the work until your server confirms it.',
     code: '<AgentHandoff value={handoff} commandId={commandId} submission={submission} onDecision={sendDecision} onReconcile={lookupOriginal} />',
   },
   {
     name: 'ReviewChanges',
     category: 'Human review',
-    description: 'Select proposed changes and submit a version-bound review decision.',
+    description: 'Pick which proposed changes to keep and send one review decision.',
     states: ['Default', 'Pending', 'Stale', 'Conflict', 'Accepted', 'Empty'],
     contract:
       'changes · baseVersion · proposalVersion · selectedIds · onSelectionChange · state · onDecision',
     responsibility:
-      'Revalidate the base and selected IDs, then acknowledge applying or rejecting the proposal.',
+      'Recheck the starting version and the selection on your server, then confirm whether the changes were applied or rejected.',
     code: '<ReviewChanges changes={changes} baseVersion="a1" proposalVersion="b2" selectedIds={selection} onSelectionChange={setSelection} state="ready" onDecision={review} />',
   },
   {
     name: 'AIForm',
     category: 'AI forms',
-    description: 'Controlled forms with conditional fields, validation and host receipts.',
+    description: 'Forms with fields that appear as needed, validation and confirmed submission.',
     states: [
       'Default',
       'Validation',
@@ -308,14 +307,14 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'fields · values · arrays? · arrayValues? · onArrayChange? · steps? · step? · onStepChange? · identity? · status? · receipt?',
     responsibility:
-      'Persist versioned drafts and stable row IDs, validate requests on the server, control steps and supply matching submission acknowledgements.',
+      'Save drafts with a version, keep row IDs stable, validate on your server, control the steps and confirm each submission.',
     code: '<AIForm fields={fields} values={values} onValueChange={setValues} onSubmit={submitForm} />',
   },
   {
     name: 'GeneratedUI',
     category: 'Generative UI',
     description:
-      'Validated sections, forms, charts, metrics, tables, lists, callouts, steps, images and host-owned actions and choices.',
+      'Screens a model describes, such as forms, charts, tables, lists and steps, checked before they render.',
     states: [
       'Default',
       'Streaming',
@@ -345,14 +344,14 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'surface: unknown · state · forms / onFormChange · actionStates / onAction · problems? · imageOrigins?',
     responsibility:
-      'Authorize surface/version/action IDs, control version-bound form drafts and acknowledgements, and reconcile unknown outcomes. Generated data never provides callbacks.',
+      'Authorize every action on your server, keep form drafts and their confirmations, and check unclear results before retrying. Generated data can never supply code to run.',
     code: '<GeneratedUI surface={surface} state="ready" onAction={requestAction} />',
   },
   {
     name: 'Chart',
     category: 'Generative UI',
     description:
-      'Bounded bar, line and area charts with aligned series, gap semantics and equivalent data.',
+      'Bar, line and area charts with a matching data table, and gaps where data is missing.',
     states: [
       'Default',
       'Empty',
@@ -381,32 +380,31 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'title · points or series · unit · source · state · hiddenSeries · onSeriesVisibilityChange',
     responsibility:
-      'Supply aligned immutable measured data, null for unreported samples, units and provenance. Acknowledge series selection with props. Up to four series of 60 points; equivalent data remains complete.',
+      'Pass measured data with its units and where it came from, and null for missing points. Up to four series of 60 points each; the data table always lists every value.',
     code: '<Chart title="Build duration" series={series} unit="seconds" source="CI run 42" hiddenSeries={hidden} onSeriesVisibilityChange={requestSelection} />',
   },
   {
     name: 'MemoryControls',
     category: 'Context',
-    description: 'Review scoped memories and request corrections or deletion.',
+    description: 'See what the assistant remembers, and ask to correct or delete it.',
     states: ['Default', 'Pending', 'Revoked', 'Error', 'Empty'],
     contract: 'items · onRequest',
-    responsibility: 'Authorize, persist and acknowledge versioned correction/deletion requests.',
+    responsibility: 'Your server authorizes, saves and confirms each correction or deletion.',
     code: '<MemoryControls items={memories} onRequest={requestMemoryChange} />',
   },
   {
     name: 'ArtifactDiff',
     category: 'Artifacts',
-    description: 'Compare selected immutable artifact versions with access-aware fallbacks.',
+    description: 'Compare two versions of a document, with a fallback when one can’t be opened.',
     states: ['Default', 'Missing version', 'Revoked', 'No changes'],
     contract: 'path · versions · beforeId · afterId · onVersionsChange',
-    responsibility: 'Resolve the selected versions without silently replacing a reviewed version.',
+    responsibility: 'Load the two chosen versions, and never quietly swap in a different one.',
     code: '<ArtifactDiff path="report.md" versions={versions} beforeId={beforeId} afterId={afterId} onVersionsChange={selectVersions} />',
   },
   {
     name: 'WorkflowGraph',
     category: 'Workflow',
-    description:
-      'Inspect branches, loops and joins as a routed graph, adjacency list or traversal outline.',
+    description: 'See a workflow’s branches, loops and joins as a graph, a list or an outline.',
     states: [
       'Default',
       'Branches and join',
@@ -439,33 +437,34 @@ export const expandedCatalog: CatalogEntry[] = [
     contract:
       'nodes · edges · selection? · onSelect? · onEdgeSelect? · state · source · version · detail?',
     responsibility:
-      'Supply current bounded positions/state/provenance and acknowledge node/connection inspection. Compact is a traversal outline with cycle/shared references; list shows adjacency. The UI never executes nodes.',
+      'Pass the steps, their positions and where each one stands. Compact is an outline that marks loops and shared steps; list shows what connects to what. Nothing runs from the graph.',
     code: '<WorkflowGraph nodes={nodes} edges={edges} selection={selection} onSelect={inspectNode} onEdgeSelect={inspectConnection} source={source} version={version} />',
   },
   {
     name: 'AuditTrail',
     category: 'Enterprise AI',
-    description: 'Searchable action history with outcomes, correlation and redaction.',
+    description:
+      'A searchable history of actions and their outcomes, with sensitive fields hidden.',
     states: ['Default', 'Redacted', 'Empty', 'Loading'],
     contract: 'records · query · onQueryChange · onLoadMore? · loading?',
     responsibility:
-      'Supply authenticated records and redact protected fields; this is not tamper-resistant storage.',
+      'Pass verified records with protected fields already removed. It shows history; it doesn’t store it securely.',
     code: '<AuditTrail records={records} query={query} onQueryChange={setQuery} />',
   },
   {
     name: 'RunInspector',
     category: 'Execution',
-    description: 'Inspect public model, tool and agent spans with measured usage.',
+    description: 'Look inside a run: each model, tool and agent step, with measured usage.',
     states: ['Default', 'Running', 'Failed', 'Unknown usage', 'Empty'],
     contract: 'runId · spans · usage? · onSelect? · detail?',
-    responsibility:
-      'Report public summaries, correlations and measured costs; never provide private chain-of-thought.',
+    responsibility: 'Pass public summaries and measured costs. Never pass private reasoning.',
     code: '<RunInspector runId="run-42" spans={spans} usage={usage} onSelect={inspectSpan} />',
   },
   {
     name: 'MarkdownResponse',
     category: 'Rich content',
-    description: 'Streaming GFM with headings, lists, tables, code, links and footnotes.',
+    description:
+      'Formatted replies as they stream: headings, lists, tables, code, links and footnotes.',
     states: [
       'Markdown',
       'Code',
@@ -478,14 +477,13 @@ export const expandedCatalog: CatalogEntry[] = [
     ],
     contract: 'text · state · headingLevel? · variant · citations?: Source[]',
     responsibility:
-      'Optional /markdown entry; raw HTML stays text and remote Markdown images never auto-load.',
+      'From the /markdown entry. Raw HTML stays as text, and images from other sites never load on their own.',
     code: '<MarkdownResponse text={markdown} state="complete" />',
   },
   {
     name: 'MarkdownCodeBlock',
     category: 'Rich content',
-    description:
-      'Copyable code with optional safe syntax highlighting, line numbers and plain fallback.',
+    description: 'Code with a copy button, optional syntax colors and line numbers.',
     states: [
       'Default',
       'Streaming',
@@ -501,32 +499,33 @@ export const expandedCatalog: CatalogEntry[] = [
     ],
     contract: 'code · language? · streaming? · variant',
     responsibility:
-      'Plain /code or optional /highlight with Shiki. Code is inert text; no editor, execution or application is implied.',
+      'Plain from /code, or colored with Shiki from /highlight. It’s text only; nothing runs or edits it.',
     code: '<MarkdownCodeBlock code={code} language="typescript" />',
   },
   {
     name: 'RichMarkdownResponse',
     category: 'Rich content',
-    description: 'Optional Markdown with inline math, display equations and Mermaid fences.',
+    description: 'Markdown that also renders math and Mermaid diagrams.',
     states: ['Default', 'Streaming', 'Invalid formula', 'Unsafe diagram'],
     contract: 'text · state · headingLevel? · variant',
     responsibility:
-      'Load optional renderer peers and KaTeX styles. Diagrams render only when the response completes.',
+      'Install the math and diagram packages and load the KaTeX styles. Diagrams draw once the reply is complete.',
     code: '<RichMarkdownResponse text={markdown} state="complete" />',
   },
   {
     name: 'MathFormula',
     category: 'Rich content',
-    description: 'LaTeX formulas through KaTeX with accessible MathML and bounded parsing.',
+    description: 'LaTeX formulas, rendered with KaTeX and readable by screen readers.',
     states: ['Default', 'Matrix', 'Integral', 'Invalid', 'Oversized'],
     contract: 'formula · label? · variant',
-    responsibility: 'Load KaTeX CSS; trust is disabled and expansion/size limits are fixed.',
+    responsibility: 'Load the KaTeX CSS. Formulas can’t run commands, and their size is capped.',
     code: '<MathFormula formula={latex} label="Quadratic formula" />',
   },
   {
     name: 'MermaidDiagram',
     category: 'Rich content',
-    description: 'Lazy diagrams with zoom, source view and explicit syntax/security fallbacks.',
+    description:
+      'Mermaid diagrams with zoom and a source view, and a clear message when one can’t be drawn.',
     states: [
       'Default',
       'Sequence',
@@ -547,7 +546,7 @@ export const expandedCatalog: CatalogEntry[] = [
     ],
     contract: 'code · title? · description? · state? · variant',
     responsibility:
-      'Optional Mermaid peer. Configuration/interaction directives and remote resources are restricted.',
+      'Needs the Mermaid package. Diagrams can’t change settings, add click actions or load anything from other sites.',
     code: '<MermaidDiagram code={diagram} title="Agent workflow" />',
   },
 ];

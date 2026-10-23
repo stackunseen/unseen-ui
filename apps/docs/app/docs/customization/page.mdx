@@ -1,6 +1,6 @@
 # Customize your components
 
-Wrap a composition in `AITheme` to share a theme. Its styles are scoped, so it can coexist with the rest of your application.
+Wrap your components in `AITheme` to give them one theme. Its styles only apply inside the wrapper, so they won't clash with the rest of your app.
 
 ```tsx
 import { AITheme, Button } from '@stackunseen/ui';
@@ -13,15 +13,15 @@ import '@stackunseen/ui/styles.css';
 
 ## Preview and export
 
-[Theme Studio](/customize/) changes the look of this showcase as you browse. Try the homepage, component examples and live templates with the same settings, then copy the configuration for your own app. Preferences stay in this browser. Static screenshots and the separately launched Relay app keep their sample theme.
+[Theme Studio](/customize/) restyles this whole site as you browse, so you can try your settings on the homepage, the component examples and the live templates, then copy the configuration into your app. Your choices stay in this browser. Static screenshots and the separate Relay app keep their sample theme.
 
-Theme Studio has light, dark and system appearance, brand and neutral colors, density, borders, corners and motion settings. Status colors keep their meaning. JSON and TypeScript include both palettes; CSS follows the selected appearance. Apply exported CSS to a wrapper with `data-ai-theme="brand"`, or pass an imported theme to `AITheme`. Its contrast diagnostics describe the configured palette; they do not certify an entire application.
+Theme Studio has light, dark and system appearance, brand and neutral colors, density, borders, corners and motion settings. Status colors keep their meaning. JSON and TypeScript include both palettes; CSS follows the selected appearance. Apply exported CSS to a wrapper with `data-ai-theme="brand"`, or pass an imported theme to `AITheme`. Its contrast checks cover the palette you set up, not every screen in your app.
 
-Fonts use the CSS variables `--ai-font-family` and `--ai-font-size`. Resolved theme settings follow dialogs and other portals. Arbitrary wrapper styles do not automatically follow portals.
+Fonts come from the CSS variables `--ai-font-family` and `--ai-font-size`. Theme settings also reach dialogs and menus, which render outside the wrapper; your own wrapper styles don't.
 
 ## Replace icons
 
-Map semantic icon names through `IconsProvider`. Forward SVG props and use `currentColor` so sizing and color follow the component. Nested providers can override one part of a screen.
+Swap icons by name with `IconsProvider`. Pass the SVG props through and use `currentColor`, so the icon takes the component's size and color. A nested provider changes icons for just one part of a screen.
 
 ```tsx
 import type { SVGProps } from 'react';
@@ -40,13 +40,13 @@ function SendIcon(props: SVGProps<SVGSVGElement>) {
 </IconsProvider>;
 ```
 
-Keep accessible labels on controls when replacing their icons. The icon artwork alone does not name an action.
+Keep the labels on controls when you replace their icons. A picture alone doesn't tell a screen reader what a button does.
 
 ## Style a component
 
-Start with the documented presentation variants and content slots. Use exposed `className` and `style` props for local layout. Components do not offer a public selector for every internal element; inspect the component's contract before relying on implementation details.
+Start with the built-in variants and content slots. Use `className` and `style` for layout. Not every inner element has a public selector, so check the component's page before you style its internals.
 
-Validate your palette in both appearances and in disabled, focused and error states. A theme change can affect text, required control boundaries and focus indicators.
+Check your palette in light and dark, and in disabled, focused and error states. A theme change can affect text, control borders and focus rings.
 
 <h2 id="custom-headers-and-footers">Custom headers and footers</h2>
 
@@ -104,7 +104,7 @@ export function ProjectDialog() {
 }
 ```
 
-The footer button uses the native `form` attribute to submit the form in the body. This sample only edits local React state. For a saved record, connect the submit handler to your save request and close after it succeeds.
+The footer button uses the native `form` attribute to submit the form in the body. This sample only changes local state; to save a real record, call your API from the submit handler and close the dialog once it succeeds.
 
 Use `className` or `style` on Modal for local sizing. To style a particular region, scope its documented `data-slot` selector to your own class:
 
@@ -181,8 +181,8 @@ const theme = importTheme(
 </AITheme>;
 ```
 
-[Theme Studio](/customize/) has a **Backgrounds and text** section for editing each appearance and exporting both palettes. Choose the same Appearance as the palette you're editing to see it. Geometry edits preserve token overrides; brand-color edits through `updateTheme` regenerate the palette, so reapply your overrides afterwards if needed.
+[Theme Studio](/customize/) has a **Backgrounds and text** section for editing each appearance and exporting both palettes. Choose the same Appearance as the palette you're editing to see it. Changing corners or spacing keeps your overrides. Changing the brand color with `updateTheme` rebuilds the palette, so reapply your overrides afterwards.
 
 `AITheme` emits scoped `--ai-canvas`, `--ai-surface`, `--ai-surface-subtle`, `--ai-text`, `--ai-muted`, `--ai-border` and `--ai-control-border` CSS variables. Use a resolved theme for overrides that should also follow portals. `themeToCSS(theme, 'brand', 'system')` targets `[data-ai-theme="brand"]` and switches palettes with the system color preference.
 
-`importTheme` recalculates token-pair contrast measurements; it does not reject a low-contrast palette. Check text at 4.5:1 and required control/focus boundaries at 3:1, then verify your actual screens. Status colors and their tinted backgrounds are separate pairs and need their own checks.
+`importTheme` re-measures the contrast of each color pair, but it doesn't reject a low-contrast palette. Check text at 4.5:1 and control borders and focus rings at 3:1, then look at your real screens. Status colors and their tinted backgrounds need their own checks.

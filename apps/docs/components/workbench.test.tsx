@@ -50,12 +50,12 @@ async function ready(user: ReturnType<typeof setup>) {
 describe('Agent workbench template', () => {
   it('completes an approved review and reflects only acknowledged account changes', async () => {
     const user = setup();
-    expect(screen.getByText('Simulated host · no external changes')).toBeInTheDocument();
+    expect(screen.getByText('Simulated server · no external changes')).toBeInTheDocument();
     await ready(user);
     await user.click(screen.getByRole('button', { name: 'Approve action' }));
     expect(screen.getByText(/Review complete\. The inspector/)).toBeInTheDocument();
     expect(
-      screen.getByText('Decision acknowledged. Execution is reported separately.'),
+      screen.getByText('Decision received. Whether the action ran is shown separately.'),
     ).toBeInTheDocument();
     await user.click(screen.getByRole('tab', { name: 'Accounts' }));
     expect(screen.getAllByText('Archived in demo')).toHaveLength(3);
@@ -206,6 +206,6 @@ describe('Agent workbench template', () => {
       screen.getByText('Access was revoked. Start a new authorized review.'),
     ).toBeInTheDocument();
     await user.click(screen.getByRole('tab', { name: 'Context' }));
-    expect(screen.getByText(/Excluded.*Access revoked by the demo host/)).toBeInTheDocument();
+    expect(screen.getByText(/Excluded.*Access revoked by the demo server/)).toBeInTheDocument();
   });
 });

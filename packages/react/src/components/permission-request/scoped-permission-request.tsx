@@ -127,9 +127,7 @@ export function ScopedPermissionRequest({
             </p>
           )}
           {expiry.expired && (
-            <p className={s.warning}>
-              This request has expired. Ask the host for a current request.
-            </p>
+            <p className={s.warning}>This request has expired. Ask for a new one.</p>
           )}
           {value.access.state !== 'available' && (
             <p className={s.warning}>
@@ -140,13 +138,13 @@ export function ScopedPermissionRequest({
         </>
       ) : (
         <p role="alert" className={s.error}>
-          The host must provide a valid, complete permission request and access record before you
-          can decide.
+          This permission request is incomplete. You can decide once it has all its details.
         </p>
       )}
       {!submission && (
         <p role="alert" className={s.error}>
-          Decision status is invalid or unavailable. Check the original decision with the host.
+          The status of this decision isn’t available. Check the original decision before deciding
+          again.
         </p>
       )}
       {!command && value && <p className={s.warning}>A new decision identity is unavailable.</p>}
@@ -158,7 +156,7 @@ export function ScopedPermissionRequest({
           </p>
           <p className={s.warning}>
             {invalidReceipt
-              ? 'The receipt does not match the exact original decision. Its outcome is still unknown.'
+              ? 'The confirmation doesn’t match the original decision, so the outcome is still unknown.'
               : submission?.state === 'submitting' && !receipt
                 ? 'Sending permission decision. Access has not been confirmed.'
                 : receiptMessage(receipt?.outcome)}

@@ -59,7 +59,7 @@ describe('citation resource lifecycle', () => {
       />,
     );
     expect(screen.queryByText(next.excerpt)).toBeNull();
-    expect(screen.getByRole('status')).toHaveTextContent('Source version or location unavailable');
+    expect(screen.getByRole('status')).toHaveTextContent('version or location isn’t available');
     await user.keyboard('{Escape}');
     await user.click(trigger);
     expect(screen.getByText(next.excerpt)).toBeVisible();

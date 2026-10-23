@@ -125,7 +125,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
     <div className={s.editorView}>
       <div className={s.fileBar}>
         <span>
-          <CodeIcon width={16} height={16} aria-hidden="true" /> <strong>{current.path}</strong>
+          <CodeIcon width={15} height={15} aria-hidden="true" /> <strong>{current.path}</strong>
           <span className={s.muted}>{changed ? 'Draft · not applied' : baseVersion(state)}</span>
         </span>
         <div className={s.toolbar}>
@@ -179,7 +179,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
   );
   const review = !changes.length ? (
     <div className={s.empty}>
-      <Share1Icon width={26} height={26} aria-hidden="true" />
+      <Share1Icon width={30} height={30} aria-hidden="true" />
       <h2>No draft changes</h2>
       <p>Run the sample task or edit a file to prepare a change.</p>
       <Button
@@ -249,8 +249,8 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
         <p>
           {selectedIds.length} of {changes.length} files selected.{' '}
           {state.testVersion === proposal
-            ? 'Sample test fixture available.'
-            : 'No current test fixture.'}
+            ? 'Sample test sample available.'
+            : 'No current test sample.'}
         </p>
         <Button
           size="sm"
@@ -266,7 +266,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
             })
           }
         >
-          {state.operation?.kind === 'apply' ? 'Awaiting demo host…' : 'Apply selected files'}
+          {state.operation?.kind === 'apply' ? 'Awaiting demo server…' : 'Apply selected files'}
         </Button>
         <span className={s.muted}>Applies only to this in-memory demo.</span>
       </div>
@@ -275,7 +275,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
   const tests = (
     <div className={s.results}>
       <div className={s.fileBar}>
-        <p>Search regression fixtures</p>
+        <p>Search regression samples</p>
         <Button
           size="sm"
           variant="outline"
@@ -288,12 +288,12 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
       <p className={s.inlineNotice}>
         {state.testVersion
           ? `${testStale ? 'Previous' : 'Current'} fixture: ${state.testVersion}. `
-          : 'No test fixture loaded yet. '}
+          : 'No test sample loaded yet. '}
         Sample results only; no tests or edited code are executed.
       </p>
       {testStale && (
         <p className={s.warning} role="status">
-          The workspace or draft changed after this fixture was loaded. Run sample tests again for
+          The workspace or draft changed after this sample was loaded. Run sample tests again for
           the current draft.
         </p>
       )}
@@ -357,7 +357,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
       <div className={s.application} data-template-preview="coding">
         <header className={s.topbar}>
           <div className={s.project}>
-            <CodeIcon width={21} height={21} aria-hidden="true" />
+            <CodeIcon width={15} height={15} aria-hidden="true" />
             <div>
               <strong>search-web</strong>
               <span>
@@ -566,7 +566,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
               ? state.operation.kind === 'apply'
                 ? 'Applying reviewed snapshot…'
                 : state.operation.kind === 'tests'
-                  ? 'Loading sample test fixture…'
+                  ? 'Loading sample test sample…'
                   : 'Preparing sample response…'
               : state.mode === 'read'
                 ? 'Read-only'

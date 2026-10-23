@@ -199,8 +199,7 @@ export function ScopedReviewChanges(props: ReviewChangesProps & { review: Review
       )}
       {review.policy.stage === 'saved' && review.policy.undo === 'unavailable' && (
         <p role="status" className={s.muted}>
-          {review.policy.reason?.slice(0, 1000) ||
-            'The host does not offer undo for these saved changes.'}
+          {review.policy.reason?.slice(0, 1000) || 'These saved changes can’t be undone here.'}
         </p>
       )}
       <div className={a.footer} role="group" aria-label="Change review decision">

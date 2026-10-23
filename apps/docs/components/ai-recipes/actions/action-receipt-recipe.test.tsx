@@ -14,9 +14,9 @@ describe('ActionReceiptRecipe composition', () => {
   it('discloses simulation and follows keyboard review → submission → acceptance → execution → receipt', async () => {
     const user = userEvent.setup();
     render(<ActionReceiptRecipe />);
-    expect(screen.getByText(/Simulated host · fixed local records/)).toBeVisible();
+    expect(screen.getByText(/Simulated server · fixed local records/)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Start simulated execution' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Simulated host controls' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Simulated server controls' })).toHaveAttribute(
       'aria-expanded',
       'false',
     );
@@ -50,7 +50,7 @@ describe('ActionReceiptRecipe composition', () => {
     expect(screen.getByText('AC-108: applied')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Start simulated execution' })).toBeDisabled();
     expect(
-      screen.getByText('Host result received. Both simulated effects are confirmed.'),
+      screen.getByText('Server result received. Both simulated effects are confirmed.'),
     ).toHaveAttribute('aria-live', 'polite');
   });
 
@@ -59,7 +59,7 @@ describe('ActionReceiptRecipe composition', () => {
     render(<ActionReceiptRecipe />);
     await review(user);
     await user.click(screen.getByRole('button', { name: 'Approve action' }));
-    await user.click(screen.getByRole('button', { name: 'Simulated host controls' }));
+    await user.click(screen.getByRole('button', { name: 'Simulated server controls' }));
     await user.click(screen.getByRole('button', { name: 'Change requested scope' }));
     await user.click(screen.getByRole('button', { name: 'Accept decision' }));
     expect(screen.getByRole('alert')).toHaveTextContent(
@@ -79,7 +79,7 @@ describe('ActionReceiptRecipe composition', () => {
     render(<ActionReceiptRecipe />);
     await review(user);
     await user.click(screen.getByRole('button', { name: 'Approve action' }));
-    await user.click(screen.getByRole('button', { name: 'Simulated host controls' }));
+    await user.click(screen.getByRole('button', { name: 'Simulated server controls' }));
     await user.click(screen.getByRole('button', { name: 'Lose decision acknowledgement' }));
     expect(screen.getByText('Review required')).toBeVisible();
     expect(screen.queryByText('Action approved')).toBeNull();
@@ -92,8 +92,8 @@ describe('ActionReceiptRecipe composition', () => {
     expect(
       screen.getByText('Execution outcome unknown. Look up the original receipt.'),
     ).toBeVisible();
-    await user.click(screen.getByRole('button', { name: 'Simulated host controls' }));
-    expect(screen.getByRole('button', { name: 'Simulated host controls' })).toHaveAttribute(
+    await user.click(screen.getByRole('button', { name: 'Simulated server controls' }));
+    expect(screen.getByRole('button', { name: 'Simulated server controls' })).toHaveAttribute(
       'aria-expanded',
       'false',
     );
@@ -113,7 +113,7 @@ describe('ActionReceiptRecipe composition', () => {
     await user.click(screen.getByRole('button', { name: 'Approve action' }));
     await user.click(screen.getByRole('button', { name: 'Accept decision' }));
     await user.click(screen.getByRole('button', { name: 'Start simulated execution' }));
-    await user.click(screen.getByRole('button', { name: 'Simulated host controls' }));
+    await user.click(screen.getByRole('button', { name: 'Simulated server controls' }));
     await user.click(screen.getByRole('button', { name: 'Report partial failure' }));
     expect(screen.getByText('AC-104: applied')).toBeVisible();
     expect(screen.getByText('AC-108: failed')).toBeVisible();

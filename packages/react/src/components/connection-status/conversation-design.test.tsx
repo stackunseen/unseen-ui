@@ -47,6 +47,6 @@ describe('conversation design refinements', () => {
     const group = screen.getByRole('group', { name: 'Connection recovery' });
     expect(within(group).getByRole('button', { name: 'Refresh snapshot' })).toBeEnabled();
     expect(within(group).getByRole('button', { name: 'Resume connection' })).toBeDisabled();
-    expect(screen.getByRole('status')).toHaveTextContent('Recovery outcome unknown');
+    expect(screen.getByRole('status')).toHaveTextContent('whether recovery worked');
   });
 });

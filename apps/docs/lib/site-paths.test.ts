@@ -9,7 +9,7 @@ describe('site route identity and old gallery links', () => {
     expect(catalog.map((entry) => entry.name)).toContain('MarketingHero');
     expect(componentSlug('MCPServerCard')).toBe('mcp-server-card');
   });
-  it('preserves valid fixture choices when migrating a saved link', () => {
+  it('preserves valid sample choices when migrating a saved link', () => {
     const old =
       '?view=components&component=Modal&style=sheet&state=Default&tab=code&compare=true&width=375';
     expect(legacyDestination(old)).toBe('/components/modal/?style=sheet&tab=code&compare=true');

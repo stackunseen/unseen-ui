@@ -133,7 +133,7 @@ describe('gallery scoped host examples', () => {
     await user.click(screen.getByRole('button', { name: 'Simulate lost acknowledgement' }));
     await user.click(screen.getByRole('button', { name: 'Check original decision' }));
     expect(screen.queryByText('Permission granted')).not.toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Refresh host snapshot' }));
+    await user.click(screen.getByRole('button', { name: 'Refresh server snapshot' }));
     expect(screen.getByText('Permission granted')).toBeVisible();
   });
   it('historical permission lookup does not grant the replacement scope', async () => {

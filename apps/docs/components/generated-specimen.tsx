@@ -96,9 +96,9 @@ export function GeneratedSpecimen({
     id: 'summary',
     type: 'section',
     title: long
-      ? 'Workspace deployment review, measured fixture totals and current ownership'
+      ? 'Workspace deployment review, measured sample totals and current ownership'
       : 'Workspace summary',
-    description: 'Synthetic fixture data; source and totals are supplied by this local host.',
+    description: 'Synthetic sample data; source and totals are supplied by this local server.',
     layout: 'grid',
     nodes: [
       { id: 'metric', type: 'metric', label: 'Changed files', value: '2' },
@@ -110,7 +110,7 @@ export function GeneratedSpecimen({
           { id: 'name', label: 'Check' },
           { id: 'result', label: 'Result' },
         ],
-        rows: [{ id: 'types', cells: { name: 'Types', result: 'Passed in fixture' } }],
+        rows: [{ id: 'types', cells: { name: 'Types', result: 'Passed in sample' } }],
       },
       {
         id: 'chart',
@@ -157,13 +157,13 @@ export function GeneratedSpecimen({
       id: 'surface-1',
       version,
       nodes: [
-        { id: 'intro', type: 'text', text: 'The host groups related actions beside this result.' },
+        { id: 'intro', type: 'text', text: 'Related actions sit beside this result.' },
         actionNode,
         { id: 'export', type: 'action', label: 'Export summary', actionId: 'export' },
         {
           id: 'note',
           type: 'text',
-          text: 'Discard is a separate request; this fixture executes no external action.',
+          text: 'Discard is a separate request; this sample executes no external action.',
         },
         { id: 'discard', type: 'action', label: 'Discard draft', actionId: 'discard' },
       ],
@@ -212,7 +212,7 @@ export function GeneratedSpecimen({
           version,
           actionId: 'review',
           status: fixtureOutcome,
-          message: 'Reported by the simulated host.',
+          message: 'Reported by the simulated server.',
         },
       ]
     : packet && outcome && !packet.form
@@ -222,7 +222,7 @@ export function GeneratedSpecimen({
             version: packet.version,
             actionId: packet.actionId,
             status: outcome,
-            message: 'Acknowledgement from the simulated host.',
+            message: 'Acknowledgement from the simulated server.',
           },
         ]
       : [];
@@ -287,7 +287,7 @@ export function GeneratedSpecimen({
                   : 'ready';
   return (
     <div className={styles.root}>
-      <p>Synthetic host · structure, values and outcomes are supplied locally</p>
+      <p>Sample server · structure, values and outcomes are supplied locally</p>
       {state === 'Live versions' && (
         <div className={styles.controls}>
           <Button
@@ -340,7 +340,7 @@ export function GeneratedSpecimen({
                     version: packet.version,
                     nodeId: packet.nodeId!,
                     draftVersion: packet.form.submission.identity?.draftVersion,
-                    message: 'Current form acknowledged by the simulated host.',
+                    message: 'Current form acknowledged by the simulated server.',
                   },
                 });
             }}
@@ -350,7 +350,7 @@ export function GeneratedSpecimen({
           {packet.version !== version && (
             <p>
               Earlier request belongs to a previous surface version. Reconcile its outcome with the
-              host.
+              server.
             </p>
           )}
         </div>
@@ -424,12 +424,12 @@ const vocabularyProgram = (
 ) => `root = [summary, steps, risk, totals, owner, evidence]
 summary = list(["Three tickets are open", "Two are older than a week", "One affects sign-in"])
 steps = steps("Triage", [{id: "collect", label: "Collect", state: "done"}, {id: "assign", label: "Assign", state: "current"}, {id: "close", label: "Close", state: "upcoming"}])
-risk = callout("warning", "Two tickets are past their target", "Both affect sign-in. The host decides whether to escalate.")
+risk = callout("warning", "Two tickets are past their target", "Both affect sign-in. The server decides whether to escalate.")
 totals = metricGroup("This week", [{label: "Opened", value: "12"}, {label: "Closed", value: "9"}, {label: "Median age", value: "4 days"}])
 owner = options("Who should take the oldest ticket?", "assign-owner", [{value: "ana", label: "Ana", description: "on call this week"}, {value: "raj", label: "Raj"}, {value: "later", label: "Decide later"}])
 evidence = section("Evidence", [local, remote], "grid")
 local = image("${origin}/fixtures/sample-chart.png", "Sample bar chart of tickets per week", "Served by this site")
-remote = image("https://images.example.com/trend.png", "Open tickets per day", "From a server the host has not approved")`;
+remote = image("https://images.example.com/trend.png", "Open tickets per day", "From a site your app hasn’t approved")`;
 
 function VocabularySpecimen({
   presentation,
@@ -451,7 +451,7 @@ function VocabularySpecimen({
     <div className={styles.root}>
       <p>
         Synthetic surface written in the line format. The images and the choice are controlled by
-        the simulated host below.
+        the simulated server below.
       </p>
       <div className={styles.controls}>
         <Button variant="outline" aria-pressed={approved} onClick={() => setApproved(!approved)}>
@@ -459,7 +459,7 @@ function VocabularySpecimen({
         </Button>
         {choice?.status === 'pending' && (
           <Button variant="outline" onClick={() => setChoice({ ...choice, status: 'complete' })}>
-            Confirm choice as host
+            Confirm choice as your server
           </Button>
         )}
         {choice && choice.status !== 'pending' && (

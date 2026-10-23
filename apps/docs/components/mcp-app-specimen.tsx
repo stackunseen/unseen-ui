@@ -29,11 +29,11 @@ addEventListener('message', (event) => {
 });
 function size(){ notify('ui/notifications/size-changed', { height: document.documentElement.scrollHeight }); }
 send('ui/initialize', { appCapabilities: {}, appInfo: { name: 'weather-view', version: '1' }, protocolVersion: '2025-06-18' }).then((reply) => {
-  document.getElementById('log').textContent = 'Host: ' + (reply.result && reply.result.hostInfo ? reply.result.hostInfo.name : 'unknown') + ', theme ' + (reply.result && reply.result.hostContext ? reply.result.hostContext.theme : '?');
+  document.getElementById('log').textContent = 'App: ' + (reply.result && reply.result.hostInfo ? reply.result.hostInfo.name : 'unknown') + ', theme ' + (reply.result && reply.result.hostContext ? reply.result.hostContext.theme : '?');
   notify('ui/notifications/initialized'); size(); new ResizeObserver(size).observe(document.body);
 });
-document.getElementById('link').onclick = () => send('ui/open-link', { url: 'https://example.com/forecast' }).then((r) => { document.getElementById('log').textContent = r.error ? 'Host said: ' + r.error.message : 'Host opened the link.'; });
-document.getElementById('msg').onclick = () => send('ui/message', { role: 'user', content: { type: 'text', text: 'Show me the 7-day forecast' } }).then((r) => { document.getElementById('log').textContent = r.error ? 'Host said: ' + r.error.message : 'Host accepted the message.'; });
+document.getElementById('link').onclick = () => send('ui/open-link', { url: 'https://example.com/forecast' }).then((r) => { document.getElementById('log').textContent = r.error ? 'Your app said: ' + r.error.message : 'Your app opened the link.'; });
+document.getElementById('msg').onclick = () => send('ui/message', { role: 'user', content: { type: 'text', text: 'Show me the 7-day forecast' } }).then((r) => { document.getElementById('log').textContent = r.error ? 'Your app said: ' + r.error.message : 'Your app accepted the message.'; });
 </script></body></html>`;
 
 const resource: MCPAppResource = {
@@ -97,14 +97,14 @@ export function MCPAppSpecimen({
         onRequest={(request, reply) => {
           if (request.method === 'ui/open-link') {
             onNotice(
-              `The view asked to open ${JSON.stringify((request.params as { url?: string })?.url)}. The sample host declines.`,
+              `The view asked to open ${JSON.stringify((request.params as { url?: string })?.url)}. The sample app declines.`,
             );
             reply.error(-32000, 'Link opening denied by user');
             return;
           }
           if (request.method === 'ui/message') {
             onNotice(
-              'The view sent a message for the conversation. The sample host accepted it and returned a tool result.',
+              'The view sent a message for the conversation. The sample app accepted it and returned a tool result.',
             );
             reply.result({});
             setResult({

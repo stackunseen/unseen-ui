@@ -101,7 +101,7 @@ export function AIFormField({
       )}
       {truncated && (
         <span id={`${id}-preview`} className={g.error}>
-          Preview limited to 10,000 characters. Correct the host value before submission.
+          The preview shows the first 10,000 characters. Shorten the value before submitting.
         </span>
       )}
     </div>

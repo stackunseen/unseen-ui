@@ -116,14 +116,14 @@ export function decisionSubmissionSchema<C extends z.ZodType>(command: C) {
 export function receiptMessage(outcome?: string): string {
   switch (outcome) {
     case 'applied':
-      return 'The host confirmed the original decision. Current access and ownership are reported separately.';
+      return 'Your original decision was confirmed. Current access and ownership are shown separately.';
     case 'accepted':
-      return 'The host received the original decision. Its effect is not yet confirmed.';
+      return 'Your original decision was received, but its effect isn’t confirmed yet.';
     case 'rejected':
-      return 'The host rejected the original decision. Review a current request before deciding again.';
+      return 'Your original decision was rejected. Review the latest request before deciding again.';
     case 'not-found':
-      return 'The host did not find the original decision. Its outcome is still unknown; do not resend it.';
+      return 'Your original decision wasn’t found, so its outcome is still unknown. Don’t send it again.';
     default:
-      return 'The original decision may have reached the host. Check its receipt before making another decision.';
+      return 'Your original decision may have arrived. Check before deciding again.';
   }
 }

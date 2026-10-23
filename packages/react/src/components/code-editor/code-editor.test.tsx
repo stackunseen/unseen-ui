@@ -483,7 +483,7 @@ describe('optional CodeEditor with real CodeMirror', () => {
         })}
       />,
     );
-    expect(screen.getByText('Edit receipt belongs to a different revision.')).toBeVisible();
+    expect(screen.getByText('That confirmation is for a different revision.')).toBeVisible();
     rendered.rerender(
       <CodeEditor
         {...props({
@@ -499,7 +499,7 @@ describe('optional CodeEditor with real CodeMirror', () => {
         })}
       />,
     );
-    expect(screen.getByText('Host rejected the edit: Access revoked')).toBeVisible();
+    expect(screen.getByText('Edit rejected: Access revoked')).toBeVisible();
     expect(editor().state.doc.toString()).toBe(document.text);
   });
   it('uses plain text for unsupported syntax and refuses oversized/identityless documents', () => {

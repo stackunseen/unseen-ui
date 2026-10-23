@@ -35,7 +35,7 @@ function ColourField({
       <span>{label}</span>
       <div>
         <input
-          aria-label={`${label} colour picker`}
+          aria-label={`${label} color picker`}
           type="color"
           value={value}
           onChange={(e) => {
@@ -57,7 +57,7 @@ function ColourField({
       </div>
       {!valid && (
         <small role="status">
-          Enter a six-digit hex colour. The last valid colour is still shown.
+          Enter a six-digit hex color. The last valid color is still shown.
         </small>
       )}
     </label>
@@ -179,7 +179,7 @@ export function ThemeEditor({
           <p className="theme-status" role="status">
             {settingsNotice}
           </p>
-          <h3 className="theme-group-title">Brand colours</h3>
+          <h3 className="theme-group-title">Brand colors</h3>
           <p className="theme-note">
             Brand colors update both appearances. Your individual background and text colors stay in
             place. Presets start a fresh palette; Undo restores the previous look.
@@ -301,7 +301,7 @@ export function ThemeEditor({
               open={dialogOpen}
               onOpenChange={setDialogOpen}
               title="Surface preview"
-              description="This dialog inherits the same corners, colours and shadow setting."
+              description="This dialog inherits the same corners, colors and shadow setting."
               trigger={<Button variant="outline">Preview dialog</Button>}
             >
               <p>
@@ -317,7 +317,7 @@ export function ThemeEditor({
             <StatusBadge state="failed" />
           </div>
           <p className="theme-note">
-            Status colours retain their meaning when your brand colours change.
+            Status colors keep their meaning when your brand colors change.
           </p>
           <div className="theme-motion-preview">
             <LoadingIndicator label="Loading preview" variant="dots" />
@@ -330,7 +330,7 @@ export function ThemeEditor({
                 : `${theme.diagnostics.length} token-pair checks passed`}
             </strong>
             <p>
-              Text and selected control colours are measured in both modes. This is not a full
+              Text and selected control colors are measured in both modes. This is not a full
               accessibility audit.
             </p>
             {failures.some((d) => d.role.startsWith('control-border')) && (

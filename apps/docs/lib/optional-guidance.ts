@@ -51,7 +51,7 @@ const guides = {
   DataGrid: {
     use: 'Pass the rows for the current page. The grid requests sorting, filtering, paging and selection changes; your application updates the data and controlled props.',
     keyboard:
-      'Tab reaches column sorting, selection and paging. Scroll the labelled table region to read wide columns.',
+      'Tab reaches column sorting, selection and paging. Scroll the labeled table region to read wide columns.',
     props: [
       {
         name: 'caption',
@@ -74,7 +74,7 @@ const guides = {
         name: 'rows',
         type: 'readonly Row[]',
         description:
-          'The host-filtered, sorted and paged window. The grid does not fetch or transform it.',
+          'The current page of rows, already filtered, sorted and paged by your app. The grid never fetches or changes them.',
       },
       {
         name: 'getRowId',
@@ -148,7 +148,7 @@ const guides = {
       {
         name: 'onQueryChange',
         type: '(query: string) => void',
-        description: 'Update search text and, if needed, request new host results.',
+        description: 'Update the search text and, if needed, load new results from your server.',
       },
       {
         name: 'status',
@@ -193,7 +193,7 @@ const guides = {
       {
         name: 'today',
         type: 'DateOnly (optional)',
-        description: 'The host-supplied current date. No browser clock or timezone is assumed.',
+        description: 'Today’s date from your app. The browser’s clock and time zone aren’t used.',
       },
       {
         name: 'disabledDates',
@@ -286,7 +286,7 @@ const guides = {
       {
         name: 'disabled',
         type: 'boolean (optional)',
-        description: 'Block scope changes while your host is unavailable or a command is pending.',
+        description: 'Block switching while your server is unavailable or a request is pending.',
       },
     ],
   },
@@ -360,9 +360,9 @@ const guides = {
     ],
   },
   Checklist: {
-    use: 'A tick-off list whose checked ids the host owns. Progress sits at the top and consecutive items with the same group share a heading.',
+    use: 'A tick-off list; your app owns which items are ticked. Progress sits at the top and consecutive items with the same group share a heading.',
     keyboard:
-      'Each row is a labelled checkbox. With rowToggle a click anywhere on the row ticks it, except on links, buttons, labels and the box.',
+      'Each row is a labeled checkbox. With rowToggle a click anywhere on the row ticks it, except on links, buttons, labels and the box.',
     props: [
       {
         name: 'items',
@@ -418,7 +418,7 @@ const guides = {
     ],
   },
   SettingsSaveCancel: {
-    use: 'Keep draft and receipt state in your host. Pending and unknown outcomes block another save. Unknown offers original receipt lookup.',
+    use: 'Keep the draft and the save result in your app. While a save is pending or unclear, another save is blocked, and an unclear result offers a way to check the first one.',
     keyboard:
       'Save can submit an external form with form. Feedback is announced; buttons remain in document order.',
     props: [
@@ -431,7 +431,7 @@ const guides = {
         name: 'state',
         type: 'SettingsSaveState',
         description:
-          'idle, pending, acknowledged, rejected or unknown, with the host message where required.',
+          'idle, pending, acknowledged, rejected or unknown, with your server’s message where needed.',
       },
       {
         name: 'form',
@@ -448,7 +448,7 @@ const guides = {
         name: 'onReconcile',
         type: '() => void (optional)',
         description:
-          'Look up the original command receipt after an unknown result. Do not resubmit.',
+          'After an unclear result, check whether the first save went through. Don’t save again.',
       },
       {
         name: 'canSave',
@@ -487,7 +487,7 @@ const guides = {
         name: 'returnFocusRef',
         type: 'RefObject<HTMLElement | null> (optional)',
         description:
-          'The requesting control captured before opening. Use it when navigation or an embedded dialog makes focus return ambiguous.',
+          'The control that opened it. Use it when navigation or an embedded dialog makes focus return ambiguous.',
       },
     ],
   },
@@ -527,7 +527,7 @@ const guides = {
       {
         name: 'groups',
         type: 'readonly { id, title, links }[]',
-        description: 'Labelled groups of MarketingLink destinations.',
+        description: 'Labeled groups of MarketingLink destinations.',
       },
       {
         name: 'copyright',
@@ -619,11 +619,11 @@ const guides = {
     ],
   },
   MarketingContact: {
-    use: 'Compose labelled fields inside the form. Your app validates, submits and supplies feedback.',
+    use: 'Put labeled fields inside the form. Your app validates, submits and supplies feedback.',
     keyboard: 'Native form validation and supplied controls retain their behavior.',
     props: [
       { name: 'title', type: 'ReactNode', description: 'Form heading.' },
-      { name: 'children', type: 'ReactNode (optional)', description: 'Your labelled fields.' },
+      { name: 'children', type: 'ReactNode (optional)', description: 'Your labeled fields.' },
       {
         name: 'onSubmit',
         type: 'FormEventHandler<HTMLFormElement> (optional)',

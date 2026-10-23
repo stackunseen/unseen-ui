@@ -76,7 +76,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
       )}
       <div className="directory-tools">
         <label id="component-search" className="directory-search">
-          <MagnifyingGlassIcon width={18} height={18} aria-hidden="true" />
+          <MagnifyingGlassIcon width={15} height={15} aria-hidden="true" />
           <span className="sr-only">Search the component catalog</span>
           <input
             ref={input}
@@ -149,7 +149,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
             aria-pressed={view === 'gallery'}
             onClick={() => update({ view: 'gallery' }, true)}
           >
-            <GridIcon width={16} height={16} aria-hidden="true" />
+            <GridIcon width={15} height={15} aria-hidden="true" />
             Gallery
           </button>
           <button
@@ -157,7 +157,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
             aria-pressed={view === 'list'}
             onClick={() => update({ view: 'list' }, true)}
           >
-            <ListBulletIcon width={16} height={16} aria-hidden="true" />
+            <ListBulletIcon width={15} height={15} aria-hidden="true" />
             List
           </button>
         </div>
@@ -221,7 +221,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
                           <span className="directory-text">
                             <strong>
                               {entry.name}
-                              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+                              <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
                             </strong>
                             <span>{entry.description}</span>
                           </span>

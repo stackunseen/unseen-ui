@@ -90,21 +90,21 @@ export function Notice({
       )}
       {state.status === 'stale' && (
         <p role="status" className={s.warning}>
-          Historical conversation data. Refresh with the host before making changes.
+          This is an older copy of the conversation. Refresh before making changes.
         </p>
       )}
       {state.connection !== undefined && state.connection !== 'connected' && (
         <p role="status" className={s.muted}>
           {state.connection === 'reconnecting'
-            ? 'Reconnecting conversation host.'
+            ? 'Reconnecting…'
             : state.connection === 'disconnected'
-              ? 'Conversation host disconnected.'
+              ? 'Disconnected.'
               : 'Conversation connection unknown.'}
         </p>
       )}
       {(state.obsolete || state.invalidOperation) && (
         <p role="status" className={s.warning}>
-          Conversation request belongs to an invalid or obsolete view. Reconcile with the host.
+          This request was for an earlier view of the conversation. Refresh and try again.
         </p>
       )}
       {state.operation && !state.obsolete && state.valid && (
@@ -113,12 +113,11 @@ export function Notice({
             {state.operation.state === 'submitting'
               ? 'Requesting conversation action…'
               : state.operation.state === 'acknowledged'
-                ? 'Request acknowledged. Waiting for current host data.'
+                ? 'Request received. Waiting for the latest messages.'
                 : state.operation.state === 'outcome-unknown'
                   ? 'Conversation request outcome unknown. Check the original request before trying again.'
                   : state.operation.state === 'failed'
-                    ? state.operation.detail ||
-                      'Conversation request failed. Previous host data is retained.'
+                    ? state.operation.detail || 'That didn’t work. The conversation is unchanged.'
                     : state.operation.detail || 'No conversation action pending.'}
           </p>
           {state.operation.state === 'outcome-unknown' && onReconcile && (

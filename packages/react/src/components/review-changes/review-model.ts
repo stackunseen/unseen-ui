@@ -92,7 +92,7 @@ export function reviewProblem(
         review.completedCommandIds.length !== new Set(review.completedCommandIds).size ||
         review.completedCommandIds.some((id) => !identifier(id))))
   )
-    return 'Command identities or history are ambiguous. Refresh host state.';
+    return 'The change history doesn’t add up. Refresh to get the latest.';
   if (
     !identifier(baseVersion) ||
     !identifier(proposalVersion) ||

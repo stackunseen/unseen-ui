@@ -74,7 +74,7 @@ export function executePermission(host: PermissionDemo, withhold: boolean): Perm
       storedReceipt = {
         command: original,
         outcome: 'rejected',
-        detail: 'The current sample host request no longer matches.',
+        detail: 'The current sample server request no longer matches.',
       };
   }
   return {
@@ -104,7 +104,7 @@ export function executeHandoff(host: HandoffDemo, withhold: boolean): HandoffDem
       storedReceipt = {
         command: original,
         outcome: 'rejected',
-        detail: 'The current sample host transfer no longer matches.',
+        detail: 'The current sample server transfer no longer matches.',
       };
   }
   return {
@@ -137,7 +137,7 @@ export function lookupHandoff(host: HandoffDemo, original: HandoffDecisionComman
   };
   return { ...host, submission: { state: 'acknowledged', original, receipt } };
 }
-const acknowledgement = { by: 'Gallery sample host', at: '2026-10-01T00:00:00Z' };
+const acknowledgement = { by: 'Gallery sample server', at: '2026-10-01T00:00:00Z' };
 const scope = {
   workspaceId: 'demo-workspace',
   threadId: 'account-review',

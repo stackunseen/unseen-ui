@@ -36,7 +36,7 @@ describe('connected SaaS admin template', () => {
     const dialog = screen.getByRole('alertdialog');
     expect(dialog).toHaveAccessibleName('Delete Jordan Lee from the demo?');
     await user.click(within(dialog).getByRole('button', { name: 'Delete demo customer' }));
-    expect(await screen.findByText(/simulated host rejected/)).toBeInTheDocument();
+    expect(await screen.findByText(/simulated server rejected/)).toBeInTheDocument();
     expect(host.read().organizations[0]!.customers).toHaveLength(6);
     await user.click(screen.getByRole('button', { name: 'Keep customer' }));
     await select(user, 'Next action result', 'Interrupt receipt');
@@ -44,7 +44,7 @@ describe('connected SaaS admin template', () => {
     await user.click(
       within(screen.getByRole('alertdialog')).getByRole('button', { name: 'Delete demo customer' }),
     );
-    await user.click(await screen.findByRole('button', { name: 'Check original receipt' }));
+    await user.click(await screen.findByRole('button', { name: 'Check if it went through' }));
     expect(
       await screen.findByText(
         'Customer deleted from the local demo. No external record was deleted.',
@@ -70,7 +70,7 @@ describe('connected SaaS admin template', () => {
     await user.click(screen.getByRole('button', { name: 'Organization settings' }));
     await replace(user, /Organization name/, 'Unknown save');
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
-    await user.click(await screen.findByRole('button', { name: 'Check original receipt' }));
+    await user.click(await screen.findByRole('button', { name: 'Check if it went through' }));
     expect(await screen.findByText(/original receipt is still unavailable/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Customers' })).toBeDisabled();
     expect(service.submit).toHaveBeenCalledOnce();
@@ -97,7 +97,7 @@ describe('connected SaaS admin template', () => {
     expect(screen.getByRole('button', { name: 'View Jordan Lee Updated' })).toBeInTheDocument();
     expect(screen.getByText('1 of 6 customers')).toBeInTheDocument();
   });
-  it('creates a validated record and focuses the first invalid field before host submission', async () => {
+  it('creates a validated record and focuses the first invalid field before server submission', async () => {
     const { user, host } = setup();
     const submit = vi.spyOn(host, 'submit');
     await user.click(screen.getByRole('button', { name: 'Customers' }));
@@ -170,7 +170,7 @@ describe('connected SaaS admin template', () => {
     await user.click(screen.getByRole('button', { name: 'Organization settings' }));
     await replace(user, /Organization name/, 'Recovered Studio');
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
-    expect(await screen.findByText(/simulated host rejected this action/)).toBeInTheDocument();
+    expect(await screen.findByText(/simulated server rejected this action/)).toBeInTheDocument();
     expect(screen.getByLabelText(/Organization name/)).toHaveValue('Recovered Studio');
     expect(host.read().organizations[0]!.settings.name).toBe('Northstar Studio');
     await select(user, 'Next action result', 'Interrupt receipt');
@@ -179,7 +179,7 @@ describe('connected SaaS admin template', () => {
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Customers' })).toBeDisabled();
     const version = host.read().version;
-    await user.click(screen.getByRole('button', { name: 'Check original receipt' }));
+    await user.click(screen.getByRole('button', { name: 'Check if it went through' }));
     expect(
       await screen.findByText('Organization settings saved in the local demo.'),
     ).toBeInTheDocument();

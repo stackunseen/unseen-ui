@@ -113,10 +113,7 @@ export function RunInspector({
         </ul>
       )}
       {spans.length > 200 && (
-        <p className={s.muted}>
-          Showing the first 200 execution spans. Request a different host data window to inspect
-          more.
-        </p>
+        <p className={s.muted}>Showing the first 200 steps. Load more to see the rest.</p>
       )}
     </div>
   );

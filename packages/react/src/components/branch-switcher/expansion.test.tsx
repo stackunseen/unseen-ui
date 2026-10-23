@@ -22,7 +22,7 @@ describe('coding and workflow contracts', () => {
         onValueChange={select}
       />,
     );
-    expect(screen.getByRole('status')).toHaveTextContent('unavailable');
+    expect(screen.getByRole('status')).toHaveTextContent('isn’t loaded');
     expect(select).not.toHaveBeenCalled();
   });
 });

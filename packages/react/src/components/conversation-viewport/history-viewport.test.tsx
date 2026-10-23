@@ -76,7 +76,7 @@ describe('controlled message reading surface', () => {
         mode="reading"
       />,
     );
-    expect(screen.getByRole('status')).toHaveTextContent('at most 200');
+    expect(screen.getByRole('status')).toHaveTextContent('up to 200');
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
 

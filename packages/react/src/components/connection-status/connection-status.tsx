@@ -86,7 +86,7 @@ export function ConnectionStatus({
             ? 'Snapshot freshness unknown. Transport connectivity does not establish current run data.'
             : interrupted
               ? 'Displayed run data may be out of date. Completed actions are not undone by a connection loss.'
-              : 'Receiving host updates. Connection status does not indicate run completion.'}
+              : 'Receiving updates. Being connected doesn’t mean the run has finished.'}
       </p>
       {value.detail && <p>{value.detail}</p>}
       {resumed && (
@@ -100,18 +100,18 @@ export function ConnectionStatus({
             <p className={s.muted}>
               {incompatible
                 ? canRefresh
-                  ? 'Refresh an authoritative snapshot before applying further events.'
-                  : 'An authoritative snapshot is required before applying further events. Snapshot refresh is unavailable here; the host must supply current data.'
+                  ? 'Refresh to get the latest data before continuing.'
+                  : 'The latest data is needed before continuing, and it can’t be refreshed from here.'
                 : uncertainFreshness && value.state === 'connected'
                   ? canRefresh
-                    ? 'Refresh an authoritative snapshot to inspect current host data.'
-                    : 'Snapshot refresh is unavailable here. The host must supply current data.'
+                    ? 'Refresh to see the latest data.'
+                    : 'The latest data can’t be refreshed from here.'
                   : !value.adapter.resume
                     ? 'This adapter cannot replay missed updates.'
                     : !cursor
                       ? 'A valid resume cursor is unavailable.'
                       : !onResume
-                        ? 'Resume is unavailable through this host.'
+                        ? 'Resuming isn’t available here.'
                         : 'A connection attempt is already in progress.'}
             </p>
           )}
@@ -141,10 +141,10 @@ export function ConnectionStatus({
           ? 'Requesting recovery…'
           : submission === 'outcome-unknown'
             ? canRefresh
-              ? 'Recovery outcome unknown. Refresh the snapshot to inspect host state. The host must reconcile the original request before it is repeated.'
-              : 'Recovery outcome unknown. Snapshot refresh is unavailable here. The host must reconcile the original request before it is repeated.'
+              ? 'It’s not clear whether recovery worked. Refresh to see the latest state, and check the original request before it’s sent again.'
+              : 'It’s not clear whether recovery worked, and the data can’t be refreshed from here. Check the original request before it’s sent again.'
             : submission === 'acknowledged'
-              ? 'Recovery request received. Waiting for host state.'
+              ? 'Recovery request received. Waiting for the latest state.'
               : submission === 'failed'
                 ? 'Recovery request failed. The previous connection state is retained.'
                 : ''}

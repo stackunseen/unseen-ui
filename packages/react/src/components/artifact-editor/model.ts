@@ -122,6 +122,6 @@ export function commandProblem(
     command.commandId === state.receipt.commandId &&
     !sameDocumentIdentity(command.target, state.receipt.target)
   )
-    return 'A command ID was reused for another revision. The host must issue a new command.';
+    return 'A request ID was reused for a different revision. Send a new request.';
   return undefined;
 }

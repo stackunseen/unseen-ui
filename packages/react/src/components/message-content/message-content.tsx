@@ -85,9 +85,7 @@ const PartView = memo(function PartView({
       content = tool ? (
         (renderTool?.(tool) ?? <ToolCall value={tool} variant="row" />)
       ) : (
-        <p className={s.unavailable}>
-          Tool result unavailable. The host has not resolved this call.
-        </p>
+        <p className={s.unavailable}>The tool result isn’t available yet.</p>
       );
       break;
     case 'source':
@@ -122,7 +120,7 @@ const PartView = memo(function PartView({
           <img className={s.image} src={part.url} alt={part.name} loading="lazy" />
         ) : (
           <span className={s.file}>
-            <AIIcon name="document" size={14} />
+            <AIIcon name="document" size={15} />
             {part.name}
           </span>
         );

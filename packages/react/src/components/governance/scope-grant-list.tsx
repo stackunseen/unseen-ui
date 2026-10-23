@@ -179,7 +179,7 @@ export function ScopeGrantList({
                 )}
                 {revoking && (
                   <p className={s.muted} role="status">
-                    Revoke requested. Waiting for the host to confirm.
+                    Revoke requested. Waiting for confirmation.
                   </p>
                 )}
               </li>

@@ -22,7 +22,7 @@ export const artifact: Artifact = {
   title: 'Account review summary',
   kind: 'text',
   content:
-    'Account review\n\n3 inactive accounts were identified in the simulated dataset.\n\nProposed action: archive the accounts after an owner reviews the change.\n\nEvidence: Customer operations handbook, section 4.\n\nThis is fixture data. No external system was accessed.',
+    'Account review\n\n3 inactive accounts were identified in the simulated dataset.\n\nProposed action: archive the accounts after an owner reviews the change.\n\nEvidence: Customer operations handbook, section 4.\n\nThis is sample data. No external system was accessed.',
   sourceIds: [source.id],
 };
 export const steps: Step[] = [
@@ -44,7 +44,7 @@ export const steps: Step[] = [
     id: 'review',
     label: 'Request owner approval',
     state: 'running',
-    detail: 'Execution waits for the host to acknowledge a decision.',
+    detail: 'Execution waits for the server to acknowledge a decision.',
     dependencyIds: ['search'],
   },
   { id: 'report', label: 'Prepare a summary', state: 'queued', dependencyIds: ['review'] },

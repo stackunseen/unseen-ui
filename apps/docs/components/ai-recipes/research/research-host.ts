@@ -47,7 +47,7 @@ export const researchScenarios = [
   { value: 'claim-revised', label: 'Claim revised' },
   { value: 'stale', label: 'Stale evidence' },
   { value: 'unknown-freshness', label: 'Freshness unknown' },
-  { value: 'error', label: 'Host snapshot error' },
+  { value: 'error', label: 'Server snapshot error' },
 ] as const;
 
 /** Synthetic supplied documents, not retrieved pages or real pilot results. */
@@ -158,7 +158,7 @@ export function researchHostReducer(
     status: scenario === 'error' ? 'error' : 'partial',
     error:
       scenario === 'error'
-        ? 'The simulated host could not supply a current snapshot. Previous excerpts are retained for inspection.'
+        ? 'The simulated server could not supply a current snapshot. Previous excerpts are retained for inspection.'
         : undefined,
     claims: next.claims.map((claim) =>
       scenario === 'claim-revised' && claim.id === 'claim-cohort'
@@ -270,9 +270,9 @@ export const researchLinkLabels = {
   'source-missing': 'Source unavailable',
   'source-changed': 'Source version or location changed',
   'claim-revised': 'Claim revision needs review',
-  stale: 'Evidence marked stale by host',
+  stale: 'Evidence marked stale by server',
   'unknown-freshness': 'Freshness not supplied',
-  unassessed: 'No host support assessment',
-  error: 'Current host snapshot unavailable',
+  unassessed: 'No server support assessment',
+  error: 'Current server snapshot unavailable',
   invalid: 'Evidence outside recipe limits',
 } as const;

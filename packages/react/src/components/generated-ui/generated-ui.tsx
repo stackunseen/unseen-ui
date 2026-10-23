@@ -276,7 +276,7 @@ export function GeneratedUI({
     return (
       <div {...root}>
         <p role="status" className={g.error}>
-          The host form snapshots exceed the generated control limit.
+          This form has more fields than can be shown.
         </p>
       </div>
     );
@@ -355,11 +355,11 @@ export function GeneratedUI({
     );
   }
   const statusLabels = {
-    pending: 'Awaiting host confirmation…',
-    complete: 'Host reported completion.',
-    error: 'The host reported an error. Retry only if permitted.',
-    denied: 'The host denied this action.',
-    unknown: 'The action outcome is unknown. Reconcile with the host before retrying.',
+    pending: 'Waiting for confirmation…',
+    complete: 'Completed.',
+    error: 'The action failed. Try again only if that’s allowed.',
+    denied: 'This action was denied.',
+    unknown: 'It’s not clear whether this action ran. Check before trying again.',
   };
   /** Host state for one actionId: why it is disabled, its current snapshot and the status id. */
   function actionStatus(actionId: string, nodeId: string, disabledReason?: string) {
@@ -390,7 +390,7 @@ export function GeneratedUI({
       (invalid
         ? 'Action state is stale or unavailable.'
         : !onAction
-          ? 'No host action handler is connected.'
+          ? 'Actions aren’t set up here.'
           : undefined);
     return {
       variant: presentationError ? 'outline' : (presentations?.[0]?.variant ?? 'outline'),
@@ -623,7 +623,7 @@ export function GeneratedUI({
           : state === 'streaming'
             ? 'Receiving result… Actions are disabled until it is ready.'
             : state === 'pending'
-              ? 'Awaiting host confirmation…'
+              ? 'Waiting for confirmation…'
               : 'This result is stale. Refresh before acting.'}
       </p>
       {!surface.nodes.length ? (

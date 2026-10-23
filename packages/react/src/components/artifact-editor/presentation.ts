@@ -24,7 +24,7 @@ export function artifactPresentation({
   const busy = pending(saveState) || pending(exportState) || awaitingDocument;
   const problem =
     saveCommand && exportCommand && saveCommand.commandId === exportCommand.commandId
-      ? 'Save and export require distinct host command IDs.'
+      ? 'Save and export need different request IDs.'
       : (commandProblem(saveCommand, saveState, draft) ??
         commandProblem(exportCommand, exportState, draft));
   const locked = access !== 'available' || conflict || busy || !!problem;
@@ -54,10 +54,10 @@ export function artifactPresentation({
                   ? 'dirty'
                   : 'clean';
   const message = conflict
-    ? `The saved document changed from ${draft.base.version} to ${document.version}. Reconcile the draft in the host before saving.`
+    ? `The saved document changed from ${draft.base.version} to ${document.version}. Bring your draft up to date before saving.`
     : (problem ??
       (awaitingDocument
-        ? 'Save acknowledged; waiting for the matching saved document.'
+        ? 'Save received. Waiting for the saved document.'
         : saved
           ? `Saved at revision ${document.version}.`
           : dirty

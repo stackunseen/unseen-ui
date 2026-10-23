@@ -123,7 +123,7 @@ export function AttentionQueue({
                           ? 'warning'
                           : 'unknown'
                   }
-                  size={14}
+                  size={15}
                 />
               </span>
               <div className={s.grow}>

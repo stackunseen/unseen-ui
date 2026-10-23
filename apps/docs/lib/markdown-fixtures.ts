@@ -11,7 +11,7 @@ export const markdownExamples: Record<string, string> = {
   'Unsafe content':
     '# Untrusted content example\n\n<script>alert("example")</script>\n\n[Unsupported URL](javascript:alert%281%29)\n\n![Synthetic external image](https://example.com/not-loaded.png)\n\nHTML is displayed as text. The image is only an explicit link.',
   Footnotes:
-    '# Evidence notes\n\nThe review includes two example sources.[^policy] A second note describes the fixture.[^fixture]\n\n[^policy]: Synthetic policy, version 2.\n[^fixture]: Local sample data; no production records.',
+    '# Evidence notes\n\nThe review includes two example sources.[^policy] A second note describes the sample.[^sample]\n\n[^policy]: Synthetic policy, version 2.\n[^sample]: Local sample data; no production records.',
   'Long code':
     '# Long-line example\n\n```typescript\nconst review = { accountName: "Acme Company — international research and customer operations", owner: null, requiredAction: "Review the proposed assignment before continuing" };\n\nconsole.log(review.accountName);\n```\n\nInline code also wraps: `customer_review_status_pending_owner_assignment_for_international_operations`.',
   'Large content':

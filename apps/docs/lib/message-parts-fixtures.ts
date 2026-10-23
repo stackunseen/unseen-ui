@@ -16,7 +16,7 @@ export const partStates = [
   'Long single',
 ];
 const paragraph =
-  'A **completed** section stays available while the host sends the next section. Review each independent section before acting.\n\n';
+  'A **completed** section stays available while the server sends the next section. Review each independent section before acting.\n\n';
 export function partsSnapshot(state: string): RuntimeSnapshot {
   const streaming = ['Streaming parts', 'Live parts', 'Long parts', 'Long single'].includes(state);
   const parts: MessagePart[] =
@@ -95,7 +95,7 @@ export function partsSnapshot(state: string): RuntimeSnapshot {
       state === 'Failed parts'
         ? {
             code: 'DEMO_TIMEOUT',
-            message: 'The synthetic host timed out. Received content is retained.',
+            message: 'The sample server timed out. Received content is retained.',
           }
         : undefined,
     ...(state === 'Long single'

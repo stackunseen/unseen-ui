@@ -126,7 +126,7 @@ describe('terminal snapshots and scoped controls', () => {
     expect(screen.getByRole('button', { name: 'Clear output' })).toBeDisabled();
     rerender(<TerminalOutput {...props} status="stale" connection="connected" />);
     expect(screen.getByRole('button', { name: 'Copy output' })).toBeDisabled();
-    expect(screen.getByText(/Historical terminal/)).toBeVisible();
+    expect(screen.getByText(/Earlier output/)).toBeVisible();
   });
   it('discards pending clipboard receipts and old feedback after revoke/restore of identical data', async () => {
     const user = userEvent.setup();

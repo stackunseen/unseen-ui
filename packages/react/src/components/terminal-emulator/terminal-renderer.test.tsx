@@ -169,7 +169,7 @@ describe('optional terminal renderer lifecycle', () => {
     await ready();
     expect(resize).toHaveBeenCalledOnce();
     expect(resize).toHaveBeenCalledWith({ ...context, columns: 60, rows: 10 });
-    expect(screen.getByText(/Resize delivery outcome unknown/)).toBeVisible();
+    expect(screen.getByText(/whether the resize arrived/)).toBeVisible();
     rerender(
       <TerminalEmulator {...base} onInput={input} onResize={resize} submission="outcome-unknown" />,
     );

@@ -24,7 +24,7 @@ function prepared() {
   );
 }
 
-describe('Coding Studio local demo host', () => {
+describe('Coding Studio local demo server', () => {
   it('keeps prepared files as drafts until an exact review receives acknowledgment', () => {
     let state = prepared();
     expect(studioChanges(state)).toHaveLength(2);
@@ -81,7 +81,7 @@ describe('Coding Studio local demo host', () => {
     expect(state.error).toContain('replace a custom draft');
   });
 
-  it('loads honest fixed test fixtures and skips arbitrary edited code', () => {
+  it('loads honest fixed test samples and skips arbitrary edited code', () => {
     const original = finish(studioReducer(createStudioState(), { type: 'tests' }));
     expect(original.results.filter((result) => result.state === 'failed')).toHaveLength(2);
     const fixed = finish(studioReducer(prepared(), { type: 'tests' }));

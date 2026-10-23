@@ -92,9 +92,7 @@ describe('GeneratedUI vocabulary growth', () => {
       'true',
     );
     expect(within(group).getByRole('button', { name: 'Ana' })).toBeDisabled();
-    expect(within(group).getByRole('status')).toHaveTextContent(
-      'Host reported completion. Choice: Raj.',
-    );
+    expect(within(group).getByRole('status')).toHaveTextContent('Completed. Choice: Raj.');
   });
 
   it.each([

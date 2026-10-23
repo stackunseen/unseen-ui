@@ -20,13 +20,13 @@ export function DesignGuide({
       <div className="page-heading">
         <span className="eyebrow">DESIGN FOUNDATIONS</span>
         <h1>Quiet surfaces. Clear decisions.</h1>
-        <p>Explore colour, spacing and interaction patterns using your current theme.</p>
+        <p>Explore color, spacing and interaction patterns using your current theme.</p>
         <Button onClick={onCustomize}>Customize in Theme studio</Button>
       </div>
       <section className="design-section">
         <div>
           <span className="eyebrow">01 · COLOUR</span>
-          <h2>Give colour a job.</h2>
+          <h2>Give color a job.</h2>
           <p>
             Primary marks actions and selection. Secondary supports a second action. Success,
             warning and failure retain a separate meaning, reinforced with text and icons.
@@ -142,7 +142,7 @@ export function DesignGuide({
         <h2>Keep the original request in view.</h2>
         <p>
           Transport, current data, acknowledgement and execution have separate meanings. Try a lost
-          response, inspect its original receipt and apply an explicit local host update.
+          response, inspect its original receipt and apply an explicit local server update.
         </p>
         <RecoveryExample />
       </section>

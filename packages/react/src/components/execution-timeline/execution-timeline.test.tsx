@@ -120,12 +120,10 @@ describe('ExecutionTimeline controlled presentation', () => {
           }))}
         />,
       );
-      expect(screen.getAllByText(/Host duration unknown/)).toHaveLength(5);
-      expect(screen.getByText(/Host duration 0 ms/)).toBeVisible();
-      expect(screen.getByText(/Host duration 12.5 ms/)).toBeVisible();
-      expect(
-        screen.queryByText(/Host duration (?:NaN|[+-]?Infinity|-1) ms/),
-      ).not.toBeInTheDocument();
+      expect(screen.getAllByText(/Duration unknown/)).toHaveLength(5);
+      expect(screen.getByText(/Took 0 ms/)).toBeVisible();
+      expect(screen.getByText(/Took 12.5 ms/)).toBeVisible();
+      expect(screen.queryByText(/Took (?:NaN|[+-]?Infinity|-1) ms/)).not.toBeInTheDocument();
     },
   );
 

@@ -178,7 +178,7 @@ export function MCPAppFrame({
               bridge.error(
                 result.id,
                 jsonRpcErrors.denied,
-                `The host did not declare support for ${result.method}`,
+                `The app doesn’t support ${result.method}`,
               ),
             );
             return;
@@ -233,7 +233,7 @@ export function MCPAppFrame({
   const title = label ?? resource?.name ?? resource?.uri ?? 'Tool view';
   const notice =
     state === 'blocked'
-      ? reason || 'The host blocked this view.'
+      ? reason || 'The app blocked this view.'
       : state === 'failed'
         ? reason || 'The view could not be loaded.'
         : state === 'closed'
@@ -252,15 +252,15 @@ export function MCPAppFrame({
     >
       <header className={m.head}>
         <span className={m.icon} aria-hidden="true">
-          <AIIcon name="tool" size={14} />
+          <AIIcon name="tool" size={15} />
         </span>
         <div className={m.titles}>
           <h3 id={`${id}-title`} className={m.title}>
             {title}
           </h3>
           <p className={m.meta}>
-            From {server.name}. This view can see what you do inside it and may send messages to the
-            host.
+            From {server.name}. This view can see what you do inside it and may send messages to
+            this app.
           </p>
         </div>
         <StatusBadge

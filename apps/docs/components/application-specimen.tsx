@@ -221,7 +221,7 @@ function GridExample({ state }: { state: string }) {
       loading={state === 'Loading'}
       error={
         state === 'Error'
-          ? 'The host could not refresh customers. The previous rows remain available.'
+          ? 'Couldn’t refresh customers. The rows you had are still shown.'
           : undefined
       }
     />
@@ -267,7 +267,7 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
           options={options}
           disabled={disabled}
           status={status}
-          error="The host could not load teams."
+          error="Couldn’t load teams. Try again."
         />
       ) : (
         <Combobox
@@ -279,7 +279,7 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
           options={options}
           disabled={disabled}
           status={status}
-          error="The host could not load teams."
+          error="Couldn’t load teams. Try again."
         />
       );
   else if (name === 'Calendar') {
@@ -293,7 +293,7 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
       disabledDates: ['2026-10-12' as DateOnly],
       disabled,
       loading: state === 'Loading',
-      error: state === 'Error' ? 'The host could not load availability.' : undefined,
+      error: state === 'Error' ? 'Couldn’t load availability. Try again.' : undefined,
     };
     content =
       state === 'Range' ? (
@@ -322,7 +322,7 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
         max="2026-12-31"
         disabled={disabled}
         loading={state === 'Loading'}
-        error={state === 'Error' ? 'The host could not load availability.' : undefined}
+        error={state === 'Error' ? 'Couldn’t load availability. Try again.' : undefined}
       />
     );
   else if (name === 'PageHeader')
@@ -404,12 +404,12 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
       state === 'Pending'
         ? { status: 'pending' }
         : state === 'Rejected'
-          ? { status: 'rejected', message: 'The host rejected this sample save. Review the draft.' }
+          ? { status: 'rejected', message: 'The save was rejected. Check the draft and try again.' }
           : state === 'Unknown'
             ? {
                 status: 'unknown',
                 message:
-                  'The acknowledgement was lost. Check the original receipt before saving again.',
+                  'The connection dropped during the save. Check whether it went through before saving again.',
               }
             : saveState;
     content = (
@@ -440,7 +440,7 @@ export function ApplicationSpecimen({ name, state }: { name: string; state: stri
             setSaveState({ status: 'idle' });
           }}
           onReconcile={() =>
-            setNotice('Original sample receipt lookup requested. No mutation was resent.')
+            setNotice('Checking whether the first save went through. Nothing was sent again.')
           }
         />
       </form>

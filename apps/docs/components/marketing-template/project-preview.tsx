@@ -18,15 +18,15 @@ export function ProjectPreview() {
     <div className={s.preview} role="group" aria-label="Folio sample project">
       <div className={s.previewTop}>
         <span>
-          <ArchiveIcon width={16} height={16} aria-hidden="true" /> Studio workspace
+          <ArchiveIcon width={15} height={15} aria-hidden="true" /> Studio workspace
         </span>
         <span className={s.previewSample}>SAMPLE</span>
       </div>
       <div className={s.previewBody}>
         <div className={s.previewRail} aria-hidden="true">
-          <ViewVerticalIcon width={18} height={18} />
-          <GridIcon width={18} height={18} />
-          <FileTextIcon width={18} height={18} />
+          <ViewVerticalIcon width={15} height={15} />
+          <GridIcon width={15} height={15} />
+          <FileTextIcon width={15} height={15} />
         </div>
         <div className={s.previewMain}>
           <div className={s.previewBreadcrumb}>Projects / Fieldwork</div>
@@ -56,11 +56,11 @@ export function ProjectPreview() {
                     <div className={s.previewTasks}>
                       <span className={s.smallLabel}>UP NEXT</span>
                       <p>
-                        <CircleIcon width={14} height={14} aria-hidden="true" /> Gather interview
+                        <CircleIcon width={15} height={15} aria-hidden="true" /> Gather interview
                         notes
                       </p>
                       <p>
-                        <CircleIcon width={14} height={14} aria-hidden="true" /> Review the first
+                        <CircleIcon width={15} height={15} aria-hidden="true" /> Review the first
                         concept
                       </p>
                     </div>
@@ -86,11 +86,11 @@ export function ProjectPreview() {
                     <div className={s.previewTasks}>
                       <span className={s.smallLabel}>LINKED DOCUMENT</span>
                       <p>
-                        <FileTextIcon width={14} height={14} aria-hidden="true" /> Interview
+                        <FileTextIcon width={15} height={15} aria-hidden="true" /> Interview
                         observations
                       </p>
                       <p>
-                        <ArrowTopRightIcon width={14} height={14} aria-hidden="true" /> Sample
+                        <ArrowTopRightIcon width={15} height={15} aria-hidden="true" /> Sample
                         content, no external files
                       </p>
                     </div>

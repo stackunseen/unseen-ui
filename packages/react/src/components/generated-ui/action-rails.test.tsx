@@ -179,7 +179,7 @@ describe('generated action rails and trusted host emphasis', () => {
     expect(within(group).getByRole('button', { name: 'Download report' })).toBeDisabled();
     expect(
       within(group).getByRole('button', { name: 'Download report' }),
-    ).toHaveAccessibleDescription(/outcome is unknown/);
+    ).toHaveAccessibleDescription(/not clear whether this action ran/);
     expect(within(group).getByRole('button', { name: 'Open review' })).toBeEnabled();
   });
   it('adding a neighbouring action preserves the focused existing node', () => {

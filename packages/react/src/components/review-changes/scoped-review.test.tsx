@@ -89,7 +89,7 @@ describe('precise host-owned change review', () => {
       expect.objectContaining({ files: [{ id: 'source', target }] }),
     );
     expect(props.onDecision).not.toHaveBeenCalled();
-    expect(screen.queryByText('Saved by host')).not.toBeInTheDocument();
+    expect(screen.queryByText('Saved')).not.toBeInTheDocument();
   });
 
   it('binds a discard decision to the same selected hunk scope', () => {
@@ -279,7 +279,7 @@ describe('precise host-owned change review', () => {
       />,
     );
     expect(applyButton()).toBeDisabled();
-    expect(screen.getByText(/Awaiting host acknowledgement/)).toBeVisible();
+    expect(screen.getAllByText(/Waiting for confirmation/)[0]).toBeVisible();
     view.rerender(
       <ReviewChanges
         {...props}
@@ -383,7 +383,7 @@ describe('precise host-owned change review', () => {
           review={{ ...review, submission: { status: 'settled', command, receipt } }}
         />,
       );
-      expect(screen.getByText(/outcomes are unverified/)).toBeVisible();
+      expect(screen.getByText(/results aren’t verified/)).toBeVisible();
       expect(screen.queryByText(/src\/query.ts: Applied/)).not.toBeInTheDocument();
       expect(applyButton()).toBeDisabled();
     },
@@ -488,7 +488,7 @@ describe('precise host-owned change review', () => {
         }}
       />,
     );
-    expect(screen.getByRole('alert')).toHaveTextContent('Command identities');
+    expect(screen.getByRole('alert')).toHaveTextContent('change history doesn’t add up');
     expect(applyButton()).toBeDisabled();
   });
 

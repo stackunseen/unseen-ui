@@ -52,7 +52,7 @@ export function AuditTrail({
       ) : variant === 'table' ? (
         <div className={c.scroll} tabIndex={0} role="group" aria-label="Audit records">
           <table className={g.table}>
-            <caption>Host-reported audit records</caption>
+            <caption>Audit records</caption>
             <thead>
               <tr>
                 <th scope="col">When / who</th>
@@ -120,9 +120,7 @@ export function AuditTrail({
         </Button>
       )}
       {records.length > 200 && (
-        <p className={s.muted}>
-          Showing the first 200 records. Request a different host data window to inspect more.
-        </p>
+        <p className={s.muted}>Showing the first 200 records. Load more to see the rest.</p>
       )}
     </div>
   );

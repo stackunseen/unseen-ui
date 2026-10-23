@@ -87,7 +87,9 @@ function ToolOutput() {
   return (
     <div>
       {value.state === 'outcome-unknown' ? (
-        <p className={s.warning}>The result is unknown. Reconcile with the host before retrying.</p>
+        <p className={s.warning}>
+          It’s not clear whether this tool ran. Check before trying again.
+        </p>
       ) : value.output !== undefined || value.error ? (
         <ToolResult
           text={value.output}
@@ -97,14 +99,14 @@ function ToolOutput() {
       ) : (
         <p className={s.muted}>
           {value.state === 'running' ? (
-            <LoadingIndicator variant="dots" label="Waiting for a host result" size="small" />
+            <LoadingIndicator variant="dots" label="Waiting for the result" size="small" />
           ) : (
             {
               queued: 'Queued. The tool has not started.',
               'input-streaming': 'Receiving tool input. The tool has not started.',
               'approval-required': 'Waiting for approval. The tool has not started.',
               succeeded: 'Tool completed without output.',
-              failed: 'Tool failed. The host did not provide error details.',
+              failed: 'The tool failed. No details were given.',
               denied: 'Execution was denied.',
               cancelled: 'Tool execution was cancelled.',
             }[value.state]
@@ -112,7 +114,7 @@ function ToolOutput() {
         </p>
       )}
       {detail === 'full' && value.durationMs !== undefined && settledStates.has(value.state) && (
-        <small className={s.muted}>Host duration: {value.durationMs} ms</small>
+        <small className={s.muted}>Took {value.durationMs} ms</small>
       )}
     </div>
   );

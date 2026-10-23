@@ -77,7 +77,7 @@ export function WorkSummary({
   return (
     <div className={`${s.root} ${className}`} data-part="work-summary" data-state={state}>
       <button className={s.trigger} {...disclosure.triggerProps}>
-        <AIIcon name={state === 'failed' ? 'warning' : 'tool'} size={14} />
+        <AIIcon name={state === 'failed' ? 'warning' : 'tool'} size={15} />
         {running ? (
           <Shimmer>
             {lead.running} {time}

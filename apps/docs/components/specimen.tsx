@@ -285,7 +285,7 @@ export function Specimen({
           }}
           busy={variant === 'Busy'}
           disabled={variant === 'Disabled'}
-          disabledReason={variant === 'Disabled' ? 'Connect a host to send messages.' : undefined}
+          disabledReason={variant === 'Disabled' ? 'Connect a server to send messages.' : undefined}
           submitDisabled={variant === 'Send unavailable'}
           submitDisabledReason="Wait for the file upload before sending."
           onCancel={() => setResult('Cancellation requested in demo.')}
@@ -315,7 +315,7 @@ export function Specimen({
                   aria-label="Attach files"
                   onClick={() => setResult('Attachment picker requested in demo.')}
                 >
-                  <FilePlusIcon width={16} height={16} aria-hidden="true" />
+                  <FilePlusIcon width={15} height={15} aria-hidden="true" />
                 </Button>
                 <ModelSelector
                   variant="ghost"
@@ -378,7 +378,7 @@ export function Specimen({
         <MessageActions
           variant={resolveVariant('MessageActions', presentation)}
           text={message.text}
-          onRetry={() => setResult('Retry requested. The host creates a new attempt.')}
+          onRetry={() => setResult('Retry requested. The server creates a new attempt.')}
           onFeedback={(helpful) => setResult(helpful ? 'Marked helpful.' : 'Marked not helpful.')}
         />
       );
@@ -565,7 +565,7 @@ export function Specimen({
       break;
     case 'ToolResult':
       preview =
-        variant === 'Host renderer' ? (
+        variant === 'Server renderer' ? (
           <ToolResultRegistryProvider
             registry={{
               match: (item) => (item.toolName === 'search_accounts' ? 'accounts' : undefined),
@@ -740,7 +740,7 @@ export function Specimen({
           }
           onOpen={
             variant === 'Host open' || longLabels
-              ? () => setResult('Source opening requested in this synthetic fixture.')
+              ? () => setResult('Source opening requested in this synthetic sample.')
               : undefined
           }
         />
@@ -793,7 +793,7 @@ export function Specimen({
                   kind: 'coverage',
                   supported: 3,
                   total: 4,
-                  method: 'Synthetic fixture: claims with a linked source.',
+                  method: 'Synthetic sample: claims with a linked source.',
                 }
           }
         />
@@ -877,7 +877,7 @@ export function Specimen({
               ? undefined
               : (id) => {
                   setRemovedContext((current) => [...current, id]);
-                  setResult('Synthetic host removed the selected context item.');
+                  setResult('Sample server removed the selected context item.');
                 }
           }
           usage={

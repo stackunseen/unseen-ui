@@ -20,7 +20,7 @@ interface Variable {
 const groups: [key: string, title: string, lead: string][] = [
   [
     'colour',
-    'Colour',
+    'Color',
     'Set by the theme from three brand seeds; contrast is checked for both modes.',
   ],
   ['shape', 'Shape', 'Corners and border width, set by the theme.'],
@@ -49,7 +49,7 @@ export default function TokensPage() {
       <h1>Design tokens</h1>
       <p>
         Components read these CSS variables. Use them in your own styles so custom UI matches:{' '}
-        <code>color: var(--ai-muted)</code>, not a colour of your own. Theme variables are set by{' '}
+        <code>color: var(--ai-muted)</code>, not a color of your own. Theme variables are set by{' '}
         <code>AITheme</code> or <code>themeToCSS</code>; set the rest on a wrapper element.
       </p>
       <p>

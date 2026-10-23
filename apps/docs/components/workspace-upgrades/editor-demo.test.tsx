@@ -6,8 +6,8 @@ import { EditorDemo } from './editor-demo';
 function editor(): EditorView {
   return EditorView.findFromDOM(screen.getByRole('textbox', { name: 'answer.ts' }))!;
 }
-describe('local editor demo host', () => {
-  it('advances draft revisions only in the controlled local host', () => {
+describe('local editor demo server', () => {
+  it('advances draft revisions only in the controlled local server', () => {
     render(<EditorDemo />);
     act(() =>
       editor().dispatch({ changes: { from: 15, to: 17, insert: '42' }, selection: { anchor: 17 } }),
@@ -29,7 +29,7 @@ describe('local editor demo host', () => {
     expect(screen.getByText(/No request was replayed/)).toBeVisible();
     expect(screen.getByRole('textbox')).toHaveAttribute('aria-readonly', 'false');
   });
-  it('applies one chosen edit after a host acknowledgement and rejects without mutation', () => {
+  it('applies one chosen edit after a server acknowledgement and rejects without mutation', () => {
     render(<EditorDemo />);
     fireEvent.click(screen.getByRole('button', { name: 'Suggest selection edit' }));
     fireEvent.click(screen.getByRole('button', { name: 'Accept edit 1' }));
@@ -39,6 +39,6 @@ describe('local editor demo host', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Accept proposal' }));
     fireEvent.click(screen.getByRole('button', { name: 'Reject locally' }));
     expect(editor().state.doc.toString()).toBe('const answer = 42;\n');
-    expect(screen.getByText(/Host rejected the edit: Simulated host rejection/)).toBeVisible();
+    expect(screen.getByText(/Edit rejected: Simulated server rejection/)).toBeVisible();
   });
 });

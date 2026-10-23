@@ -103,9 +103,9 @@ export function ExecutionReceiptView({
           <p>
             {host.result.outcome === 'partial-failure'
               ? 'Partial failure: applied effects remain recorded.'
-              : 'Both account changes confirmed by the simulated host.'}
+              : 'Both account changes confirmed by the simulated server.'}
           </p>
-          <ul className={s.effects} aria-label="Host-confirmed account effects">
+          <ul className={s.effects} aria-label="Server-confirmed account effects">
             {host.result.effects.map((effect) => (
               <li key={effect.resource}>
                 <strong>
@@ -117,7 +117,7 @@ export function ExecutionReceiptView({
           </ul>
         </>
       )}
-      <div className={s.buttons} role="group" aria-label="Host execution events">
+      <div className={s.buttons} role="group" aria-label="Server execution events">
         <Button size="sm" disabled={!canExecute(host)} onClick={() => send({ type: 'execute' })}>
           Start simulated execution
         </Button>

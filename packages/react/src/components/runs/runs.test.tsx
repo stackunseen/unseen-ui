@@ -325,9 +325,7 @@ describe('RunSummaryCard', () => {
         }}
       />,
     );
-    expect(screen.getByRole('status')).toHaveTextContent(
-      'The host has not confirmed how this run ended.',
-    );
+    expect(screen.getByRole('status')).toHaveTextContent('How this run ended isn’t confirmed yet.');
   });
 });
 

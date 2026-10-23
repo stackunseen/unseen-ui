@@ -14,7 +14,7 @@ export function reviewFileStatus(id: string, review: ReviewChangesContract): str
       ? submission.receipt.files.find((file) => file.id === id)
       : undefined;
   return submission.status === 'pending'
-    ? 'Awaiting host acknowledgement'
+    ? 'Waiting for confirmation'
     : outcome?.result === 'applied'
       ? `${submission.command.action === 'discard' ? 'Discarded' : submission.command.action === 'undo' ? 'Undone' : 'Applied'} · revision ${outcome.nextVersion}`
       : outcome?.result === 'rejected'

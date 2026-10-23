@@ -80,7 +80,7 @@ export function FormSpecimen({
           label: long
             ? 'Reviewers responsible for checking deployment permissions and evidence provenance'
             : 'Reviewers',
-          description: 'Rows and their stable IDs belong to the simulated host.',
+          description: 'Rows and their stable IDs belong to the simulated server.',
           minItems: 1,
           maxItems: state === 'Array limits' ? 2 : 4,
           reorderable: true,
@@ -136,11 +136,11 @@ export function FormSpecimen({
       }
       return { ...current, [change.arrayId]: next };
     });
-    onEvent(`Host applied ${change.type} request`);
+    onEvent(`Applied the ${change.type} change`);
   }
   return (
     <div data-part="form-fixture" className={s.root}>
-      <p>Synthetic host · values and navigation are controlled</p>
+      <p>Sample server · your app controls the values and steps</p>
       {state === 'Live versions' && (
         <div className={s.controls}>
           <Button
@@ -151,7 +151,7 @@ export function FormSpecimen({
               setStep('basics');
               setRequest(undefined);
               if (status === 'pending') setStatus('stale');
-              onEvent('Host replaced the immutable form identity');
+              onEvent('The server replaced the form with a newer version');
             }}
           >
             Replace form version
@@ -202,14 +202,14 @@ export function FormSpecimen({
           state === 'Validation'
             ? { name: 'Enter a project name.' }
             : state === 'Error'
-              ? { _form: 'The synthetic host rejected this request. Correct the values and retry.' }
+              ? { _form: 'The sample server rejected this request. Correct the values and retry.' }
               : undefined
         }
         receipt={receipt}
         onSubmit={(values, submission) => {
           setRequest({ values, submission });
           setStatus('pending');
-          onEvent('Submission requested; waiting for host acknowledgement');
+          onEvent('Submission requested; waiting for server acknowledgement');
         }}
       />
       {request && status === 'pending' && (
@@ -221,13 +221,13 @@ export function FormSpecimen({
               identity
                 ? {
                     identity,
-                    message: `Synthetic host accepted revision ${revision}.`,
+                    message: `Sample server accepted revision ${revision}.`,
                     submissionId: 'request-42',
                   }
-                : 'Synthetic host accepted request #42.',
+                : 'The sample server accepted request #42.',
             );
             setStatus('complete');
-            onEvent('Host acknowledged submission');
+            onEvent('The server confirmed the submission');
           }}
         >
           Acknowledge submission

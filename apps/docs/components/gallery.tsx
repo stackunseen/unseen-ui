@@ -267,14 +267,14 @@ export function Gallery({
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? (
-            <Cross2Icon width={20} height={20} aria-hidden="true" />
+            <Cross2Icon width={15} height={15} aria-hidden="true" />
           ) : (
-            <HamburgerMenuIcon width={20} height={20} aria-hidden="true" />
+            <HamburgerMenuIcon width={15} height={15} aria-hidden="true" />
           )}
         </button>
         <span>Browse {view === 'components' ? 'components' : 'the library'}</span>
         <Link href="/components/">
-          Component index <ArrowRightIcon width={14} height={14} aria-hidden="true" />
+          Component index <ArrowRightIcon width={15} height={15} aria-hidden="true" />
         </Link>
       </nav>
       <div className="site-body">
@@ -295,7 +295,7 @@ export function Gallery({
                   navigate(next);
                 }}
               >
-                <Icon width={16} height={16} aria-hidden="true" />
+                <Icon width={15} height={15} aria-hidden="true" />
                 <span>{sectionLabels[item]}</span>
                 {componentSections.some((collection) => collection === item) && (
                   <small aria-hidden="true">{sectionCatalog(item).length}</small>
@@ -305,7 +305,7 @@ export function Gallery({
           </nav>
           <div className="library-search">
             <label className="search-field">
-              <MagnifyingGlassIcon width={16} height={16} aria-hidden="true" />
+              <MagnifyingGlassIcon width={15} height={15} aria-hidden="true" />
               <input
                 ref={searchInput}
                 type="search"
@@ -402,7 +402,7 @@ export function Gallery({
                 )}
                 <p className="section-description">
                   {section === 'templates'
-                    ? 'Try component combinations with a simulated host.'
+                    ? 'Try component combinations with a simulated server.'
                     : 'Customize the theme, icons and component styles.'}
                 </p>
               </div>

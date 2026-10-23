@@ -91,8 +91,8 @@ describe('capability-aware connection recovery', () => {
       expect(refreshButton).toHaveFocus();
       expect(screen.getByRole('button', { name: 'Resume connection' })).toBeDisabled();
       expect(resume).not.toHaveBeenCalled();
-      expect(screen.getByRole('status')).toHaveTextContent('Recovery outcome unknown');
-      expect(screen.getByRole('status')).toHaveTextContent('reconcile the original request');
+      expect(screen.getByRole('status')).toHaveTextContent('whether recovery worked');
+      expect(screen.getByRole('status')).toHaveTextContent('check the original request');
     },
   );
   it.each(componentVariants.ConnectionStatus)(
@@ -113,7 +113,7 @@ describe('capability-aware connection recovery', () => {
       expect(screen.getByText('Transport connected')).toBeVisible();
       expect(screen.queryByText('Connection restored')).not.toBeInTheDocument();
       expect(screen.getByRole('status')).toHaveTextContent(
-        'Recovery request received. Waiting for host state.',
+        'Recovery request received. Waiting for the latest state.',
       );
       expect(screen.getByRole('button', { name: 'Refresh snapshot' })).toBeEnabled();
       expect(screen.getByRole('button', { name: 'Resume connection' })).toBeDisabled();
@@ -152,24 +152,20 @@ describe('capability-aware connection recovery', () => {
       expect(screen.getByText('Connection incompatible')).toBeVisible();
       expect(screen.getByText('Transport connected')).toBeVisible();
       expect(screen.queryByRole('button', { name: 'Refresh snapshot' })).not.toBeInTheDocument();
-      expect(screen.getByRole('status')).toHaveTextContent('Snapshot refresh is unavailable here');
-      expect(screen.getByText(/An authoritative snapshot is required/)).toBeVisible();
+      expect(screen.getByRole('status')).toHaveTextContent('can’t be refreshed from here');
+      expect(screen.getByText(/The latest data is needed before continuing/)).toBeVisible();
       expect(screen.queryByRole('group', { name: 'Connection recovery' })).not.toBeInTheDocument();
       rerender(<ConnectionStatus variant={variant} value={value} submission="outcome-unknown" />);
       expect(screen.queryByRole('button', { name: 'Refresh snapshot' })).not.toBeInTheDocument();
-      expect(screen.getByRole('status')).toHaveTextContent('Snapshot refresh is unavailable here');
-      expect(screen.getByText(/An authoritative snapshot is required/)).toBeVisible();
+      expect(screen.getByRole('status')).toHaveTextContent('can’t be refreshed from here');
+      expect(screen.getByText(/The latest data is needed before continuing/)).toBeVisible();
       rerender(
         <ConnectionStatus
           variant={variant}
           value={{ ...value, recovery: 'none', freshness: 'stale' }}
         />,
       );
-      expect(
-        screen.getByText(
-          'Snapshot refresh is unavailable here. The host must supply current data.',
-        ),
-      ).toBeVisible();
+      expect(screen.getByText('The latest data can’t be refreshed from here.')).toBeVisible();
       expect(refresh).not.toHaveBeenCalled();
     },
   );
@@ -260,6 +256,6 @@ describe('capability-aware connection recovery', () => {
     );
     expect(screen.getByRole('button', { name: 'Resume connection' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Refresh snapshot' })).toBeEnabled();
-    expect(within(screen.getByRole('status')).getByText(/Recovery outcome unknown/)).toBeVisible();
+    expect(within(screen.getByRole('status')).getByText(/whether recovery worked/)).toBeVisible();
   });
 });

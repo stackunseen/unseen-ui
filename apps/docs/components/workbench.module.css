@@ -219,7 +219,7 @@
   margin: 20px 0 10px;
   font-size: 20px;
   font-weight: 600;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.02em;
 }
 .emptyConversation p {
   max-width: 34ch;

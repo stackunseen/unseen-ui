@@ -47,7 +47,7 @@ export default function Page() {
         {guides.map(([href, title, description]) => (
           <Link key={href} href={href}>
             <strong>
-              {title} <ArrowRightIcon width={17} height={17} aria-hidden="true" />
+              {title} <ArrowRightIcon width={15} height={15} aria-hidden="true" />
             </strong>
             <span>{description.replace(/`/g, '')}</span>
           </Link>

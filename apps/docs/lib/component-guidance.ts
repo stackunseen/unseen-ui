@@ -82,7 +82,7 @@ const markdown = {
 // Common prop names are checked against the public types.
 const guides = {
   Accordion: {
-    use: 'Put supporting information in labelled panels. Keep approval scope and other decision details visible. Set an item’s keepMounted to true when closing it must preserve a local form draft.',
+    use: 'Put supporting information in labeled panels. Keep approval scope and other decision details visible. Set an item’s keepMounted to true when closing it must preserve a local form draft.',
     keyboard:
       'Enter or Space toggles the focused panel. Arrow keys, Home and End move between enabled headings. Closed controls are hidden from keyboard navigation.',
     props: [
@@ -343,7 +343,7 @@ const guides = {
     ],
   },
   ApprovalCard: {
-    use: 'Show an action for review before sending a decision to your server. Keep the proposal version and action digest with the request, and track execution separately from the decision receipt.',
+    use: 'Show an action for review before sending a decision to your server. Send the proposal’s version and digest with it, and track whether the action ran separately from whether the decision was received.',
     keyboard:
       'Tab reaches Reject, then Approve action. When the outcome is unknown, it reaches Check decision status instead. Enter or Space activates an enabled action.',
     props: [
@@ -382,7 +382,7 @@ const guides = {
     ],
   },
   ToolCall: {
-    use: 'Show a tool request and the result reported by your server. Update value as input arrives or execution changes, and preserve outcome-unknown until the server resolves it.',
+    use: 'Show a tool request and the result reported by your server. Update value as input arrives or execution changes, and keep an unknown outcome as unknown until your server resolves it.',
     keyboard:
       'Tab reaches input and execution disclosures. Enter or Space opens them; the input preview supports keyboard reading and scrolling.',
     props: [
@@ -390,7 +390,7 @@ const guides = {
         name: 'value',
         type: 'ToolCallData',
         description:
-          'The tool id, name, revision, state and input, with optional output, error, durationMs, and a host-written label and target that rows show instead of the name.',
+          'The tool id, name, revision, state and input, with optional output, error, durationMs, and a label and target you write, which rows show instead of the name.',
       },
       {
         name: 'variant',
@@ -415,7 +415,7 @@ const guides = {
         name: 'value',
         type: 'ConnectionInfo',
         description:
-          'Connection state, data freshness, adapter capabilities and any recovery cursor.',
+          'Whether you’re connected, how fresh the data is, which recovery actions your connection supports, and where to resume from.',
       },
       {
         name: 'submission',
@@ -426,12 +426,13 @@ const guides = {
       {
         name: 'onResume',
         type: '(cursor: RecoveryCursor) => void (optional)',
-        description: 'Ask your host to resume from the supplied cursor when replay is available.',
+        description:
+          'Ask your server to pick up where it left off, when your connection supports it.',
       },
       {
         name: 'onRefresh',
         type: '() => void (optional)',
-        description: 'Request a current snapshot when the adapter supports it.',
+        description: 'Ask for fresh data, when your connection supports it.',
       },
       {
         name: 'error',

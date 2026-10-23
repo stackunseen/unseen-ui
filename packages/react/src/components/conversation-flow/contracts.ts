@@ -156,15 +156,16 @@ export function conversationActionReason(
     submission = inspectConversationActionState(state);
   if (!original || !sameConversationTarget(original.target, target))
     return 'Exact action scope is unavailable.';
-  if (!submission) return 'Action outcome is invalid or unavailable. Ask the host to reconcile it.';
-  if (submission.status === 'pending') return 'Waiting for host acknowledgement.';
+  if (!submission)
+    return 'The result of this action isn’t available. Check it before trying again.';
+  if (submission.status === 'pending') return 'Waiting for confirmation.';
   if (submission.status === 'unknown')
     return 'Action outcome is unknown. Check the original request before trying again.';
   if (
     submission.status === 'settled' &&
     submission.receipt.command.commandId === original.commandId
   )
-    return 'This command has already settled. The host must issue a new command identity.';
+    return 'This request has already finished. Send a new request to try again.';
 }
 
 /** Controlled draft insertion only; the host must publish a new draft version. */

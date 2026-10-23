@@ -93,7 +93,7 @@ export function AppearanceToggle({
             value: appearance,
             label: (
               <>
-                <AIIcon name={names[appearance]} fallbackIcon={glyphs[appearance]} size={16} />
+                <AIIcon name={names[appearance]} fallbackIcon={glyphs[appearance]} size={15} />
                 <span className={f.srOnly}>{words[appearance]}</span>
               </>
             ),
@@ -117,11 +117,11 @@ export function AppearanceToggle({
         >
           {hydrated ? (
             <>
-              <AIIcon name="sun" fallbackIcon={SunIcon} size={16} className={s.sun} />
-              <AIIcon name="moon" fallbackIcon={CrescentGlyph} size={16} className={s.moon} />
+              <AIIcon name="sun" fallbackIcon={SunIcon} size={15} className={s.sun} />
+              <AIIcon name="moon" fallbackIcon={CrescentGlyph} size={15} className={s.moon} />
             </>
           ) : (
-            <AIIcon name="monitor" icon={NeutralGlyph} size={16} />
+            <AIIcon name="monitor" icon={NeutralGlyph} size={15} />
           )}
         </button>
       </div>
@@ -142,7 +142,7 @@ export function AppearanceToggle({
             value: appearance,
             label: (
               <span className={s.segment}>
-                <AIIcon name={names[appearance]} fallbackIcon={glyphs[appearance]} size={14} />
+                <AIIcon name={names[appearance]} fallbackIcon={glyphs[appearance]} size={15} />
                 {words[appearance]}
               </span>
             ),
@@ -164,9 +164,9 @@ export function AppearanceToggle({
         onClick={() => onValueChange(next)}
       >
         {hydrated ? (
-          <AIIcon name={names[value]} fallbackIcon={glyphs[value]} size={18} />
+          <AIIcon name={names[value]} fallbackIcon={glyphs[value]} size={15} />
         ) : (
-          <AIIcon name="monitor" icon={NeutralGlyph} size={18} />
+          <AIIcon name="monitor" icon={NeutralGlyph} size={15} />
         )}
       </Button>
     </div>

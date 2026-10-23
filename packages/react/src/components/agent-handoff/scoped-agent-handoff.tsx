@@ -86,12 +86,12 @@ export function ScopedAgentHandoff({
           {value.ownership.state === 'acknowledged' ? (
             <>
               <p>
-                {value.freshness === 'current' ? 'Current owner' : 'Last acknowledged owner'}:{' '}
+                {value.freshness === 'current' ? 'Current owner' : 'Last confirmed owner'}:{' '}
                 {value.ownership.ownerId}
               </p>
             </>
           ) : (
-            <p className={s.warning}>Current owner: unknown. The host must confirm ownership.</p>
+            <p className={s.warning}>Current owner: unknown until the app confirms it.</p>
           )}
           {contextAvailable ? (
             <>
@@ -148,28 +148,27 @@ export function ScopedAgentHandoff({
           )}
           {!ownerMatches && value.status === 'requested' && (
             <p className={s.warning}>
-              Ownership is unknown or changed. The host must issue a current handoff.
+              Ownership is unknown or has changed. A new handoff is needed.
             </p>
           )}
           {value.status === 'accepted' &&
             value.ownership.state === 'acknowledged' &&
             value.ownership.ownerId !== value.target.to && (
               <p className={s.warning}>
-                Acceptance does not establish current ownership. The last acknowledged owner is
-                shown above.
+                Accepting doesn’t make them the owner yet. The last confirmed owner is shown above.
               </p>
             )}
         </>
       ) : (
         <p role="alert" className={s.error}>
-          The host must provide a valid handoff, context provenance and recipient access record
-          before you can decide.
+          This handoff is missing details, such as where its context came from or what the recipient
+          can access. You can decide once they arrive.
         </p>
       )}
       {!submission && (
         <p role="alert" className={s.error}>
-          Decision status is invalid or unavailable. Check the original handoff decision with the
-          host.
+          The status of this decision isn’t available. Check the original decision before deciding
+          again.
         </p>
       )}
       {!command && value && <p className={s.warning}>A new decision identity is unavailable.</p>}
@@ -181,7 +180,7 @@ export function ScopedAgentHandoff({
           </p>
           <p className={s.warning}>
             {invalidReceipt
-              ? 'The receipt does not match the exact original handoff decision. Its outcome is still unknown.'
+              ? 'The confirmation doesn’t match the original handoff decision, so the outcome is still unknown.'
               : submission?.state === 'submitting' && !receipt
                 ? 'Sending handoff decision. Ownership has not been transferred.'
                 : receiptMessage(receipt?.outcome)}

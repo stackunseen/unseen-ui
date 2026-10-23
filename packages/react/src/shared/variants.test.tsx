@@ -96,7 +96,7 @@ describe('presentation variants preserve meaning and actions', () => {
         />,
       );
       expect(screen.getByText('Outcome unknown')).toBeVisible();
-      expect(screen.getByText(/Reconcile with the host before retrying/)).toBeVisible();
+      expect(screen.getByText(/Check before trying again/)).toBeVisible();
       expect(screen.queryByRole('button', { name: /retry/i })).not.toBeInTheDocument();
     },
   );

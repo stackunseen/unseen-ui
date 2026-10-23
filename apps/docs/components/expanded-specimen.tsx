@@ -135,7 +135,7 @@ export function ExpandedSpecimen({
           state: 'outcome-unknown',
         } as NavigationOperation)
       : undefined,
-    onReconcile: () => setFeedback('Original fixture request checked; no transport invoked.'),
+    onReconcile: () => setFeedback('Original sample request checked; no transport invoked.'),
   };
   const [stage, setStage] = useState('');
   const [versions, setVersions] = useState({
@@ -185,7 +185,7 @@ export function ExpandedSpecimen({
               ? 'cancelled'
               : 'queued',
       pending: state === 'Pending',
-      error: state === 'Failed' ? 'The host did not accept this draft.' : undefined,
+      error: state === 'Failed' ? 'This draft wasn’t accepted. Check it and try again.' : undefined,
     },
     {
       id: 'q2',
@@ -452,7 +452,7 @@ export function ExpandedSpecimen({
                 }
               : undefined
           }
-          onPageChange={() => emit('host page requested; fixture window retained')}
+          onPageChange={() => emit('Next page requested. The current page stays until it arrives.')}
         />
       );
       break;
@@ -482,7 +482,7 @@ export function ExpandedSpecimen({
             state === 'Draft guard'
               ? {
                   version: 'draft-1',
-                  message: 'The host will save the draft to its original branch before switching.',
+                  message: 'Your draft is saved to its original branch before switching.',
                 }
               : undefined
           }
@@ -517,7 +517,7 @@ export function ExpandedSpecimen({
                 }
               : undefined
           }
-          onPageChange={() => emit('host page requested; fixture window retained')}
+          onPageChange={() => emit('Next page requested. The current page stays until it arrives.')}
           onEdit={(item, text) => {
             setQueue(
               queue.map((entry) =>
@@ -707,7 +707,7 @@ export function ExpandedSpecimen({
           variant={resolveVariant('RunInspector', presentation)}
           runId="run-42"
           usage={
-            state === 'Unknown usage' ? undefined : { tokens: 2840, source: 'Sample host report' }
+            state === 'Unknown usage' ? undefined : { tokens: 2840, source: 'Sample server report' }
           }
           spans={
             empty

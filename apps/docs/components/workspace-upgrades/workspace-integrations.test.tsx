@@ -90,7 +90,7 @@ describe('persistent workspace presentation', () => {
       screen.queryByRole('combobox', { name: 'Acknowledgement scenario' }),
     ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Apply selected changes' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Deliver local host outcome' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Deliver local server outcome' }));
     task('Conversation');
     task('File review');
     expect(screen.getByText('Outcome unknown')).toBeVisible();

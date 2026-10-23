@@ -109,7 +109,7 @@ export function DryRunPreview({
                 : submission === 'submitting'
                   ? 'Sending'
                   : submission === 'acknowledged'
-                    ? 'Host acknowledged'
+                    ? 'Confirmed'
                     : submission === 'failed'
                       ? 'Failed'
                       : 'Outcome unknown'
@@ -161,7 +161,7 @@ export function DryRunPreview({
       </ul>
       {stale && (
         <p className={g.warn} role="status">
-          The host has a newer version of this plan. Review it before deciding.
+          There’s a newer version of this plan. Review it before deciding.
         </p>
       )}
       {receipt?.message && (

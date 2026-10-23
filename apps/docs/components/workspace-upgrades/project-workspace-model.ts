@@ -80,7 +80,7 @@ export function createProjectInstructions(): ProjectInstructionState {
   const document = {
     documentId: 'search-web:instructions',
     version: 'instructions:1',
-    text: 'Preserve internal query spaces. Use accessible labels. Review exact file changes before applying. Test results in this workspace are fixed fixtures.',
+    text: 'Preserve internal query spaces. Use accessible labels. Review exact file changes before applying. Test results in this workspace are fixed samples.',
     language: 'plain',
   };
   return {
@@ -211,7 +211,7 @@ export function projectInstructionReducer(
         receipt: {
           ...action.command,
           result: 'rejected',
-          reason: 'The in-memory host rejected this save. Your draft is retained.',
+          reason: 'The in-memory server rejected this save. Your draft is retained.',
         },
       },
     };

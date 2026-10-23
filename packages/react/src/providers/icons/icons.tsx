@@ -72,7 +72,8 @@ export type IconName =
   | 'monitor';
 export type IconComponent = ComponentType<Omit<SVGProps<SVGSVGElement>, 'children'>>;
 export type IconOverrides = Partial<Record<IconName, IconComponent | null>>;
-const IconContext = createContext<{ icons: IconOverrides; size: number }>({ icons: {}, size: 16 });
+// 15px by default: the built-in Radix icons are drawn on a 15px grid, so other sizes blur their edges.
+const IconContext = createContext<{ icons: IconOverrides; size: number }>({ icons: {}, size: 15 });
 export interface IconsProviderProps {
   children: ReactNode;
   icons?: IconOverrides;

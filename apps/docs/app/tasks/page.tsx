@@ -24,7 +24,7 @@ export default function Page() {
               <small>{task.components.slice(0, 5).join(' · ')}</small>
               <em>
                 {task.components.length} components{' '}
-                <ArrowRightIcon width={14} height={14} aria-hidden="true" />
+                <ArrowRightIcon width={15} height={15} aria-hidden="true" />
               </em>
             </Link>
           </li>

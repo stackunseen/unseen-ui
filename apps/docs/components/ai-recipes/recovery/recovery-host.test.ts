@@ -23,7 +23,7 @@ function stop(host: RecoveryHost) {
   host.applyReceived();
 }
 
-describe('deterministic recovery host', () => {
+describe('deterministic recovery server', () => {
   it('never schedules implicit execution or acknowledgement timers in this simulation', () => {
     const timer = vi.spyOn(globalThis, 'setTimeout');
     const host = create();
@@ -37,7 +37,7 @@ describe('deterministic recovery host', () => {
     expect(timer).not.toHaveBeenCalled();
   });
 
-  it('keeps the observed cursor while offline events advance the authoritative host', () => {
+  it('keeps the observed cursor while offline events advance the authoritative server', () => {
     const host = create();
     const original = host.getSnapshot().runtime;
     host.disconnect();
@@ -137,7 +137,7 @@ describe('deterministic recovery host', () => {
     expect(Object.isFrozen(original.payload)).toBe(true);
   });
 
-  it('a received stop is not executed until host state; a completion race stays completed', () => {
+  it('a received stop is not executed until server state; a completion race stays completed', () => {
     const host = create();
     host.request('stop');
     host.settleAcknowledgement();

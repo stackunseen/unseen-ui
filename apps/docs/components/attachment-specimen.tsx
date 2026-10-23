@@ -108,8 +108,8 @@ export function AttachmentSpecimen({
     state: 'ready',
     sizeBytes: 24576,
     mediaType: 'text/csv',
-    onRemove: () => onNotice('Removal requested. The host must confirm.'),
-    onRetry: () => onNotice('Upload retry requested. The host must confirm.'),
+    onRemove: () => onNotice('Removal requested. Waiting for your server to confirm.'),
+    onRetry: () => onNotice('Retry requested. Waiting for your server to confirm.'),
   };
   if (['Uploading', 'Unknown progress', 'Awaiting confirmation'].includes(state)) {
     props.state = 'uploading';
@@ -125,12 +125,12 @@ export function AttachmentSpecimen({
   if (state === 'Removing') props.state = 'removing';
   if (state === 'Cancelled') {
     props.state = 'cancelled';
-    props.detail = 'Host confirmed cancellation; stored bytes cleared.';
+    props.detail = 'Upload canceled. Nothing was kept.';
   }
   if (state === 'Removed') {
     props.state = 'removed';
     props.access = 'missing';
-    props.detail = 'Host confirmed removal; original receipts remain available.';
+    props.detail = 'Removed. The upload record is still available.';
   }
   if (state === 'Unknown outcome') props.state = 'outcome-unknown';
   if (state === 'Failed' || state === 'Long filename') {
@@ -150,8 +150,7 @@ export function AttachmentSpecimen({
         : state === 'Blocked URL'
           ? { ...image, src: 'javascript:alert(1)' }
           : image;
-    props.onOpen = () =>
-      onNotice('Host open requested. This fixture does not open an external file.');
+    props.onOpen = () => onNotice('Open requested. This example doesn’t open real files.');
     if (state === 'Revoked') props.access = 'revoked';
     if (state === 'Expired') props.access = 'expired';
     if (state === 'Missing') props.access = 'missing';
@@ -298,8 +297,8 @@ export function AttachmentComposer({ variant }: { variant: ComponentVariant<'Pro
         {notice}
       </p>
       <p className="variant-note">
-        Local demo: up to 3 files, 5 MiB each. The host handles upload, validation and storage in an
-        integration.
+        Local demo: up to 3 files, 5 MiB each. The server handles upload, validation and storage in
+        an integration.
       </p>
     </div>
   );

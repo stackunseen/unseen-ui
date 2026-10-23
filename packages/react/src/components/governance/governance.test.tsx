@@ -69,9 +69,7 @@ describe('ScopeGrantList', () => {
     );
     expect(screen.getAllByRole('listitem')[0]).toHaveAttribute('data-status', 'revoking');
     expect(screen.queryByRole('button', { name: 'Revoke access to CRM sandbox' })).toBeNull();
-    expect(
-      screen.getByText('Revoke requested. Waiting for the host to confirm.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Revoke requested. Waiting for confirmation.')).toBeInTheDocument();
     rerender(<ScopeGrantList grants={[]} now={now} />);
     expect(screen.getByRole('status')).toHaveTextContent('No standing permissions.');
   });
@@ -227,7 +225,7 @@ describe('ApprovalBatch', () => {
         receipt={{ commandId: 'batch-1', status: 'acknowledged', covered: ['a'] }}
       />,
     );
-    expect(screen.getAllByRole('listitem')[0]).toHaveTextContent('Covered by the receipt');
+    expect(screen.getAllByRole('listitem')[0]).toHaveTextContent('Included in the confirmation');
     expect(screen.getByRole('button', { name: 'Approve 1' })).toBeDisabled();
   });
 

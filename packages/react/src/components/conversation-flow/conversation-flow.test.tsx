@@ -63,9 +63,7 @@ describe('controlled conversation edits', () => {
     fireEvent.submit(screen.getByRole('form', { name: 'Edit message' }));
     expect(value.onRequest).toHaveBeenCalledExactlyOnceWith(command);
     expect(Object.isFrozen(value.onRequest.mock.calls[0]![0])).toBe(true);
-    expect(
-      screen.queryByText('Host acknowledged a new conversation branch.'),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('New conversation branch created.')).not.toBeInTheDocument();
     expect(screen.getByRole('textbox')).toHaveValue(draft.text);
   });
   it.each(['pending', 'unknown'] as const)(

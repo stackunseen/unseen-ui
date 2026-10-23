@@ -418,7 +418,7 @@ export function ThreadList(props: ThreadListProps) {
           {!rows!.length && <p className={s.muted}>No conversations found.</p>}
           {selectedId && rows!.length > 0 && !rows!.some((row) => row.id === selectedId) && (
             <p role="status" className={s.muted}>
-              Selected conversation is outside the current host window.
+              The selected conversation isn’t in the loaded list.
             </p>
           )}
           {scrollRestoration && !currentScroll && (

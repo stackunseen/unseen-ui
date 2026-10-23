@@ -68,7 +68,7 @@ describe('proposal headings stay aligned with host state', () => {
       expect(screen.getByText(heading)).toBeVisible();
       expect(screen.getByText(badge)).toBeVisible();
       expect(
-        screen.getByText('Decision acknowledged. Execution is reported separately.'),
+        screen.getByText('Decision received. Whether the action ran is shown separately.'),
       ).toBeVisible();
       if (status !== 'pending') expect(screen.queryByText('Review required')).toBeNull();
       expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
@@ -93,7 +93,7 @@ describe('proposal headings stay aligned with host state', () => {
       if (submission === 'outcome-unknown') {
         expect(screen.getByRole('button', { name: 'Check decision status' })).toBeEnabled();
         expect(screen.queryByRole('button', { name: 'Approve action' })).toBeNull();
-        expect(screen.getByText(/Your decision may have reached the host/)).toBeVisible();
+        expect(screen.getByText(/Your decision may already have arrived/)).toBeVisible();
       }
     },
   );

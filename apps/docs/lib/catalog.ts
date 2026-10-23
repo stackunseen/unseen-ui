@@ -138,7 +138,7 @@ export const catalog: CatalogEntry[] = [
     name: 'ConnectionStatus',
     category: 'State & status',
     description:
-      'Shows the connection state and offers the reconnect and replay actions supplied by the host.',
+      'Whether you’re connected, with the reconnect and catch-up actions your app supports.',
     states: [
       'Disconnected',
       'Connected',
@@ -154,7 +154,7 @@ export const catalog: CatalogEntry[] = [
     ],
     contract: 'value: ConnectionInfo · submission? · onResume? · onRefresh?',
     responsibility:
-      'Declare actual adapter capabilities and a public cursor. A recovery request is not a completed recovery or a new run.',
+      'Only offer the recovery actions your connection really supports. Asking to reconnect isn’t the same as being reconnected, and it never starts a new run.',
     code: '<ConnectionStatus value={connection} onResume={resume} onRefresh={refreshSnapshot} />',
   },
   {
@@ -164,7 +164,7 @@ export const catalog: CatalogEntry[] = [
     states: ['Default', 'Loading', 'Unavailable', 'Stale', 'Unsupported', 'Error', 'Usage unknown'],
     contract: 'capabilities · value: ModelSettings · onValueChange · status? · stale? · usage?',
     responsibility:
-      'Discover capabilities on the host, persist the draft and validate settings/access at execution. Usage requires a named source and timestamp.',
+      'Look up what each model supports on your server, save the draft settings, and check settings and access when the request runs. Usage numbers need a source and a time.',
     code: '<ModelControls capabilities={capabilities} value={settings} onValueChange={setSettings} usage={usage} />',
   },
   {
@@ -174,54 +174,56 @@ export const catalog: CatalogEntry[] = [
     states: ['Default', 'Stale', 'Unknown usage', 'Over limit', 'Empty', 'Loading', 'Error'],
     contract: 'value: ContextInspection · loading? · error? · onRefresh?',
     responsibility:
-      'Provide a versioned context snapshot and honest measured/estimated token counts. Selection does not guarantee inclusion.',
+      'Pass a versioned snapshot of the context, and say whether token counts are measured or estimated. Picking an item doesn’t guarantee it was included.',
     code: '<ContextInspector value={contextSnapshot} onRefresh={refreshContext} />',
   },
   {
     name: 'PolicyStatus',
     category: 'Enterprise AI',
-    description: 'Attested policy results with their authority, time, scope and version.',
+    description:
+      'Policy check results, with who checked, when, what they covered and which version.',
     states: ['Default', 'Passed', 'Blocked', 'Stale', 'Unknown', 'Loading', 'Empty', 'Error'],
     contract: 'checks: PolicyCheck[] · classification? · loading? · error? · onRefresh?',
     responsibility:
-      'The authority supplies and refreshes attestation freshness. Missing metadata never becomes a passed policy check; the UI does not authorize actions.',
+      'The system that runs the checks supplies and refreshes the results. Missing details never count as a pass, and the component never authorizes anything.',
     code: '<PolicyStatus checks={policyChecks} classification="Confidential" onRefresh={refreshChecks} />',
   },
   {
     name: 'Select',
     category: 'Shared controls',
-    description: 'A dropdown with keyboard navigation and a themed menu portal.',
+    description: 'A dropdown for picking one option, with full keyboard support.',
     states: ['Default', 'Disabled', 'Long labels'],
     contract: 'value · onValueChange · options · disabled?',
-    responsibility: 'Provide an accessible label and disabled options for unavailable choices.',
+    responsibility: 'Give it a label, and mark choices that aren’t available as disabled.',
     code: '<Select value={environment} onValueChange={setEnvironment} options={environments} aria-label="Environment" />',
   },
   {
     name: 'Accordion',
     category: 'Shared controls',
-    description: 'Collapsible sections with consistent focus handling and icon controls.',
+    description: 'Sections people can open and close.',
     states: ['Default', 'Single', 'Long labels'],
     contract: 'items · type · value? · onValueChange? · headingLevel?',
-    responsibility: 'Keep decision-critical information visible outside collapsed sections.',
+    responsibility: 'Keep anything people need to make a decision outside the collapsed sections.',
     code: '<Accordion type="multiple" items={sections} />',
   },
   {
     name: 'Tabs',
     category: 'Shared controls',
-    description: 'Switch between related views with a controlled selection.',
+    description: 'Switch between related views of the same thing.',
     states: ['Default', 'Long labels', 'Vertical'],
     contract: 'value · onValueChange · items · label · orientation?: horizontal | vertical',
     responsibility:
-      'Provide stable item IDs and descriptive labels. Tabs use automatic activation.',
+      'Give each tab a stable ID and a clear label. A tab opens as soon as it gets focus.',
     code: '<Tabs value={tab} onValueChange={setTab} items={views} label="Report views" />',
   },
   {
     name: 'LoadingIndicator',
     category: 'State & status',
-    description: 'An activity indicator that never shows invented progress.',
+    description:
+      'Shows that something is happening, without pretending to know how far along it is.',
     states: ['Default', 'Small', 'Large', 'Long labels'],
     contract: 'variant · label · size',
-    responsibility: 'Render while the host operation is pending. This is indeterminate activity.',
+    responsibility: 'Show it while the work is in progress. It never shows a percentage.',
     code: '<LoadingIndicator label="Searching sources" />',
   },
   {
@@ -230,13 +232,15 @@ export const catalog: CatalogEntry[] = [
     description: 'Placeholders that hold space while real content loads.',
     states: ['Default', 'Card', 'Avatar'],
     contract: 'variant · label · lines · shape',
-    responsibility: 'Replace placeholders when data arrives; retain an accessible loading label.',
+    responsibility:
+      'Swap the placeholders for real content when it arrives, and keep a loading label for screen readers.',
     code: '<Skeleton label="Loading answer" lines={3} />',
   },
   {
     name: 'PromptInput',
     category: 'Conversation',
-    description: 'A composer for sending a prompt, with attachments, a toolbar and a cancel path.',
+    description:
+      'The composer for sending a prompt, with attachments, a toolbar and a way to stop.',
     states: [
       'Default',
       'Busy',
@@ -249,7 +253,7 @@ export const catalog: CatalogEntry[] = [
     ],
     contract:
       'value · onValueChange · onSubmit · busy · onCancel · attachments? · toolbar? · submitDisabled? · allowEmptySubmit?',
-    responsibility: 'The host accepts the prompt and confirms cancellation.',
+    responsibility: 'Your server takes the prompt, and confirms when a stop has worked.',
     code: '<PromptInput value={draft} onValueChange={setDraft} onSubmit={send} />',
   },
   {
@@ -271,22 +275,23 @@ export const catalog: CatalogEntry[] = [
     ],
     contract:
       'value: MessageData · sources? · tools? · attachments? · renderTextPart? · renderContent? · children',
-    responsibility: 'Provide stable message identity, role and revision.',
+    responsibility: 'Give each message a stable ID, its role and a revision number.',
     code: '<Message value={message} />',
   },
   {
     name: 'MessageActions',
     category: 'Conversation',
-    description: 'Copy, retry, edit and feedback actions for a message, with explicit results.',
+    description:
+      'Copy, retry, edit and feedback buttons for a message, each showing whether it worked.',
     states: ['Default'],
     contract: 'text · onRetry? · onEdit? · onFeedback?',
-    responsibility: 'Only provide actions supported by your host.',
+    responsibility: 'Only show actions your app supports.',
     code: '<MessageActions text={message.text} onRetry={retry} />',
   },
   {
     name: 'StreamingResponse',
     category: 'Conversation',
-    description: 'Renders an answer as it streams and marks interrupted or failed states.',
+    description: 'Shows an answer as it streams in, and says clearly if it was cut off or failed.',
     states: [
       'Live stream',
       'Streaming',
@@ -305,7 +310,7 @@ export const catalog: CatalogEntry[] = [
     ],
     contract: 'text · state · error? · renderContent?; optional MarkdownResponse from /markdown',
     responsibility:
-      'The base entry renders plain text. Opt into the Markdown subpath for bounded GFM and incomplete-stream formatting. The host owns message state and link trust.',
+      'The main entry shows plain text. Import the Markdown entry for formatted replies, including half-finished ones. Your app owns the message state and decides which links to trust.',
     code: '<StreamingResponse text={text} state="streaming" />',
   },
   {
@@ -314,13 +319,13 @@ export const catalog: CatalogEntry[] = [
     description: 'Follow-up prompts the user can send with one click.',
     states: ['Default', 'Disabled'],
     contract: 'items · onSelect · mode: fill | send',
-    responsibility: 'Choose whether selection fills a draft or submits.',
+    responsibility: 'Choose whether picking a suggestion fills the composer or sends it.',
     code: '<Suggestions items={prompts} onSelect={setDraft} mode="fill" />',
   },
   {
     name: 'Attachment',
     category: 'Conversation',
-    description: 'File attachments with measured upload progress and accessible media previews.',
+    description: 'Files attached to a message, with real upload progress and previews.',
     states: [
       'Default',
       'Selected',
@@ -353,7 +358,7 @@ export const catalog: CatalogEntry[] = [
     contract:
       'name · state · mediaType? · sizeBytes? · progress? · access? · preview? · onRemove? · onRetry? · onOpen? · Root / Preview / Info / Actions / Progress',
     responsibility:
-      'The host validates, authorizes, uploads and stores files; owns object URLs and confirms state changes. UI checks are not file-content validation.',
+      'Your server checks, uploads and stores the files, and confirms each change. The checks in the browser don’t look inside a file.',
     code: '<Attachment name="brief.pdf" state="ready" onRemove={remove} />',
   },
   {
@@ -367,7 +372,7 @@ export const catalog: CatalogEntry[] = [
     contract:
       'onFilesSelected · onReject? · accept? · maxFileBytes? · remainingSlots? · multiple? · disabled? · label? · browseLabel? · hint?',
     responsibility:
-      'Dropped or chosen files are local File objects. The host validates content, uploads, stores and owns any object URLs.',
+      'Dropped or chosen files stay in the browser as File objects. Your app checks what’s in them, uploads and stores them.',
     keyboard: 'Tab reaches the browse button; Enter or Space opens the file chooser.',
     code: '<FileDropzone accept="image/*,.pdf" maxFileBytes={5 * 1024 * 1024} onFilesSelected={add} />',
   },
@@ -376,7 +381,7 @@ export const catalog: CatalogEntry[] = [
     category: 'Execution',
     aliases: ['Workflow', 'Dependencies', 'Pipeline stages'],
     description:
-      'The steps of a run in order, with their states, details and optional prerequisites.',
+      'The steps of a run in order, with where each one stands, its details and anything it depends on.',
     states: ['Default', 'Failed', 'Dependencies', 'Empty'],
     contract: 'steps: Step[] · label? · dependencies? · selectedId? · onSelect?(id)',
     responsibility: 'Supply public summaries, not private model reasoning.',
@@ -388,7 +393,7 @@ export const catalog: CatalogEntry[] = [
     description: 'A timed record of what happened during a run.',
     states: ['Default', 'Empty'],
     contract: 'entries · filter · onFilterChange? · detail?',
-    responsibility: 'Timestamps and durations come from the host.',
+    responsibility: 'Times and durations come from your server.',
     code: '<ExecutionTimeline entries={events} />',
   },
   {
@@ -396,13 +401,12 @@ export const catalog: CatalogEntry[] = [
     category: 'Execution',
     importPath: '/conversation-flow',
     aliases: ['Run board', 'Agent runs', 'Task board'],
-    description:
-      'Runs across threads as a board, grouped by what they need, with host filters and actions.',
+    description: 'All your runs on one board, grouped by what they need, with filters and actions.',
     states: ['Default', 'Stale heartbeat', 'Failed', 'Filtered', 'Empty'],
     contract:
       'runs: RunCard[] · filter? · onFilterChange? · selectedId? · onSelect? · onAction? · receipts? · staleAfterMs? · now? · label? · renderCardTrailing?',
     responsibility:
-      'Lifecycle, timestamps and heartbeats come from the host. A running run with no recent heartbeat is marked, never guessed finished. Actions are requests until a receipt arrives.',
+      'Status, times and heartbeats come from your server. A run that has gone quiet is flagged, never assumed finished. An action counts as done only once your server confirms it.',
     keyboard:
       'Arrow keys move between cards and columns; Home and End jump within a column; Enter opens a run.',
     code: '<RunBoard runs={runs} now={clock} onAction={request} />',
@@ -417,7 +421,7 @@ export const catalog: CatalogEntry[] = [
     states: ['Default', 'Unknown count', 'Empty'],
     contract: 'items: AttentionItem[] · count? · onOpen · onDismiss? · label?',
     responsibility:
-      'Rows only; opening an item mounts its own decision control. The count is host-supplied and shows as unavailable when unknown.',
+      'It lists items; opening one shows the right control to act on it. The count comes from your server and says so when it isn’t known.',
     keyboard: 'Arrow keys move between items; Enter opens; Dismiss is a separate button.',
     code: '<AttentionQueue items={items} count={count} onOpen={open} />',
   },
@@ -427,11 +431,11 @@ export const catalog: CatalogEntry[] = [
     importPath: '/conversation-flow',
     aliases: ['Run summary', 'Run report'],
     description:
-      'What a run did, read afterwards: goal, outcome, effects with receipts, and what was left undone.',
+      'What a run did, for reading afterwards: the goal, the outcome, what it changed and what was left undone.',
     states: ['Succeeded', 'Partial', 'Failed', 'Unknown outcome'],
     contract: 'summary: RunSummary · receipts? · onOpenEffect? · actions?',
     responsibility:
-      'An effect is confirmed only by an acknowledged receipt. Unknown outcomes are stated, not hidden. Duration and cost carry their meaning.',
+      'A change counts as done only when your server has confirmed it. Outcomes you don’t know are shown as unknown, not hidden. Time and cost say how they were measured.',
     code: '<RunSummaryCard summary={summary} receipts={receipts} />',
   },
   {
@@ -443,7 +447,7 @@ export const catalog: CatalogEntry[] = [
     states: ['Running', 'Waiting', 'Stale', 'Idle'],
     contract: 'running · waiting · lastHeartbeatAt? · staleAfterMs? · now? · onOpen?',
     responsibility:
-      'The host updates the counts; the indicator never polls. A silent host shows as no recent update.',
+      'Your app updates the counts; the indicator never polls. If updates stop arriving, it says so.',
     code: '<BackgroundStatus running={running} waiting={waiting} onOpen={openBoard} />',
   },
   {
@@ -457,7 +461,7 @@ export const catalog: CatalogEntry[] = [
     contract:
       'left · right: { label, summary, timeline?, receipts? } · onlyDifferences? · onOnlyDifferencesChange? · artifacts?',
     responsibility:
-      "Rows compare host data only. An effect is confirmed on a side only by that side's acknowledged receipt. Artifact comparison is supplied by the host.",
+      "Rows compare server data only. An effect is confirmed on a side only by that side's acknowledged receipt. Artifact comparison is supplied by the server.",
     code: '<RunCompare left={{ label: "Attempt 1", summary: a }} right={{ label: "Attempt 2", summary: b }} />',
   },
   {
@@ -470,7 +474,7 @@ export const catalog: CatalogEntry[] = [
     contract:
       'root: RunNode · selectedId? · onSelect? · onLoadMore? · maxDepth? · expandedIds? · onExpandedChange? · now?',
     responsibility:
-      'The host sends the tree and any missing children on request. Depth is bounded; deeper runs are counted and loaded through the host.',
+      'Your app sends the tree and loads more children when asked. Very deep trees show a count and load the rest on request.',
     keyboard:
       'Arrow keys move and expand or collapse; Home and End jump; typing a letter jumps to the next matching run; Enter selects.',
     code: '<SubagentTree root={tree} onSelect={open} onLoadMore={load} />',
@@ -494,18 +498,18 @@ export const catalog: CatalogEntry[] = [
       'Failed without details',
     ],
     contract: 'value: ToolCallData · Root / Summary / Input / Result · detail?',
-    responsibility: 'The host executes tools and reports authoritative outcomes.',
+    responsibility: 'Your server runs the tools and reports what actually happened.',
     code: '<ToolCall value={toolCall} />',
   },
   {
     name: 'ToolResult',
     category: 'Tools',
-    description: 'Bounded tool output with a safe fallback for unsupported content.',
+    description: 'Tool output, size-limited, with a safe fallback for content it can’t show.',
     states: ['Default', 'Failed', 'Empty', 'Partial', 'Host renderer'],
     contract:
       'text? · result? · partial? · error? · maxCharacters? · onRetry? · ToolResultRegistryProvider',
     responsibility:
-      'Redact secrets before passing content to any UI. Renderers are host code chosen by the host match function; partial counts are host measurements.',
+      'Remove secrets before passing content to any UI. Custom renderers are your own code, picked by your match function, and partial counts come from your server.',
     code: '<ToolResult text={output} error={error} onRetry={retry} />',
   },
   {
@@ -525,7 +529,7 @@ export const catalog: CatalogEntry[] = [
     states: ['Default', 'Pending', 'Expired', 'Changed', 'Unknown'],
     contract: 'proposal · submission · stale? · expired? · onDecision · onReconcile?',
     responsibility:
-      'Authenticate, recheck scope/version/expiry, deduplicate and execute on the server.',
+      'On your server: check who is asking, recheck the scope, version and expiry, ignore duplicates, then run the action.',
     code: '<ApprovalCard proposal={proposal} submission={submission} onDecision={decide} />',
   },
   {
@@ -547,7 +551,7 @@ export const catalog: CatalogEntry[] = [
     ],
     contract: 'value: PermissionSnapshot · commandId · submission · onDecision · onReconcile?',
     responsibility:
-      'Authorize the current exact scope on the host, retain the original command and acknowledge its receipt. Permission grants remain separate from action approvals; reconnecting must not replay a decision.',
+      'Authorize the exact scope on your server, keep the original request and confirm it back. Granting access is separate from approving an action, and reconnecting must never resend a decision.',
     code: '<PermissionRequest value={request} commandId={commandId} submission={submission} onDecision={sendDecision} onReconcile={lookupOriginal} />',
   },
   {
@@ -556,11 +560,11 @@ export const catalog: CatalogEntry[] = [
     importPath: '/conversation-flow',
     aliases: ['Standing permission', 'Grants', 'Session allow'],
     description:
-      'Standing permissions with their scope, expiry, use count and a host-acknowledged revoke.',
+      'Permissions that stay in place, with their scope, expiry, how often they were used, and a way to revoke them.',
     states: ['Default', 'Empty'],
     contract: 'grants: ScopeGrant[] · onRevoke? · receipts? · now? · label?',
     responsibility:
-      'Grants are host records. Expiry is derived from the host clock; revoking is a request until the receipt arrives.',
+      'Grants live on your server, and expiry uses your server’s clock. A revoke counts as done once your server confirms it.',
     code: '<ScopeGrantList grants={grants} now={clock} onRevoke={revoke} />',
   },
   {
@@ -574,7 +578,7 @@ export const catalog: CatalogEntry[] = [
     contract:
       'plan: DryRunPlan · skippedIds · onSkippedChange · onDecision · submission? · receipt? · stale?',
     responsibility:
-      'Nothing runs in the interface. The decision carries the plan version and the skipped effects; the host re-plans and executes.',
+      'Nothing runs in the browser. The decision says which plan version it covers and which changes to skip; your server re-plans and runs it.',
     keyboard: 'Each effect is a checkbox; Run and Cancel are buttons.',
     code: '<DryRunPreview plan={plan} skippedIds={skipped} onSkippedChange={setSkipped} onDecision={decide} />',
   },
@@ -583,13 +587,12 @@ export const catalog: CatalogEntry[] = [
     category: 'Human review',
     importPath: '/conversation-flow',
     aliases: ['Batch approval', 'Approve all'],
-    description:
-      'Several same-scope proposals under one acknowledged decision, each one still opt-out-able.',
+    description: 'Approve several similar proposals at once, and still leave any of them out.',
     states: ['Default', 'One superseded', 'Mixed scopes', 'Acknowledged'],
     contract:
       'proposals · excludedIds · onExcludedChange · onDecision · submission? · receipt? · now?',
     responsibility:
-      'Only pending, unexpired, included proposals with one shared target and scope are covered; the decision names each by id, version and digest, and the receipt says which ones the host applied.',
+      'One decision covers only proposals that are pending, unexpired, included and share a target and scope. It names each one exactly, and your server’s reply says which ones it applied.',
     code: '<ApprovalBatch proposals={proposals} excludedIds={excluded} onExcludedChange={setExcluded} onDecision={decide} />',
   },
   {
@@ -597,12 +600,12 @@ export const catalog: CatalogEntry[] = [
     category: 'State & status',
     aliases: ['CostMeter', 'ContextMeter', 'Token usage', 'Budget'],
     description:
-      'Context or cost usage with the meaning of the number beside it; a percentage only when the host reported a limit.',
+      'How much context or money has been used, with what the number means. A percentage shows only when there’s a known limit.',
     states: ['Default', 'Near limit', 'No limit', 'Cost', 'Unknown'],
     contract:
       'label · value: Measurement<{ used, limit? }> · unit? · currency? · warnAt? · locale?',
     responsibility:
-      'Measured, estimated and unknown read differently. Without a limit there is no percentage; an unknown measurement shows the host reason, never zero.',
+      'Measured, estimated and unknown numbers look different. Without a limit there’s no percentage, and an unknown amount shows the reason instead of zero.',
     code: '<UsageMeter label="Context" value={measured({ used: 12400, limit: 32000 })} />',
   },
   {
@@ -610,11 +613,11 @@ export const catalog: CatalogEntry[] = [
     category: 'Sources & evidence',
     aliases: ['Origin', 'Signed content', 'Content provenance'],
     description:
-      'Where content came from: model, tool, person or imported, and Signed only when the host verified a manifest.',
+      'Where content came from (a model, a tool, a person or an import), marked Signed only when your server verified it.',
     states: ['Default', 'Signed', 'Tool', 'Person', 'Imported'],
     contract: 'origin · source? · manifest? ({ issuer, verifiedBy: host, at })',
     responsibility:
-      'The badge never verifies anything. A manifest the host did not verify is reported as unverified.',
+      'The badge itself never verifies anything; whatever your server didn’t verify shows as unverified.',
     code: '<ProvenanceBadge origin="tool" source="search_accounts" manifest={manifest} />',
   },
   {
@@ -622,11 +625,11 @@ export const catalog: CatalogEntry[] = [
     category: 'Sources & evidence',
     aliases: ['Calibration', 'Confidence score', 'Eval score'],
     description:
-      'A host-supplied calibration with its scope, method and date, or nothing at all. Never a bare number.',
+      'A confidence score with what it covers, how it was worked out and when, or nothing at all. Never a bare number.',
     states: ['Default', 'Estimated', 'Unknown'],
     contract: 'score: Measurement<number> · scope · method · at? · locale?',
     responsibility:
-      'Renders nothing for an unknown or out-of-range score so a page without a calibration makes no confidence claim.',
+      'Shows nothing for an unknown or invalid score, so a page never claims confidence it doesn’t have.',
     code: '<ConfidenceNote score={measured(0.82)} scope="of claims matched a source" method="eval pass rate over 40 runs" />',
   },
   {
@@ -634,12 +637,12 @@ export const catalog: CatalogEntry[] = [
     category: 'Conversation',
     aliases: ['Thumbs', 'Rating', 'Correction', 'Message feedback'],
     description:
-      'Thumbs, reasons and a correction bound to one message revision or run attempt, settled by a host receipt.',
+      'Thumbs up or down, reasons and a correction for one specific reply, saved once your server confirms.',
     states: ['Default', 'Not helpful', 'Sending', 'Acknowledged', 'Failed', 'Outcome unknown'],
     contract:
       'target · value: FeedbackDraft · onValueChange · onSubmit · reasons? · submission? · receipt? · maxLength?',
     responsibility:
-      'The submission names the exact revision or attempt. The form locks while the host answers; failed and unknown outcomes keep the draft and say what to do.',
+      'Feedback names the exact version of the reply it’s about. The form waits while your server answers; if saving fails or the result is unclear, the draft stays and the form says what to do.',
     keyboard:
       'Helpful and Not helpful are toggle buttons; reasons are checkboxes; Enter in the form sends.',
     code: '<FeedbackCapture target={{ messageId, revision }} value={draft} onValueChange={setDraft} onSubmit={send} submission={submission} receipt={receipt} />',
@@ -678,12 +681,12 @@ export const catalog: CatalogEntry[] = [
       'Vercel AI SDK',
     ],
     description:
-      'A complete chat surface: transcript, streaming reply, tool cards, suggestions, stop, retry and composer, driven by a host or by controlled props.',
+      'A complete chat: messages, streaming replies, tool cards, suggestions, stop, retry and the composer. Connect it to your server or drive it with props.',
     states: ['Default', 'Empty', 'Mid conversation', 'Failed', 'AI SDK approval'],
     contract:
-      'host: ChatHost · or messages · tools? · status · suggestions? · draft · onDraftChange · onSend · onCancel? · onRetry? · title? · starters? · toolbar? · attachments?',
+      'server: ChatHost · or messages · tools? · status · suggestions? · draft · onDraftChange · onSend · onCancel? · onRetry? · title? · starters? · toolbar? · attachments?',
     responsibility:
-      'The host owns the conversation and answers send, cancel and retry; the surface keeps only the draft text. useLocalHost gives a simulated host for prototypes that never calls a model.',
+      'Your server owns the conversation and handles send, stop and retry; the chat only keeps the unsent draft. useLocalHost gives you a stand-in server for prototypes that never calls a model.',
     keyboard:
       'Enter sends and Shift+Enter adds a line; the transcript is a focusable log; suggestions and Retry are buttons.',
     code: 'const host = useLocalHost();\nreturn <Chat host={host} title="Assistant" />;',
@@ -694,7 +697,7 @@ export const catalog: CatalogEntry[] = [
     description: 'A question the assistant asks before it continues.',
     states: ['Default', 'Text', 'Pending', 'Error', 'Resolved', 'Cancelled'],
     contract: 'question · value · onValueChange · onSubmit · choices? · state?',
-    responsibility: 'Validate the answer on the host and acknowledge receipt.',
+    responsibility: 'Check the answer on your server and confirm you got it.',
     code: '<ClarificationRequest question="Which environment?" value={value} onValueChange={setValue} onSubmit={submit} />',
   },
   {
@@ -703,7 +706,7 @@ export const catalog: CatalogEntry[] = [
     description: 'The identity, capabilities and current activity of one agent.',
     states: ['Default', 'Idle', 'Failed', 'Long labels', 'Read-only'],
     contract: 'name · description · state · activity? · selected? · onSelect?',
-    responsibility: 'Identity is separate from the lifecycle of a specific run.',
+    responsibility: 'Who the agent is stays separate from how any one run is going.',
     code: '<AgentCard name="Research agent" description="Finds relevant sources" state="running" />',
   },
   {
@@ -712,7 +715,8 @@ export const catalog: CatalogEntry[] = [
     description: 'A source behind an answer, with its access state and excerpt.',
     states: ['Default', 'Revoked', 'Missing', 'Host open', 'Long labels'],
     contract: 'source: Source · onOpen?',
-    responsibility: 'Enforce source access and supply stable versioned locators.',
+    responsibility:
+      'Check who may see each source, and give each one a stable link to the right version.',
     code: '<SourceCard source={source} onOpen={openSource} />',
   },
   {
@@ -721,7 +725,7 @@ export const catalog: CatalogEntry[] = [
     description: 'An inline reference that links a passage to its source.',
     states: ['Default', 'Revoked'],
     contract: 'source: Source · number',
-    responsibility: 'The displayed number is not the source identity.',
+    responsibility: 'The number shown is just a label, not the source’s ID.',
     code: '<Citation source={source} number={1} />',
   },
   {
@@ -730,25 +734,28 @@ export const catalog: CatalogEntry[] = [
     description: 'A claim with the sources that support it.',
     states: ['Default', 'Empty'],
     contract: 'sources · claim · relationships?',
-    responsibility: 'Declare supporting, contradicting or related evidence honestly.',
+    responsibility:
+      'Say honestly whether each source supports the claim, contradicts it or is only related.',
     code: '<EvidenceGroup sources={sources} claim="Review accounts before archival" />',
   },
   {
     name: 'GroundingStatus',
     category: 'Sources & evidence',
-    description: 'A grounding measure with its definition and limits.',
+    description:
+      'How well an answer is backed by sources, with what that measure means and its limits.',
     states: ['Default', 'Unknown', 'Long labels'],
     contract: 'value: Grounding',
-    responsibility: 'Source coverage is not calibrated answer confidence.',
+    responsibility:
+      'Being covered by sources isn’t the same as being confident the answer is right.',
     code: '<GroundingStatus value={{ kind: "coverage", supported: 3, total: 4, method: "Linked claims" }} />',
   },
   {
     name: 'MCPServerCard',
     category: 'MCP',
-    description: 'The connection state of an MCP server as reported by the host.',
+    description: 'Whether an MCP server is connected, as your app reports it.',
     states: ['Default', 'Disconnected', 'Unknown', 'Long labels', 'Pending', 'Authorization'],
     contract: 'name · status · toolCount? · onConnect? · onDisconnect?',
-    responsibility: 'The host owns transport, credentials and connector permissions.',
+    responsibility: 'Your app owns the connection, the credentials and the permissions.',
     code: '<MCPServerCard name="CRM sandbox" status="connected" toolCount={3} />',
   },
   {
@@ -757,7 +764,8 @@ export const catalog: CatalogEntry[] = [
     description: 'The tools an MCP server offers and the permissions they need.',
     states: ['Default'],
     contract: 'tools · query · onQueryChange',
-    responsibility: 'Tool availability is host supplied; unknown is explicit.',
+    responsibility:
+      'Your app says which tools are available; anything unknown is shown as unknown.',
     code: '<MCPToolList tools={tools} query={query} onQueryChange={setQuery} />',
   },
   {
@@ -766,12 +774,12 @@ export const catalog: CatalogEntry[] = [
     importPath: '/mcp-apps',
     aliases: ['MCP App', 'Tool view', 'App frame'],
     description:
-      'A sandboxed frame for an MCP App view with the declared policy and a host-controlled bridge.',
+      'A sandboxed frame for an MCP App view, talking to your app only through a bridge you control.',
     states: ['Default', 'Nothing granted', 'Fetching', 'Blocked', 'Failed', 'Not an app'],
     contract:
       'server · resource · state · reason? · toolInput? · toolResult? · hostCapabilities? · hostContext? · grantedPermissions? · allowForms? · maxHeight? · onRequest? · onNotification? · onClose? · fallback?',
     responsibility:
-      'The host fetches the resource, decides whether the server may show views, declares what it honours and answers every request. The frame grants no permission and runs nothing outside the sandbox.',
+      'Your app fetches the view, decides whether the server may show it, declares what it supports and answers every request. The frame grants no permissions and runs nothing outside its sandbox.',
     keyboard: 'Tab moves into the view and back out; the Close button is a normal button.',
     code: '<MCPAppFrame server={server} resource={resource} state="ready" onRequest={decide} />',
   },
@@ -781,7 +789,7 @@ export const catalog: CatalogEntry[] = [
     description: 'What the current request includes, with removable items.',
     states: ['Default', 'Unknown', 'Long labels', 'Read-only'],
     contract: 'items · usage? · onRemove?',
-    responsibility: 'Connected, selected and included are distinct states.',
+    responsibility: 'Connected, selected and actually included are shown as different things.',
     code: '<ContextBar items={context} usage={usage} />',
   },
   {
@@ -790,7 +798,7 @@ export const catalog: CatalogEntry[] = [
     description: 'A panel for generated documents and other artifacts.',
     states: ['Default', 'Loading', 'Empty', 'Failed'],
     contract: 'artifact · open · onOpenChange · loading? · error?',
-    responsibility: 'The host resolves versions and content access.',
+    responsibility: 'Your app picks the version to show and checks who may see it.',
     code: '<ArtifactPanel artifact={artifact} open={open} onOpenChange={setOpen} />',
   },
   {
@@ -799,16 +807,16 @@ export const catalog: CatalogEntry[] = [
     description: 'Read-only previews of documents and bounded tables.',
     states: ['Default', 'Table', 'Unsupported'],
     contract: 'artifact: Artifact · tableLabel?',
-    responsibility: 'Only text and bounded JSON tables render in this alpha.',
+    responsibility: 'In this alpha, only text and small JSON tables are shown.',
     code: '<ArtifactPreview artifact={artifact} />',
   },
   {
     name: 'StatusBadge',
     category: 'State & status',
-    description: 'A status label with a consistent icon and tone for each state.',
+    description: 'A status label with a matching icon and color.',
     states: ['Default', 'Unknown'],
     contract: 'state · label? · native span props',
-    responsibility: 'Unrecognized states never become success.',
+    responsibility: 'A status it doesn’t recognize is never shown as success.',
     code: '<StatusBadge state="running" />',
   },
 ];

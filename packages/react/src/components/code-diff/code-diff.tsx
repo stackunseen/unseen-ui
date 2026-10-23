@@ -339,7 +339,7 @@ export function CodeDiff({
             : status === 'conflict'
               ? 'The base changed. Resolve the conflict before reviewing.'
               : status === 'error'
-                ? error?.slice(0, 1000) || 'Comparison could not be loaded. Retry through the host.'
+                ? error?.slice(0, 1000) || 'Couldn’t load the comparison. Try again.'
                 : 'This comparison is unavailable.'}
         </p>
       ) : !versionValid ? (

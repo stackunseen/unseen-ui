@@ -64,7 +64,7 @@ function LegacyPermissionRequest({
       </p>
       {!completeScope && (
         <p className={s.warning} role="status">
-          The host must provide the resource and requested scopes before you can allow access.
+          This request doesn’t say what it wants to access yet. You can allow access once it does.
         </p>
       )}
       <div

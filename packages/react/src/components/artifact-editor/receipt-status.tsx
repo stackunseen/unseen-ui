@@ -69,9 +69,7 @@ export function ArtifactReceiptStatus({
             Check {kind} receipt
           </Button>
         ) : (
-          <p className={s.metadata}>
-            The host must resolve this original command before another attempt.
-          </p>
+          <p className={s.metadata}>The first attempt must be resolved before you try again.</p>
         ))}
     </div>
   );

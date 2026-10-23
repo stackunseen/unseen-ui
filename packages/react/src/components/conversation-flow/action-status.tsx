@@ -13,17 +13,17 @@ export function ConversationActionStatus({
 }) {
   const inspected = inspectConversationActionState(state);
   let text: string | undefined;
-  if (!inspected) text = 'Host action outcome is invalid or unavailable.';
-  else if (inspected.status === 'pending') text = 'Waiting for host acknowledgement.';
+  if (!inspected) text = 'The result of this action isn’t available.';
+  else if (inspected.status === 'pending') text = 'Waiting for confirmation.';
   else if (inspected.status === 'unknown')
     text = 'Action outcome is unknown. Check the original request; do not repeat it.';
   else if (inspected.status === 'settled')
     text =
       inspected.receipt.result === 'rejected'
-        ? `Host rejected the action: ${inspected.receipt.reason}`
+        ? `Action rejected: ${inspected.receipt.reason}`
         : inspected.receipt.command.kind === 'edit'
-          ? 'Host acknowledged a new conversation branch.'
-          : 'Host acknowledged a new response attempt.';
+          ? 'New conversation branch created.'
+          : 'New response started.';
   return (
     <>
       <p role="status" className={s.status}>

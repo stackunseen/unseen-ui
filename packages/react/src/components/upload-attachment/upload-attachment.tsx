@@ -208,7 +208,7 @@ export function UploadAttachment({
               {observedOperation?.state === 'outcome-unknown' && onLookup && (
                 <IconButton
                   icon="search"
-                  label={`Check original upload receipt for ${checkpoint.name}`}
+                  label={`Check whether ${checkpoint.name} finished uploading`}
                   disabled={loading}
                   onClick={() => onLookup(observedOperation.command)}
                 />
@@ -221,12 +221,12 @@ export function UploadAttachment({
           <div className={u.status}>
             <p>{`${stale ? 'Historical h' : 'H'}ost-confirmed received bytes: ${checkpoint.receivedBytes.toLocaleString('en-US')} of ${checkpoint.sizeBytes.toLocaleString('en-US')}.`}</p>
             {checkpoint.state === 'uploading' && checkpoint.sizeBytes === 0 && (
-              <p>Empty file. Waiting for host final confirmation.</p>
+              <p>Empty file. Waiting for final confirmation.</p>
             )}
-            {loading && <p role="status">Reading the host upload checkpoint…</p>}
+            {loading && <p role="status">Checking the upload…</p>}
             {stale && (
               <p role="status" data-unknown="true">
-                Upload checkpoint stale. Refresh host data before requesting changes.
+                This upload status is out of date. Refresh before making changes.
               </p>
             )}
             {resumeRelevant && (
@@ -235,11 +235,11 @@ export function UploadAttachment({
             {observedOperation && (
               <p role="status" data-unknown={observedOperation.state === 'outcome-unknown'}>
                 {observedOperation.state === 'submitting'
-                  ? 'Awaiting original upload receipt.'
+                  ? 'Waiting to confirm the earlier upload.'
                   : observedOperation.state === 'acknowledged'
                     ? 'Original upload request received. Checkpoint lifecycle is reported separately.'
                     : observedOperation.state === 'outcome-unknown'
-                      ? 'Original upload request outcome unknown. Check its receipt before repeating the request.'
+                      ? 'It’s not clear whether the earlier upload finished. Check before uploading again.'
                       : observedOperation.state === 'failed'
                         ? 'Original upload request rejected. Checkpoint lifecycle is unchanged.'
                         : 'Original upload request has not been submitted.'}
@@ -248,7 +248,8 @@ export function UploadAttachment({
             {observedOperation?.detail && <p>{observedOperation.detail}</p>}
             {observedOperation?.state === 'outcome-unknown' && !onLookup && (
               <p>
-                Original receipt lookup is unavailable here. The host must reconcile this request.
+                You can’t check the earlier upload from here, so it needs to be checked before
+                trying again.
               </p>
             )}
             <Accordion

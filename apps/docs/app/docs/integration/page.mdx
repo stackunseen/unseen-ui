@@ -39,29 +39,29 @@ A callback such as `onSubmit` or `onAction` tells you what the user requested. S
 
 For a composer, this means keeping `value` in your app, passing edits through `onValueChange`, and connecting `onSubmit` to your message request. Set `busy` while that request is pending. Clear the draft after the server accepts it.
 
-For ordinary UI state, such as an open dialog or a selected tab, local React state is enough. Tool execution, access changes and approval decisions need confirmation from your host.
+For everyday UI state, such as an open dialog or a selected tab, local React state is enough. Running tools, changing access and approving actions need your server to confirm them.
 
 ## Approve the exact action being shown
 
-An approval must identify the action, its current version and the records it affects. If any of those change, ask for a new decision. Show a decision as accepted only after your host confirms that exact request.
+An approval must identify the action, its current version and the records it affects. If any of those change, ask again. Show a decision as accepted only after your server confirms that exact request.
 
 For example, approval to archive two accounts does not cover a revised request to archive three. The [ApprovalCard](/components/approval-card/) displays the proposal and collects the decision; your server checks whether it can run.
 
-The optional [action and receipt example](/patterns/action-receipts/) shows a proposed change, its decision and the acknowledged result using a simulated host.
+The [action and receipt example](/patterns/action-receipts/) walks through a proposed change, the decision and the confirmed result, using a simulated server.
 
 ## Handle a lost connection carefully
 
-If a connection drops after you send a request, the action may already have run. Keep the original request ID and check its result before sending it again. Until you know, show an unconfirmed outcome rather than success or failure.
+If the connection drops after you send a request, the action may already have run. Keep the original request ID and check its result before you send it again. Until you know, say the outcome isn't confirmed yet, rather than showing success or failure.
 
-[ConnectionStatus](/components/connection-status/) and [RunInspector](/components/run-inspector/) can show a disconnected connection, stale data and an unconfirmed request separately.
+[ConnectionStatus](/components/connection-status/) and [RunInspector](/components/run-inspector/) show a lost connection, out-of-date data and an unconfirmed request as three different things.
 
-The optional [recoverable chat example](/patterns/recoverable-chat/) shows how to keep a draft and check the original receipt after an interruption.
+The [recoverable chat example](/patterns/recoverable-chat/) shows how to keep a draft and check whether the original request went through after an interruption.
 
 ## Keep model output as content
 
-Render model text, tool results and source excerpts with the library's supported renderers. Do not execute generated code or raw MDX. Show measured progress and public results only when your host supplies them.
+Show model text, tool results and source excerpts with the library's renderers. Never run generated code or raw MDX. Only show progress and results that your server actually reports.
 
-The optional [research answer example](/patterns/research-answers/) puts claims beside their supporting sources and marks unsupported content.
+The [research answer example](/patterns/research-answers/) puts each claim next to its sources and marks anything without one.
 
 ## Test your own integration
 

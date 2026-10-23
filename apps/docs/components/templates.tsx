@@ -28,7 +28,7 @@ export function Templates() {
 
       <div className="pattern-list template-options">
         <Link prefetch={false} href="/templates/saas-admin/">
-          <LayersIcon width={28} height={28} aria-hidden="true" />
+          <LayersIcon width={30} height={30} aria-hidden="true" />
           <div>
             <h2>SaaS admin</h2>
             <p>
@@ -37,12 +37,12 @@ export function Templates() {
             </p>
             <span>
               Open the local template{' '}
-              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+              <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
             </span>
           </div>
         </Link>
         <Link prefetch={false} href="/templates/marketing/">
-          <LayersIcon width={28} height={28} aria-hidden="true" />
+          <LayersIcon width={30} height={30} aria-hidden="true" />
           <div>
             <h2>Marketing website</h2>
             <p>
@@ -51,12 +51,12 @@ export function Templates() {
             </p>
             <span>
               Open the local template{' '}
-              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+              <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
             </span>
           </div>
         </Link>
         <Link prefetch={false} href="/patterns/agent-workbench/">
-          <Share2Icon width={28} height={28} aria-hidden="true" />
+          <Share2Icon width={30} height={30} aria-hidden="true" />
           <div>
             <h2>Agent Workbench</h2>
             <p>
@@ -65,12 +65,12 @@ export function Templates() {
             </p>
             <span>
               Open the local template{' '}
-              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+              <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
             </span>
           </div>
         </Link>
         <Link prefetch={false} href="/patterns/coding-studio/">
-          <CodeIcon width={28} height={28} aria-hidden="true" />
+          <CodeIcon width={30} height={30} aria-hidden="true" />
           <div>
             <h2>Coding Studio</h2>
             <p>
@@ -79,7 +79,7 @@ export function Templates() {
             </p>
             <span>
               Open the local template{' '}
-              <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+              <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
             </span>
           </div>
         </Link>
@@ -89,7 +89,7 @@ export function Templates() {
         <div className={s.summary}>
           <div className={s.identity}>
             <span className={s.mark} aria-hidden="true">
-              <LayersIcon width={24} height={24} />
+              <LayersIcon width={30} height={30} />
             </span>
             <span className={s.tag}>LOCAL REFERENCE APP</span>
           </div>
@@ -102,7 +102,7 @@ export function Templates() {
           </p>
           <div className={s.actions}>
             <Link prefetch={false} className={s.previewLink} href="/templates/relay/">
-              Explore Relay <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
+              Explore Relay <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
             </Link>
             <Link prefetch={false} className={s.setupLink} href="#relay-setup">
               Run it locally
@@ -142,7 +142,7 @@ export function Templates() {
             </li>
           </ol>
           <p className={s.workflowFootnote}>
-            <CheckIcon width={16} height={16} aria-hidden="true" /> No external account or API key
+            <CheckIcon width={15} height={15} aria-hidden="true" /> No external account or API key
             required
           </p>
         </div>

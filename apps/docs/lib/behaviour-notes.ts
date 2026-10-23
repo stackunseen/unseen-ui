@@ -26,7 +26,7 @@ export const behaviourNotes: Record<string, readonly string[]> = {
   CodeTabs: ['With `copy`, the file has one Copy button: the code block inside hides its own.'],
   ScopeGrant: [
     'An expired grant says so in its badge only.',
-    'Uses the host does not count read "Uses not counted", with the reason.',
+    'Uses the server does not count read "Uses not counted", with the reason.',
   ],
   ThreadList: [
     'Compact rows are 36px with 1px between them, and showing their actions never changes a row’s height.',
@@ -46,6 +46,6 @@ export const behaviourNotes: Record<string, readonly string[]> = {
     'The empty value a form’s hidden native select reports is ignored, so a choice never resets to the placeholder.',
   ],
   FileExplorer: [
-    'Only the metadata the host supplies is shown; nothing is inferred from the name.',
+    'Only the metadata the server supplies is shown; nothing is inferred from the name.',
   ],
 };

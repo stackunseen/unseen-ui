@@ -340,14 +340,14 @@ export function AIForm({
           ) : status === 'denied' ? (
             'Access to this form is unavailable.'
           ) : status === 'stale' ? (
-            'The form version changed. Request a current host snapshot.'
+            'The form changed. Reload it to get the latest version.'
           ) : (
             'This form is unavailable.'
           )}
         </div>
       ) : stepUnavailable ? (
         <p role="status" className={s.muted}>
-          The selected form step is unavailable. Request an available step through the host.
+          This step isn’t available. Choose another step.
         </p>
       ) : (
         <>
@@ -390,7 +390,7 @@ export function AIForm({
       )}
       {status === 'error' && (
         <p role="alert" className={g.error}>
-          {errors._form?.slice(0, 1000) || 'The host did not accept this submission.'}
+          {errors._form?.slice(0, 1000) || 'This submission wasn’t accepted.'}
         </p>
       )}
       <div
@@ -427,8 +427,8 @@ export function AIForm({
       {status === 'complete' && !schemaError && !valueError && (
         <p role="status" className={s.muted}>
           {identity && !receiptMatches
-            ? 'The submission receipt does not match the current form version.'
-            : receiptMessage?.slice(0, 1000) || 'Submission confirmed by the host.'}
+            ? 'The confirmation doesn’t match this version of the form.'
+            : receiptMessage?.slice(0, 1000) || 'Submission confirmed.'}
         </p>
       )}
     </form>

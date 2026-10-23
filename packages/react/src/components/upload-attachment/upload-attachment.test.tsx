@@ -115,10 +115,10 @@ describe('controlled upload attachment', () => {
       expect(screen.queryByRole('button', { name: 'Remove report.txt' })).not.toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Open original report.txt' })).toBeDisabled();
       await userEvent.click(
-        screen.getByRole('button', { name: 'Check original upload receipt for report.txt' }),
+        screen.getByRole('button', { name: 'Check whether report.txt finished uploading' }),
       );
       expect(lookup).toHaveBeenCalledExactlyOnceWith(original.command);
-      expect(screen.getByText(/Original upload request outcome unknown/)).toBeVisible();
+      expect(screen.getByText(/earlier upload finished/)).toBeVisible();
     },
   );
   it.each(componentVariants.Attachment)(
@@ -193,15 +193,15 @@ describe('controlled upload attachment', () => {
         />,
       );
       expect(screen.getByText('Ready')).toBeVisible();
-      expect(screen.getByText(/Original upload request outcome unknown/)).toBeVisible();
+      expect(screen.getByText(/earlier upload finished/)).toBeVisible();
       const check = screen.getByRole('button', {
-        name: 'Check original upload receipt for report.txt',
+        name: 'Check whether report.txt finished uploading',
       });
       check.focus();
       await userEvent.keyboard('{Enter}');
       expect(lookup).toHaveBeenCalledExactlyOnceWith(operation.command);
       expect(check).toHaveFocus();
-      expect(screen.getByText(/Original upload request outcome unknown/)).toBeVisible();
+      expect(screen.getByText(/earlier upload finished/)).toBeVisible();
       await userEvent.click(screen.getByRole('button', { name: 'Open original report.txt' }));
       expect(open).toHaveBeenCalledExactlyOnceWith({ context, expectedRevision: 7 });
     },
@@ -265,10 +265,10 @@ describe('controlled upload attachment', () => {
       };
       const { rerender } = render(<UploadAttachment {...props} stale />);
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
-      expect(screen.getByText(/Upload checkpoint stale/)).toBeVisible();
+      expect(screen.getByText(/upload status is out of date/)).toBeVisible();
       expect(screen.getByRole('button', { name: 'Resume upload for report.txt' })).toBeDisabled();
       expect(
-        screen.getByRole('button', { name: 'Check original upload receipt for report.txt' }),
+        screen.getByRole('button', { name: 'Check whether report.txt finished uploading' }),
       ).toBeEnabled();
       rerender(<UploadAttachment {...props} loading />);
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
@@ -276,7 +276,7 @@ describe('controlled upload attachment', () => {
         screen.getByRole('button', { name: 'Refresh upload status for report.txt' }),
       ).toBeDisabled();
       expect(
-        screen.getByRole('button', { name: 'Check original upload receipt for report.txt' }),
+        screen.getByRole('button', { name: 'Check whether report.txt finished uploading' }),
       ).toBeDisabled();
     },
   );
@@ -391,8 +391,8 @@ describe('controlled upload attachment', () => {
       />,
     );
     expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
-    expect(screen.getByText('Empty file. Waiting for host final confirmation.')).toBeVisible();
-    expect(screen.getByText(/Original receipt lookup is unavailable here/)).toBeVisible();
+    expect(screen.getByText('Empty file. Waiting for final confirmation.')).toBeVisible();
+    expect(screen.getByText(/can’t check the earlier upload from here/)).toBeVisible();
     expect(
       screen.queryByRole('group', { name: 'Upload actions for report.txt' }),
     ).not.toBeInTheDocument();

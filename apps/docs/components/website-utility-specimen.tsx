@@ -132,7 +132,7 @@ function AppearanceExample({ state }: { state: string }) {
         onValueChange={set}
       />
       <span className="generic-demo-status">
-        {state === 'Stored' ? `Stored in this browser: ${value}` : `Host value: ${value}`}
+        {state === 'Stored' ? `Stored in this browser: ${value}` : `Current value: ${value}`}
       </span>
     </div>
   );

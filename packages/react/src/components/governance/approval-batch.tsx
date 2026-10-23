@@ -125,7 +125,7 @@ export function ApprovalBatch({
               : submission === 'submitting'
                 ? 'Sending'
                 : submission === 'acknowledged'
-                  ? 'Host acknowledged'
+                  ? 'Confirmed'
                   : submission === 'failed'
                     ? 'Failed'
                     : 'Outcome unknown'
@@ -187,7 +187,9 @@ export function ApprovalBatch({
                     )}
                     {receipt && submission === 'acknowledged' && !isDropped && !isExcluded && (
                       <span className={wasCovered ? undefined : g.warn}>
-                        {wasCovered ? 'Covered by the receipt' : 'Not confirmed by the receipt'}
+                        {wasCovered
+                          ? 'Included in the confirmation'
+                          : 'Not included in the confirmation'}
                       </span>
                     )}
                   </span>

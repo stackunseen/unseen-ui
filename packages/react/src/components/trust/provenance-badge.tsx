@@ -40,9 +40,9 @@ export function ProvenanceBadge({
   const label = known?.label ?? 'Unknown origin';
   const text = `${signed ? 'Signed' : 'Origin'}: ${label}${source?.trim() ? ` · ${source.trim().slice(0, 120)}` : ''}`;
   const detail = signed
-    ? `Signature by ${manifest!.issuer.trim()} verified by the host${manifest!.at ? ` on ${formatStamp(manifest!.at, locale)}` : ''}.`
+    ? `Signature by ${manifest!.issuer.trim()} verified${manifest!.at ? ` on ${formatStamp(manifest!.at, locale)}` : ''}.`
     : manifest
-      ? 'A manifest was supplied but the host did not verify it.'
+      ? 'A signature was provided but hasn’t been verified.'
       : undefined;
   return (
     <span

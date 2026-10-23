@@ -10,7 +10,7 @@ import type {
 // Fictional models, usage and authority records: these are not product capability or price claims.
 export const modelCapabilities: ModelCapabilities = {
   revision: 'fixture-3',
-  source: 'Synthetic capability fixture',
+  source: 'Synthetic capability sample',
   observedAt: '2026-09-29T12:00:00Z',
   models: [
     {

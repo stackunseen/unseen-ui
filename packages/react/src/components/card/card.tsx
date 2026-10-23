@@ -49,7 +49,7 @@ function CardRoot({ href, external = false, className = '', children, ...props }
       {external && (
         <>
           <span className={s.external} aria-hidden="true">
-            <AIIcon name="external" size={14} />
+            <AIIcon name="external" size={15} />
           </span>
           <span className={s.srOnly}> (opens in a new tab)</span>
         </>

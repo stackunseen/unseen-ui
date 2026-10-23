@@ -329,7 +329,7 @@ function Reader({
     <>
       {availability === 'stale' && (
         <p className={s.notice}>
-          Showing saved messages. History requests are unavailable until the host reconnects.
+          Showing saved messages. Older messages can load once you’re reconnected.
         </p>
       )}
       <Edge
@@ -472,7 +472,7 @@ export function ConversationViewport({
               ? 'Conversation history could not be loaded.'
               : !history
                 ? 'Conversation history is invalid or exceeds its limits.'
-                : 'Full reading mode requires a host window of at most 200 messages.';
+                : 'Full reading mode works with up to 200 loaded messages.';
   return (
     <section
       ref={root}

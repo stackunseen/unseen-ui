@@ -130,7 +130,7 @@ export function PolicyStatus({
       {loading ? (
         <Skeleton label="Loading policy checks" />
       ) : !checks.length ? (
-        <p className={s.emptyState}>The host has not supplied any policy attestations.</p>
+        <p className={s.emptyState}>No policy results yet.</p>
       ) : variant === 'accordion' ? (
         <Accordion
           region={false}
@@ -160,7 +160,7 @@ export function PolicyStatus({
           ))}
         </ul>
       )}
-      <p className={s.muted}>Reported by the host. Actions still require current authorization.</p>
+      <p className={s.muted}>Actions still need permission at the moment they run.</p>
     </Panel>
   );
 }

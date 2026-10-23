@@ -126,7 +126,7 @@ export function CustomersScreen({
           creating
             ? 'Add a record to this local organization.'
             : editing
-              ? 'Changes stay in your draft until the local host acknowledges them.'
+              ? 'Changes stay in your draft until the local server acknowledges them.'
               : 'Search, inspect and update the people you work with.'
         }
         actions={

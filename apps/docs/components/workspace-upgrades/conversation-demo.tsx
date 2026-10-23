@@ -353,7 +353,7 @@ export function ConversationDemo({ sample = false }: { sample?: boolean }) {
       {state.status === 'pending' && (
         <div className={s.controls}>
           <Button size="sm" onClick={acknowledge}>
-            Acknowledge in local host
+            Acknowledge in local server
           </Button>
           <Button
             size="sm"
@@ -371,13 +371,13 @@ export function ConversationDemo({ sample = false }: { sample?: boolean }) {
                 receipt: {
                   command: state.command,
                   result: 'rejected',
-                  reason: 'Local host rejected the request.',
+                  reason: 'Local server rejected the request.',
                 },
               });
               setSequence((value) => value + 1);
             }}
           >
-            Reject in local host
+            Reject in local server
           </Button>
         </div>
       )}

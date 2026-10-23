@@ -61,7 +61,7 @@ export function DeleteCustomerDialog({
             Keep customer
           </AlertDialog.Cancel>
           {state.status === 'unknown' ? (
-            <Button onClick={onReconcile}>Check original receipt</Button>
+            <Button onClick={onReconcile}>Check if it went through</Button>
           ) : (
             <AlertDialog.Action disabled={blocked} onAction={onConfirm}>
               {state.status === 'pending' ? 'Deleting...' : 'Delete demo customer'}

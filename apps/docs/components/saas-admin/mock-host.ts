@@ -338,7 +338,7 @@ export function createSaaSAdminHost({
           mode === 'reject'
             ? rejection(
                 command,
-                'The simulated host rejected this action. No saved record was changed.',
+                'The simulated server rejected this action. No saved record was changed.',
               )
             : execute(command);
         receipts.set(command.id, receipt);
@@ -348,7 +348,7 @@ export function createSaaSAdminHost({
               status: 'unknown',
               command,
               message:
-                'The local host receipt was interrupted. The saved view may be stale; check the original receipt before continuing.',
+                'The local server receipt was interrupted. The saved view may be stale; check the original receipt before continuing.',
             })
           : receipt;
       })();

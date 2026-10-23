@@ -7,6 +7,9 @@
 }
 body {
   margin: 0;
+  /* Grayscale smoothing on macOS keeps light text on dark surfaces from looking heavy and soft. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 /* Radix Select and DropdownMenu lock body scroll while open. With the reserved scrollbar
    gutter that hides the scrollbar and shifts the page, so the page keeps its own scrolling;

@@ -57,7 +57,7 @@ export function Citation({ source, reference, number, variant = 'chip' }: Citati
         <SourceCard source={matched} />
       ) : (
         <p role="status" className={s.warning}>
-          Source version or location unavailable. Review the host reference.
+          This source’s version or location isn’t available.
         </p>
       )}
     </Modal>

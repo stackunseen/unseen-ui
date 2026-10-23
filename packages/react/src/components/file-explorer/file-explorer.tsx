@@ -289,8 +289,8 @@ export function FileExplorer({
       {!canOpen && interactive && (
         <p className={s.muted}>
           {onRequestOpen && !model.context
-            ? 'Scoped file opening requires current workspace/snapshot identity.'
-            : 'File opening unavailable: no host handler supplied.'}
+            ? 'Files can’t be opened until the workspace has loaded.'
+            : 'Opening files isn’t set up here.'}
         </p>
       )}
       {onQueryChange && (

@@ -29,7 +29,7 @@ export function HomeAppExample() {
             local demo and reset on reload.
           </p>
           <Link prefetch={false} className="web-text-link" href={featuredApp.href}>
-            Try the app <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
+            Try the app <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
           </Link>
         </figcaption>
       </figure>

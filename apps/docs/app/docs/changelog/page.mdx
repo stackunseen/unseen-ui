@@ -17,6 +17,8 @@ Unseen UI is an experimental alpha. Prereleases are published on npm under the `
 - **DateRangePicker** joins a selected range with an en dash ("Thursday, February 1, 2024 – Saturday, February 3, 2024", was an em dash) and reads "Thursday, February 1, 2024. Choose the end date" while picking.
 - **Overlay content has no wrapper div.** Modal, AlertDialog, Popover, Tooltip, DropdownMenu, ContextMenu and Select content now carry the theme scope (`data-ai-theme`, `data-appearance`) themselves instead of sitting inside an extra div in the portal. Selectors that reached the content through that wrapper need updating.
 - **Closed menus fade out.** Force-mounted DropdownMenu and ContextMenu content is hidden by its exit animation and made inert, instead of `display: none`.
+- **Plainer status messages.** About 150 messages people see in components no longer mention a "host", "receipt", "acknowledgement" or "authoritative snapshot". For example "Waiting for host acknowledgement." is now "Waiting for confirmation.", and "Host rejected the edit: …" is now "Edit rejected: …". The meaning of each message is unchanged. Tests that match the old wording need the new words.
+- **Icons default to 15px**, the grid the built-in Radix icons are drawn on, so their edges stay sharp. Pass `size` to IconsProvider or AIIcon for another size.
 
 ### Changes
 

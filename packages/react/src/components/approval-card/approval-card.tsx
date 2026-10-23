@@ -118,7 +118,7 @@ export function ApprovalCard({
           {proposal.expiresAt ? <ObservationTime value={proposal.expiresAt} /> : 'None supplied'}
         </dd>
         <dt>Execution</dt>
-        <dd>The host verifies permission and the current proposal before execution.</dd>
+        <dd>Permission and the latest proposal are checked again before anything runs.</dd>
       </dl>
       {stale && (
         <p className={s.warning}>This proposal changed or is stale. Refresh before deciding.</p>
@@ -134,7 +134,7 @@ export function ApprovalCard({
       {submission === 'outcome-unknown' ? (
         <div role="status">
           <p className={s.warning}>
-            Your decision may have reached the host. Check its status before trying again.
+            Your decision may already have arrived. Check its status before trying again.
           </p>
           {onReconcile && (
             <div className={`${s.actions} ${a.footer}`} role="group" aria-label="Decision recovery">
@@ -169,7 +169,7 @@ export function ApprovalCard({
             {submission === 'submitting'
               ? 'Sending decision…'
               : submission === 'acknowledged'
-                ? 'Decision acknowledged. Execution is reported separately.'
+                ? 'Decision received. Whether the action ran is shown separately.'
                 : ''}
           </p>
         </>

@@ -114,19 +114,19 @@ export function ChartSpecimen({
             ? (next) => {
                 if (state === 'Selection pending') setRequested(next);
                 else setHidden(next);
-                onEvent('Host received a chart series selection request.');
+                onEvent('Series selected. Your app decides what to show next.');
               }
             : undefined
         }
       />
       {requested && (
         <div className={styles.controls}>
-          <p>Selection request awaiting synthetic host acknowledgement.</p>
+          <p>Waiting for your app to confirm the selection.</p>
           <Button
             onClick={() => {
               setHidden(requested);
               setRequested(undefined);
-              onEvent('Synthetic host acknowledged the current selection.');
+              onEvent('Your app confirmed the selection.');
             }}
           >
             Acknowledge selection
@@ -148,7 +148,7 @@ export function ChartSpecimen({
         </Button>
       </div>
       <p>
-        Synthetic measured values. Legend changes are host-controlled; Chart data retains every
+        Synthetic measured values. Legend changes are server-controlled; Chart data retains every
         supplied value.
       </p>
     </div>

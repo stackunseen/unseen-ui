@@ -234,7 +234,7 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
       next = {
         ...host,
         permissionSubmission: { state: 'submitting', original },
-        notice: 'Access decision submitted. The host has not accepted it.',
+        notice: 'Access decision submitted. The server has not accepted it.',
       };
       break;
     }
@@ -249,7 +249,7 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
             original,
             receipt: { command: original, outcome: 'rejected' },
           },
-          notice: 'The host rejected stale access. No action can execute.',
+          notice: 'The server rejected stale access. No action can execute.',
         };
         break;
       }
@@ -274,7 +274,7 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
           },
         },
         notice: granted
-          ? 'The host confirmed access. The action still needs a separate approval.'
+          ? 'The server confirmed access. The action still needs a separate approval.'
           : 'Access denied. Nothing has executed.',
       };
       break;
@@ -320,8 +320,8 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
         notice: event.loseAcknowledgement
           ? 'Decision acknowledgement lost. Look up the retained original; do not resend.'
           : accepted
-            ? 'The host accepted the decision. Nothing has executed.'
-            : 'The host rejected the stale decision. Nothing has executed.',
+            ? 'The server accepted the decision. Nothing has executed.'
+            : 'The server rejected the stale decision. Nothing has executed.',
       };
       break;
     }
@@ -369,7 +369,7 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
       next = {
         ...host,
         current,
-        notice: 'The current host action changed. The old approval cannot authorize it.',
+        notice: 'The current server action changed. The old approval cannot authorize it.',
       };
       break;
     }
@@ -418,7 +418,7 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
         ...host,
         executions: 1,
         tool: { ...host.tool, state: 'running' },
-        notice: 'Simulated execution started once. A host result is still pending.',
+        notice: 'Simulated execution started once. A server result is still pending.',
       };
       break;
     }
@@ -430,13 +430,13 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
         outcome: event.partial ? 'partial-failure' : 'succeeded',
         acknowledged: ACK,
         effects: [
-          { resource: 'AC-104', outcome: 'applied', detail: 'Archived in the simulated host.' },
+          { resource: 'AC-104', outcome: 'applied', detail: 'Archived in the simulated server.' },
           {
             resource: 'AC-108',
             outcome: event.partial ? 'failed' : 'applied',
             detail: event.partial
               ? 'Record revision changed. No change applied to this account.'
-              : 'Archived in the simulated host.',
+              : 'Archived in the simulated server.',
           },
         ],
       };
@@ -465,7 +465,7 @@ export function actionHostEvent(host: ActionHost, event: ActionEvent): ActionHos
           ? 'Result acknowledgement lost. Check the original execution receipt before any retry.'
           : event.partial
             ? 'Partial failure recorded. One effect applied; one account is unchanged.'
-            : 'Host result received. Both simulated effects are confirmed.',
+            : 'Server result received. Both simulated effects are confirmed.',
       };
       break;
     }

@@ -47,7 +47,7 @@ describe('attachment reference lifecycle', () => {
       );
       expect(screen.getByRole('dialog')).toBe(dialog);
       expect(within(dialog).getByRole('status')).toHaveTextContent(
-        'Attachment version unavailable',
+        'version of the attachment isn’t available',
       );
       expect(within(dialog).queryByText('Original immutable file content.')).toBeNull();
       expect(within(dialog).queryByText('New version content.')).toBeNull();
@@ -65,7 +65,7 @@ describe('attachment reference lifecycle', () => {
     const dialog = screen.getByRole('dialog');
     rerender(<Attachment name="report.txt" state="ready" />);
     expect(screen.getByRole('dialog')).toBe(dialog);
-    expect(within(dialog).getByRole('status')).toHaveTextContent('The host did not supply content');
+    expect(within(dialog).getByRole('status')).toHaveTextContent('No preview is available');
     await userEvent.keyboard('{Escape}');
     expect(trigger).toHaveFocus();
     expect(trigger).toHaveAccessibleName('Inspect report.txt');

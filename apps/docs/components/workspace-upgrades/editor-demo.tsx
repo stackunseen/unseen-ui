@@ -49,7 +49,7 @@ export function EditorDemo({ sample = false }: { sample?: boolean }) {
     if (!result.ok || result.text !== request.text) return;
     setDocument({ ...document, version: version(), text: result.text });
     setSelection(request.selection);
-    setFeedback('The local host updated the draft revision. Nothing was saved.');
+    setFeedback('The local server updated the draft revision. Nothing was saved.');
   };
   const suggest = (kind: CodeEditorProposal['kind']) => {
     const range =
@@ -113,7 +113,7 @@ export function EditorDemo({ sample = false }: { sample?: boolean }) {
       return;
     if (request.type === 'dismiss') {
       setProposal(undefined);
-      setFeedback('The local host dismissed the proposal.');
+      setFeedback('The local server dismissed the proposal.');
       return;
     }
     pending.current = request;
@@ -137,12 +137,13 @@ export function EditorDemo({ sample = false }: { sample?: boolean }) {
       : {
           ...command,
           result: 'rejected',
-          reason: outcome === 'reject' ? 'Simulated host rejection' : 'Document revision conflict',
+          reason:
+            outcome === 'reject' ? 'Simulated server rejection' : 'Document revision conflict',
         };
     original.current = { receipt, snapshot };
     if (outcome === 'unknown') {
       setCommandState({ ...command, status: 'unknown' });
-      setFeedback('The simulated host stored a result, but its acknowledgement was lost.');
+      setFeedback('The simulated server stored a result, but its acknowledgement was lost.');
       return;
     }
     if (snapshot) {
@@ -154,8 +155,8 @@ export function EditorDemo({ sample = false }: { sample?: boolean }) {
     pending.current = undefined;
     setFeedback(
       snapshot
-        ? 'The local host applied the requested edits to its draft. Nothing was saved.'
-        : 'The local host rejected the request. The draft is unchanged.',
+        ? 'The local server applied the requested edits to its draft. Nothing was saved.'
+        : 'The local server rejected the request. The draft is unchanged.',
     );
   };
   return (
@@ -199,11 +200,11 @@ export function EditorDemo({ sample = false }: { sample?: boolean }) {
           setCommandState({ status: 'settled', receipt: stored.receipt });
           setProposal(undefined);
           pending.current = undefined;
-          setFeedback('The local host returned the original receipt. No request was replayed.');
+          setFeedback('The local server returned the original receipt. No request was replayed.');
         }}
       />
       {commandState.status === 'pending' ? (
-        <div className={css.actions} aria-label="Simulated host response">
+        <div className={css.actions} aria-label="Simulated server response">
           <Button size="sm" onClick={() => resolve('apply')}>
             Confirm locally
           </Button>

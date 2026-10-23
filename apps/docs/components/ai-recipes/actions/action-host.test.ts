@@ -28,7 +28,7 @@ function accepted() {
   return send(submit(), { type: 'decision-accept' });
 }
 
-describe('action receipt simulated host', () => {
+describe('action receipt simulated server', () => {
   it('requires acknowledged access and exact review before submission, and acceptance before execution', () => {
     const initial = createActionHost();
     expect(submit(initial)).toBe(initial);

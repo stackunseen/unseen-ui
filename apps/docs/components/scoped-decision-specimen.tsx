@@ -32,7 +32,7 @@ export function PermissionSpecimen({
       />
       <div className="sample-host-controls">
         <p>
-          Simulated host. Lost acknowledgement commits the change but withholds its response.
+          Simulated server. Lost acknowledgement commits the change but withholds its response.
           Receipt lookup and snapshot refresh are separate read operations.
         </p>
         {host.submission.state === 'submitting' && (
@@ -60,9 +60,11 @@ export function PermissionSpecimen({
               variant="outline"
               onClick={() => setHost((current) => ({ ...current, value: current.snapshot }))}
             >
-              Refresh host snapshot
+              Refresh server snapshot
             </Button>
-            <span className="sample-host-count">Local host changes: {host.executions}</span>
+            <span className="sample-host-count">
+              Changes on the sample server: {host.executions}
+            </span>
           </div>
         )}
       </div>
@@ -85,7 +87,7 @@ export function HandoffSpecimen({ state, presentation }: { state: string; presen
       />
       <div className="sample-host-controls">
         <p>
-          Simulated host. The recipient acknowledges the exact context and access version. Losing
+          Simulated server. The recipient acknowledges the exact context and access version. Losing
           its response retains the committed transfer; looking up that receipt never transfers
           ownership again.
         </p>
@@ -114,9 +116,11 @@ export function HandoffSpecimen({ state, presentation }: { state: string; presen
               variant="outline"
               onClick={() => setHost((current) => ({ ...current, value: current.snapshot }))}
             >
-              Refresh host snapshot
+              Refresh server snapshot
             </Button>
-            <span className="sample-host-count">Local host changes: {host.executions}</span>
+            <span className="sample-host-count">
+              Changes on the sample server: {host.executions}
+            </span>
           </div>
         )}
       </div>

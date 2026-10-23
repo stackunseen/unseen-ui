@@ -186,7 +186,7 @@ export function ModelControls({
           {!capabilities
             ? 'Model availability has not been reported.'
             : !capabilities.models.length
-              ? 'No models are advertised by this host.'
+              ? 'No models are available.'
               : 'No models are currently available.'}
         </p>
       )}
@@ -230,7 +230,7 @@ export function ModelControls({
             <span id={`${id}-temperature`} className={s.muted}>
               {hasTemperature
                 ? 'Explicit value'
-                : 'Enable an override to choose a value. The host owns the default.'}{' '}
+                : 'Turn on an override to choose a value; otherwise the default applies.'}{' '}
               · Supported range {temperature.min}–{temperature.max}
             </span>
           </div>
@@ -242,7 +242,7 @@ export function ModelControls({
     <fieldset className={`${s.toolChoices} ${local.tools}`} disabled={locked || !model?.available}>
       <legend className={variant === 'accordion' ? s.srOnly : undefined}>Tools</legend>
       {!capabilities?.tools.length && !value.toolIds.length && (
-        <p className={s.muted}>No tools are advertised by this host.</p>
+        <p className={s.muted}>No tools are available.</p>
       )}
       {capabilities?.tools.map((tool, index) => {
         const checked = value.toolIds.includes(tool.id);
@@ -312,7 +312,7 @@ export function ModelControls({
         )}
       </div>
       <p className={s.muted}>
-        Configure the next request. The host validates model and tool access when it runs.
+        Set up the next request. Model and tool access are checked when it runs.
       </p>
       {stale && (
         <p className={s.warning}>Capabilities are stale. Refresh before changing settings.</p>

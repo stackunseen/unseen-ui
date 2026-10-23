@@ -116,7 +116,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     <span className="directory-text">
                       <strong>
                         {entry.name}
-                        <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+                        <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
                       </strong>
                       <span>{entry.description}</span>
                     </span>

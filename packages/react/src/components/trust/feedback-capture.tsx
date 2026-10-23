@@ -52,9 +52,9 @@ export interface FeedbackCaptureProps extends VariantProps<'FeedbackCapture'> {
 const statusText: Record<SubmissionState, string> = {
   idle: '',
   submitting: 'Sending feedback…',
-  acknowledged: 'Feedback recorded by the host.',
+  acknowledged: 'Feedback saved.',
   failed: 'Feedback was not recorded. You can send it again.',
-  'outcome-unknown': 'The host did not confirm. Check before sending again.',
+  'outcome-unknown': 'Not confirmed yet. Check before sending again.',
 };
 
 /** Thumbs, reasons and a correction, bound to one revision or attempt, settled by a host receipt. */

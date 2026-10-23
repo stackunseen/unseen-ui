@@ -138,13 +138,13 @@ export function RunsSpecimen({
         receipts={receipts}
         onAction={(request) => {
           if (request.action === 'open') {
-            onNotice(`Open run ${request.runId}. The host decides where it opens.`);
+            onNotice(`Open run ${request.runId}. The server decides where it opens.`);
             return;
           }
           const commandId = `${request.runId}:${request.attemptId}`;
           setReceipts([{ commandId, status: 'submitting' }]);
           onNotice(
-            `${request.action} requested for ${request.runId} (version ${request.version}). Waiting for the host.`,
+            `${request.action} requested for ${request.runId} (version ${request.version}). Waiting for the server.`,
           );
           window.setTimeout(
             () =>
@@ -168,7 +168,7 @@ export function RunsSpecimen({
         onOpen={(item) => onNotice(`Open ${item.kind} ${item.id} for run ${item.runId}.`)}
         onDismiss={(item) => {
           setItems((previous) => previous.filter((entry) => entry.id !== item.id));
-          onNotice(`Dismissed ${item.id}. The host still owns the underlying request.`);
+          onNotice(`Dismissed ${item.id}. The server still owns the underlying request.`);
         }}
       />
     );
@@ -380,7 +380,7 @@ export function RunsSpecimen({
           setSelected(runId);
           onNotice('Open run ' + runId + '.');
         }}
-        onLoadMore={(runId) => onNotice('Load more children of ' + runId + ' from the host.')}
+        onLoadMore={(runId) => onNotice('Load more children of ' + runId + ' from the server.')}
       />
     );
   }

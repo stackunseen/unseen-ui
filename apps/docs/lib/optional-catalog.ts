@@ -20,15 +20,14 @@ export const applicationCatalog: CatalogEntry[] = [
     name: 'DataGrid',
     group: 'Data Display',
     category: 'Application data',
-    description: 'A native table with controlled sorting, paging, selection and column visibility.',
+    description: 'A table with sorting, paging, row selection and column toggles.',
     aliases: ['Data grid', 'Customer table'],
     states: ['Default', 'Loading', 'Empty', 'Error'],
     contract:
       'caption · captionVisibility? · columns · rows · getRowId · sort? · pagination? · selectedRowIds?',
-    responsibility:
-      'Filter, sort and page rows in your host before passing the current window. Selection never grants permission to act on a record.',
+    responsibility: 'Selecting a row never grants permission to act on it.',
     keyboard:
-      'Tab reaches sort buttons, selection, column controls and paging. Wide tables scroll within their labelled region.',
+      'Tab reaches sort buttons, selection, column controls and paging. Wide tables scroll within their labeled region.',
     code: '<DataGrid caption="Customers" columns={columns} rows={pageRows} getRowId={row => row.id}\n  sort={sort} onSortChange={setSort} pagination={pagination} onPageChange={setPage}\n  selectedRowIds={selectedIds} onSelectionChange={setSelectedIds} />',
   }),
   application({
@@ -36,7 +35,7 @@ export const applicationCatalog: CatalogEntry[] = [
     group: 'Forms',
     category: 'Searchable choices',
     description:
-      'Search a list and choose one value, or several with type="multiple", with labelled loading and error states.',
+      'Search a list and choose one value, or several with type="multiple", with clear loading and error messages.',
     aliases: ['Autocomplete', 'Multi select', 'Searchable select'],
     states: ['Default', 'Multiple', 'Disabled', 'Loading', 'Error', 'Empty'],
     contract:
@@ -51,11 +50,11 @@ export const applicationCatalog: CatalogEntry[] = [
     name: 'Calendar',
     group: 'Forms',
     category: 'Date selection',
-    description: 'Choose a date or range with explicit month, locale and availability rules.',
+    description: 'Pick a date or a range, in any language, limited to the dates you allow.',
     states: ['Default', 'Range', 'Disabled', 'Loading', 'Error'],
     contract: 'value · onValueChange? · month · onMonthChange · locale · mode?',
     responsibility:
-      'Supply YYYY-MM-DD dates, the displayed month and today from your app. Locale formats dates; labels translate interface text.',
+      'Pass dates as YYYY-MM-DD, plus the month to show and today’s date from your app. locale formats the dates; labels translates the rest of the text.',
     keyboard:
       'Arrow keys move by day or week, Home/End by week and Page Up/Down by month. Enter or Space selects an available day.',
     code: '<Calendar value={date} onValueChange={setDate} month={month} onMonthChange={setMonth}\n  locale="en-GB" min="2026-10-01" max="2026-12-31" />',
@@ -64,13 +63,13 @@ export const applicationCatalog: CatalogEntry[] = [
     name: 'DateRangePicker',
     group: 'Forms',
     category: 'Date selection',
-    description: 'A controlled date range field with a keyboard-accessible calendar popup.',
+    description: 'A date range field with a pop-up calendar that works from the keyboard.',
     states: ['Default', 'Disabled', 'Loading', 'Error'],
     contract: 'value · onValueChange? · month · onMonthChange · open · onOpenChange · locale',
     responsibility:
-      'Own the range and popup state. A range cannot include disabled dates; validate date rules again on submission.',
+      'Keep the range, and whether the calendar is open, in your app. A range can’t include disabled dates; check your date rules again when the form is submitted.',
     keyboard:
-      'Opening focuses the calendar. Escape closes and returns to the trigger; Clear and Done are labelled actions.',
+      'Opening focuses the calendar. Escape closes and returns to the trigger; Clear and Done are labeled actions.',
     code: '<DateRangePicker label="Report period" value={range} onValueChange={setRange}\n  month={month} onMonthChange={setMonth} open={open} onOpenChange={setOpen} locale="en-GB" />',
   }),
   application({
@@ -80,8 +79,7 @@ export const applicationCatalog: CatalogEntry[] = [
     description: 'A page title with breadcrumbs, supporting text and adjacent actions.',
     states: ['Default'],
     contract: 'title · description? · headingLevel? · breadcrumb? · actions?',
-    responsibility:
-      'Choose headingLevel to fit the page outline. Supply actual links and actions as React content.',
+    responsibility: 'Set headingLevel to fit the page, and pass real links and actions.',
     code: '<PageHeader title="Customers" description="Manage your customer records."\n  headingLevel={2} actions={<Button onClick={openCreate}>Add customer</Button>} />',
     relatedImports: ['Button'],
   }),
@@ -89,11 +87,11 @@ export const applicationCatalog: CatalogEntry[] = [
     name: 'OrgSwitcher',
     group: 'Application patterns',
     category: 'Application patterns',
-    description: 'A labelled organization selector that requests a change of scope.',
+    description: 'Switch between organizations.',
     states: ['Default', 'Disabled'],
     contract: 'value · organizations · onValueChange · label? · disabled?',
     responsibility:
-      'Check access and unsaved drafts before changing the organization. The callback is a request to your app.',
+      'Check access and unsaved work before switching. The callback only asks; your app decides.',
     code: '<OrgSwitcher value={organizationId} organizations={organizations} onValueChange={requestOrganization} />',
   }),
   application({
@@ -103,7 +101,8 @@ export const applicationCatalog: CatalogEntry[] = [
     description: 'Search, filters and list actions with a readable result summary.',
     states: ['Default', 'Disabled'],
     contract: 'searchLabel · search · onSearchChange · filters? · actions? · summary?',
-    responsibility: 'Apply search and filters in your app, then supply an accurate result summary.',
+    responsibility:
+      'Apply search and filters in your app, then pass back an accurate result count.',
     code: '<ListToolbar searchLabel="Find customers" search={query} onSearchChange={setQuery}\n  filters={filters} actions={actions} summary={`${total} customers`} />',
   }),
   application({
@@ -111,12 +110,12 @@ export const applicationCatalog: CatalogEntry[] = [
     group: 'Application patterns',
     category: 'Application patterns',
     description:
-      'Search, an order switch, a chip row for the main facet and selects for the rest, driven by host or URL state.',
+      'Search, a sort switch, chips for the main filter and dropdowns for the rest, kept in your app or the URL.',
     states: ['Default', 'URL links', 'Popover', 'Disabled'],
     contract:
       'searchLabel · searchLabelVisibility? · searchIcon? · search · onSearchChange · onSearchSubmit? · order? · facet? · selects? · onClear? · summary? · disabled? · presentation?: open | popover · filtersLabel? · facet options: removeHref?',
     responsibility:
-      'Keep every value in the host, usually the URL. Link mode on order and facet renders anchors; a LinkProvider makes them router links. The bar never filters data itself.',
+      'Keep every value in your app, usually in the URL. In link mode the sort and main-filter options are real links, and a LinkProvider makes them router links. The bar never filters data itself.',
     keyboard:
       'Enter in the search box submits. Button-mode order is a radiogroup with arrow keys; chips, links and selects are ordinary controls.',
     code: '<FilterBar searchLabel="Search the journal" search={q} onSearchChange={setQ} onSearchSubmit={apply}\n  order={{ label: "Order", value: view, options: views, mode: "links" }}\n  facet={{ label: "Discipline", options: disciplines, selected, onToggle }}\n  selects={[{ name: "kind", label: "Kind", value: kind, options: kinds, onValueChange: setKind }]}\n  onClear={clear} summary={`${shown} of ${total} entries`} />',
@@ -126,15 +125,14 @@ export const applicationCatalog: CatalogEntry[] = [
     name: 'Checklist',
     group: 'Application patterns',
     category: 'Application patterns',
-    description:
-      'A tick-off list whose state the host owns, with progress, groups, reset and Markdown export.',
+    description: 'A tick-off list with progress, groups, reset and copy as Markdown.',
     states: ['Default', 'Row toggle', 'Stored in this browser'],
     contract:
       'items: { id, title, detail?, eyebrow?, group? }[] · label · value · onValueChange · ordered? · rowToggle? · showProgress? · actions?: { copyMarkdown?, reset? } · useStoredChecklist(storageKey) · checklistToMarkdown(label, items, checked)',
     responsibility:
-      'The host owns the checked ids; useStoredChecklist is the opt-in way to keep them in this browser. Reset offers Undo and both are announced. Copy as Markdown appears only when every title is plain text.',
+      'Your app owns which items are ticked; useStoredChecklist keeps them in this browser if you want. Reset offers Undo, and screen readers hear both. Copy as Markdown appears only when every title is plain text.',
     keyboard:
-      'Each row is a labelled checkbox. With rowToggle a click anywhere on the row ticks it, except on links, buttons, labels and the box.',
+      'Each row is a labeled checkbox. With rowToggle a click anywhere on the row ticks it, except on links, buttons, labels and the box.',
     code: '<Checklist items={steps} label="Launch checklist" value={checked} onValueChange={setChecked}\n  rowToggle actions={{ copyMarkdown: true, reset: true }} />',
     relatedImports: ['Progress', 'Checkbox', 'CopyButton'],
   }),
@@ -146,18 +144,19 @@ export const applicationCatalog: CatalogEntry[] = [
     states: ['Default'],
     contract: 'list · listLabel · detail · detailLabel · activePane',
     responsibility:
-      'Control activePane and provide a Back action in the detail. Move focus when navigation changes the visible pane.',
+      'Control activePane and add a Back action to the detail. Move focus when the visible pane changes.',
     code: '<MasterDetail list={list} listLabel="Customers" detail={detail}\n  detailLabel="Customer details" activePane={activePane} />',
   }),
   application({
     name: 'SettingsSaveCancel',
     group: 'Application patterns',
     category: 'Application patterns',
-    description: 'Save and cancel actions that distinguish pending, rejected and unknown outcomes.',
+    description:
+      'Save and Cancel buttons that show whether saving is in progress, failed or unclear.',
     states: ['Default', 'Pending', 'Rejected', 'Unknown'],
     contract: 'dirty · state · onCancel · onSave? · form? · onReconcile?',
     responsibility:
-      'Supply the host result. After an unknown outcome, look up the original receipt instead of sending the mutation again.',
+      'Pass the result from your server. If you don’t know whether a save went through, check before saving again.',
     code: '<SettingsSaveCancel dirty={dirty} state={saveState} form="settings-form"\n  onCancel={discardDraft} onReconcile={checkOriginalReceipt} />',
   }),
   application({
@@ -231,17 +230,17 @@ export const marketingCatalog: CatalogEntry[] = [
     states: ['Default'],
     contract: 'title · items · value? · onValueChange?',
     responsibility:
-      'Supply useful answers. Any structured data must reflect visible, truthful content and your own SEO policy.',
+      'Write useful answers. Any structured data for search engines must match what’s visible on the page.',
     code: '<MarketingFAQ title="Questions" items={questions} value={openQuestion} onValueChange={setOpenQuestion} />',
   }),
   marketing({
     name: 'MarketingContact',
     category: 'Website sections',
-    description: 'A contact form layout with fields, actions and explicit submission feedback.',
+    description: 'A contact form layout with fields, actions and a clear message after sending.',
     states: ['Default'],
     contract: 'title · children · actions? · feedback? · onSubmit?',
     responsibility:
-      'Your app owns fields, validation, submission and the receipt. Use success feedback only after a confirmed result.',
+      'Your app owns the fields, validation and sending. Show a success message only once sending is confirmed.',
     code: '<MarketingContact title="Contact us" onSubmit={submitContact} actions={submitButton} feedback={feedback}>\n  {contactFields}\n</MarketingContact>',
   }),
   marketing({
@@ -252,7 +251,7 @@ export const marketingCatalog: CatalogEntry[] = [
     contract:
       'title · children · headingLevel?: 1 | 2 | 3 · byline? · description? · meta? · actions? · aside?',
     responsibility:
-      'Supply author, date and article content. Use headingLevel 1 when the article is the page. Use safe React content rather than evaluating generated HTML or MDX.',
+      'Supply author, date and article content. Use headingLevel 1 when the article is the page. Pass React content; never run generated HTML or MDX.',
     code: '<MarketingArticle title="Working together" meta={articleMeta}>\n  {articleBody}\n</MarketingArticle>',
   }),
 ];

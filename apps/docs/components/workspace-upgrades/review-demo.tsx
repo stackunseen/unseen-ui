@@ -87,7 +87,9 @@ function execute(
       outcomes.push({
         ...scope,
         result: 'rejected',
-        reason: !current ? 'The document revision changed.' : 'The local host rejected this file.',
+        reason: !current
+          ? 'The document revision changed.'
+          : 'The local server rejected this file.',
       });
       continue;
     }
@@ -239,7 +241,7 @@ export function ReviewDemo({ compact = false }: { compact?: boolean }) {
     },
   };
   const controls = (
-    <div className={styles.controls} role="group" aria-label="Local review host controls">
+    <div className={styles.controls} role="group" aria-label="Local review server controls">
       <Select
         aria-label="Acknowledgement scenario"
         value={scenario}
@@ -273,7 +275,7 @@ export function ReviewDemo({ compact = false }: { compact?: boolean }) {
       )}
       {!compact && controls}
       {submission.status === 'pending' && (
-        <Button onClick={finish}>Deliver local host outcome</Button>
+        <Button onClick={finish}>Deliver local server outcome</Button>
       )}
       <ReviewChanges
         changes={changes}

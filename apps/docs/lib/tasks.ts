@@ -72,7 +72,7 @@ export const componentTasks: readonly ComponentTask[] = [
   {
     id: 'generative-ui',
     label: 'Generated interfaces',
-    description: 'Validated forms, tables and charts a model describes and the host renders.',
+    description: 'Validated forms, tables and charts a model describes and the server renders.',
     components: ['GeneratedUI', 'AIForm', 'DataGrid', 'Chart'],
   },
   {
@@ -98,7 +98,7 @@ export const componentTasks: readonly ComponentTask[] = [
   {
     id: 'enterprise-forms',
     label: 'Forms',
-    description: 'Labelled fields, choices, validation feedback and the buttons that submit them.',
+    description: 'Labeled fields, choices, validation feedback and the buttons that submit them.',
     components: ['Field', 'Input', 'Textarea', 'Select', 'Checkbox', 'Switch', 'Alert', 'Button'],
   },
   {

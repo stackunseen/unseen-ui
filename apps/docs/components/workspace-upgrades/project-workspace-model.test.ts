@@ -7,7 +7,7 @@ import {
   searchWorkspaceReferences,
 } from './project-workspace-model';
 
-describe('project workspace composition host', () => {
+describe('project workspace composition server', () => {
   it('returns literal original-offset versioned hits and excludes denied resources', () => {
     const resources = [
       {

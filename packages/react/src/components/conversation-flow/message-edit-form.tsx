@@ -125,7 +125,7 @@ export function MessageEditForm({
       )}
       <p id={`${id}-help`} className={s.status}>
         {reason ||
-          'Saving creates a new branch after host acknowledgement. The original message stays available.'}
+          'Saving creates a new branch once it’s confirmed. The original message stays available.'}
       </p>
       <ConversationActionStatus state={state} onReconcile={onReconcile} />
       <div className={s.actions}>

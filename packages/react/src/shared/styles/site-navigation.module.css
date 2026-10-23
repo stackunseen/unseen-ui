@@ -166,8 +166,8 @@
   align-items: center;
 }
 .icon svg {
-  inline-size: 16px;
-  block-size: 16px;
+  inline-size: 15px;
+  block-size: 15px;
 }
 .linkLabel {
   min-inline-size: 0;

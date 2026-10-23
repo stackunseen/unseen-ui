@@ -51,7 +51,7 @@ export function ProjectWorkspace({
     <section className={s.root} aria-label="Project workspace">
       <p className={s.note}>
         Search Web project · references, instructions and session capabilities supplied by the
-        in-memory host.
+        in-memory server.
       </p>
       <Tabs
         label="Project workspace views"
@@ -210,7 +210,7 @@ export function ProjectWorkspace({
             content: (
               <div className={s.section}>
                 {!sessions.length ? (
-                  <p>No sessions supplied by the host.</p>
+                  <p>No sessions supplied by the server.</p>
                 ) : (
                   <ul className={s.results}>
                     {sessions.slice(0, 50).map((session) => (
@@ -223,7 +223,7 @@ export function ProjectWorkspace({
                         <p>
                           {session.canEdit ? 'Draft editing available.' : 'Read-only.'}{' '}
                           {session.canExecute
-                            ? 'Host execution available.'
+                            ? 'Running commands is available.'
                             : 'No process execution connected.'}
                         </p>
                       </li>
@@ -231,7 +231,7 @@ export function ProjectWorkspace({
                   </ul>
                 )}
                 <p className={s.note}>
-                  Environment and capability labels come from the host. This sample has no
+                  Environment and capability labels come from the server. This sample has no
                   filesystem, Git, cloud worker or model connection.
                 </p>
               </div>

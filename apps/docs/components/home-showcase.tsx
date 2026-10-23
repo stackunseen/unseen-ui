@@ -63,7 +63,7 @@ function Tile({
       <footer className="home-tile-footer">
         <span>{group}</span>
         <Link prefetch={false} href={componentHref(name)}>
-          {name} <ArrowTopRightIcon width={14} height={14} aria-hidden="true" />
+          {name} <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
         </Link>
       </footer>
     </article>
@@ -111,7 +111,7 @@ export function HomeShowcase() {
             </button>
           ))}
           <Link prefetch={false} className="web-text-link" href="/customize/">
-            Theme Studio <ArrowRightIcon width={14} height={14} aria-hidden="true" />
+            Theme Studio <ArrowRightIcon width={15} height={15} aria-hidden="true" />
           </Link>
         </div>
       </div>

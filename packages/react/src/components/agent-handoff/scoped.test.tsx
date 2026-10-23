@@ -54,7 +54,7 @@ describe.each(variants)('%s scoped handoff', (variant) => {
       />,
     );
     expect(screen.getByText('Current owner: agent-a')).toBeVisible();
-    expect(screen.getByText(/effect is not yet confirmed/)).toBeVisible();
+    expect(screen.getByText(/effect isn’t confirmed yet/)).toBeVisible();
     rerender(
       <AgentHandoff
         value={{ ...value, status: 'accepted' }}
@@ -65,7 +65,7 @@ describe.each(variants)('%s scoped handoff', (variant) => {
       />,
     );
     expect(screen.getByText('Current owner: agent-a')).toBeVisible();
-    expect(screen.getByText(/Acceptance does not establish current ownership/)).toBeVisible();
+    expect(screen.getByText(/Accepting doesn’t make them the owner yet/)).toBeVisible();
     const current: HandoffSnapshot = {
       ...value,
       status: 'accepted',
@@ -139,7 +139,7 @@ describe.each(variants)('%s scoped handoff', (variant) => {
         variant={variant}
       />,
     );
-    expect(screen.getByText(/receipt does not match/)).toBeVisible();
+    expect(screen.getByText(/confirmation doesn’t match/)).toBeVisible();
     await userEvent.click(screen.getByRole('button', { name: 'Check original handoff' }));
     expect(onReconcile).toHaveBeenCalledExactlyOnceWith(original);
     expect(screen.getByText('Current owner: agent-a')).toBeVisible();

@@ -5,13 +5,13 @@ import { ReviewDemo } from './review-demo';
 
 const preview = () => screen.getByLabelText('Acknowledged source preview');
 const apply = () => screen.getByRole('button', { name: 'Apply selected changes' });
-const deliver = () => screen.getByRole('button', { name: 'Deliver local host outcome' });
+const deliver = () => screen.getByRole('button', { name: 'Deliver local server outcome' });
 async function scenario(name: string) {
   await userEvent.click(screen.getByRole('combobox', { name: 'Acknowledgement scenario' }));
   await userEvent.click(screen.getByRole('option', { name }));
 }
 
-describe('local precise review host composition', () => {
+describe('local precise review server composition', () => {
   it('acknowledges selected hunks and undoes the exact saved revision', async () => {
     render(<ReviewDemo />);
     expect(apply()).toBeEnabled();
@@ -22,7 +22,7 @@ describe('local precise review host composition', () => {
     await userEvent.click(deliver());
     expect(preview()).toHaveTextContent('const limit = 20;');
     expect(preview()).toHaveTextContent('const order = "desc";');
-    expect(screen.getByText('Saved by host')).toBeVisible();
+    expect(screen.getByText('Saved')).toBeVisible();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Undo selected saved changes' }));
     await userEvent.click(deliver());
@@ -41,7 +41,7 @@ describe('local precise review host composition', () => {
     expect(apply()).toBeDisabled();
     expect(preview()).toHaveTextContent('const limit = 10;');
     await userEvent.click(screen.getByRole('button', { name: 'Check original command' }));
-    expect(screen.getByText('Saved by host')).toBeVisible();
+    expect(screen.getByText('Saved')).toBeVisible();
     expect(preview()).toHaveTextContent('const limit = 20;');
     expect(
       screen.queryByRole('button', { name: 'Check original command' }),

@@ -46,7 +46,7 @@ export function BackgroundStatus({
       <span className={r.statusIcon} data-tone={tone} aria-hidden="true">
         <AIIcon
           name={waitingCount ? 'warning' : stale ? 'unknown' : idle ? 'check' : 'running'}
-          size={14}
+          size={15}
         />
       </span>
       <span className={r.statusText} role="status" aria-live="polite">

@@ -19,7 +19,7 @@ export function ActionControls({
       items={[
         {
           value: 'host',
-          title: 'Simulated host controls',
+          title: 'Simulated server controls',
           keepMounted: true,
           content: (
             <div className={s.controls}>
@@ -27,7 +27,7 @@ export function ActionControls({
                 Try a lost acknowledgement, a partial failure or a changed action. Each control
                 delivers one local event.
               </p>
-              <div className={s.buttons} role="group" aria-label="Host decision acknowledgement">
+              <div className={s.buttons} role="group" aria-label="Server decision acknowledgement">
                 <Button
                   size="sm"
                   variant="outline"
@@ -53,7 +53,7 @@ export function ActionControls({
                   Look up original decision
                 </Button>
               </div>
-              <div className={s.buttons} role="group" aria-label="Host execution events">
+              <div className={s.buttons} role="group" aria-label="Server execution events">
                 <Button
                   size="sm"
                   variant="outline"
@@ -72,7 +72,7 @@ export function ActionControls({
                 </Button>
               </div>
               <fieldset className={s.faults}>
-                <legend>Change the host action before execution</legend>
+                <legend>Change the server action before execution</legend>
                 <div className={s.buttons}>
                   <Button
                     size="sm"

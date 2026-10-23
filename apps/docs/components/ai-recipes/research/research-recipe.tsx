@@ -111,8 +111,8 @@ export function ResearchRecipe() {
   return (
     <section className={styles.recipe} aria-label="Research answer recipe">
       <p className={styles.disclosure}>
-        <strong>Simulated host · synthetic supplied documents.</strong> Excerpts and support
-        assessments are fixed fixtures, with no live retrieval or verification.
+        <strong>Simulated server · synthetic supplied documents.</strong> Excerpts and support
+        assessments are fixed samples, with no live retrieval or verification.
       </p>
       <div className={styles.toolbar}>
         <div className={styles.controls}>
@@ -190,7 +190,7 @@ export function ResearchRecipe() {
               items={[
                 {
                   value: 'request-context',
-                  title: 'Context and host responsibility',
+                  title: 'Context and server responsibility',
                   content: (
                     <div className={styles.detail}>
                       <p>Draft answer · {snapshot.revision}.</p>
@@ -200,7 +200,7 @@ export function ResearchRecipe() {
                           kind: 'qualitative',
                           label: 'How current mappings are counted',
                           method:
-                            'Counts exact accessible references with current host freshness and a supplied support assessment, bound to the claim revision. This does not verify claim correctness.',
+                            'Counts exact accessible references with current server freshness and a supplied support assessment, bound to the claim revision. This does not verify claim correctness.',
                         }}
                       />
                       <ContextBar
@@ -215,7 +215,7 @@ export function ResearchRecipe() {
                         }))}
                       />
                       <p>
-                        The host owns access checks, exact excerpts, immutable source versions,
+                        The server owns access checks, exact excerpts, immutable source versions,
                         freshness, claim revisions and support assessments. Source links alone
                         establish none of these.
                       </p>

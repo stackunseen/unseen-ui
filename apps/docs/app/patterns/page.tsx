@@ -75,12 +75,12 @@ export default function Page() {
       <div className="pattern-list">
         {recipes.map((recipe) => (
           <Link key={recipe.href} href={recipe.href}>
-            <Share2Icon width={28} height={28} aria-hidden="true" />
+            <Share2Icon width={30} height={30} aria-hidden="true" />
             <div>
               <h3>{recipe.title}</h3>
               <p>{recipe.description}</p>
               <span>
-                Try the recipe <ArrowRightIcon width={16} height={16} aria-hidden="true" />
+                Try the recipe <ArrowRightIcon width={15} height={15} aria-hidden="true" />
               </span>
             </div>
           </Link>

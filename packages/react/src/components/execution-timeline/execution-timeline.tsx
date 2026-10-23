@@ -17,8 +17,7 @@ export interface TimelineEntry {
 
 function timelineDuration(durationMs: number | undefined, detail: DetailLevel): string | undefined {
   const measured = durationMs !== undefined && Number.isFinite(durationMs) && durationMs >= 0;
-  if (detail === 'full')
-    return measured ? `Host duration ${durationMs} ms` : 'Host duration unknown';
+  if (detail === 'full') return measured ? `Took ${durationMs} ms` : 'Duration unknown';
   return measured ? `${durationMs} ms` : undefined;
 }
 

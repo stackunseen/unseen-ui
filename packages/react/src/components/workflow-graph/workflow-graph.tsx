@@ -82,7 +82,7 @@ export function WorkflowGraph({
   if (!['ready', 'streaming', 'stale', 'denied', 'unavailable', 'error'].includes(state))
     return frame(
       <p role="status" className={s.muted}>
-        Workflow availability is unknown. Request a current host snapshot.
+        The workflow isn’t available. Try loading it again.
       </p>,
     );
   if (['denied', 'unavailable', 'error'].includes(state))
@@ -342,9 +342,7 @@ function WorkflowView({
           Selection is ambiguous or unavailable in this snapshot. Request a current selection.
         </p>
       )}
-      {!onSelect && (
-        <p className={s.muted}>Node inspection unavailable: no host handler supplied.</p>
-      )}
+      {!onSelect && <p className={s.muted}>Inspecting steps isn’t set up here.</p>}
       {!model.nodes.length ? (
         <p className={s.muted}>No workflow nodes reported.</p>
       ) : variant === 'list' ? (

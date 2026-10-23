@@ -138,13 +138,13 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   href="/components/#component-search"
                   aria-label="Find a component"
                 >
-                  <MagnifyingGlassIcon width={18} height={18} aria-hidden="true" />
+                  <MagnifyingGlassIcon width={15} height={15} aria-hidden="true" />
                 </a>
                 {/* Two choices, as most sites offer; System stays the start until one is picked. */}
                 <AppearanceToggle
                   variant="switch"
                   size="sm"
-                  label="Colour mode"
+                  label="Color mode"
                   value={appearance}
                   onValueChange={setAppearance}
                 />
@@ -166,9 +166,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   }}
                 >
                   {menuOpen ? (
-                    <Cross2Icon width={20} height={20} aria-hidden="true" />
+                    <Cross2Icon width={15} height={15} aria-hidden="true" />
                   ) : (
-                    <HamburgerMenuIcon width={20} height={20} aria-hidden="true" />
+                    <HamburgerMenuIcon width={15} height={15} aria-hidden="true" />
                   )}
                 </button>
               </div>

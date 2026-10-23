@@ -199,7 +199,10 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
                 ]
           }
           actions={
-            <Button size="sm" onClick={() => setNotice('Build requested from the sample host.')}>
+            <Button
+              size="sm"
+              onClick={() => setNotice('Build requested. Waiting for the sample server.')}
+            >
               Build
             </Button>
           }
@@ -213,7 +216,7 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
           restoring={restoring || state === 'Restoring'}
           onRestore={() => {
             setRestoring(true);
-            setNotice('Restore requested. The sample host has not confirmed it.');
+            setNotice('Restore requested. Waiting for confirmation.');
           }}
         />
       );
@@ -309,7 +312,7 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
             name="zod"
             newVersion="4.6.5"
             changeType="added"
-            description="Schema validation for host payloads."
+            description="Checks the shape of data your server sends."
           />
         ) : (
           <PackageInfo
@@ -465,7 +468,7 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
           <Image
             src="/fixtures/sample-chart.png"
             alt="Bar chart of weekly sign-ups rising from 90 to 210"
-            caption="Sample image from local fixtures; no image model is connected."
+            caption="Sample image from local samples; no image model is connected."
             width={480}
             height={270}
             state={state === 'Loading' ? 'loading' : 'ready'}

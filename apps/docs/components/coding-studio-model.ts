@@ -130,7 +130,7 @@ export function createStudioState(sequence = 0): StudioState {
     ],
     results: [],
     terminal:
-      'Ready. Run sample tests to load a fixture transcript.\nNo command or code will be executed.',
+      'Ready. Run the sample tests to see a sample transcript.\nNo command or code will be executed.',
     terminalState: 'idle',
     error: '',
     notice: '',
@@ -188,9 +188,9 @@ function testFixture(state: StudioState): TestResult[] {
     detail: knownFix
       ? undefined
       : knownOriginal && (index === 1 || index === 2)
-        ? `Fixed baseline fixture:\nExpected: ${index === 1 ? '"hello"' : '""'}\nReceived: ${index === 1 ? '"  hello  "' : '"   "'}\n\nThis is sample output; no test was executed.`
+        ? `Fixed baseline sample:\nExpected: ${index === 1 ? '"hello"' : '""'}\nReceived: ${index === 1 ? '"  hello  "' : '"   "'}\n\nThis is sample output; no test was executed.`
         : !knownOriginal
-          ? 'Results unavailable for custom edits. This demo only has baseline and sample-fix fixtures; it never executes edited code.'
+          ? 'Results unavailable for custom edits. This demo only has baseline and sample-fix samples; it never executes edited code.'
           : undefined,
   }));
 }
@@ -255,7 +255,7 @@ export function studioReducer(state: StudioState, action: StudioAction): StudioS
           'assistant',
           operation.task === 'plan'
             ? 'Sample plan: 1. Trim outer whitespace. 2. Normalize case with an explicit locale. 3. Preserve internal spaces. 4. Cover whitespace, empty queries and mixed case. No files were changed.'
-            : `${studioChanges(state).length} draft files differ from ${baseVersion(state)}. The sample fix trims outer whitespace and adds regression cases. Test results are fixture output; connect your own host to validate real behavior. No files were changed.`,
+            : `${studioChanges(state).length} draft files differ from ${baseVersion(state)}. The sample fix trims outer whitespace and adds regression cases. Test results are sample output; connect your own server to validate real behavior. No files were changed.`,
         ),
         notice: 'Sample response complete.',
       };
@@ -270,10 +270,10 @@ export function studioReducer(state: StudioState, action: StudioAction): StudioS
         terminalState: failed ? 'failed' : 'complete',
         terminal: `Fixture transcript for ${proposalVersion(state)}\n\n${results.map((result) => `${result.state.toUpperCase()}  ${result.name}`).join('\n')}\n\n${results.filter((result) => result.state === 'passed').length} passed, ${results.filter((result) => result.state === 'failed').length} failed, ${results.filter((result) => result.state === 'skipped').length} skipped.\nSimulated output. No process or edited code was executed.`,
         notice: failed
-          ? 'Baseline fixture includes a whitespace failure.'
+          ? 'The baseline sample includes a whitespace failure.'
           : results.every((result) => result.state === 'skipped')
-            ? 'Custom edits have no test fixture. No code was executed.'
-            : 'Sample-fix fixture loaded: four passed. No tests were executed.',
+            ? 'Custom edits have no sample tests. No code was executed.'
+            : 'Sample fix loaded: four passed. No tests were executed.',
       };
     }
     const decision = operation.decision!;
@@ -297,7 +297,7 @@ export function studioReducer(state: StudioState, action: StudioAction): StudioS
       sources,
       version: state.version + 1,
       revision: state.revision + 1,
-      notice: `Demo host acknowledged ${decision.ids.length} applied files as workspace-${state.version + 1}. Changes exist only in memory.`,
+      notice: `Demo server acknowledged ${decision.ids.length} applied files as workspace-${state.version + 1}. Changes exist only in memory.`,
       messages: message(
         state,
         'assistant',
@@ -310,7 +310,7 @@ export function studioReducer(state: StudioState, action: StudioAction): StudioS
     return {
       ...state,
       mode: action.mode,
-      notice: `Demo host acknowledged ${action.mode === 'read' ? 'read-only' : 'workspace'} access. Real permissions were not changed.`,
+      notice: `Demo server acknowledged ${action.mode === 'read' ? 'read-only' : 'workspace'} access. Real permissions were not changed.`,
       error: '',
     };
   if (action.type === 'edit' || action.type === 'revert') {
@@ -360,7 +360,7 @@ export function studioReducer(state: StudioState, action: StudioAction): StudioS
       operation: { id: state.sequence + 1, kind: 'tests' },
       sequence: state.sequence + 1,
       terminalState: 'running',
-      terminal: 'Loading the matching sample test fixture…\nNo process is running.',
+      terminal: 'Loading the matching sample test sample…\nNo process is running.',
       error: '',
       notice: '',
     };

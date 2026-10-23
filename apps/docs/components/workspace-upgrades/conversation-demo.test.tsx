@@ -10,7 +10,7 @@ vi.stubGlobal(
     disconnect() {}
   },
 );
-describe('local conversation demo host', () => {
+describe('local conversation demo server', () => {
   it('retains cancelled drafts, creates an acknowledged branch and restores the original', async () => {
     render(<ConversationDemo />);
     fireEvent.click(screen.getByRole('button', { name: 'Edit message' }));
@@ -25,7 +25,7 @@ describe('local conversation demo host', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Save as new branch' }));
     expect(screen.getByRole('button', { name: 'Save as new branch' })).toBeDisabled();
-    fireEvent.click(screen.getByRole('button', { name: 'Acknowledge in local host' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Acknowledge in local server' }));
     expect(
       within(screen.getByRole('article', { name: 'Original user question' })).getByText(
         'My revised question',
@@ -44,7 +44,7 @@ describe('local conversation demo host', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Demo options' }));
     fireEvent.click(screen.getByRole('checkbox', { name: 'Lose local acknowledgement' }));
     fireEvent.click(screen.getByRole('button', { name: 'Regenerate' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Acknowledge in local host' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Acknowledge in local server' }));
     expect(screen.getByRole('button', { name: 'Regenerate' })).toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: 'Check original request' }));
     expect(

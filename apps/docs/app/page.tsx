@@ -41,7 +41,7 @@ export default function Page() {
                 Browse components
               </Link>
               <Link className="web-button secondary" href="/getting-started/">
-                Get started <ArrowRightIcon width={16} height={16} aria-hidden="true" />
+                Get started <ArrowRightIcon width={15} height={15} aria-hidden="true" />
               </Link>
             </div>
             <p className="home-intro-meta">
@@ -55,7 +55,7 @@ export default function Page() {
           <div className="home-section-heading">
             <h2 id="home-tasks-title">Start from what you&apos;re building</h2>
             <Link href="/tasks/">
-              All tasks <ArrowRightIcon width={16} height={16} aria-hidden="true" />
+              All tasks <ArrowRightIcon width={15} height={15} aria-hidden="true" />
             </Link>
           </div>
           <ul>
@@ -114,20 +114,20 @@ export default function Page() {
             <li>
               <span>01</span>
               <Link href="/getting-started/">
-                Install and set up <ArrowRightIcon width={17} height={17} aria-hidden="true" />
+                Install and set up <ArrowRightIcon width={15} height={15} aria-hidden="true" />
               </Link>
             </li>
             <li>
               <span>02</span>
               <Link href="/docs/integration/">
                 Connect your data and actions{' '}
-                <ArrowRightIcon width={17} height={17} aria-hidden="true" />
+                <ArrowRightIcon width={15} height={15} aria-hidden="true" />
               </Link>
             </li>
             <li>
               <span>03</span>
               <Link href="/customize/">
-                Make the theme yours <ArrowRightIcon width={17} height={17} aria-hidden="true" />
+                Make the theme yours <ArrowRightIcon width={15} height={15} aria-hidden="true" />
               </Link>
             </li>
           </ol>

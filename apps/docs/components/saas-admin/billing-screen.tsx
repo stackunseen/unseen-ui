@@ -101,7 +101,8 @@ export function BillingScreen({
       <section className={s.panel}>
         <h3>Billing history</h3>
         <p className={s.muted}>
-          No transactions exist in this demo. Connect your billing host to display actual invoices.
+          No transactions exist in this demo. Connect your billing server to display actual
+          invoices.
         </p>
       </section>
     </div>

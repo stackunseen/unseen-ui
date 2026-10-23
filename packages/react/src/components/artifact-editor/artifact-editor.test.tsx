@@ -219,9 +219,7 @@ describe('ArtifactEditor controlled revisions and host commands', () => {
     const values = props({ saveState });
     const { container, rerender } = render(<ArtifactEditor {...values} />);
     expect(container.firstChild).toHaveAttribute('data-status', 'saving');
-    expect(
-      screen.getByText('Save acknowledged; waiting for the matching saved document.'),
-    ).toBeVisible();
+    expect(screen.getByText('Save received. Waiting for the saved document.')).toBeVisible();
     expect(screen.queryByText(/^Saved at/)).not.toBeInTheDocument();
     const saved = { ...document, version: 'saved-2', text: draft.text };
     rerender(<ArtifactEditor {...values} document={saved} draft={{ ...draft, base: saved }} />);
@@ -351,8 +349,8 @@ describe('ArtifactEditor controlled revisions and host commands', () => {
     const { rerender } = render(
       <ArtifactEditor {...props({ saveCommand: undefined, exportCommand: undefined })} />,
     );
-    expect(screen.getByText(/Saving is unavailable until/)).toBeVisible();
-    expect(screen.getByText(/Export is unavailable until/)).toBeVisible();
+    expect(screen.getByText(/Saving isn’t available for this draft/)).toBeVisible();
+    expect(screen.getByText(/Export isn’t available for this draft/)).toBeVisible();
     expect(screen.getByRole('button', { name: 'Save draft' })).toBeDisabled();
     rerender(<ArtifactEditor {...props({ onDraftChange: undefined })} />);
     expect(screen.getByRole('button', { name: 'Save draft' })).toBeEnabled();

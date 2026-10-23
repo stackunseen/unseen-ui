@@ -38,7 +38,7 @@ export function createMockHost() {
     if (projector.ingest({ ...envelope, ...body }) !== 'applied') {
       const message = projector.getSnapshot().diagnostic;
       projector.dispose();
-      throw new Error(message ?? 'Mock host event rejected.');
+      throw new Error(message ?? 'Mock server event rejected.');
     }
     authoritative = projector.getSnapshot();
     projector.dispose();
@@ -136,7 +136,7 @@ export function createMockHost() {
     command: ApprovalDecision,
     loseAcknowledgement = false,
   ): { accepted: boolean; reason?: string } {
-    if (disposed) return { accepted: false, reason: 'Demo host stopped.' };
+    if (disposed) return { accepted: false, reason: 'Demo server stopped.' };
     const fingerprint = JSON.stringify(command);
     const old = commands.get(command.commandId);
     if (old)
@@ -188,8 +188,8 @@ export function createMockHost() {
         state: 'succeeded',
         detail:
           command.decision === 'approve'
-            ? 'Host acknowledged approval.'
-            : 'Host acknowledged rejection; archival skipped.',
+            ? 'Your server confirmed the approval.'
+            : 'Your server confirmed the rejection. Nothing was archived.',
       },
     });
     event({ type: 'step.updated', payload: { ...steps[3]!, state: 'succeeded' } });
@@ -197,7 +197,7 @@ export function createMockHost() {
       type: 'artifact.created',
       payload: {
         ...artifact,
-        content: `Account review\n\n${authoritative.approval?.title}\n${authoritative.approval?.impact}\n\nEvidence: Customer operations handbook, section 4.\n\nDecision: ${command.decision === 'approve' ? 'approved; simulated archival completed' : 'rejected; accounts left unchanged'}.\n\nThis is fixture data. No external system was accessed.`,
+        content: `Account review\n\n${authoritative.approval?.title}\n${authoritative.approval?.impact}\n\nEvidence: Customer operations handbook, section 4.\n\nDecision: ${command.decision === 'approve' ? 'approved; simulated archival completed' : 'rejected; accounts left unchanged'}.\n\nThis is sample data. No external system was accessed.`,
       },
     });
     transition('succeeded');

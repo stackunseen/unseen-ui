@@ -50,7 +50,7 @@ describe('model control semantics', () => {
           onValueChange={vi.fn()}
         />,
       );
-      expect(screen.getByText('No models are advertised by this host.')).toBeVisible();
+      expect(screen.getByText('No models are available.')).toBeVisible();
       expect(screen.getByRole('combobox', { name: 'Model' })).toBeDisabled();
     },
   );
@@ -78,7 +78,7 @@ describe('model control semantics', () => {
     const slider = screen.getByRole('slider', { name: 'Temperature' });
     expect(slider).toBeDisabled();
     expect(slider).toHaveAttribute('aria-valuetext', 'Model default');
-    expect(slider).toHaveAccessibleDescription(/Enable an override/);
+    expect(slider).toHaveAccessibleDescription(/Turn on an override/);
     expect(change).not.toHaveBeenCalled();
   });
 

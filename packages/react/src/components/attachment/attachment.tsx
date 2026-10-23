@@ -162,7 +162,7 @@ function AttachmentInfo() {
         role="status"
       >
         {!matched
-          ? 'Attachment version unavailable. The host must resolve this file.'
+          ? 'This version of the attachment isn’t available.'
           : state === 'removed'
             ? 'Removed'
             : access === 'available'
@@ -383,14 +383,14 @@ function AttachmentPreview() {
       ) : (
         <p role="status">
           {!matched
-            ? 'Attachment version unavailable. The host must resolve this file.'
+            ? 'This version of the attachment isn’t available.'
             : state === 'removing'
               ? 'Attachment is being removed.'
               : state === 'removed'
                 ? 'Attachment has been removed. Content is unavailable.'
                 : access !== 'available'
                   ? `Access ${access}. Content is unavailable.`
-                  : 'Preview unavailable. The host did not supply content.'}
+                  : 'No preview is available for this file.'}
         </p>
       )}
       {available && state === 'ready' && onOpen && (

@@ -10,10 +10,10 @@ describe('design audit interaction corrections', () => {
     ['input-streaming', 'Receiving tool input. The tool has not started.'],
     ['approval-required', 'Waiting for approval. The tool has not started.'],
     ['succeeded', 'Tool completed without output.'],
-    ['failed', 'Tool failed. The host did not provide error details.'],
+    ['failed', 'The tool failed. No details were given.'],
     ['denied', 'Execution was denied.'],
     ['cancelled', 'Tool execution was cancelled.'],
-    ['outcome-unknown', 'The result is unknown. Reconcile with the host before retrying.'],
+    ['outcome-unknown', 'It’s not clear whether this tool ran. Check before trying again.'],
   ];
 
   it.each(componentVariants.ToolCall)(
@@ -28,11 +28,11 @@ describe('design audit interaction corrections', () => {
         await user.click(screen.getByRole('button', { name: 'Inspect execution' }));
       if (variant === 'row')
         await user.click(screen.getByRole('button', { name: /read_document/ }));
-      expect(screen.getByRole('status')).toHaveTextContent('Waiting for a host result');
+      expect(screen.getByRole('status')).toHaveTextContent('Waiting for the result');
       for (const [state, message] of toolStates) {
         rerender(<ToolCall variant={variant} value={{ ...tool, state }} />);
         expect(screen.getByText(message)).toBeInTheDocument();
-        expect(screen.queryByText('Waiting for a host result')).not.toBeInTheDocument();
+        expect(screen.queryByText('Waiting for the result')).not.toBeInTheDocument();
       }
     },
   );
@@ -44,7 +44,7 @@ describe('design audit interaction corrections', () => {
         value={{ id: 'failed', name: 'read', revision: 1, input: '{}', state: 'failed' }}
       />,
     );
-    expect(screen.getByText('Tool failed. The host did not provide error details.')).toBeVisible();
+    expect(screen.getByText('The tool failed. No details were given.')).toBeVisible();
     expect(screen.getByRole('button', { name: 'Inspect execution' })).toHaveAttribute(
       'aria-expanded',
       'false',

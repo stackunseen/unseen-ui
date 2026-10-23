@@ -185,7 +185,7 @@ export function artifactDemoTransition(state: DemoState, action: DemoAction): De
           commandId: intent.commandId,
           target: intent.target,
           result: 'rejected',
-          reason: 'Local host rejected this save. The draft is preserved.',
+          reason: 'Local server rejected this save. The draft is preserved.',
         }
       : {
           commandId: intent.commandId,
@@ -263,7 +263,7 @@ export function ArtifactDemo({
         items={[
           {
             value: 'host',
-            title: inline ? 'Demo options' : 'Local host controls',
+            title: inline ? 'Demo options' : 'Local server controls',
             keepMounted: true,
             content: (
               <div className={css.root}>

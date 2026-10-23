@@ -194,7 +194,7 @@ describe('controlled workflow inspection and distinct projections', () => {
     expect(inspector).toHaveTextContent('Unknown');
     expect(inspector).toHaveTextContent('Reported state: custom-status');
     expect(inspector).toHaveTextContent('Duration: Unknown');
-    expect(screen.getByText(/no host handler/)).toBeVisible();
+    expect(screen.getByText(/isn’t set up here/)).toBeVisible();
   });
   it.each(['stale', 'streaming'] as const)(
     '%s shows an explicit historical/provisional snapshot and pauses inspection',

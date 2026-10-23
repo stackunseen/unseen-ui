@@ -49,7 +49,9 @@ describe('execution content and contextual actions', () => {
         />,
       );
       const warning =
-        state === 'failed' ? screen.getByRole('alert') : screen.getByText(/The result is unknown/);
+        state === 'failed'
+          ? screen.getByRole('alert')
+          : screen.getByText(/not clear whether this tool ran/);
       expect(warning).toBeVisible();
       expect(screen.queryByText('Obsolete result')).toBeNull();
       const trigger = screen.getByRole('button', { name: 'Inspect execution' });

@@ -344,8 +344,8 @@
   color: var(--ai-text, #18181b);
 }
 .optionMark svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
 }
 /* The menu's heading is a quiet caption above the list, not a dialog title. */
 .modelMenu {

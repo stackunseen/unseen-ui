@@ -300,7 +300,7 @@ export function MessageQueue(props: MessageQueueProps) {
                     )}
                     {item.state === 'outcome-unknown' && (
                       <p className={s.warning}>
-                        Reconcile the original send with the host. It will not be retried
+                        Check whether the first send went through. It won’t be retried
                         automatically.
                       </p>
                     )}

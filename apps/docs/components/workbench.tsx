@@ -147,11 +147,11 @@ function WorkbenchRun({
     <div className={s.app} data-template-preview="workbench">
       <header className={s.appHeader}>
         <div className={s.workspaceName}>
-          <RadiobuttonIcon width={18} height={18} aria-hidden="true" />
+          <RadiobuttonIcon width={15} height={15} aria-hidden="true" />
           <strong>Fieldwork</strong>
           <span>Customer operations</span>
         </div>
-        <span className={s.simulation}>Simulated host · no external changes</span>
+        <span className={s.simulation}>Simulated server · no external changes</span>
       </header>
       <div className={s.appBody}>
         <aside className={s.sidebar}>
@@ -175,7 +175,7 @@ function WorkbenchRun({
               aria-controls={reviewsId}
               onClick={() => setReviewsOpen(!reviewsOpen)}
             >
-              Reviews <ChevronDownIcon width={16} height={16} aria-hidden="true" />
+              Reviews <ChevronDownIcon width={15} height={15} aria-hidden="true" />
             </button>
           </div>
           <div id={reviewsId} className={s.reviewNavigation} data-open={reviewsOpen}>
@@ -211,7 +211,7 @@ function WorkbenchRun({
           <div className={s.sidebarFooter}>
             <span className={s.connectionDot} data-connected={connection === 'connected'} />
             <span>
-              {connection === 'connected' ? 'Demo host connected' : 'Demo host disconnected'}
+              {connection === 'connected' ? 'Demo server connected' : 'Demo server disconnected'}
             </span>
           </div>
         </aside>
@@ -231,7 +231,7 @@ function WorkbenchRun({
                 aria-label="Reset this review"
                 title="Reset this review"
               >
-                <ResetIcon width={16} height={16} aria-hidden="true" />
+                <ResetIcon width={15} height={15} aria-hidden="true" />
               </Button>
               <Button
                 variant="outline"
@@ -239,7 +239,7 @@ function WorkbenchRun({
                 aria-pressed={inspectorOpen}
                 onClick={() => setInspectorOpen(!inspectorOpen)}
               >
-                <ViewVerticalIcon width={16} height={16} aria-hidden="true" /> Inspector
+                <ViewVerticalIcon width={15} height={15} aria-hidden="true" /> Inspector
               </Button>
             </div>
           </div>
@@ -297,7 +297,7 @@ function WorkbenchRun({
         </section>
       </div>
       <footer className={s.appFooter}>
-        <span>3 fixed synthetic accounts · host validates each approval</span>
+        <span>3 fixed synthetic accounts · server validates each approval</span>
         <span>No model or backend connected</span>
       </footer>
     </div>

@@ -30,7 +30,7 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Input',
     group: 'Forms',
     aliases: ['Text field', 'Text input'],
-    description: 'A native text input that composes with Field and application validation.',
+    description: 'A text input that works with Field and your own validation.',
     states: ['Default', 'Invalid', 'Disabled', 'Read-only', 'Long value'],
     contract: 'Native input props/ref · value · onChange · disabled? · readOnly?',
     responsibility: fieldOwner,
@@ -55,12 +55,11 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Checkbox',
     group: 'Forms',
     aliases: ['Check box', 'Mixed selection'],
-    description:
-      'A native checkbox for an explicit choice, including a host-controlled mixed state.',
+    description: 'A checkbox, including a mixed state for partly selected groups.',
     states: ['Default', 'Checked', 'Indeterminate', 'Invalid', 'Disabled'],
     contract: 'checked? · onCheckedChange? · indeterminate? · native checkbox props/ref',
     responsibility:
-      'Own checked and indeterminate separately. Clear or recompute the mixed state when the selection changes.',
+      'Keep checked and the mixed state separately in your app, and update the mixed state when the selection changes.',
     keyboard:
       'Tab focuses the checkbox; Space toggles it. Its associated label can also activate it.',
     relatedImports: ['Field'],
@@ -70,11 +69,11 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Switch',
     group: 'Forms',
     aliases: ['Toggle', 'Setting'],
-    description: 'A labelled on/off setting with native focus and switch semantics.',
+    description: 'An on/off setting with a label.',
     states: ['Default', 'Checked', 'Invalid', 'Disabled'],
     contract: 'checked? · onCheckedChange? · native input props/ref',
     responsibility:
-      'Use a persistent setting label. The checked value comes from application state, not from an inferred network result.',
+      'Keep the label the same whether it’s on or off. Whether it’s on comes from your app, not from a guess about what the server did.',
     keyboard: 'Tab focuses the switch; Space toggles it. Disabled switches leave the tab order.',
     relatedImports: ['Field'],
     code: '<Field label="Show release notes"><Switch checked={enabled} onCheckedChange={setEnabled} /></Field>',
@@ -83,12 +82,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'RadioGroup',
     group: 'Forms',
     aliases: ['Radio buttons', 'Single choice'],
-    description: 'A named group of mutually exclusive native radio choices.',
+    description: 'A labeled set of options where only one can be picked.',
     states: ['Default', 'Horizontal', 'Invalid', 'Disabled', 'Empty'],
     contract:
       'options · value? · onValueChange? · name? · orientation? · disabled? · emptyMessage?',
     responsibility:
-      'Supply stable option values and use Field labelAs="span" for the group label. Empty options need an explicit explanation.',
+      'Supply stable option values and use Field labelAs="span" for the group label. If there are no options, say why.',
     keyboard:
       'Tab enters the selected radio; arrow keys move and select within the native group. Space selects the focused option.',
     relatedImports: ['Field'],
@@ -98,12 +97,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Slider',
     group: 'Forms',
     aliases: ['Range', 'Range input'],
-    description: 'A controlled numeric range with named thumbs and keyboard adjustments.',
+    description: 'Pick a number or a range by dragging or with the arrow keys.',
     states: ['Default', 'Range', 'Disabled'],
     contract:
       'value: number[] · onValueChange? · onValueCommit? · min? · max? · step? · thumbLabels? · getValueLabel?',
     responsibility:
-      'Supply meaningful units and bounds. Name each thumb for a multi-value range; reserve persistence for the host callback.',
+      'Give it real units and limits, and name each handle in a range. Save the value from your own callback.',
     keyboard:
       'Arrow keys adjust by one step; Home and End move to bounds. Tab visits each available thumb.',
     relatedImports: ['Field'],
@@ -113,12 +112,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Popover',
     group: 'Overlays',
     aliases: ['Anchored panel', 'Floating panel'],
-    description: 'A named interactive panel anchored to its trigger.',
+    description: 'A small panel that opens from a button and can hold controls.',
     states: ['Default', 'Form', 'Long content'],
     contract:
       'Root: open? · onOpenChange? · Content: title · description? · headingLevel? · Trigger/Close asChild?',
     responsibility:
-      'Own draft and open state. Use a popover for a short related task; move longer workflows into an appropriate dialog or page.',
+      'Keep whether it’s open, and any draft, in your app. Use it for short tasks; move longer ones into a dialog or a page.',
     keyboard:
       'Enter or Space opens the trigger. Focus moves into the panel; Escape closes it and returns focus.',
     relatedImports: ['Button', 'Field', 'Input'],
@@ -128,11 +127,11 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Tooltip',
     group: 'Overlays',
     aliases: ['Hint', 'Hover text'],
-    description: 'A short non-interactive description available on hover and keyboard focus.',
+    description: 'A short hint that appears on hover and keyboard focus.',
     states: ['Default', 'Long content'],
     contract: 'Root: open? · onOpenChange? · Provider: delayDuration? · Trigger/Content',
     responsibility:
-      'Keep essential labels visible. Tooltip content is supporting text and must not contain interactive controls.',
+      'Keep important labels visible on the page. A tooltip is only extra help and can’t hold buttons or links.',
     keyboard: 'Focusing the trigger reveals the hint; Escape dismisses it without moving focus.',
     relatedImports: ['Button'],
     code: '<Tooltip><Tooltip.Trigger asChild><Button variant="outline">Read-only preview</Button></Tooltip.Trigger><Tooltip.Content>Changes are kept in this local example.</Tooltip.Content></Tooltip>',
@@ -141,12 +140,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'AlertDialog',
     group: 'Overlays',
     aliases: ['Confirmation', 'Confirm dialog', 'Destructive action'],
-    description: 'A focused confirmation that waits for an explicit application acknowledgement.',
+    description: 'A confirmation dialog that stays open until your app confirms the action worked.',
     states: ['Default', 'Pending', 'Error'],
     contract:
       'Root: open · onOpenChange · busy? · Content: error? · Action: onAction · Title/Description/Cancel',
     responsibility:
-      'A click expresses intent. Keep the dialog open while the host processes the request; close it only after acknowledgement. The demo only changes local sample state.',
+      'A click only asks. Keep the dialog open while your server handles the request, and close it once it confirms. The example here only changes sample data.',
     keyboard:
       'Opening focuses Cancel. Tab remains inside; Escape or Cancel dismisses. Busy prevents repeated action requests while cancellation remains available.',
     relatedImports: ['Button'],
@@ -156,12 +155,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'DropdownMenu',
     group: 'Navigation',
     aliases: ['Action menu', 'Menu button'],
-    description: 'An action menu with managed focus, selection controls and disabled items.',
+    description: 'A menu of actions behind a button, with checkable and disabled items.',
     states: ['Default', 'Selection', 'Disabled item'],
     contract:
       'Root/Trigger/Content/Item · Item: onSelect · CheckboxItem: checked/onCheckedChange · RadioGroup: value/onValueChange',
     responsibility:
-      'Use actions in a menu and links for destination navigation. Menu selection requests application work; it does not establish success.',
+      'Use menu items for actions and links for going somewhere. Picking an item asks your app to act; it doesn’t mean it worked.',
     keyboard:
       'Enter, Space or ArrowDown opens the menu. Arrow keys and typeahead move between items; Enter selects, Escape returns focus.',
     code: '<DropdownMenu.Root><DropdownMenu.Trigger>Project actions</DropdownMenu.Trigger><DropdownMenu.Content><DropdownMenu.Item onSelect={requestRename}>Rename project</DropdownMenu.Item><DropdownMenu.Item onSelect={requestArchive}>Archive project</DropdownMenu.Item></DropdownMenu.Content></DropdownMenu.Root>',
@@ -170,11 +169,11 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'ContextMenu',
     group: 'Navigation',
     aliases: ['Right-click menu', 'Context actions'],
-    description: 'Contextual actions available from pointer and keyboard invocation.',
+    description: 'Actions for an item, opened by right-click or the menu key.',
     states: ['Default', 'Disabled item'],
     contract: 'Root: onOpenChange? · Trigger · Content · Item: onSelect/disabled?',
     responsibility:
-      'Provide a visible explanation of the context action. Essential actions should also be discoverable without a context menu.',
+      'Tell people the menu is there, and make important actions reachable without it too.',
     keyboard:
       'Focus the trigger and press Shift+F10 or the Context Menu key. Arrow keys navigate; Escape returns to the trigger.',
     code: '<ContextMenu.Root><ContextMenu.Trigger>Project preview. Right-click or press Shift+F10</ContextMenu.Trigger><ContextMenu.Content><ContextMenu.Item onSelect={requestRename}>Rename project</ContextMenu.Item></ContextMenu.Content></ContextMenu.Root>',
@@ -183,11 +182,11 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'NavigationMenu',
     group: 'Navigation',
     aliases: ['Website navigation', 'Navigation dropdown'],
-    description: 'Website links and disclosed destination groups with native navigation semantics.',
+    description: 'Website navigation with links and dropdown groups.',
     states: ['Default', 'Disabled trigger'],
     contract: 'Root: value?/onValueChange? · List/Item/Trigger/Content/Link · Link: href/active?',
     responsibility:
-      'Supply real destinations and an appropriate navigation label. This example links to existing component detail pages.',
+      'Pass real links and a label for the navigation. The example here links to pages on this site.',
     keyboard:
       'Tab visits links and triggers. Arrow keys move within the navigation; Escape dismisses open destination content.',
     code: '<NavigationMenu.Root aria-label="Components"><NavigationMenu.List><NavigationMenu.Item><NavigationMenu.Link href="/?component=Button">Foundations</NavigationMenu.Link></NavigationMenu.Item><NavigationMenu.Item><NavigationMenu.Trigger>Forms</NavigationMenu.Trigger><NavigationMenu.Content><NavigationMenu.Link href="/?component=Input">Input</NavigationMenu.Link></NavigationMenu.Content></NavigationMenu.Item></NavigationMenu.List></NavigationMenu.Root>',
@@ -197,12 +196,12 @@ export const websiteCatalog: CatalogEntry[] = [
     group: 'Feedback',
     aliases: ['Banner', 'Notice', 'Inline feedback'],
     description:
-      'A persistent message with semantic tone, optional actions and explicit announcement urgency.',
+      'A message that stays on the page, with a tone, optional actions and a choice of how urgently screen readers hear it.',
     states: ['Default', 'Success', 'Warning', 'Error', 'With action'],
     contract:
       'tone?: neutral | info | success | warning | danger · icon? · native div props · Title/Description/Actions',
     responsibility:
-      'Tone supplements the written message. Static content has no automatic live announcement; use status or alert only for appropriate dynamic updates.',
+      'The color only supports what the words say. A message already on the page isn’t announced; use status or alert only for messages that appear later.',
     keyboard: 'The message is read in document order. Only nested actions enter the tab sequence.',
     relatedImports: ['AlertTitle', 'AlertDescription'],
     code: '<Alert tone="info"><AlertTitle>Preview environment</AlertTitle><AlertDescription>Changes here affect the local example only.</AlertDescription></Alert>',
@@ -211,12 +210,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'EmptyState',
     group: 'Feedback',
     aliases: ['No results', 'Empty content', 'Recovery'],
-    description: 'An explanation of missing content with an appropriate next action.',
+    description: 'Explains why there’s nothing here and what to do next.',
     states: ['Default', 'No results', 'With action'],
     contract:
       'align?: start | center · native div props · EmptyStateTitle/Description/Actions/Icon',
     responsibility:
-      'Distinguish no content, filtered results and access failures in the message. Choose a next action that resolves the actual reason.',
+      'Say whether there’s no content yet, no results for a filter, or no access, and offer the action that fixes that reason.',
     keyboard:
       'The heading and description remain ordinary content. A recovery action follows native button behavior.',
     relatedImports: ['EmptyStateTitle', 'EmptyStateDescription'],
@@ -228,12 +227,12 @@ export const websiteCatalog: CatalogEntry[] = [
       group: 'Feedback',
       aliases: ['Progress bar', 'Indeterminate progress'],
       description:
-        'Named progress for a measured amount or an explicitly unknown total, as a bar or a ring.',
+        'Progress as a bar or a ring, for work you can measure or with an honestly unknown total.',
       states: ['Default', 'Indeterminate', 'Complete', 'Hidden label'],
       contract:
         'label: string · value?: number | null · max?: number · valueText? · labelVisibility?: visible | hidden · showReading? · variant?: bar | ring · size?: sm | default | lg',
       responsibility:
-        'Use a numeric value only for measured work with a known denominator. The interactive example counts local sample steps; it does not claim real upload or AI completion progress.',
+        'Show a number only when you know both how much is done and the total. The example counts sample steps; it isn’t real upload or AI progress.',
       keyboard:
         'The native progress element is named but is not an extra tab stop. Nearby controls remain available while work advances.',
       code: '<Progress label="Sample steps completed" value={completedSteps} max={10} valueText={`${completedSteps} of 10 sample steps`} />',
@@ -246,12 +245,12 @@ export const websiteCatalog: CatalogEntry[] = [
     group: 'Feedback',
     aliases: ['Notification', 'Snackbar'],
     description:
-      'A controlled temporary notification with dismissal and retained action alternatives.',
+      'A short-lived notification people can dismiss, with its action also available elsewhere.',
     states: ['Default', 'With action', 'Error'],
     contract:
       'ToastProvider · Toast: open/onOpenChange/tone/type/duration · ToastAction: altText · ToastClose · ToastViewport',
     responsibility:
-      'Own notification identity and state. Retain important results elsewhere; provide another route to actions after expiry. One provider and viewport serve each notification area.',
+      'Keep each notification in your app. Show important results somewhere that lasts, and offer the action another way once the toast is gone. Use one provider and viewport per notification area.',
     keyboard:
       'F8 moves focus into the notification area. Hover or focus pauses expiry; Escape dismisses a focused notification.',
     relatedImports: [
@@ -268,11 +267,11 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Breadcrumb',
     group: 'Navigation',
     aliases: ['Breadcrumbs', 'Location trail'],
-    description: 'A compact path of real destinations with an explicit current location.',
+    description: 'The path to the current page, with links back up.',
     states: ['Default', 'Long labels', 'Single item'],
     contract: 'items: {id,label,href?,onClick?}[] · currentId? · label? · separator?',
     responsibility:
-      'Use actual links for ancestors. The current item defaults to the last item and is not rendered as a navigation link.',
+      'Use real links for the pages above. The last item is the current page and isn’t a link.',
     keyboard:
       'Tab visits ancestor links. The current page is readable text with aria-current="page".',
     code: '<Breadcrumb items={[{id: "components", label: "Components", href: "/"}, {id: "button", label: "Button"}]} />',
@@ -281,12 +280,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Pagination',
     group: 'Navigation',
     aliases: ['Pages', 'Page controls', 'Previous next'],
-    description: 'Controlled page navigation for known and unknown totals.',
+    description: 'Move between pages of results, even when the total isn’t known.',
     states: ['Default', 'Unknown total', 'Empty', 'Disabled'],
     contract:
       'page: number (1-based) · pageCount OR hasNextPage · onPageChange OR getPageHref · disabled?',
     responsibility:
-      'Keep page and result state consistent. For unknown totals, enable Next only with explicit hasNextPage=true. Do not invent a total.',
+      'Keep the page and the results in step. When the total isn’t known, enable Next only with hasNextPage, and never make up a total.',
     keyboard:
       'Native buttons or links follow Tab order. Unavailable boundaries are disabled. Current page is identified with aria-current.',
     code: '<Pagination page={page} pageCount={12} onPageChange={setPage} />',
@@ -295,11 +294,11 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'Sidebar',
     group: 'Navigation',
     aliases: ['Side navigation', 'Navigation rail'],
-    description: 'Visible navigation groups and native links with current and disabled states.',
+    description: 'App navigation in groups, marking the current page.',
     states: ['Default', 'Disabled link', 'Long labels'],
     contract: 'Sidebar: label?/as? · Group: label? · Link: href/current?/disabled?/icon?/badge?',
     responsibility:
-      'Keep destination labels visible. Compose Sidebar with Sidecar for a mobile drawer; Sidebar itself does not own disclosure state.',
+      'Keep the labels visible. Put Sidebar inside a Sidecar for a mobile drawer; Sidebar itself doesn’t open or close.',
     keyboard:
       'Tab visits available links in document order. Current links use aria-current; disabled destinations are removed from the tab sequence.',
     code: '<Sidebar label="Component navigation"><Sidebar.Group label="Library"><Sidebar.Link href="/?component=Button">Foundations</Sidebar.Link><Sidebar.Link href="/?component=Sidebar" current>Navigation</Sidebar.Link></Sidebar.Group></Sidebar>',
@@ -309,26 +308,26 @@ export const websiteCatalog: CatalogEntry[] = [
     group: 'Data Display',
     aliases: ['Content card', 'Surface', 'Panel', 'Link card', 'Resource card', 'Section header'],
     description:
-      'A surface with a header (title, description, actions), body and footer, or a whole-card link.',
+      'A box with a header (title, description and actions), a body and a footer, or a card that is one big link.',
     states: ['Default', 'Header actions', 'With action', 'Link', 'External link', 'Long content'],
     contract:
       'Native section props · href? · external? · Card.Header actions? actionsLabel? · Card.Title as?: h2–h6 · Card.Description/Content/Footer',
     responsibility:
-      'Choose a heading level appropriate to the page. Add aria-labelledby only when the card should be a named region. With href the whole card is one link, so keep buttons and other links out of it.',
+      'Pick a heading level that fits the page. Add aria-labelledby only when the card should be a named region. With href the whole card is one link, so keep buttons and other links out of it.',
     keyboard:
-      'The surface adds no tab stop; links and actions inside it follow ordinary document order.',
+      'The card itself isn’t a tab stop; links and actions inside it follow the normal page order.',
     code: '<Card><Card.Header><Card.Title>Component library</Card.Title><Card.Description>Reusable website and AI controls.</Card.Description></Card.Header><Card.Content>Explore the available components.</Card.Content></Card>',
   }),
   entry({
     name: 'Table',
     group: 'Data Display',
     aliases: ['Native table', 'HTML table', 'Simple table'],
-    description: 'Native tabular content inside a named, keyboard-scrollable region.',
+    description: 'A plain table in a labeled area you can scroll with the keyboard.',
     states: ['Default', 'Empty', 'Wide content'],
     contract:
       'label: string · scrollLabel? · native table props/ref · Caption/Header/Body/Footer/Row/Head/Cell',
     responsibility:
-      'Supply meaningful captions and headers. Sorting, loading and selection are host compositions; use DataTable when its structured-data API matches the task.',
+      'Give it a caption and clear headers. Sorting, loading and selection are up to you; use DataTable when it fits your data.',
     keyboard:
       'Tab reaches the scroll region when needed; arrow keys scroll wide content. Column and row headers preserve native table semantics.',
     code: '<Table label="Packages"><Table.Caption>Sample package status</Table.Caption><Table.Header><Table.Row><Table.Head>Package</Table.Head><Table.Head>Status</Table.Head></Table.Row></Table.Header><Table.Body><Table.Row><Table.Head scope="row">Components</Table.Head><Table.Cell>Experimental alpha</Table.Cell></Table.Row></Table.Body></Table>',
@@ -350,7 +349,7 @@ export const websiteCatalog: CatalogEntry[] = [
       contract:
         'label · options: { value, label, count?, description?, href?, disabled? }[] · type?: single | multiple · value · onValueChange? · allowEmpty? · mode?: buttons | links · variant?: pills | segmented · size?: default | sm · disabled?',
       responsibility:
-        'The application owns the selected values and the counts. Single selection uses radio semantics; multiple selection uses pressed buttons; links mode renders anchors with aria-current for URL-driven views and works before hydration.',
+        'Your app owns the selection and the counts. One choice works like radio buttons and several like toggle buttons. Links mode uses real links for views kept in the URL, so it works before scripts load.',
       keyboard:
         'Tab reaches the group once. Arrow keys, Home and End move between enabled options; in single mode they also select. Space or Enter toggles an option in multiple mode. In links mode every link is in the tab order.',
       code: '<ToggleGroup label="Topics" options={topics} value={topic} onValueChange={setTopic} />',
@@ -367,7 +366,7 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'Native span props · children · tone?: neutral | primary | accent | success | warning · hue? · size?: default | sm · mono? · icon?',
     responsibility:
-      'Meaning belongs to the application; the tag adds no status semantics. Use StatusBadge for run and approval states.',
+      'A tag is only a label; it doesn’t mean a status. Use StatusBadge for run and approval status.',
     keyboard: 'Inert content; it adds no tab stop.',
     relatedImports: ['StatusBadge'],
     code: '<Tag tone="accent">Advanced</Tag>',
@@ -380,7 +379,7 @@ export const websiteCatalog: CatalogEntry[] = [
     states: ['Default', 'With files', 'Blocks', 'No changes'],
     contract: 'added · removed · files? · blocks? · native span props',
     responsibility:
-      'Pass the counts your diff or code host reports. The signs are in the text, so it reads without colour, and screen readers hear the counts in words.',
+      'Pass the counts your diff or code server reports. The signs are in the text, so it reads without color, and screen readers hear the counts in words.',
     keyboard: 'Inert content; it adds no tab stop.',
     relatedImports: ['CodeDiff'],
     code: '<DiffStat added={15} removed={1} files={2} />',
@@ -390,7 +389,7 @@ export const websiteCatalog: CatalogEntry[] = [
     group: 'Data Display',
     aliases: ['Duration', 'Timer', 'Worked for'],
     description: 'Time spent on a run or turn, ticking while it runs and fixed once it ends.',
-    states: ['Running', 'Finished', 'Measured by host'],
+    states: ['Running', 'Finished', 'Measured by server'],
     contract: 'startedAt · endedAt? · durationMs? · native time props',
     responsibility:
       'Pass endedAt or durationMs when the work stops. Prefer durationMs from the server when the browser clock should not decide the figure.',
@@ -421,7 +420,7 @@ export const websiteCatalog: CatalogEntry[] = [
       contract:
         'label · value · delta? · trend?: up | down | neutral · note? · StatGroup: native div props',
       responsibility:
-        'Format numbers, units and signs in the application. Trend colour only reinforces text that already carries the sign. Renders on the server.',
+        'Format numbers, units and signs in the application. Trend color only backs up text that already shows the sign. Renders on the server.',
       keyboard: 'Inert content; it adds no tab stop.',
       relatedImports: ['StatGroup'],
       code: '<StatGroup aria-label="Usage">\n  <Stat label="Active users" value="1,204" delta="+12%" trend="up" note="Last 30 days" />\n</StatGroup>',
@@ -439,7 +438,7 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'children · href/active/current? + anchor props | onRemove/removeLabel · swatch? · size?: default | sm · disabled? · ChipGroup: label · overflow?: wrap | scroll',
     responsibility:
-      'Chips report intents; the host applies the filter. Link chips render the LinkProvider link when one is set. Active fills use --ai-chip-active-background and --ai-chip-active-color so labels keep their contrast.',
+      'Chips only ask; your app applies the filter. Link chips render the LinkProvider link when one is set. Active fills use --ai-chip-active-background and --ai-chip-active-color so labels keep their contrast.',
     keyboard:
       'Link chips are links; the remove control is a button. Backspace or Delete on a removable chip removes it.',
     relatedImports: ['ChipGroup'],
@@ -455,7 +454,7 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'label · steps: { id, label, href?, state?: done | current | upcoming | planned | available }[] · presentation?: dots | list | segments · previous? · next? · reading? · tooltip? · as?: nav | div',
     responsibility:
-      'Supply the current step from routing or host state. Planned steps have no destination; the reading prints "Step 2 of 9" from the current step.',
+      'Pass the current step from your route or app state. Planned steps have no destination; the reading prints "Step 2 of 9" from the current step.',
     keyboard:
       'Steps with destinations are ordinary links in a navigation landmark; dots carry their labels for assistive technology.',
     code: '<Stepper label="Series parts" steps={steps} reading previous={{ href: prev }} next={{ href: next }} />',
@@ -470,9 +469,9 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'label · rows: { id, label, href?, swatch? }[] · columns · value?(row, column) | values · href?(row, column) | hrefs · cellLabel?(row, column, value) | cellLabels · max? · format? · caption? · scrollLabel? · columnHeader?: horizontal | angled · zero? · totals?: rows | columns | both · totalsLabel?',
     responsibility:
-      'Every cell prints its number; the fill from the primary token only reinforces it and the text flips to the primary foreground at the level the theme measured. Supply counts and destinations from the host.',
+      'Every cell shows its number. The fill only backs it up, and the text switches color where the theme needs it to for contrast. Pass the counts and links from your app.',
     keyboard:
-      'A real table with scoped headers inside a focusable, labelled scroll region; header and cell links are ordinary links.',
+      'A real table with scoped headers inside a focusable, labeled scroll region; header and cell links are ordinary links.',
     relatedImports: ['Table'],
     code: '<Matrix label="Coverage" rows={disciplines} columns={kinds} value={count} href={filterHref} />',
   }),
@@ -485,7 +484,7 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'value · label? · copiedLabel? · failedLabel? · iconOnly? · onCopy?(ok) · resetMs? · variant? · size?',
     responsibility:
-      'The outcome is announced in a polite live region and shown by the icon; the accessible name never changes mid-press. A failed copy says to copy by hand. Snippet uses it, so the library has one copy behaviour.',
+      'The outcome is announced in a polite live region and shown by the icon; the accessible name never changes mid-press. A failed copy says to copy by hand. Snippet uses it, so the library has one copy behavior.',
     keyboard:
       'A button: Enter or Space copies. The icon-only form has a tooltip and an accessible name.',
     relatedImports: ['useCopy'],
@@ -509,12 +508,12 @@ export const websiteCatalog: CatalogEntry[] = [
     name: 'AppearanceToggle',
     group: 'Actions',
     aliases: ['Theme toggle', 'Dark mode switch', 'Light dark system'],
-    description: 'A light, dark or system choice that drives the theme provider.',
+    description: 'Lets people choose light, dark or the system setting.',
     states: ['Default', 'Switch', 'Subtle', 'Segmented', 'Stored'],
     contract:
       'value · onValueChange · variant?: cycle | segmented | switch | subtle · labels? · label? · size? · useStoredAppearance({ storageKey }) · useResolvedAppearance(value) · appearanceInitScript({ storageKey })',
     responsibility:
-      'Pass the value to AITheme. useStoredAppearance keeps it in this browser and follows other tabs; appearanceInitScript applies it before paint through a root attribute your stylesheet reads. Until hydration the cycle button shows a neutral mark.',
+      'Pass the value to AITheme. useStoredAppearance keeps it in this browser and follows other tabs; appearanceInitScript applies it before paint through a root attribute your stylesheet reads. Until the page’s scripts load, the cycle button shows a neutral mark.',
     keyboard:
       'The cycle button names the current mode and what a press switches to. Switch and segmented are radiogroups (arrow keys move and select); subtle is one "Dark mode" button with a pressed state.',
     relatedImports: ['AITheme'],
@@ -530,7 +529,7 @@ export const websiteCatalog: CatalogEntry[] = [
     contract:
       'open? · defaultOpen? · onOpenChange? · items · search?(query, signal) · debounceMs? · onSelect · shortcut?: "mod+k" | false · label? · placeholder? · emptyState? · footerHints? · trailingAction?(query) · highlight?(text, query) | false · cancelLabel? · useCommandPalette() · markMatches(text, query)',
     responsibility:
-      'Static items filter locally by every word; async results are debounced, cancelled through the signal and never shown for an older query. With a LinkProvider, items with an href are that router link. Excerpts are plain text; markMatches marks them safely.',
+      'Static items filter locally by every word; async results are debounced, canceled through the signal and never shown for an older query. With a LinkProvider, items with an href are that router link. Excerpts are plain text; markMatches marks them safely.',
     keyboard:
       'Up and Down move and wrap, Home and End jump, Enter selects, Escape and the backdrop close. Enter does nothing during IME composition. Focus returns to the opener.',
     relatedImports: ['Button'],
@@ -562,7 +561,7 @@ export const websiteCatalog: CatalogEntry[] = [
       'url · title · text? · targets?: (copy | native | linkedin | x | email | { id, label, href })[] · presentation?: inline | menu · label? · onShare?(target)',
     responsibility:
       'Native share support is decided on the client only, so server and first client render agree. A dismissed share is not an error. External targets open in a new tab with rel="noopener noreferrer"; no tracking parameters are added. Custom targets must be http(s), mailto or relative links; others are dropped. For "open in another chat", build each href from the query.',
-    keyboard: 'Buttons and links in a labelled group, or a menu with arrow keys.',
+    keyboard: 'Buttons and links in a labeled group, or a menu with arrow keys.',
     relatedImports: ['CopyButton'],
     code: "<ShareMenu url={pageUrl} title={pageTitle} targets={['copy', 'native', 'linkedin', 'x']} />",
   }),

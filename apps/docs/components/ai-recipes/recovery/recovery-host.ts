@@ -62,7 +62,7 @@ export function createRecoveryHost() {
     lookupUnavailable: false,
     dispatches: 0,
     lookups: 0,
-    notice: 'Seeded partial response. Use the host controls to deliver each next event.',
+    notice: 'Seeded partial response. Use the server controls to deliver each next event.',
   });
   function connection(
     transport: ConnectionInfo['state'],
@@ -73,7 +73,7 @@ export function createRecoveryHost() {
       freshness,
       recovery: 'none',
       adapter: Object.freeze({
-        name: 'Simulated in-memory host',
+        name: 'Simulated in-memory server',
         version: '1',
         resume: false,
         snapshot: true,
@@ -120,7 +120,7 @@ export function createRecoveryHost() {
       attemptId: scope.attemptId,
       occurredAt: '2026-10-05T12:00:00.000Z',
     } as Event;
-    if (runtime.ingest(next) !== 'applied') throw new Error('Simulated host event rejected.');
+    if (runtime.ingest(next) !== 'applied') throw new Error('Simulated server event rejected.');
     lastEvent = next;
     observe();
   }
@@ -148,7 +148,7 @@ export function createRecoveryHost() {
       return existing;
     }
     if (!available())
-      throw new Error('Reconcile the original request and refresh current host data first.');
+      throw new Error('Reconcile the original request and refresh current server data first.');
     if (state.commands.length >= 16)
       throw new Error('Simulation request limit reached. Reload to start a fresh demonstration.');
     if (
@@ -184,13 +184,13 @@ export function createRecoveryHost() {
       outcome: state.scenario === 'rejected' ? 'rejected' : 'accepted',
       detail:
         state.scenario === 'rejected'
-          ? 'Simulated host rejected this request. Draft and partial output retained.'
+          ? 'Simulated server rejected this request. Draft and partial output retained.'
           : 'Request received; execution has not been reported.',
     });
     receipts.set(command.commandId, receipt);
     acknowledgementModes.set(command.commandId, state.scenario);
     publish({ dispatches: state.dispatches + 1, error: undefined });
-    return record(command, 'submitting', 'Awaiting the simulated host acknowledgement.');
+    return record(command, 'submitting', 'Awaiting the simulated server acknowledgement.');
   }
   function request(operation: 'send' | 'stop' | 'retry' | 'continue') {
     const text =
@@ -239,7 +239,7 @@ export function createRecoveryHost() {
     if (!retained || exactCommand(retained.command) !== exactCommand(original))
       throw new Error('Lookup requires the exact original command.');
     if (state.connection.state !== 'connected' || state.connection.freshness !== 'current')
-      throw new Error('Refresh the host snapshot before looking up this receipt.');
+      throw new Error('Refresh the server snapshot before looking up this receipt.');
     publish({ lookups: state.lookups + 1 });
     if (state.lookupUnavailable)
       return record(
@@ -288,11 +288,11 @@ export function createRecoveryHost() {
       record(
         command,
         'acknowledged',
-        'Host reports this attempt stopped. Partial output retained.',
+        'Server reports this attempt stopped. Partial output retained.',
       );
       publish({
         notice:
-          'Attempt stopped by the simulated host. Retry or continuation starts a new attempt.',
+          'Attempt stopped by the simulated server. Retry or continuation starts a new attempt.',
       });
       return;
     }
@@ -340,7 +340,7 @@ export function createRecoveryHost() {
     record(
       command,
       'acknowledged',
-      'Host reports a new attempt started. The previous output and draft remain available.',
+      'Server reports a new attempt started. The previous output and draft remain available.',
     );
     publish({
       notice: `New attempt ${attempt} started. This is not a durable resume of the previous stream.`,
@@ -360,7 +360,7 @@ export function createRecoveryHost() {
     else {
       event({ type: 'message.completed', payload: { id: message.id } });
       run('succeeded');
-      publish({ notice: 'Simulated host reports the response complete.' });
+      publish({ notice: 'Simulated server reports the response complete.' });
     }
   }
   function disconnect() {
@@ -379,7 +379,7 @@ export function createRecoveryHost() {
       refresh: 'submitting',
       connection: connection('reconnecting', 'stale'),
       error: undefined,
-      notice: 'Waiting for an explicit simulated host snapshot. No command is resent.',
+      notice: 'Waiting for an explicit simulated server snapshot. No command is resent.',
     });
     return id;
   }

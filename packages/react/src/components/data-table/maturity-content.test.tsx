@@ -110,7 +110,7 @@ describe('table maturity contracts', () => {
         onPageChange={vi.fn()}
       />,
     );
-    expect(screen.getByRole('status')).toHaveTextContent('Pagination information is inconsistent');
+    expect(screen.getByRole('status')).toHaveTextContent('page numbers don’t add up');
     expect(screen.queryByRole('button', { name: 'Next page' })).toBeNull();
   });
   it('retains rows while loading and prevents duplicate sort/page requests', async () => {

@@ -167,7 +167,7 @@ function EmulatorView({
             setInputNotice('');
           } catch {
             setInputNotice(
-              'Input delivery outcome unknown. Reconcile with the host before resubmitting.',
+              'It’s not clear whether your input arrived. Check before sending it again.',
             );
           }
         });
@@ -205,7 +205,7 @@ function EmulatorView({
                 current.onResize({ ...current.view.context, columns, rows });
               } catch {
                 setInputNotice(
-                  'Resize delivery outcome unknown. Reconcile with the host before resubmitting.',
+                  'It’s not clear whether the resize arrived. Check before sending it again.',
                 );
               }
             }
@@ -300,7 +300,7 @@ function EmulatorView({
           )}
           <p className={css.notice}>
             {permitted()
-              ? 'Keyboard input requests are sent to the host.'
+              ? 'What you type is sent to the running process.'
               : 'Keyboard input unavailable. Output remains inspectable.'}
           </p>
         </>

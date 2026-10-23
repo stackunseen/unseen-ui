@@ -184,7 +184,7 @@ export function DataTable({
   const emptyMessage = loading
     ? 'Loading table rows…'
     : error
-      ? 'Rows unavailable. Check the host result.'
+      ? 'Rows unavailable. Try loading them again.'
       : 'No rows to display.';
   return (
     <div className={g.root} data-part="data-table" data-variant={variant}>
@@ -327,7 +327,7 @@ export function DataTable({
         <p className={s.muted} role="status">
           {selectedColumn
             ? `Sorted by ${selectedColumn.label}, ${sort.direction === 'asc' ? 'ascending' : 'descending'}.`
-            : 'The host sort column is unavailable in this view.'}
+            : 'The column this list is sorted by isn’t shown in this view.'}
         </p>
       )}
       {loading && <LoadingIndicator label="Loading table rows" />}
@@ -381,7 +381,7 @@ export function DataTable({
           </div>
         ) : (
           <p role="status" className={g.error}>
-            Pagination information is inconsistent. Check the host snapshot.
+            The page numbers don’t add up. Try loading the list again.
           </p>
         ))}
       {onLoadMore && (

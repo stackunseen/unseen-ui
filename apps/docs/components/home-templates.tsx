@@ -10,7 +10,7 @@ const templates = [
     label: 'Agent Workbench',
     href: '/patterns/agent-workbench/',
     description:
-      'Review accounts, inspect sources and approve a proposed change. A local host supplies the sample states.',
+      'Review accounts, inspect sources and approve a proposed change. A local server supplies the sample states.',
   },
   {
     value: 'coding',
@@ -30,7 +30,7 @@ export function HomeTemplates() {
           <h2 id="home-template-title">Explore a complete screen.</h2>
         </div>
         <Link prefetch={false} className="web-text-link" href="/templates/">
-          All templates <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
+          All templates <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
         </Link>
       </div>
       <Tabs
@@ -71,7 +71,7 @@ export function HomeTemplates() {
                 </p>
                 <p>{template.description}</p>
                 <Link prefetch={false} className="web-text-link" href={template.href}>
-                  Open the template <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
+                  Open the template <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
                 </Link>
               </figcaption>
             </figure>

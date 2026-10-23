@@ -23,7 +23,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     states: ['Complete', 'Streaming', 'Unknown duration'],
     contract: 'summary · state · durationMs? · open? · onOpenChange?',
     responsibility:
-      'Pass a public summary only. Duration is shown only when the host measured it; private reasoning is never displayed.',
+      'Pass only a public summary, never private reasoning. The duration shows only if your server measured it.',
     code: '<Reasoning summary={summary} state="complete" durationMs={3200} />',
   }),
   assistant({
@@ -36,7 +36,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     responsibility:
       'Fetch suggestions yourself, for the current text only, and clear them when the text changes or after Escape. The component never calls a model.',
     keyboard:
-      'Tab accepts and Escape dismisses only while a suggestion shows at the end of the text; otherwise both keep their usual behaviour. Screen readers hear the suggestion as a description.',
+      'Tab accepts and Escape dismisses only while a suggestion shows at the end of the text; otherwise both keep their usual behavior. Screen readers hear the suggestion as a description.',
     code: '<SuggestTextarea value={draft} onValueChange={setDraft} suggestion={completion} />',
   }),
   assistant({
@@ -49,29 +49,29 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     contract:
       'steps · state: running | done | stopped | failed · startedAt · endedAt? · durationMs? · children? · open? · onOpenChange?',
     responsibility:
-      'Steps and times come from the host. Pass endedAt or durationMs when the turn ends; otherwise the time stops when the state changes.',
+      'Steps and times come from your server. Pass endedAt or durationMs when the turn ends; otherwise the clock stops when the state changes.',
     code: '<WorkSummary steps={turn.steps} state="done" startedAt={turn.startedAt} durationMs={turn.elapsedMs} />',
   }),
   assistant({
     name: 'ChainOfThought',
     category: 'Execution',
     aliases: ['Agent steps', 'Thought steps', 'Task log', 'Activity log'],
-    description:
-      'Public, host-reported steps of a run or one task, with sources or files per step.',
+    description: 'The public steps a run took, each with its sources or files.',
     states: ['Default', 'Active step', 'Task log', 'Failed step', 'Empty'],
     contract: 'steps · title? · open? · onOpenChange?',
     responsibility:
-      'Report steps the host actually took. Source links render only for http(s) URLs.',
+      'Report only steps that really happened. Source links show only for http and https addresses.',
     code: '<ChainOfThought steps={steps} />',
   }),
   assistant({
     name: 'Plan',
     category: 'Execution',
     aliases: ['Execution plan'],
-    description: 'A proposed plan with collapsible steps and a host-owned action.',
+    description: 'A proposed plan with collapsible steps and a button to run it.',
     states: ['Default', 'Streaming', 'Without steps'],
     contract: 'title · description? · steps? · streaming? · actions?',
-    responsibility: 'Showing a plan does not approve or start it. Run it only after host checks.',
+    responsibility:
+      'Showing a plan doesn’t approve or start it. Run it only after your server has checked it.',
     code: '<Plan title="Rewrite the docs" steps={steps} actions={<Button>Build</Button>} />',
   }),
   assistant({
@@ -81,7 +81,8 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'A divider marking a restorable point in a conversation.',
     states: ['Default', 'Restoring'],
     contract: 'label? · createdAt? · onRestore? · restoring?',
-    responsibility: 'Restore is a request. The host performs it and reports the outcome.',
+    responsibility:
+      'Restore asks your app to go back to this point; your app does it and reports what happened.',
     code: '<Checkpoint createdAt={time} onRestore={restore} />',
   }),
   assistant({
@@ -102,7 +103,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
       'A compact model picker: each model with its description, and a check on the current one.',
     states: ['Default', 'Unavailable model'],
     contract: 'models · value · onValueChange · label? · disabled?',
-    responsibility: 'The host validates the chosen model when the request runs.',
+    responsibility: 'Check the chosen model on your server when the request runs.',
     keyboard: 'Enter opens the list; arrow keys move between models; Escape closes.',
     code: '<ModelSelector models={models} value={model} onValueChange={setModel} />',
   }),
@@ -127,7 +128,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'A single command with a copy button.',
     states: ['Default'],
     contract: 'code · prefix? · label?',
-    responsibility: 'Shown as text and never executed.',
+    responsibility: 'Shown as text; it never runs.',
     code: '<Snippet prefix="$" code="pnpm add @stackunseen/ui" />',
   }),
   devtools({
@@ -137,7 +138,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'A commit with its subject, author and changed files.',
     states: ['Default', 'Files open'],
     contract: 'hash · message · author? · committedAt? · files?',
-    responsibility: 'Display host-reported commit data; this does not run git.',
+    responsibility: 'Shows the commit data you pass in; it never runs git.',
     code: '<Commit hash={hash} message={message} files={files} />',
   }),
   devtools({
@@ -147,7 +148,8 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'Environment variables with masked secret values.',
     states: ['Default', 'Empty'],
     contract: 'variables · title?',
-    responsibility: 'Prefer omitting secret values. Revealing is local and never fetches.',
+    responsibility:
+      'Leave secret values out when you can. Reveal only shows what you passed in; it never fetches anything.',
     code: '<EnvironmentVariables variables={variables} />',
   }),
   devtools({
@@ -157,7 +159,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'A package change with versions and dependencies.',
     states: ['Major', 'Added'],
     contract: 'name · currentVersion? · newVersion? · changeType? · dependencies?',
-    responsibility: 'It does not install or verify anything.',
+    responsibility: 'It doesn’t install or check anything.',
     code: '<PackageInfo name="react" currentVersion="18.3.1" newVersion="19.0.0" changeType="major" />',
   }),
   devtools({
@@ -167,7 +169,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'An API operation with parameters and nested bodies.',
     states: ['Default'],
     contract: 'method · path · parameters? · requestBody? · responseBody?',
-    responsibility: 'Read-only schema display; it sends no requests.',
+    responsibility: 'Read-only; it never sends a request.',
     code: '<SchemaDisplay method="POST" path="/accounts" requestBody={fields} />',
   }),
   devtools({
@@ -177,18 +179,18 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'A readable error with internal frames collapsed.',
     states: ['Default'],
     contract: 'name · message · frames · onOpenFrame?',
-    responsibility: 'Opening a frame asks the host editor to navigate.',
+    responsibility: 'Opening a frame asks your app to jump to that line in an editor.',
     code: '<StackTrace name="TypeError" message={message} frames={frames} />',
   }),
   devtools({
     name: 'WebPreview',
     category: 'Artifacts',
     aliases: ['Browser preview', 'Iframe preview'],
-    description: 'A sandboxed preview of a host page with an address bar.',
+    description: 'A sandboxed preview of a web page, with an address bar.',
     states: ['Default', 'Unsafe address'],
     contract: 'url · title? · onNavigate?',
     responsibility:
-      'The frame never gets same-origin access. The host decides which addresses load.',
+      'The page never gets access to your site, and you decide which addresses may load.',
     code: '<WebPreview url={previewUrl} onNavigate={setPreviewUrl} />',
   }),
   media({
@@ -198,7 +200,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'A compact player for generated or recorded audio.',
     states: ['Default', 'Unavailable'],
     contract: 'src · label',
-    responsibility: 'Supply audio the person may play. Unsafe sources are refused.',
+    responsibility: 'Pass audio the person is allowed to play. Unsafe sources are refused.',
     code: '<AudioPlayer src={audioUrl} label="Answer audio" />',
   }),
   media({
@@ -218,7 +220,7 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'Choose a speech voice and preview samples.',
     states: ['Default'],
     contract: 'voices · value · onValueChange · onPreview?',
-    responsibility: 'The host plays samples and applies the choice.',
+    responsibility: 'Your app plays the samples and applies the chosen voice.',
     code: '<VoiceSelector voices={voices} value={voice} onValueChange={setVoice} />',
   }),
   media({
@@ -228,19 +230,20 @@ export const aiExtrasCatalog: CatalogEntry[] = [
     description: 'An animated presence for voice agents.',
     states: ['Idle', 'Listening', 'Thinking', 'Speaking', 'Asleep'],
     contract: 'state · name? · size? · showLabel?',
-    responsibility: 'Reflect the state the host reports; motion respects reduced-motion settings.',
+    responsibility:
+      'Pass what your voice agent is doing. Motion follows the reduced-motion setting.',
     code: '<Persona state="listening" />',
   }),
   media({
     name: 'Image',
     category: 'Artifacts',
     aliases: ['Generated image'],
-    description: 'A generated or attached image with queued, progress, partial and failure states.',
+    description: 'A generated or attached image, with what to show while it loads or if it fails.',
     states: ['Ready', 'Queued', 'Loading', 'Generating with progress', 'Failed', 'Unavailable'],
     contract:
       'src | base64 + mediaType · alt · caption? · state?: queued | loading | ready | failed · progress? · preview? · error? · onRetry?',
     responsibility:
-      'Alt text is required. Progress shows only when the host measured it; a partial preview is decorative. SVG data and unsafe schemes are refused.',
+      'Alt text is required. Progress shows only if your server measured it, and a partial preview is treated as decoration. SVG data and unsafe links are refused.',
     code: '<Image src={url} alt="Weekly signups chart" />',
   }),
 ];

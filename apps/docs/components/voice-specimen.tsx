@@ -83,7 +83,7 @@ export function VoiceSpecimen({
                 : 'unavailable',
     error:
       state === 'Transcription error'
-        ? 'Synthetic provider failure. Recorded audio is a separate host outcome.'
+        ? 'Synthetic provider failure. Recorded audio is a separate server outcome.'
         : undefined,
     text:
       state === 'Transcript limit'
@@ -247,7 +247,7 @@ export function VoiceSpecimen({
         </div>
       )}
       <p className="specimen-feedback">
-        Synthetic host fixtures. No microphone, generated audio or speech provider is opened.
+        Sample server samples. No microphone, generated audio or speech provider is opened.
       </p>
     </>
   );

@@ -328,7 +328,7 @@ export function VoiceControl({
             <p className={css.notice}>
               {model?.permission === 'denied' || state === 'denied'
                 ? 'Microphone access denied. Allow access in browser settings or continue typing.'
-                : 'Audio capture is unsupported by this host.'}
+                : 'Recording isn’t supported here.'}
             </p>
           ) : (
             <>
@@ -386,12 +386,12 @@ export function VoiceControl({
           {submission !== 'idle' && (
             <p role="status" className={css.notice}>
               {submission === 'outcome-unknown'
-                ? 'Voice request outcome unknown. Reconcile with the host before requesting again.'
+                ? 'It’s not clear whether that worked. Check before trying again.'
                 : submission === 'failed'
-                  ? 'Voice request failed. Previous host state is retained.'
+                  ? 'That didn’t work. Nothing changed.'
                   : submission === 'submitting'
                     ? 'Requesting voice action…'
-                    : 'Voice request received. Waiting for host state.'}
+                    : 'Request received. Waiting for an update.'}
             </p>
           )}
           {variant !== 'bar' && controls}

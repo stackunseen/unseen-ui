@@ -71,7 +71,7 @@ export function ContactDemo() {
       }
       actions={
         <Button type="submit" className={s.actionButton}>
-          Prepare a draft <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+          Prepare a draft <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
         </Button>
       }
     >

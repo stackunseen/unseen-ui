@@ -170,7 +170,7 @@ export function BranchSwitcher(props: BranchSwitcherProps) {
             rows!.length > 0 && (
               <p role="status" className={s.warning}>
                 {value
-                  ? 'Selected branch is unavailable in the current host data window.'
+                  ? 'The selected branch isn’t loaded right now.'
                   : 'No conversation branch selected.'}
               </p>
             )

@@ -18,7 +18,7 @@ function scenario(value: ResearchScenario) {
   });
 }
 
-describe('research host evidence mapping', () => {
+describe('research server evidence mapping', () => {
   it('maps exact supplied excerpts by stable source identity, version and location', () => {
     const snapshot = suppliedResearchSnapshot();
     expect(researchSnapshotIssue(snapshot)).toBeUndefined();
@@ -132,7 +132,7 @@ describe('research host evidence mapping', () => {
     ).toContain('ambiguous');
   });
 
-  it('ignores unknown fixture requests and preserves the original immutable snapshot', () => {
+  it('ignores unknown sample requests and preserves the original immutable snapshot', () => {
     const original = suppliedResearchSnapshot();
     expect(
       researchHostReducer(original, { type: 'select-snapshot', scenario: 'live-retrieval' }),
@@ -146,7 +146,7 @@ describe('research host evidence mapping', () => {
 describe('research answer composition', () => {
   it('discloses simulation and keeps the unsupported result visibly unassessed', () => {
     render(<ResearchRecipe />);
-    expect(screen.getByText('Simulated host · synthetic supplied documents.')).toBeVisible();
+    expect(screen.getByText('Simulated server · synthetic supplied documents.')).toBeVisible();
     expect(screen.getByText('The pilot reduced resolution time.')).toBeVisible();
     expect(screen.getByText('Source unavailable')).toBeVisible();
     expect(
@@ -207,7 +207,7 @@ describe('research answer composition', () => {
     await user.click(screen.getByRole('button', { name: 'Source 1: Source unavailable' }));
     const dialog = screen.getByRole('dialog', { name: 'Source unavailable' });
     expect(within(dialog).getByRole('status')).toHaveTextContent(
-      'Source version or location unavailable',
+      'version or location isn’t available',
     );
     expect(within(dialog).queryByText(/revised pilot includes three/)).toBeNull();
   });
@@ -219,22 +219,22 @@ describe('research answer composition', () => {
     const evidence = screen.getByRole('group', { name: 'Evidence' });
     expect(within(evidence).getByText('Supports')).toBeVisible();
     expect(screen.getByText(/Bound to claim revision 1/)).toBeVisible();
-    await user.click(screen.getByRole('button', { name: 'Context and host responsibility' }));
+    await user.click(screen.getByRole('button', { name: 'Context and server responsibility' }));
     expect(screen.getByText('Context usage unknown')).toBeVisible();
     expect(screen.getAllByText(/model inclusion is not reported/)).toHaveLength(2);
     expect(screen.queryByText('included')).toBeNull();
   });
 
-  it('shows host errors with retained excerpts and zero current mappings', async () => {
+  it('shows server errors with retained excerpts and zero current mappings', async () => {
     const user = userEvent.setup();
     render(<ResearchRecipe />);
     await user.click(screen.getByRole('combobox', { name: 'Supplied evidence state' }));
-    await user.click(screen.getByRole('option', { name: 'Host snapshot error' }));
+    await user.click(screen.getByRole('option', { name: 'Server snapshot error' }));
     expect(screen.getByRole('alert')).toHaveTextContent('Previous excerpts are retained');
     expect(screen.getByRole('status', { name: 'Research evidence update' })).toHaveTextContent(
       '0 of 3 claims',
     );
-    expect(screen.getAllByText('Current host snapshot unavailable')).toHaveLength(2);
+    expect(screen.getAllByText('Current server snapshot unavailable')).toHaveLength(2);
     await user.click(screen.getAllByText('Read supplied excerpt', { selector: 'summary' })[0]!);
     expect(
       screen.getByText(

@@ -58,28 +58,28 @@ export async function browserSmokeJourneys(initialPage, options, auditPage) {
             await example
               .getByRole('button', { name: 'Simulate lost acknowledgement', exact: true })
               .click();
-            await example.getByText('Local host changes: 1', { exact: true }).waitFor();
+            await example.getByText('Changes on the sample server: 1', { exact: true }).waitFor();
             await example
               .getByRole('button', {
                 name: permission ? 'Check original decision' : 'Check original handoff',
                 exact: true,
               })
               .click();
-            await example.getByText(/The host confirmed the original decision/).waitFor();
+            await example.getByText(/Your original decision was confirmed/).waitFor();
             const before = permission
               ? 'Permission requested · unknown snapshot'
-              : 'Last acknowledged owner: Implementation agent';
+              : 'Last confirmed owner: Implementation agent';
             await example.getByText(before, { exact: true }).waitFor();
-            await example.getByText('Local host changes: 1', { exact: true }).waitFor();
+            await example.getByText('Changes on the sample server: 1', { exact: true }).waitFor();
             await example
-              .getByRole('button', { name: 'Refresh host snapshot', exact: true })
+              .getByRole('button', { name: 'Refresh server snapshot', exact: true })
               .click();
             await example
               .getByText(permission ? 'Permission granted' : 'Current owner: Review agent', {
                 exact: true,
               })
               .waitFor();
-            await example.getByText('Local host changes: 1', { exact: true }).waitFor();
+            await example.getByText('Changes on the sample server: 1', { exact: true }).waitFor();
             check(await action.isDisabled(), `${family}: applied decision became enabled`);
           } else if (family === 'ClarificationRequest') {
             await example.getByRole('button', { name: 'Continue', exact: true }).focus();

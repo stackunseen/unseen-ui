@@ -44,11 +44,11 @@ export function ReviewSummary({
           {unresolved
             ? 'Outcome unknown'
             : review.submission.status === 'pending'
-              ? 'Awaiting acknowledgement'
+              ? 'Waiting for confirmation'
               : undone
-                ? 'Undo acknowledged'
+                ? 'Undo confirmed'
                 : review.policy.stage === 'saved'
-                  ? 'Saved by host'
+                  ? 'Saved'
                   : state}
         </span>
       </div>
@@ -59,12 +59,12 @@ export function ReviewSummary({
       )}
       {!originalMatches && (
         <p role="alert" className={s.error}>
-          The original command does not match the reviewed proposal. Refresh host state.
+          This request doesn’t match the changes you reviewed. Refresh to get the latest.
         </p>
       )}
       {!receiptValid && (
         <p role="alert" className={s.error}>
-          The receipt does not match the original command. Its outcomes are unverified.
+          The confirmation doesn’t match the original request, so the results aren’t verified.
         </p>
       )}
       {review.access !== 'allowed' && (

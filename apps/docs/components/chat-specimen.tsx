@@ -31,8 +31,8 @@ export function ChatSpecimen({
     }
     return host.subscribe(() => {
       const snapshot = host.getSnapshot();
-      if (snapshot.status === 'complete') onNotice('The local host finished a simulated reply.');
-      if (snapshot.status === 'failed') onNotice('The local host simulated a failed reply.');
+      if (snapshot.status === 'complete') onNotice('The sample reply finished.');
+      if (snapshot.status === 'failed') onNotice('This sample reply was set up to fail.');
     });
   }, [host, state, onNotice]);
   return (
@@ -40,7 +40,7 @@ export function ChatSpecimen({
       host={host}
       variant={resolveVariant('Chat', presentation)}
       title="Assistant"
-      placeholder="Ask the local host…"
+      placeholder="Ask the local server…"
       style={{ ['--ai-chat-height' as string]: '540px' }}
     />
   );

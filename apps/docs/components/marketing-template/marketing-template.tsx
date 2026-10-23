@@ -30,7 +30,7 @@ const navigation = [
 function Brand() {
   return (
     <a href="#folio-top" aria-label="Folio home">
-      <LayersIcon width={24} height={24} strokeWidth={1.5} aria-hidden="true" /> folio
+      <LayersIcon width={30} height={30} aria-hidden="true" /> folio
     </a>
   );
 }
@@ -41,7 +41,7 @@ export function MarketingTemplate() {
     <div className={s.template} id="folio-top">
       <div className={s.templateBar}>
         <a href="/patterns/">
-          <ArrowLeftIcon width={14} height={14} aria-hidden="true" /> All patterns
+          <ArrowLeftIcon width={15} height={15} aria-hidden="true" /> All patterns
         </a>
         <span>Fictional product · interactive local example</span>
       </div>
@@ -62,7 +62,7 @@ export function MarketingTemplate() {
         actions={
           <>
             <a href="#folio-pricing" className={s.darkLink}>
-              Find your plan <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+              Find your plan <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
             </a>
             <a href="#folio-features" className={s.textLink}>
               Explore the workspace
@@ -90,21 +90,21 @@ export function MarketingTemplate() {
             title: 'One place for the useful details',
             description:
               'Keep project briefs and working notes together, with a clear path back to the original context.',
-            icon: <StackIcon width={20} height={20} strokeWidth={1.5} />,
+            icon: <StackIcon width={15} height={15} />,
           },
           {
             id: 'decisions',
             title: 'Decisions you can return to',
             description:
               'Write down what changed, why it changed and what happens next. Help the next person pick up the thread.',
-            icon: <ReaderIcon width={20} height={20} strokeWidth={1.5} />,
+            icon: <ReaderIcon width={15} height={15} />,
           },
           {
             id: 'focus',
             title: 'A little more room to focus',
             description:
               'Give each project a simple home. Keep the next step visible without turning every note into another notification.',
-            icon: <TargetIcon width={20} height={20} strokeWidth={1.5} />,
+            icon: <TargetIcon width={15} height={15} />,
           },
         ]}
       />
@@ -117,7 +117,7 @@ export function MarketingTemplate() {
         meta="Sample editorial · 2 minute read"
         actions={
           <a href="#folio-contact" className={s.textLink}>
-            Talk about your workflow <ArrowTopRightIcon width={16} height={16} aria-hidden="true" />
+            Talk about your workflow <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
           </a>
         }
       >
@@ -193,7 +193,7 @@ export function MarketingTemplate() {
         copyright="Folio is a fictional product. All content is illustrative."
       >
         <a href="/docs/">
-          Built with Unseen UI <ArrowTopRightIcon width={14} height={14} aria-hidden="true" />
+          Built with Unseen UI <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
         </a>
       </MarketingFooter>
     </div>

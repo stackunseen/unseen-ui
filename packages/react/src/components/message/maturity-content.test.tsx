@@ -65,7 +65,7 @@ describe('attachment reference lifecycle', () => {
         rerender(<Message value={message} variant={variant} attachments={resources} />);
         expect(screen.getByRole('dialog')).toBe(dialog);
         expect(within(dialog).getByRole('status')).toHaveTextContent(
-          'Attachment version unavailable',
+          'version of the attachment isn’t available',
         );
         expect(within(dialog).queryByText('Original immutable file content.')).toBeNull();
         expect(within(dialog).queryByText('Replacement must not be shown.')).toBeNull();

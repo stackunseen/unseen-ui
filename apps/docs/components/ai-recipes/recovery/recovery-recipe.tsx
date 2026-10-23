@@ -19,7 +19,7 @@ export function RecoveryRecipe() {
   return host ? (
     <RecoveryWorkspace host={host} />
   ) : (
-    <p role="status">Preparing simulated recovery host.</p>
+    <p role="status">Preparing simulated recovery server.</p>
   );
 }
 
@@ -92,7 +92,7 @@ function RecoveryWorkspace({ host }: { host: RecoveryHost }) {
                 state={latest.state === 'acknowledged' ? 'pending' : latest.state}
                 label={
                   latest.state === 'acknowledged'
-                    ? 'Received by host'
+                    ? 'Received by server'
                     : latest.state === 'submitting'
                       ? 'Awaiting acknowledgement'
                       : undefined

@@ -46,7 +46,7 @@ function exported(state: ReturnType<typeof createArtifactDemo>): ArtifactExportI
   };
 }
 
-describe('artifact demo in-memory host', () => {
+describe('artifact demo in-memory server', () => {
   it('saves the exact revision once and rejects replay or mutated intent text', () => {
     const state = createArtifactDemo();
     expect(
@@ -132,7 +132,7 @@ describe('artifact demo in-memory host', () => {
 });
 
 describe('ArtifactPanel and ArtifactEditor compose the actual optional CodeEditor', () => {
-  it('acknowledges controlled typing/save and preserves the host draft through panel close/reopen', async () => {
+  it('acknowledges controlled typing/save and preserves the server draft through panel close/reopen', async () => {
     const { container } = render(<ArtifactDemo />);
     await userEvent.click(screen.getByRole('button', { name: 'Open artifact editor' }));
     const textbox = screen.getByRole('textbox', { name: 'Greeting artifact draft' });
@@ -168,7 +168,7 @@ describe('ArtifactPanel and ArtifactEditor compose the actual optional CodeEdito
       createArtifactDemo().draft.text,
     );
     expect(screen.getByText(/no file was written/)).toBeVisible();
-    await userEvent.click(screen.getByRole('button', { name: 'Local host controls' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Local server controls' }));
     await userEvent.click(screen.getByRole('button', { name: 'Change saved base' }));
     expect(screen.getByRole('alert')).toHaveTextContent('saved document changed from 1 to 2');
     expect(screen.getByRole('button', { name: 'Save draft' })).toBeDisabled();

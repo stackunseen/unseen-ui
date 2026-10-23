@@ -24,7 +24,7 @@ export function RecoveryTranscript({ state }: { state: RecoveryState }) {
             stale
               ? 'Run state may be stale'
               : state.runtime.run.lifecycle === 'cancelled'
-                ? 'Stopped by host'
+                ? 'Stopped by server'
                 : undefined
           }
         />

@@ -3,17 +3,17 @@ import { OptionalEntries } from '../../components/getting-started/optional-entri
 
 # Getting started
 
-Build a small React interface, then add the components you need. Unseen UI is an experimental alpha; APIs may change between releases.
+Install the package, render one component, then add what you need. Unseen UI is in early alpha, so APIs can still change between releases.
 
 ## 1. Install from npm
 
-The packages are public on npm; `latest` points at the current prerelease. Your app needs React and ReactDOM `^19.3.0`, a bundler that supports CSS imports, and React types if you use TypeScript.
+You need React and ReactDOM `^19.3.0`, a bundler that handles CSS imports, and the React types if you use TypeScript.
 
 ```sh
 npm install @stackunseen/ui react@^19.3.0 react-dom@^19.3.0
 ```
 
-`@stackunseen/ui-core` installs automatically as a dependency. Pin the exact version in your lockfile. Every prerelease is also published under the `alpha` tag, which moves with each release; `latest` is moved by hand until a stable 0.1.0.
+`@stackunseen/ui-core` comes along automatically. Pin the exact version, because alpha releases can change APIs. The `latest` tag points at the current prerelease; every prerelease is also tagged `alpha`.
 
 <details className="setup-archives">
 <summary>Work from the source repository instead</summary>
@@ -26,7 +26,7 @@ pnpm build:packages
 pnpm dev
 ```
 
-Open [the development site](http://127.0.0.1:3000). Build the packages before starting a workspace consumer.
+Open [the development site](http://127.0.0.1:3000). Build the packages before you start any app in the workspace that uses them.
 
 For the static website preview:
 
@@ -83,7 +83,7 @@ export function FirstExample() {
 }
 ```
 
-The value and callback stay in your application. To save to a server, replace the local update with your host's validation and receipt handling. Read [Connect to your app](/docs/integration/) before wiring tools, approvals or execution.
+The value and the callback live in your app. To save to a server, call your API instead of updating local state, and show the result once it answers. Read [Connect to your app](/docs/integration/) before you wire up tools, approvals or anything that runs actions.
 
 ### Other ways to start
 
@@ -142,7 +142,7 @@ npx shadcn@latest add https://unseenui.com/r/theme.json
 <details className="setup-entries">
 <summary>Start from a whole chat</summary>
 
-`@stackunseen/ui/chat` composes the transcript, streaming reply, tool cards, suggestions and composer, and ships a local host that streams deterministic replies so you can see it work before anything is connected. Swap the host for your server when you are ready; see the [Chat guide](/components/chat/).
+`@stackunseen/ui/chat` puts the messages, streaming reply, tool cards, suggestions and message box together. It comes with a local stand-in server that streams scripted replies, so you can see it working before you connect anything. Swap in your own server when you're ready; the [Chat guide](/components/chat/) shows how.
 
 ```tsx
 'use client';
@@ -160,19 +160,19 @@ export function Demo() {
 
 <h2 id="optional-renderers">3. Add only the entries you need</h2>
 
-Ordinary controls come from `@stackunseen/ui`. DataGrid has a separate entry and stylesheet. Keep the base CSS and `AITheme` from the first example.
+Everyday controls come from `@stackunseen/ui`. Bigger pieces such as DataGrid have their own entry and stylesheet, so they only load when you use them. Keep the base CSS and `AITheme` from the first example.
 
 ```tsx
 import { DataGrid } from '@stackunseen/ui/application';
 import '@stackunseen/ui/application.css';
 ```
 
-Open the [DataGrid guide](/components/data-grid/) for controlled rows, sorting and paging. This entry needs no additional optional peers.
+The [DataGrid guide](/components/data-grid/) covers rows, sorting and paging. This entry needs no extra packages.
 
 <details className="setup-entries">
 <summary>Other optional entries and their dependencies</summary>
 
-The paths below are subpaths of `@stackunseen/ui`. Install optional peers only for entries you import. The base React and ReactDOM peers are still required. Exact supported ranges are in the React package manifest included with the local build.
+Each path below is part of `@stackunseen/ui`. Install the extra packages an entry lists only if you import that entry; React and ReactDOM are always needed. The exact supported versions are under `peerDependencies` in the package's `package.json`.
 
 <OptionalEntries />
 
@@ -183,7 +183,7 @@ import { MarkdownResponse } from '@stackunseen/ui/markdown';
 import '@stackunseen/ui/styles.css';
 ```
 
-Follow each component's usage guide for its required values and callbacks. There are no `/button` or `/icons` subpaths.
+Each component's page lists the values and callbacks it needs. There are no `/button` or `/icons` paths; those come from the main entry.
 
 </details>
 
@@ -194,11 +194,11 @@ Follow each component's usage guide for its required values and callbacks. There
 - [AI components](/components/#ai): conversations, generated output, execution and review.
 - [SaaS admin example](/templates/saas-admin/): a working app with customer records, members and settings.
 
-[Customize](/customize/) previews appearance, colors, density and corners. [Themes and icons](/docs/customization/) covers `AITheme`, `IconsProvider` and custom header/footer composition. For server responses and optional workflow examples, read [Connect to your app](/docs/integration/).
+[Customize](/customize/) lets you preview appearance, colors, density and corners. [Themes and icons](/docs/customization/) covers `AITheme`, `IconsProvider` and building your own header and footer. To connect components to your server, read [Connect to your app](/docs/integration/).
 
 ## 5. Notes for Next.js apps
 
-Three things that only come up with a server-rendering router. Open one when you need it.
+Three things that only come up with Next.js server rendering. Open one when you need it.
 
 <details className="setup-entries">
 <summary>Compound parts in Server Components</summary>
@@ -232,7 +232,7 @@ The provider is a Client Component that a root layout can render; the components
 <details className="setup-entries">
 <summary>Dark code panels on a light page</summary>
 
-Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (or any component) to render it dark inside a light page. The nested provider inherits the parent theme's colours and scopes its tokens to that subtree, and portals opened from inside it keep the same appearance.
+Nest a second `AITheme` with `appearance="dark"` around `HighlightedCodeBlock` (or any component) to render it dark inside a light page. The nested provider keeps the parent theme's colors, applies only to what it wraps, and menus or dialogs opened from inside it stay dark too.
 
 ```tsx
 <AITheme appearance="dark">

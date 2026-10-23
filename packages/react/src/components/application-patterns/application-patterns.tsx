@@ -195,7 +195,7 @@ export function SettingsSaveCancel({
             ? 'Unsaved changes'
             : 'No unsaved changes'
           : state.status === 'pending'
-            ? (state.message ?? 'Waiting for the host receipt…')
+            ? (state.message ?? 'Waiting for confirmation…')
             : state.message}
       </p>
       <div className={s.actions}>
@@ -204,7 +204,7 @@ export function SettingsSaveCancel({
         </Button>
         {state.status === 'unknown' ? (
           <Button disabled={!onReconcile} onClick={onReconcile} aria-describedby={id}>
-            Check original receipt
+            Check if it went through
           </Button>
         ) : (
           <Button
