@@ -41,9 +41,9 @@
 .tag,
 .workflowLabel {
   color: var(--ai-muted);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 .title {
   font-size: 36px;
@@ -159,16 +159,8 @@
   min-inline-size: 0;
   scroll-margin-block-start: 96px;
 }
-.setup pre {
+.setup > [data-part='code-block'] {
   margin-block: 16px;
-  padding: 16px;
-  border: 1px solid var(--ai-border);
-  border-radius: var(--ai-control-radius);
-  background: var(--ai-surface-subtle);
-  color: var(--ai-text);
-  overflow-x: auto;
-  line-height: 1.8;
-  font-size: 12px;
 }
 .setup p code,
 .source code {

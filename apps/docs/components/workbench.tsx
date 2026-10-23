@@ -218,7 +218,7 @@ function WorkbenchRun({
         <section className={s.workspace} aria-label="Account review workspace">
           <div className={s.workspaceHeader}>
             <div>
-              <span className={s.eyebrow}>DEMO WORKSPACE</span>
+              <span className={s.eyebrow}>Demo workspace</span>
               <h2>{review.title}</h2>
             </div>
             <div className={s.headerActions}>

@@ -346,7 +346,7 @@ export function CodingStudio({ showIntroduction = true }: { showIntroduction?: b
     <article className={s.page}>
       {showIntroduction && (
         <header className="page-heading">
-          <span className="eyebrow">APPLICATION TEMPLATE</span>
+          <span className="eyebrow">Application template</span>
           <h1>Coding Studio</h1>
           <p>
             A file workspace, change review and assistant in one place. Try the complete local

@@ -132,7 +132,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <p className="collection-note">
           Install once with <code>npm install @stackunseen/ui</code>, then import what you use.
         </p>
-        <CodePanel>{importBlock(entries)}</CodePanel>
+        <CodePanel language="tsx">{importBlock(entries)}</CodePanel>
       </section>
       {pattern && (
         <p className="collection-note">

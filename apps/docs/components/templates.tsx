@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle, Card } from '@stackunseen/ui';
 import s from './templates.module.css';
 import { componentHref } from '../lib/site-paths';
+import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
 
 const componentGroups = [
   { label: 'Account workspace', components: ['Card', 'Table', 'Input', 'Select'] },
@@ -21,7 +22,7 @@ export function Templates() {
   return (
     <article className={s.page}>
       <header className="page-heading">
-        <span className="eyebrow">APPLICATION TEMPLATES</span>
+        <span className="eyebrow">Application templates</span>
         <h1>Templates</h1>
         <p>Try a complete local workflow, adapt its source and connect your services.</p>
       </header>
@@ -91,7 +92,7 @@ export function Templates() {
             <span className={s.mark} aria-hidden="true">
               <LayersIcon width={30} height={30} />
             </span>
-            <span className={s.tag}>LOCAL REFERENCE APP</span>
+            <span className={s.tag}>Local reference app</span>
           </div>
           <Card.Title as="h2" id="relay-template-title" className={s.title}>
             Relay
@@ -152,11 +153,12 @@ export function Templates() {
         <section id="relay-setup" className={s.setup} aria-labelledby="relay-setup-title">
           <h2 id="relay-setup-title">Run and adapt</h2>
           <p>From the repository root, install dependencies, build the packages and start Relay.</p>
-          <pre tabIndex={0} role="group" aria-label="Relay setup commands">
-            <code>{`pnpm install --frozen-lockfile
+          <HighlightedCodeBlock
+            language="sh"
+            code={`pnpm install --frozen-lockfile
 pnpm build:packages
-pnpm template:dev`}</code>
-          </pre>
+pnpm template:dev`}
+          />
           <p>
             Open <code>http://127.0.0.1:4184/relay.html</code> while the local server is running.
           </p>

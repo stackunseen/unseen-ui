@@ -96,10 +96,28 @@
   margin-block-start: 4px;
 }
 .excerpt summary {
-  cursor: pointer;
-  width: fit-content;
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding-block: 4px;
+  list-style: none;
+  font-size: 13px;
+  cursor: pointer;
+}
+.excerpt summary::-webkit-details-marker {
+  display: none;
+}
+/* A chevron that turns when open, as on the site's other disclosures. */
+.excerpt summary svg {
+  transition: transform 120ms cubic-bezier(0.2, 0, 0, 1);
+}
+.excerpt[open] summary svg {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .excerpt summary svg {
+    transition: none;
+  }
 }
 .excerpt summary:focus-visible {
   outline: 2px solid var(--ai-focus);
@@ -132,14 +150,5 @@
   }
   .excerpt summary {
     min-height: 44px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .excerpt summary::before {
-    content: '+';
-  }
-  .excerpt[open] summary::before {
-    content: '−';
   }
 }

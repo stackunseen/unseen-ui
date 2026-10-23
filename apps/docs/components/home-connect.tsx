@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
-import { CodeTabs } from '@stackunseen/ui/devtools';
-import '@stackunseen/ui/devtools.css';
+import { HomeConnectCode } from './home-connect-code';
 
 const files = [
   {
@@ -76,7 +75,7 @@ export function HomeConnect() {
         </p>
       </div>
       {/* The file names always run across the top, leaving the code the full column width. */}
-      <CodeTabs
+      <HomeConnectCode
         className="home-connect-code"
         label="Example files"
         files={files}

@@ -109,7 +109,10 @@ const PartView = memo(function PartView({
       // Open while the model thinks, then collapse so the answer leads; people can reopen it.
       content = (
         <details className={s.reasoning} open={part.state === 'streaming' || undefined}>
-          <summary>{part.state === 'streaming' ? 'Thinking…' : 'Reasoning'}</summary>
+          <summary>
+            {part.state === 'streaming' ? 'Thinking…' : 'Reasoning'}
+            <AIIcon name="expand" className={s.reasoningChevron} />
+          </summary>
           <p>{part.text}</p>
         </details>
       );

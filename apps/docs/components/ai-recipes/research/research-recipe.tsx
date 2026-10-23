@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useReducer } from 'react';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 import {
   Accordion,
   Citation,
@@ -173,7 +174,10 @@ export function ResearchRecipe() {
                   </p>
                   {value.access === 'available' && value.excerpt ? (
                     <details className={styles.excerpt}>
-                      <summary>Read supplied excerpt</summary>
+                      <summary>
+                        Read supplied excerpt
+                        <ChevronDownIcon width={15} height={15} aria-hidden="true" />
+                      </summary>
                       <blockquote>{value.excerpt}</blockquote>
                     </details>
                   ) : (

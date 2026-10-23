@@ -35,17 +35,17 @@ export function AiSdkChatRecipe({
             {
               value: 'client',
               label: 'Client',
-              content: <CodePanel>{client}</CodePanel>,
+              content: <CodePanel language="tsx">{client}</CodePanel>,
             },
             {
               value: 'server',
               label: 'Server route',
-              content: <CodePanel>{server}</CodePanel>,
+              content: <CodePanel language="ts">{server}</CodePanel>,
             },
             {
               value: 'wording',
               label: 'Your wording and views',
-              content: <CodePanel>{wording}</CodePanel>,
+              content: <CodePanel language="tsx">{wording}</CodePanel>,
             },
           ]}
         />

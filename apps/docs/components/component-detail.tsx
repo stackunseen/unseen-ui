@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { ResetIcon } from '@radix-ui/react-icons';
 import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import { TableOfContents } from '@stackunseen/ui/navigation';
+import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
 import '@stackunseen/ui/navigation.css';
 import type { CatalogEntry } from '../lib/catalog';
 import { catalogStyles } from '../lib/catalog';
@@ -19,6 +20,8 @@ import { catalog } from '../lib/catalog';
 import { navigationGroup } from '../lib/gallery-navigation';
 import { componentHref, componentSlug } from '../lib/site-paths';
 import { PropsTable } from './props-table';
+import { ComponentAnatomy } from './component-anatomy';
+import { componentAnatomy } from '../lib/component-anatomy';
 import { tasksFor } from '../lib/tasks';
 import { componentImport } from '../lib/component-import';
 import { guidanceFor } from '../lib/usage-guidance';
@@ -207,24 +210,7 @@ export function ComponentDetail({
     )
     .slice(0, 8);
   const usage = `${rich && entry.name === 'StreamingResponse' ? '' : `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : entry.name} } from '@stackunseen/ui${module}';\n`}${entry.relatedImports?.length ? `import { ${entry.relatedImports.join(', ')} } from '@stackunseen/ui';\n` : ''}import '@stackunseen/ui/styles.css';\n${optionalStyles}${emulatedTerminal ? "import '@stackunseen/ui/terminal.css';\n" : ''}${mathStyles ? "import 'katex/dist/katex.min.css';\n" : ''}\n${code}`;
-  const [copied, setCopied] = useState<{ usage: string; message: string }>();
-  const copyRequest = useRef(0);
-  useEffect(
-    () => () => {
-      copyRequest.current += 1;
-    },
-    [usage],
-  );
-  async function copyUsage() {
-    const attempt = ++copyRequest.current;
-    try {
-      await navigator.clipboard.writeText(usage);
-      if (copyRequest.current === attempt) setCopied({ usage, message: 'Copied example.' });
-    } catch {
-      if (copyRequest.current === attempt)
-        setCopied({ usage, message: 'Clipboard unavailable. Select the code to copy.' });
-    }
-  }
+  const anatomy = componentAnatomy[entry.name];
   const pageMarkdown = [
     `# ${entry.name}`,
     '',
@@ -240,6 +226,22 @@ export function ComponentDetail({
     ...starters.map((item) => registryCommand(item)),
     '```',
     '',
+    ...(anatomy
+      ? [
+          '## Anatomy',
+          '',
+          anatomy.intro,
+          '',
+          ...anatomy.parts.flatMap((part, index) => [
+            `${index + 1}. **${part.name}**: ${part.description}${part.builtFrom.length ? ` Built from ${part.builtFrom.join(', ')}.` : ''} Props: ${part.props.map((prop) => `\`${prop}\``).join(', ')}.`,
+          ]),
+          '',
+          ...anatomy.connection.flatMap((way) => [
+            `- **${way.label}** (${way.props.map((prop) => `\`${prop}\``).join(', ')}): ${way.description}`,
+          ]),
+          '',
+        ]
+      : []),
     '## Usage',
     '',
     '```tsx',
@@ -261,6 +263,7 @@ export function ComponentDetail({
   const sections = [
     ['component-example', 'Preview'],
     ['component-install', 'Installation'],
+    ...(anatomy ? [['component-anatomy', 'Anatomy']] : []),
     ['component-props', 'Usage and props'],
     ['component-customization', 'Keyboard and customization'],
     ...(tasks.length > 0 || siblings.length > 0 ? [['component-related', 'Works with']] : []),
@@ -474,13 +477,7 @@ export function ComponentDetail({
                 label: 'Code',
                 content: (
                   <div className="code-example">
-                    <pre role="group" tabIndex={0} aria-label={`${entry.name} usage example`}>
-                      <code>{usage}</code>
-                    </pre>
-                    <Button variant="outline" onClick={() => void copyUsage()}>
-                      Copy usage
-                    </Button>
-                    <p role="status">{copied?.usage === usage ? copied.message : ''}</p>
+                    <HighlightedCodeBlock code={usage} language="tsx" />
                     <small>
                       Supply values and callbacks from your app. For runnable examples, see{' '}
                       <code>examples/consumer</code> and <code>apps/docs/components</code>.
@@ -568,12 +565,20 @@ export function ComponentDetail({
                   </>
                 ) : null}
               </span>
-              <Button size="sm" variant="ghost" onClick={() => void copyUsage()}>
-                Copy usage
-              </Button>
+              <CopyButton size="sm" variant="ghost" value={usage} label="Copy usage" />
             </div>
           </div>
         </section>
+        {anatomy && (
+          <section
+            id="component-anatomy"
+            className="api-section component-anchor"
+            aria-labelledby="component-anatomy-title"
+          >
+            <h2 id="component-anatomy-title">Anatomy</h2>
+            <ComponentAnatomy name={entry.name} anatomy={anatomy} />
+          </section>
+        )}
         <section
           id="component-props"
           className="api-section component-anchor"

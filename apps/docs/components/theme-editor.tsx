@@ -119,7 +119,7 @@ export function ThemeEditor({
   return (
     <div className="theme-editor">
       <div className="theme-lead">
-        <span className="eyebrow">CUSTOMIZE</span>
+        <span className="eyebrow">Customize</span>
         <h1>Theme studio</h1>
         <p>
           Change the look of this showcase. Colors, borders and corners update live and stay with
@@ -256,7 +256,7 @@ export function ThemeEditor({
         </section>
         <section className="theme-preview" aria-label="Theme preview">
           <h2 className="sr-only">Theme preview</h2>
-          <div className="preview-caption">LIVE COMPONENT PREVIEW</div>
+          <div className="preview-caption">Live component preview</div>
           <div className="theme-demo-message">
             <span className="assistant-mark">
               <AIIcon name="assistant" />

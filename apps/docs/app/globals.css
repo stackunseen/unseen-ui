@@ -624,17 +624,9 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   }
 }
 .code-example {
+  display: grid;
+  gap: 12px;
   padding: 24px;
-  background: var(--ai-surface);
-  border: 1px solid var(--ai-border);
-  border-radius: 8px;
-}
-.code-example pre {
-  font:
-    12px/1.8 ui-monospace,
-    monospace;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }
 .code-example small {
   color: var(--ai-muted);
@@ -1031,26 +1023,11 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   outline: 2px solid #2563eb;
   outline-offset: 2px;
 }
-/* Guide code blocks carry a copy button in the corner */
-.code-panel {
-  position: relative;
-  margin: 16px 0;
-}
-.code-panel {
+/* Guide code blocks: the library's highlighted block, kept inside the column. */
+.guide-code {
   min-width: 0;
   max-width: 100%;
-}
-.code-panel > pre {
-  margin: 0;
-  padding-inline-end: 52px;
-  /* Long lines scroll inside the block instead of widening the page. */
-  overflow-x: auto;
-  max-width: 100%;
-}
-.code-panel > [data-part='copy-button-root'] {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  margin: 16px 0;
 }
 .docs-article a {
   color: #1d4ed8;

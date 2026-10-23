@@ -904,17 +904,13 @@
   color: var(--ai-muted);
   font-size: 13px;
 }
-.ai-sdk-recipe-code .code-panel {
+.ai-sdk-recipe-code .guide-code {
   margin: 12px 0 0;
 }
+/* Long files scroll inside the block beside the demo. */
 .ai-sdk-recipe-code pre {
   max-height: 420px;
   overflow: auto;
-  padding: 16px;
-  border-radius: var(--ai-radius, 12px);
-  background: var(--ai-surface-subtle);
-  font-size: 12.5px;
-  line-height: 1.6;
 }
 .ai-sdk-recipe-steps {
   margin: 16px 0 0;
@@ -1474,21 +1470,86 @@
   color: var(--ai-text);
   font-size: 13px;
 }
+/*
+ * Disclosures across the site look like the library Accordion: full-width rows with a chevron on
+ * the right that turns when open. They stay native details, so find-in-page works without script.
+ */
+.setup-archives,
+.setup-entries,
+.props-table {
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  interpolate-size: allow-keywords;
+}
 .setup-archives,
 .setup-entries {
   margin-block: 28px;
-  border-block: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
 }
-.setup-archives > summary,
-.setup-entries > summary {
-  padding-block: 14px;
+/* Disclosures that follow one another read as one accordion. */
+:is(.setup-archives, .setup-entries) + :is(.setup-archives, .setup-entries) {
+  margin-top: -28px;
+  border-top: 0;
+}
+:is(.setup-archives, .setup-entries, .props-table) > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   min-height: 48px;
+  padding: 12px 4px;
+  border-radius: 6px;
+  list-style: none;
   color: var(--ai-text);
   font-weight: 550;
   cursor: pointer;
 }
+:is(.setup-archives, .setup-entries, .props-table) > summary::-webkit-details-marker {
+  display: none;
+}
+:is(.setup-archives, .setup-entries, .props-table) > summary::after {
+  content: '';
+  flex: none;
+  width: 15px;
+  height: 15px;
+  background-color: var(--ai-muted);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M3.135 6.158a.5.5 0 0 1 .707-.023L7.5 9.565l3.658-3.43a.5.5 0 0 1 .684.73l-4 3.75a.5.5 0 0 1-.684 0l-4-3.75a.5.5 0 0 1-.023-.707Z'/%3E%3C/svg%3E")
+    center / 15px no-repeat;
+  transition: transform var(--ai-duration-fast, 120ms) var(--ai-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+:is(.setup-archives, .setup-entries, .props-table)[open] > summary::after {
+  transform: rotate(180deg);
+}
+@media (hover: hover) {
+  :is(.setup-archives, .setup-entries, .props-table) > summary:hover::after {
+    background-color: var(--ai-text);
+  }
+}
+/* Where the browser can animate to an automatic height, the content glides open and shut. */
+:is(.setup-archives, .setup-entries, .props-table)::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 200ms var(--ai-ease, cubic-bezier(0.2, 0, 0, 1)),
+    content-visibility 200ms allow-discrete;
+}
+:is(.setup-archives, .setup-entries, .props-table)[open]::details-content {
+  block-size: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.setup-archives, .setup-entries, .props-table)::details-content,
+  :is(.setup-archives, .setup-entries, .props-table) > summary::after {
+    transition: none;
+  }
+}
+:is(.setup-archives, .setup-entries)[open] {
+  padding-bottom: 16px;
+}
 .setup-archives > summary:focus-visible,
 .setup-entries > summary:focus-visible,
+.props-table > summary:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
 .setup-entry-table:focus-visible {
   outline: 2px solid var(--ai-focus);
   outline-offset: 4px;
@@ -1769,11 +1830,6 @@
 .props-table {
   margin-top: 16px;
   border-top: var(--ai-border-width, 1px) solid var(--ai-border);
-}
-.props-table > summary {
-  padding: 12px 0;
-  cursor: pointer;
-  font-weight: 550;
 }
 .props-table table {
   display: block;

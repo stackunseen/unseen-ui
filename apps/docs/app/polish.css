@@ -535,9 +535,6 @@
     background: var(--ai-surface-subtle);
   }
 }
-.detail-main > .page-pager {
-  margin-bottom: 56px;
-}
 @media (max-width: 600px) {
   .page-pager {
     grid-template-columns: minmax(0, 1fr);
@@ -545,4 +542,184 @@
   .page-pager a[data-next] {
     grid-column: auto;
   }
+}
+
+/* Anatomy: a numbered outline of the regions beside what draws each one and the props that shape it. */
+.anatomy {
+  display: grid;
+  grid-template-columns: 184px minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+  margin-top: 16px;
+}
+.anatomy-figure {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  grid-template-rows: 36px 168px 36px 60px;
+  gap: 6px;
+  padding: 8px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 14px;
+  background: var(--ai-surface);
+}
+.anatomy-region {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px dashed var(--ai-control-border);
+  border-radius: 8px;
+  background: var(--ai-surface-subtle);
+  color: var(--ai-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+.anatomy-number,
+.anatomy-parts > li::before {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ai-text);
+  color: var(--ai-surface);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+.anatomy-parts {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: part;
+}
+.anatomy-parts > li {
+  position: relative;
+  padding: 16px 0 16px 32px;
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+  counter-increment: part;
+}
+.anatomy-parts > li::before {
+  content: counter(part);
+  position: absolute;
+  top: 18px;
+  left: 0;
+}
+.anatomy-parts > li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.anatomy-parts > li:first-child::before {
+  top: 2px;
+}
+.explorer-main .anatomy-parts h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+.anatomy-parts p,
+.anatomy-connection dd p {
+  margin: 0 0 8px;
+  color: var(--ai-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.anatomy .anatomy-meta,
+.anatomy-connection .anatomy-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 6px;
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+.anatomy-meta > span:first-child:not(:has(code, a)) {
+  margin-inline-end: 4px;
+  color: var(--ai-text);
+  font-weight: 550;
+}
+.anatomy-meta code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--ai-surface-subtle);
+  font-size: 12px;
+}
+.anatomy-connection {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0 0;
+}
+.anatomy-connection > div {
+  padding: 14px 16px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 12px;
+}
+.anatomy-connection dt {
+  font-weight: 600;
+}
+.anatomy-connection dd {
+  margin: 6px 0 0;
+}
+@media (max-width: 760px) {
+  .anatomy {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .anatomy-figure {
+    position: static;
+    grid-template-rows: 32px 96px 32px 44px;
+    width: min(100%, 280px);
+  }
+  .anatomy-connection {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/*
+ * One rhythm for every page: the same space under the site header and above the footer, whatever
+ * frame the page uses. The homepage hero and the 404 page set their own.
+ */
+:root {
+  --page-space-top: 32px;
+  --page-space-bottom: 72px;
+}
+@media (max-width: 760px) {
+  :root {
+    --page-space-top: 24px;
+    --page-space-bottom: 56px;
+  }
+}
+.web-docs-layout > main,
+main.explorer-main,
+main.example-page,
+main.templates-page,
+main.relay-page {
+  padding-top: var(--page-space-top);
+  padding-bottom: var(--page-space-bottom);
+}
+/* The main column supplies the top space, so page headings start flush with it. */
+.web-page-heading {
+  padding-top: 0;
+}
+.directory-page {
+  padding-bottom: 0;
+}
+/* A closing note ends the page; its own margin would add to the space above the footer. */
+.collection-note:last-child,
+.collection-note > :last-child {
+  margin-bottom: 0;
+}
+/* Every label above a title uses the same small sentence-case style, never tiny monospace capitals. */
+.eyebrow,
+.pane-heading .eyebrow,
+.theme-preview .preview-caption {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--ai-muted);
 }
