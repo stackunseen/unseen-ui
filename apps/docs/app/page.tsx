@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { HomeShowcase } from '../components/home-showcase';
 import { HomeAppExample } from '../components/home-app-example';
+import { CopyButton } from '@stackunseen/ui';
 import { HomeHeroDemo } from '../components/home-hero-demo';
+import { HomeConnect } from '../components/home-connect';
 import { componentTasks } from '../lib/tasks';
 import { LegacyGalleryRedirect } from '../components/legacy-gallery-redirect';
 import { releaseCatalog } from '../lib/first-release';
@@ -44,13 +46,23 @@ export default function Page() {
                 Get started <ArrowRightIcon width={15} height={15} aria-hidden="true" />
               </Link>
             </div>
-            <p className="home-intro-meta">
-              <code>npm install @stackunseen/ui</code>
-              <span>Early alpha · React 19</span>
-            </p>
+            <div className="home-intro-meta">
+              <span className="home-install">
+                <code>npm install @stackunseen/ui</code>
+                <CopyButton
+                  size="sm"
+                  variant="ghost"
+                  iconOnly
+                  value="npm install @stackunseen/ui"
+                  label="Copy install command"
+                />
+              </span>
+              <span>Early alpha · React 19 · MIT</span>
+            </div>
           </div>
           <HomeHeroDemo />
         </section>
+        <HomeConnect />
         <section className="home-tasks" aria-labelledby="home-tasks-title">
           <div className="home-section-heading">
             <h2 id="home-tasks-title">Start from what you&apos;re building</h2>
@@ -98,6 +110,14 @@ export default function Page() {
                 and you get fixes by updating a version, not by copying files again.
               </span>
               <Link href="/getting-started/">Read the setup guide</Link>
+            </li>
+            <li>
+              <strong>Ready for your coding agent</strong>
+              <span>
+                Point Cursor, Claude Code or any AI tool at llms.txt, read the component manifest
+                that ships in the package, or add starters from the shadcn registry.
+              </span>
+              <a href="/llms.txt">Open llms.txt</a>
             </li>
           </ul>
           <p className="home-why-evidence">

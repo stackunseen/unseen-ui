@@ -13,8 +13,10 @@
 }
 .rowTrigger {
   display: flex;
+  /* In a narrow column the name moves to its own line rather than splitting mid-word. */
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 4px 8px;
   width: 100%;
   min-height: 32px;
   padding: 4px 6px;
@@ -36,10 +38,17 @@
   flex: none;
   margin-inline-start: auto;
 }
+/* The status keeps its one-line width: "Needs review" never breaks over two lines. */
+.rowTrigger > :first-child {
+  flex: none;
+  white-space: nowrap;
+}
 .rowLabel {
+  min-width: 0;
   color: var(--ai-text, #18181b);
   font-weight: 500;
-  overflow-wrap: anywhere;
+  /* Breaks inside a name only when the name alone is wider than the row. */
+  overflow-wrap: break-word;
 }
 .rowTarget {
   min-width: 0;

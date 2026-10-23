@@ -29,13 +29,7 @@ export function HomeHeroDemo() {
   );
   return (
     <figure className="home-hero-demo">
-      <Chat
-        {...useAiSdkChat(plain)}
-        title="Assistant"
-        placeholder="Ask the simulated assistant…"
-        // Tall enough to show the question, the tool call and the approval together.
-        style={{ ['--ai-chat-height' as string]: '640px' }}
-      />
+      <Chat {...useAiSdkChat(plain)} title="Assistant" placeholder="Ask the simulated assistant…" />
       <figcaption>
         <span>
           A live example made from Chat, ToolCall and ApprovalCard. Approve or reject the request to
