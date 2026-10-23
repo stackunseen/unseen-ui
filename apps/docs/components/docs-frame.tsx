@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { FrameLinks } from './frame-links';
 import { NavResizer } from './nav-resizer';
+import { GuideOutline, GuidePager } from './guide-extras';
 
 type FrameLink = readonly [label: string, href: string];
 const docsLinks: readonly FrameLink[] = [
@@ -21,6 +22,7 @@ export function DocsFrame({
   label = 'Documentation',
   mainClassName = 'web-article',
   rail,
+  guide = false,
 }: {
   children: ReactNode;
   links?: readonly FrameLink[];
@@ -28,6 +30,8 @@ export function DocsFrame({
   mainClassName?: string;
   /** Extra sidebar content under the links, such as a catalog's category list. */
   rail?: ReactNode;
+  /** A reading page: an outline beside it and the previous and next guides after it. */
+  guide?: boolean;
 }) {
   return (
     <div className="web-docs-layout">
@@ -44,7 +48,17 @@ export function DocsFrame({
         <NavResizer navSelector=".web-docs-nav" />
       </aside>
       <main id="main-content" className={mainClassName} tabIndex={-1}>
-        {children}
+        {guide ? (
+          <div className="guide-layout">
+            <div className="guide-body">
+              {children}
+              <GuidePager links={links} />
+            </div>
+            <GuideOutline />
+          </div>
+        ) : (
+          children
+        )}
       </main>
     </div>
   );

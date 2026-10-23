@@ -432,3 +432,117 @@
 .explorer-site .explorer-library {
   padding-inline: 8px;
 }
+
+/* Guide sections link to themselves; the mark appears on hover or focus. */
+.heading-anchor {
+  color: inherit;
+  text-decoration: none;
+}
+.heading-anchor::after {
+  content: '#';
+  margin-inline-start: 8px;
+  color: var(--ai-muted);
+  font-weight: 400;
+  opacity: 0;
+}
+.heading-anchor:focus-visible::after {
+  opacity: 1;
+}
+@media (hover: hover) {
+  .heading-anchor:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Guides: the reading column, with an outline beside it on wide screens. */
+.guide-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+}
+.guide-body {
+  min-width: 0;
+}
+.guide-outline {
+  display: none;
+}
+/* The outline sits inside the article, so undo the article's heading, link and list styles. */
+.web-article .guide-outline h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+.web-article .guide-outline a {
+  text-decoration: none;
+}
+.web-article .guide-outline li {
+  margin: 0;
+  color: var(--ai-text);
+}
+@media (min-width: 1280px) {
+  .web-docs-layout > .web-article:has(> .guide-layout) {
+    max-width: calc(768px + 48px + 176px + 2 * clamp(20px, 3vw, 48px));
+  }
+  .guide-layout {
+    grid-template-columns: minmax(0, 768px) 176px;
+  }
+  .guide-outline {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+    display: block;
+  }
+}
+
+/* Previous and next, named, at the end of a guide or a component page. */
+.page-pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 56px;
+}
+.page-pager a {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 12px;
+  color: var(--ai-text);
+  text-decoration: none;
+  line-height: 1.4;
+}
+.page-pager a[data-next] {
+  grid-column: 2;
+  justify-items: end;
+  text-align: end;
+}
+.page-pager span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ai-muted);
+  font-size: 13px;
+}
+.page-pager strong {
+  font-size: 15px;
+  font-weight: 550;
+}
+@media (hover: hover) {
+  .page-pager a:hover {
+    border-color: var(--ai-control-border);
+    background: var(--ai-surface-subtle);
+  }
+}
+.detail-main > .page-pager {
+  margin-bottom: 56px;
+}
+@media (max-width: 600px) {
+  .page-pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-pager a[data-next] {
+    grid-column: auto;
+  }
+}

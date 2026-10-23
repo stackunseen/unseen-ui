@@ -102,12 +102,15 @@ export function ComponentDetail({
   location,
   onChange,
   pagination,
+  pager,
 }: {
   entry: CatalogEntry;
   location: GalleryLocation;
   onChange: (patch: Partial<GalleryLocation>) => void;
   /** Previous and next links, shown beside the title. */
   pagination?: ReactNode;
+  /** The same links with names, at the end of the page. */
+  pager?: ReactNode;
 }) {
   const styles = catalogStyles(entry);
   const guidance = componentGuidance(entry.name);
@@ -695,6 +698,7 @@ export function ComponentDetail({
             )}
           </section>
         )}
+        {pager}
       </div>
       <TableOfContents
         variant="track"

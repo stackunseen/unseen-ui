@@ -7,5 +7,5 @@ export const metadata = pageMetadata(
   '/getting-started/',
 );
 export default function DocsLayout({ children }: { children: ReactNode }) {
-  return <DocsFrame>{children}</DocsFrame>;
+  return <DocsFrame guide>{children}</DocsFrame>;
 }

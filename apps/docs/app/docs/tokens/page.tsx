@@ -66,7 +66,8 @@ export default function TokensPage() {
           <section key={key} aria-labelledby={`tokens-${key}`}>
             <h2 id={`tokens-${key}`}>{title}</h2>
             <p>{lead}</p>
-            <table className="token-table">
+            {/* Wide on small screens: focusable so the keyboard can scroll it too. */}
+            <table className="token-table" tabIndex={0} aria-labelledby={`tokens-${key}`}>
               <thead>
                 <tr>
                   <th scope="col">Variable</th>

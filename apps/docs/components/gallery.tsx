@@ -92,6 +92,8 @@ function LocalLink({
   className?: string;
   'aria-current'?: 'page';
   'aria-label'?: string;
+  rel?: 'prev' | 'next';
+  'data-next'?: '';
 }) {
   function click(event: MouseEvent<HTMLAnchorElement>) {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
@@ -463,6 +465,37 @@ export function Gallery({
                     </LocalLink>
                   )}
                 </nav>
+              }
+              pager={
+                (previous || next) && (
+                  <nav className="page-pager" aria-label="More components">
+                    {previous && (
+                      <LocalLink
+                        location={entryLocation(previous.name)}
+                        onNavigate={navigate}
+                        rel="prev"
+                      >
+                        <span>
+                          <ArrowLeftIcon width={15} height={15} aria-hidden="true" /> Previous
+                        </span>
+                        <strong>{previous.name}</strong>
+                      </LocalLink>
+                    )}
+                    {next && (
+                      <LocalLink
+                        location={entryLocation(next.name)}
+                        onNavigate={navigate}
+                        rel="next"
+                        data-next=""
+                      >
+                        <span>
+                          Next <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+                        </span>
+                        <strong>{next.name}</strong>
+                      </LocalLink>
+                    )}
+                  </nav>
+                )
               }
             />
           ) : view === 'coding' ? (
