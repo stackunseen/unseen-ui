@@ -90,8 +90,10 @@
   text-decoration: none;
   transition: border-color var(--ai-duration-fast, 120ms) var(--ai-ease, ease);
 }
-.home-tasks li a:hover {
-  border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+@media (hover: hover) {
+  .home-tasks li a:hover {
+    border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+  }
 }
 .home-tasks strong {
   font-size: 14px;
@@ -218,9 +220,13 @@
   border-radius: 50%;
   color: #fff;
 }
-.home-showcase-theme > button[aria-pressed='true'],
-.home-showcase-theme > button:hover {
+.home-showcase-theme > button[aria-pressed='true'] {
   border-color: var(--ai-control-border);
+}
+@media (hover: hover) {
+  .home-showcase-theme > button:hover {
+    border-color: var(--ai-control-border);
+  }
 }
 .home-showcase-theme .web-text-link {
   margin-left: 10px;
@@ -276,9 +282,11 @@
   font-weight: 500;
   text-decoration: none;
 }
-.home-tile-footer a:hover {
-  background: var(--ai-surface);
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .home-tile-footer a:hover {
+    background: var(--ai-surface);
+    color: var(--ai-primary-text);
+  }
 }
 .home-tile-status {
   margin: 0;
@@ -406,9 +414,11 @@
   font-size: 16px;
   text-decoration: none;
 }
-.home-start li > a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+@media (hover: hover) {
+  .home-start li > a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
 @media (max-width: 1100px) {
   .home-tiles {

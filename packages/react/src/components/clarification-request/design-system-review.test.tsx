@@ -38,7 +38,9 @@ describe('design audit interaction corrections', () => {
       rerender(<ClarificationRequest {...props} />);
       await user.click(screen.getByRole('button', { name: 'Continue' }));
       expect(screen.getByRole('textbox')).toHaveFocus();
-      expect(screen.getByRole('textbox')).toHaveAccessibleDescription('Please provide an answer.');
+      expect(screen.getByRole('textbox')).toHaveAccessibleDescription(
+        'Enter an answer to continue.',
+      );
       rerender(
         <ClarificationRequest
           {...props}

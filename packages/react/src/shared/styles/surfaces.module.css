@@ -36,8 +36,10 @@
   color: inherit;
   text-decoration: none;
 }
-.link:hover {
-  border-color: var(--ai-control-border, #71717a);
+@media (hover: hover) {
+  .link:hover {
+    border-color: var(--ai-control-border, #71717a);
+  }
 }
 .link:focus-visible {
   outline: 2px solid var(--ai-focus, #18181b);

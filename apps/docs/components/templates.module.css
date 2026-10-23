@@ -74,8 +74,10 @@
   text-decoration: none;
   font-weight: 600;
 }
-.previewLink:hover {
-  background: var(--ai-primary-hover);
+@media (hover: hover) {
+  .previewLink:hover {
+    background: var(--ai-primary-hover);
+  }
 }
 .setupLink,
 .textLink {
@@ -218,10 +220,12 @@
   font-size: 12px;
   text-decoration: none;
 }
-.componentGroup a:hover {
-  color: var(--ai-text);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+@media (hover: hover) {
+  .componentGroup a:hover {
+    color: var(--ai-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 @media (max-width: 1100px) {
   .template,

@@ -65,8 +65,10 @@
 button.segment {
   cursor: pointer;
 }
-button.segment:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  button.segment:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .segment[aria-current='true'] {
   background: var(--ai-surface-subtle, #f4f4f5);
@@ -123,9 +125,11 @@ button.segment:hover {
   color: var(--ai-muted, #52525b);
   cursor: pointer;
 }
-.iconButton:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
-  color: var(--ai-text, #18181b);
+@media (hover: hover) {
+  .iconButton:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+    color: var(--ai-text, #18181b);
+  }
 }
 .persona {
   display: inline-grid;

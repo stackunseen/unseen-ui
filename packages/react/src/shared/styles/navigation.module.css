@@ -75,9 +75,13 @@
   background: var(--ai-surface);
   min-width: 0;
 }
-.thread:hover,
 .thread:focus-within {
   background: var(--ai-surface-subtle);
+}
+@media (hover: hover) {
+  .thread:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .thread[data-selected='true'] {
   background: var(--ai-primary-soft);
@@ -270,11 +274,16 @@
   align-items: center;
   background: transparent;
 }
-.root[data-variant='compact'] .thread:hover,
 .root[data-variant='compact'] .thread:focus-within,
 .root[data-variant='compact'] .thread[data-selected='true'] {
   background: var(--ai-surface-subtle);
   border-color: transparent;
+}
+@media (hover: hover) {
+  .root[data-variant='compact'] .thread:hover {
+    background: var(--ai-surface-subtle);
+    border-color: transparent;
+  }
 }
 /* Rows are 36px with their 1px borders and 1px apart, the rhythm of a sidebar's own links. */
 .root[data-variant='compact'] .threads {

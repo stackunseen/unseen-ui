@@ -61,8 +61,10 @@
   color: var(--ai-primary-text);
   background: var(--ai-primary-soft);
 }
-.file:not(:disabled):not([aria-current='true']):hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .file:not(:disabled):not([aria-current='true']):hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .file:disabled {
   cursor: default;

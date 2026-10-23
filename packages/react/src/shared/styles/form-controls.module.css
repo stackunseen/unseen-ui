@@ -319,3 +319,10 @@
     background: Canvas;
   }
 }
+
+/* iOS Safari zooms the whole page when a field's text is under 16px, so touch screens get 16px. */
+@media (pointer: coarse) {
+  .input {
+    font-size: max(16px, 1em);
+  }
+}

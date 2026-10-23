@@ -29,10 +29,15 @@
   padding: 0 10px;
   border-radius: 10px;
 }
-.web-nav a:hover,
 .web-nav a[aria-current] {
   text-decoration: none;
   color: var(--ai-text);
+}
+@media (hover: hover) {
+  .web-nav a:hover {
+    text-decoration: none;
+    color: var(--ai-text);
+  }
 }
 .web-nav a[aria-current] {
   background: var(--ai-surface-subtle);
@@ -42,8 +47,10 @@
   height: 32px;
   border-radius: 10px;
 }
-.web-icon:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .web-icon:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 
 /* Sidebar: flat list, grey selection, 32px rows. */
@@ -139,8 +146,10 @@
     color: var(--ai-muted);
     text-decoration: none;
   }
-  .detail-toc a:hover {
-    color: var(--ai-text);
+  @media (hover: hover) {
+    .detail-toc a:hover {
+      color: var(--ai-text);
+    }
   }
 }
 .detail-title-row {
@@ -174,8 +183,10 @@
   border-radius: 10px;
   color: var(--ai-text);
 }
-.detail-title-actions .component-pagination a:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .detail-title-actions .component-pagination a:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .explorer-main .detail-heading p {
   margin-top: 8px;

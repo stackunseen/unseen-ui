@@ -47,8 +47,10 @@
   color: var(--ai-text);
   box-shadow: 0 0 0 1px var(--ai-border);
 }
-.tabs button:hover {
-  color: var(--ai-text);
+@media (hover: hover) {
+  .tabs button:hover {
+    color: var(--ai-text);
+  }
 }
 .tabs button:focus-visible,
 .panel:focus-visible {

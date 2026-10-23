@@ -76,6 +76,8 @@ Unseen UI is an experimental alpha. Prereleases are published on npm under the `
 - **Radio options** are at least 24px tall with a mouse, so options without a description space like the rest.
 - **Stylesheets:** `styles/core.css` plus one sheet per base entry (`styles/layout.css`, `styles/markdown.css` and so on) load less than `styles.css`, which is unchanged. Button always carries `data-button` for styling.
 - **CodeDiff:** `showVersions={false}` hides the "base → next" line in the header, for pages that show several diffs of the same pair and state the comparison once. The versions still bind copies and feedback.
+- **Touch screens:** hover styling applies only on devices that can hover, so a tap no longer leaves a button or row looking hovered. Inputs, textareas and the PromptInput box use 16px text on touch screens, so iOS Safari no longer zooms the page when they gain focus.
+- **ClarificationRequest:** an empty text answer reads "Enter an answer to continue.", matching "Choose an answer to continue." for choices.
 
 ## 0.1.0-alpha.10 — 20 October 2026
 

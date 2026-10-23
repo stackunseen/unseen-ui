@@ -82,9 +82,11 @@
   font-size: var(--ai-font-size-caption, 12px);
   cursor: pointer;
 }
-.iconButton:hover:not(:disabled) {
-  background: var(--ai-surface-subtle, #f4f4f5);
-  color: var(--ai-text, #18181b);
+@media (hover: hover) {
+  .iconButton:hover:not(:disabled) {
+    background: var(--ai-surface-subtle, #f4f4f5);
+    color: var(--ai-text, #18181b);
+  }
 }
 .iconButton:disabled {
   opacity: var(--ai-disabled-opacity, 0.5);

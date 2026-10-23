@@ -123,8 +123,10 @@
   font: inherit;
   line-height: 1.6;
 }
-.search:not(:disabled):hover {
-  border-color: var(--ai-muted);
+@media (hover: hover) {
+  .search:not(:disabled):hover {
+    border-color: var(--ai-muted);
+  }
 }
 .search:disabled {
   opacity: var(--ai-disabled-opacity, 0.5);

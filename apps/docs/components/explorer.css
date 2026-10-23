@@ -201,8 +201,10 @@
   border-radius: 6px;
   overflow-wrap: anywhere;
 }
-.component-link:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .component-link:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .component-link small {
   display: block;
@@ -282,8 +284,10 @@
   text-decoration: none;
   min-height: 32px;
 }
-.component-pagination a:hover {
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .component-pagination a:hover {
+    color: var(--ai-primary-text);
+  }
 }
 .explorer-main .detail-page {
   max-width: none;

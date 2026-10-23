@@ -54,7 +54,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   color: var(--ai-text);
   font-size: 21px !important;
   font-weight: 700 !important;
-  letter-spacing: -0.8px;
+  letter-spacing: -0.038em;
 }
 .brand-mark {
   width: 32px;
@@ -124,7 +124,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
     600 10px/1.5 ui-monospace,
     monospace;
   color: var(--ai-muted);
-  letter-spacing: 1.4px;
+  letter-spacing: 0.14em;
   padding: 0 12px 12px;
 }
 .nav-main,
@@ -178,9 +178,11 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   background: var(--ai-surface-subtle);
   font-weight: 600;
 }
-.nav-main:hover,
-.category:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .nav-main:hover,
+  .category:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .planned-label {
   color: var(--ai-muted);
@@ -228,7 +230,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
     SFMono-Regular,
     Consolas,
     monospace;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.15em;
   color: var(--ai-muted);
 }
 .page-heading {
@@ -254,7 +256,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   margin: 12px 0;
   font-size: clamp(29px, 3.2vw, 43px);
   line-height: 1.15;
-  letter-spacing: -1.8px;
+  letter-spacing: -0.045em;
   font-weight: 650;
 }
 .page-heading p {
@@ -320,7 +322,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 .catalog-title h2 {
   font-size: 15px;
   margin: 0;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.02em;
   font-weight: 600;
 }
 .catalog-title > span {
@@ -411,7 +413,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 .card-heading h3 {
   margin: 0;
   font-size: 13px;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.015em;
 }
 .card-heading h3 button {
   padding: 0;
@@ -477,8 +479,10 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   color: var(--ai-muted);
   font-size: 10px !important;
 }
-.card-footer button:hover {
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .card-footer button:hover {
+    color: var(--ai-primary-text);
+  }
 }
 .specimen-feedback {
   font-size: 11px;
@@ -637,7 +641,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 }
 .api-section h2 {
   font-size: 20px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.025em;
 }
 .workbench {
   display: grid;
@@ -710,7 +714,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 .empty-conversation h3 {
   margin: 20px 0 8px;
   font-size: 17px;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.018em;
 }
 .empty-conversation p {
   max-width: 310px;
@@ -797,7 +801,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 .theme-lead h1 {
   font-size: 34px;
   line-height: 1.2;
-  letter-spacing: -1px;
+  letter-spacing: -0.029em;
   margin: 12px 0;
 }
 .theme-lead p {
@@ -914,7 +918,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
     10px ui-monospace,
     monospace;
   color: var(--ai-muted);
-  letter-spacing: 1px;
+  letter-spacing: 0.1em;
   margin-bottom: 36px;
 }
 .theme-demo-message {
@@ -1006,7 +1010,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 }
 .docs-article h1 {
   font-size: 34px;
-  letter-spacing: -1px;
+  letter-spacing: -0.029em;
   line-height: 1.2;
 }
 .docs-article h2 {
@@ -1149,14 +1153,14 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   }
   .page-heading h1 {
     font-size: 34px;
-    letter-spacing: -1.5px;
+    letter-spacing: -0.044em;
   }
   .page-heading p {
     font-size: 13px;
   }
   .eyebrow {
     font-size: 9px;
-    letter-spacing: 1px;
+    letter-spacing: 0.111em;
   }
   .alpha-chip {
     font-size: 9px;
@@ -1243,7 +1247,7 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
 .design-section h2 {
   margin: 10px 0;
   font-size: 23px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.022em;
 }
 .design-section h3 {
   margin-top: 0;
@@ -1468,9 +1472,11 @@ html body[data-scroll-locked]:has([data-radix-select-viewport], [data-radix-menu
   font-size: 13px;
   text-decoration: none;
 }
-.detail-related-links a:hover {
-  border-color: var(--ai-primary);
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .detail-related-links a:hover {
+    border-color: var(--ai-primary);
+    color: var(--ai-primary-text);
+  }
 }
 
 /* When to use a component, under its description */

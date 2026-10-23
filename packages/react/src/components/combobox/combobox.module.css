@@ -29,9 +29,11 @@
   color: inherit;
   cursor: pointer;
 }
-.clear:hover:not(:disabled) {
-  background: var(--ai-surface-subtle, #f4f4f5);
-  color: var(--ai-text, #18181b);
+@media (hover: hover) {
+  .clear:hover:not(:disabled) {
+    background: var(--ai-surface-subtle, #f4f4f5);
+    color: var(--ai-text, #18181b);
+  }
 }
 .clear:disabled {
   cursor: not-allowed;

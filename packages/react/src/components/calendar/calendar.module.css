@@ -72,8 +72,10 @@
   font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
-.day:hover:not([aria-disabled='true']) {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  .day:hover:not([aria-disabled='true']) {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .day[data-selected] {
   font-weight: 600;
@@ -84,8 +86,10 @@
   background: var(--ai-primary, #18181b);
   color: var(--ai-primary-foreground, #fff);
 }
-.day[data-endpoint]:hover:not([aria-disabled='true']) {
-  background: var(--ai-primary-hover, #27272a);
+@media (hover: hover) {
+  .day[data-endpoint]:hover:not([aria-disabled='true']) {
+    background: var(--ai-primary-hover, #27272a);
+  }
 }
 .day[aria-current='date'] {
   border-color: currentColor;

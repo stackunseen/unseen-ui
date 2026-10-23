@@ -117,9 +117,13 @@
   align-items: center;
   color: var(--ai-muted);
 }
-.web-nav a:hover,
 .web-nav a[aria-current] {
   color: var(--ai-text);
+}
+@media (hover: hover) {
+  .web-nav a:hover {
+    color: var(--ai-text);
+  }
 }
 .web-nav a[aria-current] {
   text-decoration: underline;
@@ -142,8 +146,10 @@
   cursor: pointer;
   border-radius: 6px;
 }
-.web-icon:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .web-icon:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .web-menu {
   display: none;
@@ -185,16 +191,20 @@
   background: var(--ai-primary);
   color: var(--ai-primary-foreground);
 }
-.web-button.primary:hover {
-  background: var(--ai-primary-hover);
+@media (hover: hover) {
+  .web-button.primary:hover {
+    background: var(--ai-primary-hover);
+  }
 }
 .web-button.secondary {
   border-color: var(--ai-control-border);
   background: var(--ai-surface);
   color: var(--ai-text);
 }
-.web-button.secondary:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .web-button.secondary:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .web-section-heading {
   display: flex;
@@ -222,8 +232,10 @@
   font-weight: 550;
   min-height: 36px;
 }
-.web-text-link:hover {
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .web-text-link:hover {
+    color: var(--ai-primary-text);
+  }
 }
 .web-footer {
   border-top: var(--ai-border-width, 1px) solid var(--ai-border);
@@ -244,8 +256,10 @@
   font-size: 14px;
   text-underline-offset: 4px;
 }
-.quick-components a:hover {
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .quick-components a:hover {
+    color: var(--ai-primary-text);
+  }
 }
 .web-footer-brand {
   font-size: 17px;
@@ -343,10 +357,12 @@
   color: var(--ai-muted);
   opacity: 1;
 }
-.home-search:hover,
-.directory-search:hover,
-.explorer-sidebar .search-field:hover {
-  border-color: var(--ai-text);
+@media (hover: hover) {
+  .home-search:hover,
+  .directory-search:hover,
+  .explorer-sidebar .search-field:hover {
+    border-color: var(--ai-text);
+  }
 }
 .home-search:focus-within,
 .directory-search:focus-within,
@@ -380,24 +396,30 @@
   min-height: 40px;
   cursor: pointer;
 }
-.directory-filters button:hover {
-  color: var(--ai-text);
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .directory-filters button:hover {
+    color: var(--ai-text);
+    background: var(--ai-surface-subtle);
+  }
 }
 .directory-filters button[aria-pressed='true'] {
   box-shadow: inset 0 -2px 0 var(--ai-primary-text);
 }
-.docs-links a:hover strong,
-.pattern-list > a:hover h2,
-.pattern-list > a:hover h3,
-.home-finder-heading a:hover,
-.web-footer nav a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+@media (hover: hover) {
+  .docs-links a:hover strong,
+  .pattern-list > a:hover h2,
+  .pattern-list > a:hover h3,
+  .home-finder-heading a:hover,
+  .web-footer nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
-.web-nav a:hover {
-  text-decoration: underline;
-  text-underline-offset: 8px;
+@media (hover: hover) {
+  .web-nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+  }
 }
 .directory-filters button[aria-pressed='true'] {
   background: var(--ai-primary-soft);
@@ -474,8 +496,10 @@
   transition: border-color var(--ai-duration-fast, 120ms) var(--ai-ease, ease);
 }
 /* Hover says "this opens" with the border alone; no lift or shadow. */
-.directory-group li a:hover {
-  border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+@media (hover: hover) {
+  .directory-group li a:hover {
+    border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+  }
 }
 .directory-group li a:focus-visible {
   outline: 2px solid var(--ai-focus);
@@ -533,8 +557,10 @@
   flex: none;
   color: var(--ai-muted);
 }
-.directory-group li a:hover strong {
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .directory-group li a:hover strong {
+    color: var(--ai-primary-text);
+  }
 }
 .directory-text > span {
   display: -webkit-box;
@@ -562,10 +588,12 @@
   border-radius: 0;
   background: transparent;
 }
-.directory-group[data-view='list'] li a:hover {
-  box-shadow: none;
-  transform: none;
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .directory-group[data-view='list'] li a:hover {
+    box-shadow: none;
+    transform: none;
+    background: var(--ai-surface-subtle);
+  }
 }
 .directory-group[data-view='list'] .directory-text {
   grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
@@ -637,9 +665,11 @@
   color: var(--ai-muted);
   text-decoration: none;
 }
-.web-docs-nav nav.directory-rail a:hover {
-  background: var(--ai-surface-subtle);
-  color: var(--ai-text);
+@media (hover: hover) {
+  .web-docs-nav nav.directory-rail a:hover {
+    background: var(--ai-surface-subtle);
+    color: var(--ai-text);
+  }
 }
 .web-docs-nav nav.directory-rail a > span {
   font-variant-numeric: tabular-nums;
@@ -682,9 +712,11 @@
   border-radius: var(--ai-control-radius, 8px);
   text-decoration: none;
 }
-.web-docs-nav nav a:hover {
-  background: var(--ai-surface-subtle);
-  color: var(--ai-primary-text);
+@media (hover: hover) {
+  .web-docs-nav nav a:hover {
+    background: var(--ai-surface-subtle);
+    color: var(--ai-primary-text);
+  }
 }
 .web-docs-nav nav a[aria-current='page'] {
   background: var(--ai-surface-subtle);
@@ -823,8 +855,10 @@
   color: var(--ai-text);
   text-decoration: none;
 }
-.pattern-templates a:hover {
-  border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+@media (hover: hover) {
+  .pattern-templates a:hover {
+    border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+  }
 }
 .pattern-templates a > strong,
 .pattern-templates a > span:last-child {
@@ -1537,8 +1571,10 @@
   font-size: 13px;
   cursor: pointer;
 }
-.directory-tasks button:hover {
-  border-color: var(--ai-primary);
+@media (hover: hover) {
+  .directory-tasks button:hover {
+    border-color: var(--ai-primary);
+  }
 }
 .directory-tasks button[aria-pressed='true'] {
   border-color: var(--ai-primary);
@@ -1617,8 +1653,10 @@
   color: var(--ai-text);
   text-decoration: none;
 }
-.task-list a:hover {
-  border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+@media (hover: hover) {
+  .task-list a:hover {
+    border-color: color-mix(in srgb, var(--ai-primary) 55%, var(--ai-border));
+  }
 }
 .task-list strong {
   font-size: 16px;
@@ -1670,8 +1708,10 @@
   font-weight: 600;
   white-space: nowrap;
 }
-.web-article tbody tr:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .web-article tbody tr:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .web-article td code,
 .web-article th code {

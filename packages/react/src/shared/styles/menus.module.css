@@ -21,11 +21,15 @@
   overflow-wrap: anywhere;
   cursor: pointer;
 }
-.trigger:hover:not(:disabled),
-.navigationControl:hover:not(:disabled),
 .navigationControl[data-state='open'],
 .navigationControl[data-active] {
   background: var(--ai-surface-subtle, #f4f4f5);
+}
+@media (hover: hover) {
+  .trigger:hover:not(:disabled),
+  .navigationControl:hover:not(:disabled) {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .contextTrigger {
   display: inline-block;

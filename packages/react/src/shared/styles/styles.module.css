@@ -77,39 +77,49 @@
   text-decoration: none;
   overflow-wrap: anywhere;
 }
-.button:hover:not(:disabled) {
-  background: var(--ai-primary-hover, #27272a);
+@media (hover: hover) {
+  .button:hover:not(:disabled) {
+    background: var(--ai-primary-hover, #27272a);
+  }
 }
 .button[data-variant='secondary'] {
   background: var(--ai-secondary, #7c3aed);
   color: var(--ai-secondary-foreground, #fff);
 }
-.button[data-variant='secondary']:hover:not(:disabled) {
-  background: var(--ai-secondary-hover, #6d28d9);
+@media (hover: hover) {
+  .button[data-variant='secondary']:hover:not(:disabled) {
+    background: var(--ai-secondary-hover, #6d28d9);
+  }
 }
 .button[data-variant='outline'] {
   background: var(--ai-surface, #fff);
   color: var(--ai-text, #18181b);
   border-color: var(--ai-border, #e4e4e7);
 }
-.button[data-variant='outline']:hover:not(:disabled) {
-  border-color: var(--ai-control-border, #71717a);
+@media (hover: hover) {
+  .button[data-variant='outline']:hover:not(:disabled) {
+    border-color: var(--ai-control-border, #71717a);
+  }
 }
 .button[data-variant='ghost'] {
   background: transparent;
   color: var(--ai-muted, #52525b);
 }
-.button[data-variant='outline']:hover:not(:disabled),
-.button[data-variant='ghost']:hover:not(:disabled) {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  .button[data-variant='outline']:hover:not(:disabled),
+  .button[data-variant='ghost']:hover:not(:disabled) {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .button[data-variant='danger'] {
   color: var(--ai-danger, #991b1b);
   background: var(--ai-danger-soft, #fee2e2);
 }
-.button[data-variant='danger']:hover:not(:disabled) {
-  background: var(--ai-danger-soft, #fee2e2);
-  border-color: var(--ai-danger, #991b1b);
+@media (hover: hover) {
+  .button[data-variant='danger']:hover:not(:disabled) {
+    background: var(--ai-danger-soft, #fee2e2);
+    border-color: var(--ai-danger, #991b1b);
+  }
 }
 .button:disabled {
   opacity: var(--ai-disabled-opacity, 0.5);
@@ -152,9 +162,11 @@
   text-align: start;
   text-underline-offset: 3px;
 }
-.button[data-variant='link']:hover:not(:disabled) {
-  background: transparent;
-  text-decoration: underline;
+@media (hover: hover) {
+  .button[data-variant='link']:hover:not(:disabled) {
+    background: transparent;
+    text-decoration: underline;
+  }
 }
 @media (any-pointer: coarse) {
   .button[data-variant='link'],
@@ -387,9 +399,13 @@
 .selectTrigger > span:last-child {
   flex-shrink: 0;
 }
-.selectTrigger:hover:not(:disabled),
 .selectTrigger[data-state='open'] {
   border-color: var(--ai-muted, #52525b);
+}
+@media (hover: hover) {
+  .selectTrigger:hover:not(:disabled) {
+    border-color: var(--ai-muted, #52525b);
+  }
 }
 .selectTrigger[data-placeholder] {
   color: var(--ai-muted, #52525b);
@@ -428,8 +444,10 @@
   min-width: 0;
   overflow-wrap: anywhere;
 }
-.accordionTrigger:hover:not(:disabled) {
-  color: var(--ai-primary-text, #27272a);
+@media (hover: hover) {
+  .accordionTrigger:hover:not(:disabled) {
+    color: var(--ai-primary-text, #27272a);
+  }
 }
 .accordionTrigger:disabled {
   opacity: var(--ai-disabled-opacity, 0.5);
@@ -536,8 +554,10 @@
   width: 100%;
   box-sizing: border-box;
 }
-.field input:hover:not(:disabled):not([readonly]) {
-  border-color: var(--ai-muted, #52525b);
+@media (hover: hover) {
+  .field input:hover:not(:disabled):not([readonly]) {
+    border-color: var(--ai-muted, #52525b);
+  }
 }
 .field input:disabled {
   cursor: not-allowed;
@@ -822,9 +842,13 @@
   border-color: transparent;
   background: transparent;
 }
-.selectTrigger[data-variant='ghost']:hover:not(:disabled),
 .selectTrigger[data-variant='ghost'][data-state='open'] {
   background: var(--ai-surface-subtle, #f4f4f5);
+}
+@media (hover: hover) {
+  .selectTrigger[data-variant='ghost']:hover:not(:disabled) {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .accordion[data-variant='bordered'] {
   border: 1px solid var(--ai-border, #e4e4e7);

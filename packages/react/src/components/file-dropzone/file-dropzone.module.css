@@ -15,8 +15,10 @@
 .zone:not([data-disabled]) {
   cursor: pointer;
 }
-.zone:not([data-disabled]):hover {
-  border-color: var(--ai-control-border, #71717a);
+@media (hover: hover) {
+  .zone:not([data-disabled]):hover {
+    border-color: var(--ai-control-border, #71717a);
+  }
 }
 .zone[data-dragging] {
   border-color: var(--ai-primary, #18181b);

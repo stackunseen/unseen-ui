@@ -109,3 +109,10 @@
     width: 100%;
   }
 }
+
+/* iOS Safari zooms the whole page when a field's text is under 16px, so touch screens get 16px. */
+@media (pointer: coarse) {
+  .composer textarea {
+    font-size: max(16px, 1em);
+  }
+}

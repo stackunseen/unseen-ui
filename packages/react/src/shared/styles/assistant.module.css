@@ -21,8 +21,10 @@
   cursor: pointer;
   text-align: start;
 }
-.trigger:hover {
-  color: var(--ai-text, #18181b);
+@media (hover: hover) {
+  .trigger:hover {
+    color: var(--ai-text, #18181b);
+  }
 }
 .chevron {
   transition: transform var(--ai-duration-fast, 120ms) var(--ai-ease, cubic-bezier(0.2, 0, 0, 1));
@@ -151,8 +153,10 @@
   font-size: var(--ai-font-size-caption, 12px);
   text-decoration: none;
 }
-a.chip:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  a.chip:hover {
+    text-decoration: underline;
+  }
 }
 .card {
   border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
@@ -197,9 +201,11 @@ a.chip:hover {
   color: var(--ai-muted, #52525b);
   cursor: pointer;
 }
-.iconButton:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
-  color: var(--ai-text, #18181b);
+@media (hover: hover) {
+  .iconButton:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+    color: var(--ai-text, #18181b);
+  }
 }
 .shimmer {
   background: linear-gradient(
@@ -267,8 +273,10 @@ a.chip:hover {
   font-weight: 500;
   cursor: pointer;
 }
-.textButton:hover:not(:disabled) {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  .textButton:hover:not(:disabled) {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .textButton:disabled {
   color: var(--ai-muted, #52525b);
@@ -303,8 +311,10 @@ a.chip:hover {
   outline: 2px solid var(--ai-focus, #18181b);
   outline-offset: -2px;
 }
-.option:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  .option:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .option:has(input:disabled) {
   opacity: var(--ai-disabled-opacity, 0.5);

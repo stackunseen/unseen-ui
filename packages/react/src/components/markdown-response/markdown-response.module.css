@@ -64,8 +64,10 @@
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
-.markdown a:hover {
-  text-decoration-thickness: 2px;
+@media (hover: hover) {
+  .markdown a:hover {
+    text-decoration-thickness: 2px;
+  }
 }
 .markdown :where(a, pre, [role='group']):focus-visible {
   outline: 2px solid var(--ai-focus, #18181b);

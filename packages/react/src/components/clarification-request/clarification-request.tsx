@@ -32,7 +32,7 @@ export function ClarificationRequest({
     (attempted && !valid
       ? choices
         ? 'Choose an answer to continue.'
-        : 'Please provide an answer.'
+        : 'Enter an answer to continue.'
       : '');
   return (
     <Panel data-part="clarification-request" data-variant={variant} className={s.clarification}>

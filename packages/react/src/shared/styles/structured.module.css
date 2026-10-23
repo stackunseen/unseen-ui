@@ -158,8 +158,10 @@
   text-align: start;
   vertical-align: middle;
 }
-.table tbody tr:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .table tbody tr:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .table :where(th, td)[data-format='number'] {
   font-variant-numeric: tabular-nums;

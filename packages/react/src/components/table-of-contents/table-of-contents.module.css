@@ -71,9 +71,11 @@
   border-inline-start: 2px solid transparent;
   margin-inline-start: -1px;
 }
-.link:hover,
-.subLink:hover {
-  color: var(--ai-text, #18181b);
+@media (hover: hover) {
+  .link:hover,
+  .subLink:hover {
+    color: var(--ai-text, #18181b);
+  }
 }
 .link:focus-visible,
 .subLink:focus-visible {

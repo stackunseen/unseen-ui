@@ -27,8 +27,10 @@
   text-align: start;
   cursor: pointer;
 }
-.rowTrigger:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  .rowTrigger:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .rowTrigger > svg:last-child {
   flex: none;

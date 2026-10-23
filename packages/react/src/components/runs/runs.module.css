@@ -246,8 +246,10 @@
   overflow-wrap: anywhere;
   cursor: pointer;
 }
-.opener:hover {
-  color: var(--ai-primary-text, #27272a);
+@media (hover: hover) {
+  .opener:hover {
+    color: var(--ai-primary-text, #27272a);
+  }
 }
 .cardMeta {
   display: flex;
@@ -362,9 +364,11 @@ a.effectLink,
 button.effectLink {
   cursor: pointer;
 }
-a.effectLink:hover,
-button.effectLink:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  a.effectLink:hover,
+  button.effectLink:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .effectKind {
   flex-shrink: 0;
@@ -409,8 +413,10 @@ button.effectLink:hover {
 button.status {
   cursor: pointer;
 }
-button.status:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  button.status:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .status[data-variant='banner'] {
   width: 100%;
@@ -556,8 +562,10 @@ button.status:hover {
 span.treeToggle {
   cursor: default;
 }
-.treeToggle:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  .treeToggle:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .treeMeta {
   color: var(--ai-muted, #52525b);

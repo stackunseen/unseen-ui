@@ -25,9 +25,11 @@
   color: inherit;
   text-decoration: none;
 }
-.templateBar a:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
+@media (hover: hover) {
+  .templateBar a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
 }
 .darkLink,
 .textLink {
@@ -47,18 +49,22 @@
   background: var(--ai-text);
   color: var(--ai-surface);
 }
-.template .darkLink:hover,
-.template .actionButton:hover:not(:disabled) {
-  color: var(--ai-surface);
-  background: var(--ai-muted);
-  border-color: var(--ai-muted);
+@media (hover: hover) {
+  .template .darkLink:hover,
+  .template .actionButton:hover:not(:disabled) {
+    color: var(--ai-surface);
+    background: var(--ai-muted);
+    border-color: var(--ai-muted);
+  }
 }
 .textLink {
   color: var(--ai-text);
   text-underline-offset: 0.25em;
 }
-.textLink:hover {
-  text-decoration: underline;
+@media (hover: hover) {
+  .textLink:hover {
+    text-decoration: underline;
+  }
 }
 .template .actionButton,
 .template .planButton {

@@ -60,8 +60,10 @@
 .row[data-row-toggle] {
   cursor: pointer;
 }
-.row[data-row-toggle]:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
+@media (hover: hover) {
+  .row[data-row-toggle]:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+  }
 }
 .check {
   display: inline-flex;

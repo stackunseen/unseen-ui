@@ -49,8 +49,10 @@
   font-weight: 600;
   cursor: pointer;
 }
-.stop:hover {
-  border-color: var(--ai-control-border, #71717a);
+@media (hover: hover) {
+  .stop:hover {
+    border-color: var(--ai-control-border, #71717a);
+  }
 }
 .stop[aria-current='step'] {
   border-color: var(--ai-primary, #18181b);
@@ -124,9 +126,11 @@
 .viewer[data-orientation='horizontal'] .file {
   flex: 0 0 auto;
 }
-.file:hover {
-  background: var(--ai-surface-subtle, #f4f4f5);
-  color: var(--ai-text, #18181b);
+@media (hover: hover) {
+  .file:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+    color: var(--ai-text, #18181b);
+  }
 }
 .file[aria-selected='true'] {
   border-color: var(--ai-border, #e4e4e7);

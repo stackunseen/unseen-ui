@@ -91,8 +91,10 @@
   color: inherit;
   cursor: pointer;
 }
-.close:hover {
-  background: var(--ai-surface-subtle);
+@media (hover: hover) {
+  .close:hover {
+    background: var(--ai-surface-subtle);
+  }
 }
 .body {
   flex: 1 1 auto;

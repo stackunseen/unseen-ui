@@ -79,10 +79,12 @@
   font-size: 0.875rem;
   font-weight: 500;
 }
-.uim-navigation nav a:hover,
-.uim-footer a:hover {
-  color: var(--ai-primary-text);
-  text-decoration: underline;
+@media (hover: hover) {
+  .uim-navigation nav a:hover,
+  .uim-footer a:hover {
+    color: var(--ai-primary-text);
+    text-decoration: underline;
+  }
 }
 .uim-menu-trigger {
   gap: 0.75rem;

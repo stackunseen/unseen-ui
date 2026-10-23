@@ -79,16 +79,25 @@
   width: 20px;
   height: 3px;
 }
-.separator:hover,
 .separator[data-separator='active'],
 .separator:focus-visible {
   color: var(--ai-primary-text);
   background: var(--ai-primary-soft);
 }
-.separator:hover .gripLine,
+@media (hover: hover) {
+  .separator:hover {
+    color: var(--ai-primary-text);
+    background: var(--ai-primary-soft);
+  }
+}
 .separator[data-separator='active'] .gripLine,
 .separator:focus-visible .gripLine {
   background: var(--ai-focus);
+}
+@media (hover: hover) {
+  .separator:hover .gripLine {
+    background: var(--ai-focus);
+  }
 }
 .separator:focus-visible {
   outline: 2px solid var(--ai-focus);
