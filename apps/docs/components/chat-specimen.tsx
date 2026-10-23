@@ -41,7 +41,8 @@ export function ChatSpecimen({
       variant={resolveVariant('Chat', presentation)}
       title="Assistant"
       placeholder="Ask the local server…"
-      style={{ ['--ai-chat-height' as string]: '540px' }}
+      // The page can size the preview; 540px elsewhere.
+      style={{ ['--ai-chat-height' as string]: 'var(--chat-preview-height, 540px)' }}
     />
   );
 }

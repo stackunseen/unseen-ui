@@ -12,7 +12,6 @@ const docsLinks: readonly FrameLink[] = [
   ['Connect to your app', '/docs/integration/'],
   ['Migrate from AI Elements', '/docs/migrate-from-ai-elements/'],
   ['Changelog', '/docs/changelog/'],
-  ['Design foundations', '/design/'],
 ];
 
 /** Shared page frame: the same pinned sidebar and content inset as the component pages. */

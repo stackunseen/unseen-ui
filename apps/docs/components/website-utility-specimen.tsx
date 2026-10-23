@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import {
   AppearanceToggle,
   Button,
@@ -81,6 +82,26 @@ const toc = [
   { id: 'toc-reporting', title: 'Reporting' },
 ];
 
+/**
+ * The demo has no sections of its own to scroll to, so choosing a title marks it as the section
+ * being read instead of changing the address to a heading that is not on this page.
+ */
+function TocExample({ children }: { children: (activeId: string) => ReactNode }) {
+  const [activeId, setActiveId] = useState('toc-golden');
+  return (
+    <div
+      onClickCapture={(event) => {
+        const link = (event.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#toc-"]');
+        if (!link) return;
+        event.preventDefault();
+        setActiveId(link.hash.slice(1));
+      }}
+    >
+      {children(activeId)}
+    </div>
+  );
+}
+
 function PaletteExample({ state }: { state: string }) {
   const palette = useCommandPalette();
   const [last, setLast] = useState('');
@@ -145,12 +166,17 @@ export function WebsiteUtilitySpecimen({ name, state }: WebsiteSpecimenProps) {
   if (name === 'TableOfContents' && (state === 'Track' || state === 'Ticks'))
     return (
       <div style={{ maxWidth: 280, minHeight: state === 'Ticks' ? 220 : undefined }}>
-        <TableOfContents
-          variant={state === 'Track' ? 'track' : 'ticks'}
-          items={toc}
-          collapsible="never"
-          activeId="toc-golden"
-        />
+        <TocExample>
+          {(activeId) => (
+            <TableOfContents
+              label="Contents"
+              variant={state === 'Track' ? 'track' : 'ticks'}
+              items={toc}
+              collapsible="never"
+              activeId={activeId}
+            />
+          )}
+        </TocExample>
         <p className="generic-demo-status">
           {state === 'Track'
             ? 'On a page, the dark stretch follows the sections on screen.'
@@ -161,15 +187,21 @@ export function WebsiteUtilitySpecimen({ name, state }: WebsiteSpecimenProps) {
   if (name === 'TableOfContents')
     return (
       <div style={{ maxWidth: 280 }}>
-        <TableOfContents
-          items={toc}
-          numbered={state !== 'Plain'}
-          showReading={state !== 'Plain'}
-          collapsible={state === 'Collapsible' ? 'always' : 'narrow'}
-          activeId={state === 'Plain' ? undefined : 'toc-golden'}
-        />
+        <TocExample>
+          {(activeId) => (
+            <TableOfContents
+              // Named apart from this page's own "On this page" outline.
+              label="Contents"
+              items={toc}
+              numbered={state !== 'Plain'}
+              showReading={state !== 'Plain'}
+              collapsible={state === 'Collapsible' ? 'always' : 'narrow'}
+              activeId={state === 'Plain' ? undefined : activeId}
+            />
+          )}
+        </TocExample>
         <p className="generic-demo-status">
-          The active heading is pinned here; on a page it follows the reading line.
+          Choose a title to mark it as the section being read. On a page, it follows your scrolling.
         </p>
       </div>
     );

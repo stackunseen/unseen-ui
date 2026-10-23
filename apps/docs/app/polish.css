@@ -723,3 +723,12 @@ main.relay-page {
   letter-spacing: 0.01em;
   color: var(--ai-muted);
 }
+/* The Chat preview shows the whole sample conversation without scrolling inside it. */
+.detail-specimen {
+  --chat-preview-height: 600px;
+}
+@media (max-width: 760px) {
+  .detail-specimen {
+    --chat-preview-height: auto;
+  }
+}

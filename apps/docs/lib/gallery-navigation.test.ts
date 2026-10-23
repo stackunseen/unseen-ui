@@ -56,12 +56,20 @@ describe('library collections', () => {
           .filter(([, href]) => isSiteSectionActive(path, href))
           .map(([label]) => label),
       ).toEqual(['Patterns']);
-    for (const path of [
-      '/getting-started/',
-      '/docs/integration/',
-      '/docs/customization/',
-      '/design/',
-    ])
+    for (const path of ['/getting-started/', '/docs/integration/', '/docs/customization/'])
       expect(isSiteSectionActive(path, '/getting-started/')).toBe(true);
+    // Each page lights up the section whose sidebar it shows, and only that one.
+    for (const [path, label] of [
+      ['/design/', 'Customize'],
+      ['/customize/', 'Customize'],
+      ['/tasks/', 'Components'],
+      ['/tasks/ai-chat/', 'Components'],
+      ['/components/button/', 'Components'],
+    ] as const)
+      expect(
+        siteNavigation
+          .filter(([, href]) => isSiteSectionActive(path, href))
+          .map(([label]) => label),
+      ).toEqual([label]);
   });
 });
