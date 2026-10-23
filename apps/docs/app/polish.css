@@ -368,7 +368,8 @@
   .web-docs-nav {
     overscroll-behavior: contain;
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--ai-text) 22%, transparent) transparent;
+    /* An opaque track: the edge shadow must not show through the scrollbar's lane. */
+    scrollbar-color: color-mix(in srgb, var(--ai-text) 22%, transparent) var(--nav-bg);
     background:
       linear-gradient(var(--nav-bg) 30%, transparent) center top / 100% 32px no-repeat local,
       linear-gradient(transparent, var(--nav-bg) 70%) center bottom / 100% 32px no-repeat local,
@@ -420,4 +421,14 @@
   .nav-resizer::after {
     transition: background-color 120ms ease-out;
   }
+}
+
+/* The list scrolls right up to the border: the side inset lives on the sections, not the panel. */
+.explorer-site .explorer-sidebar {
+  padding-inline: 0;
+}
+.explorer-site .explorer-sidebar > .workspace-nav,
+.explorer-site .explorer-sidebar > .library-search,
+.explorer-site .explorer-library {
+  padding-inline: 8px;
 }
