@@ -10,15 +10,9 @@ import {
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import {
-  Cross2Icon,
-  HamburgerMenuIcon,
-  MagnifyingGlassIcon,
-  MoonIcon,
-  SunIcon,
-} from '@radix-ui/react-icons';
+import { Cross2Icon, HamburgerMenuIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { BrandMark } from './brand-mark';
-import { AITheme, IconsProvider, LinkProvider } from '@stackunseen/ui';
+import { AITheme, AppearanceToggle, IconsProvider, LinkProvider } from '@stackunseen/ui';
 import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
 import type { Appearance, ResolvedTheme } from '@stackunseen/ui/theme';
 import { lucideIcons } from './gallery-icons';
@@ -146,18 +140,14 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 >
                   <MagnifyingGlassIcon width={18} height={18} aria-hidden="true" />
                 </a>
-                <button
-                  className="web-icon"
-                  type="button"
-                  aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-                  onClick={() => setAppearance(dark ? 'light' : 'dark')}
-                >
-                  {dark ? (
-                    <SunIcon width={18} height={18} aria-hidden="true" />
-                  ) : (
-                    <MoonIcon width={18} height={18} aria-hidden="true" />
-                  )}
-                </button>
+                {/* Two choices, as most sites offer; System stays the start until one is picked. */}
+                <AppearanceToggle
+                  variant="switch"
+                  size="sm"
+                  label="Colour mode"
+                  value={appearance}
+                  onValueChange={setAppearance}
+                />
                 <button
                   ref={button}
                   className="web-icon web-menu"

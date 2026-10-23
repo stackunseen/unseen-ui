@@ -2,9 +2,10 @@
 import { Children, createContext, isValidElement, useContext } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import * as Primitive from '@radix-ui/react-tooltip';
-import { ThemeSurface } from '../../providers/theme/theme-provider.js';
+import { useThemeScope } from '../../providers/theme/theme-provider.js';
 import controls from '../../shared/styles/styles.module.css';
 import s from '../../shared/styles/overlays.module.css';
+import m from '../../shared/styles/motion.module.css';
 import { OverlayDirection, useOverlayDirection } from '../../shared/overlay-direction.js';
 
 const ProviderContext = createContext(false);
@@ -75,21 +76,21 @@ export function TooltipContent({
   const direction = useOverlayDirection(dir);
   const parts = Children.toArray(children);
   const isArrow = (part: ReactNode) => isValidElement(part) && part.type === TooltipArrow;
+  const theme = useThemeScope();
   return (
     <Primitive.Portal container={container} forceMount={forceMount}>
-      <ThemeSurface>
-        <Primitive.Content
-          {...props}
-          dir={direction}
-          forceMount={forceMount}
-          sideOffset={sideOffset}
-          collisionPadding={collisionPadding}
-          className={`${s.surface} ${s.tooltip} ${className}`}
-        >
-          <div className={s.tooltipBody}>{parts.filter((part) => !isArrow(part))}</div>
-          {parts.filter(isArrow)}
-        </Primitive.Content>
-      </ThemeSurface>
+      <Primitive.Content
+        {...props}
+        dir={direction}
+        forceMount={forceMount}
+        sideOffset={sideOffset}
+        collisionPadding={collisionPadding}
+        {...theme.attributes}
+        className={`${theme.scope} ${s.surface} ${s.tooltip} ${m.pop} ${className}`}
+      >
+        <div className={s.tooltipBody}>{parts.filter((part) => !isArrow(part))}</div>
+        {parts.filter(isArrow)}
+      </Primitive.Content>
     </Primitive.Portal>
   );
 }

@@ -1,8 +1,9 @@
 'use client';
 import type { ComponentProps } from 'react';
 import * as Primitive from '@radix-ui/react-context-menu';
-import { ThemeSurface } from '../../providers/theme/theme-provider.js';
+import { useThemeScope } from '../../providers/theme/theme-provider.js';
 import s from '../../shared/styles/menus.module.css';
+import m from '../../shared/styles/motion.module.css';
 
 /** Local disclosure reports onOpenChange. Set dir on Root to carry RTL through portals. */
 export type ContextMenuProps = ComponentProps<typeof Primitive.Root>;
@@ -65,17 +66,17 @@ function Trigger({
   );
 }
 function Content({ container, forceMount, className = '', ...props }: ContextMenuContentProps) {
+  const theme = useThemeScope();
   return (
     <Primitive.Portal container={container} forceMount={forceMount}>
-      <ThemeSurface>
-        <Primitive.Content
-          collisionPadding={12}
-          loop
-          {...props}
-          forceMount={forceMount}
-          className={`${s.content} ${s.context} ${className}`}
-        />
-      </ThemeSurface>
+      <Primitive.Content
+        collisionPadding={12}
+        loop
+        {...props}
+        forceMount={forceMount}
+        {...theme.attributes}
+        className={`${theme.scope} ${s.content} ${s.context} ${m.pop} ${className}`}
+      />
     </Primitive.Portal>
   );
 }
@@ -132,18 +133,18 @@ function SubContent({
 }: ComponentProps<typeof Primitive.SubContent> & {
   container?: ComponentProps<typeof Primitive.Portal>['container'];
 }) {
+  const theme = useThemeScope();
   return (
     <Primitive.Portal container={container} forceMount={forceMount}>
-      <ThemeSurface>
-        <Primitive.SubContent
-          sideOffset={4}
-          collisionPadding={12}
-          loop
-          {...props}
-          forceMount={forceMount}
-          className={`${s.content} ${s.context} ${className}`}
-        />
-      </ThemeSurface>
+      <Primitive.SubContent
+        sideOffset={4}
+        collisionPadding={12}
+        loop
+        {...props}
+        forceMount={forceMount}
+        {...theme.attributes}
+        className={`${theme.scope} ${s.content} ${s.context} ${m.pop} ${className}`}
+      />
     </Primitive.Portal>
   );
 }

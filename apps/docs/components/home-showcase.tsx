@@ -91,8 +91,7 @@ export function HomeShowcase() {
     <section className="home-showcase" aria-labelledby="home-showcase-title">
       <div className="home-section-heading">
         <div>
-          <p className="web-eyebrow">Real components, local sample data</p>
-          <h2 id="home-showcase-title">Pieces for application and AI interfaces.</h2>
+          <h2 id="home-showcase-title">Try the real components here.</h2>
         </div>
         <div className="home-showcase-theme" role="group" aria-label="Site primary color">
           <span>Primary</span>

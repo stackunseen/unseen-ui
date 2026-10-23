@@ -38,8 +38,8 @@ export function HomeHeroDemo() {
       />
       <figcaption>
         <span>
-          Chat, ToolCall and ApprovalCard on a simulated AI SDK chat. Approve or reject to see the
-          receipt settle.
+          A live example made from Chat, ToolCall and ApprovalCard. Approve or reject the request to
+          see what happens next.
         </span>
         <Link href="/components/chat/">How it works</Link>
       </figcaption>

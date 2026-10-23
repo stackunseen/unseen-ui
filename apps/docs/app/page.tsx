@@ -30,12 +30,11 @@ export default function Page() {
       <main id="main-content" className="web-container home-page" tabIndex={-1}>
         <section className="home-hero" aria-labelledby="home-title">
           <div className="home-intro">
-            <p className="home-intro-pill">Experimental alpha · React 19</p>
-            <h1 id="home-title">AI interfaces that wait for your server.</h1>
+            <h1 id="home-title">The React components your AI app needs.</h1>
             <p className="home-intro-description">
-              {releaseCatalog.length} React components for chat, tools, approvals, forms and
-              layouts. Streaming, failures, unknown outcomes and pending decisions each have a
-              state, and nothing runs until your server says so.
+              {releaseCatalog.length} components for chat, tool calls, approvals, agent progress and
+              forms. Install them from npm, style them to match your brand and connect them to your
+              own server. People only see an action as done once your server confirms it.
             </p>
             <div className="home-intro-actions">
               <Link className="web-button primary" href="/components/">
@@ -47,13 +46,14 @@ export default function Page() {
             </div>
             <p className="home-intro-meta">
               <code>npm install @stackunseen/ui</code>
+              <span>Early alpha · React 19</span>
             </p>
           </div>
           <HomeHeroDemo />
         </section>
         <section className="home-tasks" aria-labelledby="home-tasks-title">
           <div className="home-section-heading">
-            <h2 id="home-tasks-title">Explore by what you are building</h2>
+            <h2 id="home-tasks-title">Start from what you&apos;re building</h2>
             <Link href="/tasks/">
               All tasks <ArrowRightIcon width={16} height={16} aria-hidden="true" />
             </Link>
@@ -64,7 +64,6 @@ export default function Page() {
                 <Link href={`/tasks/${task.id}/`}>
                   <strong>{task.label}</strong>
                   <span>{task.description}</span>
-                  <small>{task.components.slice(0, 4).join(' · ')}</small>
                 </Link>
               </li>
             ))}
@@ -73,65 +72,62 @@ export default function Page() {
         <HomeShowcase />
         <section className="home-why" aria-labelledby="home-why-title">
           <div className="home-section-heading">
-            <h2 id="home-why-title">Why Unseen UI</h2>
+            <h2 id="home-why-title">What you get</h2>
           </div>
           <ul>
             <li>
-              <strong>Approvals that wait for your server</strong>
+              <strong>Your server stays in charge</strong>
               <span>
-                A decision carries the proposal&apos;s version and digest, and the card stays
-                pending until your server answers. Nothing is treated as approved because a button
-                was clicked.
+                When the AI asks to do something, the approval card waits for your server&apos;s
+                answer. A click alone never marks an action as done.
               </span>
-              <Link href="/components/approval-card/">ApprovalCard</Link>
+              <Link href="/components/approval-card/">See ApprovalCard</Link>
             </li>
             <li>
-              <strong>States that do not pretend</strong>
+              <strong>Screens that tell the truth</strong>
               <span>
-                Measured, estimated and unknown values read differently. An unknown outcome is never
-                shown as a failure or a success, and stale data is marked.
+                If a request times out or a number is only an estimate, the screen says so, instead
+                of showing a success or a failure that never happened.
               </span>
-              <Link href="/components/usage-meter/">UsageMeter</Link>
+              <Link href="/components/usage-meter/">See UsageMeter</Link>
             </li>
             <li>
-              <strong>One package, no Tailwind</strong>
+              <strong>One install, your theme</strong>
               <span>
-                Install from npm and import a stylesheet. Scoped styles and theme tokens work in any
-                React 19 app, and updates arrive as versions instead of copied files.
+                One npm package with its own stylesheet, for any React 19 app. No Tailwind needed,
+                and you get fixes by updating a version, not by copying files again.
               </span>
-              <Link href="/getting-started/">Getting started</Link>
+              <Link href="/getting-started/">Read the setup guide</Link>
             </li>
           </ul>
           <p className="home-why-evidence">
-            Measured 17 October 2026: 2,154 unit and interaction tests passing · zero automated
-            accessibility (axe) violations on the audited pages · base stylesheet 24 KiB gzip · Chat
-            entry under 3 KiB gzip.
+            Checked 23 October 2026: 2,239 tests pass, and automated accessibility checks (axe) find
+            no violations on the pages we audit.
           </p>
         </section>
         <HomeAppExample />
         <section className="home-start" aria-labelledby="home-start-title">
           <div>
-            <h2 id="home-start-title">Bring it into your app.</h2>
-            <p>Start with local setup. Add a controlled component, then make the theme your own.</p>
+            <h2 id="home-start-title">Add it to your app in three steps.</h2>
           </div>
           <ol>
             <li>
               <span>01</span>
               <Link href="/getting-started/">
-                Set up your workspace <ArrowRightIcon width={17} height={17} aria-hidden="true" />
+                Install and set up <ArrowRightIcon width={17} height={17} aria-hidden="true" />
               </Link>
             </li>
             <li>
               <span>02</span>
               <Link href="/docs/integration/">
-                Connect state and callbacks{' '}
+                Connect your data and actions{' '}
                 <ArrowRightIcon width={17} height={17} aria-hidden="true" />
               </Link>
             </li>
             <li>
               <span>03</span>
               <Link href="/customize/">
-                Customize the theme <ArrowRightIcon width={17} height={17} aria-hidden="true" />
+                Make the theme yours <ArrowRightIcon width={17} height={17} aria-hidden="true" />
               </Link>
             </li>
           </ol>

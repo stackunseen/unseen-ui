@@ -58,6 +58,22 @@ export function AITheme({
     </ThemeContext.Provider>
   );
 }
+/**
+ * ThemeSurface's class and attributes, for portal content that must be the direct child of its
+ * Radix Portal. A wrapper there hides the content's exit animation from Radix, which then removes
+ * the content at once instead of letting it fade out.
+ */
+export function useThemeScope() {
+  const context = useContext(ThemeContext);
+  return {
+    scope: styles.scope,
+    attributes: {
+      'data-ai-theme': context?.scope,
+      'data-appearance': context?.appearance,
+    },
+  };
+}
+
 /** Reapply the originating selector to a portal without mutating body/root styles. */
 export function ThemeSurface({
   children,

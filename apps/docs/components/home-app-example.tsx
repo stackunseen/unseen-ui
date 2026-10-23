@@ -7,13 +7,7 @@ export function HomeAppExample() {
   return (
     <section className="home-template-section" aria-labelledby="home-app-title">
       <div className="home-section-heading">
-        <div>
-          <p className="web-eyebrow">Put the pieces together</p>
-          <h2 id="home-app-title">Explore a working admin app.</h2>
-        </div>
-        <Link prefetch={false} className="web-text-link" href={featuredApp.href}>
-          Open {featuredApp.name} <ArrowTopRightIcon width={17} height={17} aria-hidden="true" />
-        </Link>
+        <h2 id="home-app-title">See a full app built with them.</h2>
       </div>
       <figure className="home-template-figure">
         <Link prefetch={false} href={featuredApp.href} aria-label="Open the SaaS admin example">

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { ResetIcon } from '@radix-ui/react-icons';
 import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
+import { TableOfContents } from '@stackunseen/ui/navigation';
 import type { CatalogEntry } from '../lib/catalog';
 import { catalogStyles } from '../lib/catalog';
 import type { GalleryLocation } from '../lib/gallery-location';
@@ -694,14 +695,13 @@ export function ComponentDetail({
           </section>
         )}
       </div>
-      <nav className="detail-toc" aria-label="On this page">
-        <p>On this page</p>
-        {sections.map(([id, label]) => (
-          <a key={id} href={`#${id}`}>
-            {label}
-          </a>
-        ))}
-      </nav>
+      <TableOfContents
+        variant="track"
+        className="detail-toc"
+        collapsible="never"
+        headingLevel={2}
+        items={sections.map(([id, label]) => ({ id: id!, title: label }))}
+      />
     </div>
   );
 }

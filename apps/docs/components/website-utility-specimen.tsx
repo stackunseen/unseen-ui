@@ -119,7 +119,15 @@ function AppearanceExample({ state }: { state: string }) {
   return (
     <div className="generic-demo-actions" style={{ justifyContent: 'flex-start', margin: 0 }}>
       <AppearanceToggle
-        variant={state === 'Segmented' ? 'segmented' : 'cycle'}
+        variant={
+          state === 'Segmented'
+            ? 'segmented'
+            : state === 'Switch'
+              ? 'switch'
+              : state === 'Subtle'
+                ? 'subtle'
+                : 'cycle'
+        }
         value={value}
         onValueChange={set}
       />
@@ -134,6 +142,22 @@ export function WebsiteUtilitySpecimen({ name, state }: WebsiteSpecimenProps) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState('');
   if (name === 'CommandPalette') return <PaletteExample state={state} />;
+  if (name === 'TableOfContents' && (state === 'Track' || state === 'Ticks'))
+    return (
+      <div style={{ maxWidth: 280, minHeight: state === 'Ticks' ? 220 : undefined }}>
+        <TableOfContents
+          variant={state === 'Track' ? 'track' : 'ticks'}
+          items={toc}
+          collapsible="never"
+          activeId="toc-golden"
+        />
+        <p className="generic-demo-status">
+          {state === 'Track'
+            ? 'On a page, the dark stretch follows the sections on screen.'
+            : 'Hover, focus or press the marks to see the titles. Pin it to the page edge for long reads.'}
+        </p>
+      </div>
+    );
   if (name === 'TableOfContents')
     return (
       <div style={{ maxWidth: 280 }}>

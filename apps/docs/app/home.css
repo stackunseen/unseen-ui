@@ -104,11 +104,6 @@
   font-size: 12.5px;
   line-height: 1.5;
 }
-.home-tasks small {
-  color: var(--ai-muted);
-  font-size: 11.5px;
-  overflow-wrap: anywhere;
-}
 @media (max-width: 1080px) {
   .home-hero {
     grid-template-columns: 1fr;
@@ -514,18 +509,24 @@
   padding-block: 32px;
   border-top: var(--ai-border-width, 1px) solid var(--ai-border);
 }
+/* Rows, not three look-alike columns: what you get, why it matters, where to see it. */
 .home-why ul {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .home-why li {
   display: grid;
-  align-content: start;
-  gap: 8px;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px 32px;
+  padding-block: 18px;
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-why li:first-child {
+  border-top: 0;
+  padding-top: 4px;
 }
 .home-why strong {
   font-size: 16px;
@@ -551,8 +552,7 @@
   line-height: 1.6;
 }
 @media (max-width: 860px) {
-  .home-why ul {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  .home-why li {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

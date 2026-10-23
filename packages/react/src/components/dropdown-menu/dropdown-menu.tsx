@@ -1,8 +1,9 @@
 'use client';
 import type { ComponentProps } from 'react';
 import * as Primitive from '@radix-ui/react-dropdown-menu';
-import { ThemeSurface } from '../../providers/theme/theme-provider.js';
+import { useThemeScope } from '../../providers/theme/theme-provider.js';
 import s from '../../shared/styles/menus.module.css';
+import m from '../../shared/styles/motion.module.css';
 
 /** Set dir on Root to carry RTL through portaled menus and submenus. */
 export type DropdownMenuProps = ComponentProps<typeof Primitive.Root>;
@@ -21,18 +22,18 @@ function Trigger({ className = '', ...props }: ComponentProps<typeof Primitive.T
   return <Primitive.Trigger {...props} className={`${s.trigger} ${className}`} />;
 }
 function Content({ container, forceMount, className = '', ...props }: DropdownMenuContentProps) {
+  const theme = useThemeScope();
   return (
     <Primitive.Portal container={container} forceMount={forceMount}>
-      <ThemeSurface>
-        <Primitive.Content
-          sideOffset={6}
-          collisionPadding={12}
-          loop
-          {...props}
-          forceMount={forceMount}
-          className={`${s.content} ${s.dropdown} ${className}`}
-        />
-      </ThemeSurface>
+      <Primitive.Content
+        sideOffset={6}
+        collisionPadding={12}
+        loop
+        {...props}
+        forceMount={forceMount}
+        {...theme.attributes}
+        className={`${theme.scope} ${s.content} ${s.dropdown} ${m.pop} ${className}`}
+      />
     </Primitive.Portal>
   );
 }
@@ -89,18 +90,18 @@ function SubContent({
 }: ComponentProps<typeof Primitive.SubContent> & {
   container?: ComponentProps<typeof Primitive.Portal>['container'];
 }) {
+  const theme = useThemeScope();
   return (
     <Primitive.Portal container={container} forceMount={forceMount}>
-      <ThemeSurface>
-        <Primitive.SubContent
-          sideOffset={4}
-          collisionPadding={12}
-          loop
-          {...props}
-          forceMount={forceMount}
-          className={`${s.content} ${s.dropdown} ${className}`}
-        />
-      </ThemeSurface>
+      <Primitive.SubContent
+        sideOffset={4}
+        collisionPadding={12}
+        loop
+        {...props}
+        forceMount={forceMount}
+        {...theme.attributes}
+        className={`${theme.scope} ${s.content} ${s.dropdown} ${m.pop} ${className}`}
+      />
     </Primitive.Portal>
   );
 }

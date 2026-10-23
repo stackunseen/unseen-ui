@@ -2,9 +2,10 @@
 import { Children, isValidElement, useId } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import * as Primitive from '@radix-ui/react-popover';
-import { ThemeSurface } from '../../providers/theme/theme-provider.js';
+import { useThemeScope } from '../../providers/theme/theme-provider.js';
 import controls from '../../shared/styles/styles.module.css';
 import s from '../../shared/styles/overlays.module.css';
+import m from '../../shared/styles/motion.module.css';
 import { OverlayDirection, useOverlayDirection } from '../../shared/overlay-direction.js';
 
 export interface PopoverProps extends ComponentProps<typeof Primitive.Root> {
@@ -71,33 +72,33 @@ export function PopoverContent({
   // Keep direct Arrow parts outside the scrollport so constrained content does not clip them.
   const parts = Children.toArray(children);
   const isArrow = (part: ReactNode) => isValidElement(part) && part.type === PopoverArrow;
+  const theme = useThemeScope();
   return (
     <Primitive.Portal container={container} forceMount={forceMount}>
-      <ThemeSurface>
-        <Primitive.Content
-          aria-labelledby={`${id}-title`}
-          aria-describedby={hasDescription ? `${id}-description` : undefined}
-          {...props}
-          dir={direction}
-          forceMount={forceMount}
-          sideOffset={sideOffset}
-          collisionPadding={collisionPadding}
-          className={`${s.surface} ${s.popover} ${className}`}
-        >
-          <div className={s.popoverBody}>
-            <Heading id={`${id}-title`} className={s.title}>
-              {title}
-            </Heading>
-            {hasDescription && (
-              <p id={`${id}-description`} className={s.description}>
-                {description}
-              </p>
-            )}
-            {parts.filter((part) => !isArrow(part))}
-          </div>
-          {parts.filter(isArrow)}
-        </Primitive.Content>
-      </ThemeSurface>
+      <Primitive.Content
+        aria-labelledby={`${id}-title`}
+        aria-describedby={hasDescription ? `${id}-description` : undefined}
+        {...props}
+        dir={direction}
+        forceMount={forceMount}
+        sideOffset={sideOffset}
+        collisionPadding={collisionPadding}
+        {...theme.attributes}
+        className={`${theme.scope} ${s.surface} ${s.popover} ${m.pop} ${className}`}
+      >
+        <div className={s.popoverBody}>
+          <Heading id={`${id}-title`} className={s.title}>
+            {title}
+          </Heading>
+          {hasDescription && (
+            <p id={`${id}-description`} className={s.description}>
+              {description}
+            </p>
+          )}
+          {parts.filter((part) => !isArrow(part))}
+        </div>
+        {parts.filter(isArrow)}
+      </Primitive.Content>
     </Primitive.Portal>
   );
 }

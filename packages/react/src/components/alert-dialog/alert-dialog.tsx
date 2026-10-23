@@ -4,9 +4,10 @@ import type { ComponentProps, MouseEvent, ReactNode } from 'react';
 import * as Primitive from '@radix-ui/react-alert-dialog';
 import { Button } from '../button/button.js';
 import type { ButtonProps } from '../button/button.js';
-import { ThemeSurface } from '../../providers/theme/theme-provider.js';
+import { useThemeScope } from '../../providers/theme/theme-provider.js';
 import controls from '../../shared/styles/styles.module.css';
 import s from '../../shared/styles/overlays.module.css';
+import m from '../../shared/styles/motion.module.css';
 import { OverlayDirection, useOverlayDirection } from '../../shared/overlay-direction.js';
 
 const BusyContext = createContext(false);
@@ -71,25 +72,25 @@ export function AlertDialogContent({
 }: AlertDialogContentProps) {
   const busy = useContext(BusyContext);
   const direction = useOverlayDirection(dir);
+  const theme = useThemeScope();
   return (
     <Primitive.Portal container={container} forceMount={forceMount}>
-      <ThemeSurface>
-        <Primitive.Overlay className={s.backdrop} forceMount={forceMount} />
-        <Primitive.Content
-          {...props}
-          dir={direction}
-          forceMount={forceMount}
-          aria-busy={busy || undefined}
-          className={`${s.surface} ${s.alertDialog} ${className}`}
-        >
-          {children}
-          {error !== undefined && error !== null && (
-            <p role="alert" className={s.error}>
-              {error}
-            </p>
-          )}
-        </Primitive.Content>
-      </ThemeSurface>
+      <Primitive.Overlay className={`${s.backdrop} ${m.fade}`} forceMount={forceMount} />
+      <Primitive.Content
+        {...theme.attributes}
+        {...props}
+        dir={direction}
+        forceMount={forceMount}
+        aria-busy={busy || undefined}
+        className={`${theme.scope} ${s.surface} ${s.alertDialog} ${m.rise} ${className}`}
+      >
+        {children}
+        {error !== undefined && error !== null && (
+          <p role="alert" className={s.error}>
+            {error}
+          </p>
+        )}
+      </Primitive.Content>
     </Primitive.Portal>
   );
 }

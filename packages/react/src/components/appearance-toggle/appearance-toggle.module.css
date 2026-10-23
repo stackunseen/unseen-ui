@@ -1,4 +1,4 @@
-/* AppearanceToggle: an icon button that cycles, or three joined segments. */
+/* AppearanceToggle: a cycling icon button, three segments, a sun and moon pill or one quiet icon. */
 .root {
   display: inline-flex;
   vertical-align: middle;
@@ -20,5 +20,94 @@
   .cycle,
   .cycle[data-size='sm'] {
     inline-size: 44px;
+  }
+}
+/* Switch: two round segments in a hairline pill; the chosen one sits on a soft disc. */
+.switch.switch.switch {
+  gap: 2px;
+  padding: 3px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
+  border-radius: 999px;
+  background: transparent;
+}
+.switch.switch.switch [role='radio'] {
+  justify-content: center;
+  inline-size: 28px;
+  min-block-size: 28px;
+  padding: 0;
+  border-color: transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ai-muted, #52525b);
+}
+.switch.switch.switch [role='radio'][aria-checked='true'] {
+  border-color: transparent;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-text, #18181b);
+}
+@media (hover: hover) {
+  .switch.switch.switch [role='radio']:hover:not([aria-checked='true']) {
+    background: transparent;
+    color: var(--ai-text, #18181b);
+  }
+}
+/* Subtle: no frame and no fill, only the glyph; the two glyphs cross-fade in place. */
+.subtle {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ai-muted, #52525b);
+  cursor: pointer;
+}
+.subtle > * {
+  grid-area: 1 / 1;
+}
+@media (hover: hover) {
+  .subtle:hover {
+    color: var(--ai-text, #18181b);
+  }
+}
+.subtle:focus-visible,
+.switch.switch.switch [role='radio']:focus-visible {
+  outline: 2px solid var(--ai-focus, #18181b);
+  outline-offset: 1px;
+}
+.subtle .sun,
+.subtle[data-appearance='dark'] .moon {
+  opacity: 0;
+}
+.subtle[data-appearance='dark'] .sun {
+  opacity: 1;
+}
+/* With motion allowed, the hidden glyph also shrinks and blurs; otherwise only opacity swaps. */
+@media (prefers-reduced-motion: no-preference) {
+  .subtle .sun,
+  .subtle[data-appearance='dark'] .moon {
+    scale: 0.25;
+    filter: blur(4px);
+  }
+  .subtle .moon,
+  .subtle[data-appearance='dark'] .sun {
+    scale: 1;
+    filter: none;
+  }
+  .subtle * {
+    transition: 300ms cubic-bezier(0.2, 0, 0, 1);
+    transition-property: opacity, scale, filter;
+  }
+}
+@media (any-pointer: coarse) {
+  .subtle {
+    inline-size: 44px;
+    block-size: 44px;
+  }
+  .switch.switch.switch [role='radio'] {
+    inline-size: 40px;
+    min-block-size: 40px;
   }
 }

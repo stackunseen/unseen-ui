@@ -15,7 +15,7 @@ export function AiSdkChatRecipe({
   wording: string;
 }) {
   const [notice, setNotice] = useState(
-    'Approve or reject the archive request to see the receipt settle.',
+    'Approve or reject the archive request to see what happens next.',
   );
   const [tab, setTab] = useState('client');
   return (

@@ -129,27 +129,12 @@
   .detail-layout {
     grid-template-columns: minmax(0, 1fr) 176px;
   }
+  /* TableOfContents (track) supplies the links, line and states; the page only pins it. */
   .detail-toc {
     position: sticky;
     top: 88px;
     align-self: start;
-    display: grid;
-    gap: 2px;
-    font-size: 13px;
-  }
-  .detail-toc p {
-    margin: 0 0 6px;
-    color: var(--ai-muted);
-  }
-  .detail-toc a {
-    padding: 4px 0;
-    color: var(--ai-muted);
-    text-decoration: none;
-  }
-  @media (hover: hover) {
-    .detail-toc a:hover {
-      color: var(--ai-text);
-    }
+    display: block;
   }
 }
 .detail-title-row {
@@ -286,16 +271,7 @@
   }
 }
 
-/* Home: left-aligned statement, quiet pill, muted second line. */
-.home-intro-pill {
-  display: inline-flex;
-  margin: 0 0 20px;
-  padding: 3px 10px;
-  border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: 999px;
-  color: var(--ai-muted);
-  font-size: 12px;
-}
+/* Home: left-aligned statement and a muted second line. */
 .home-intro h1 {
   font-size: clamp(36px, 4vw, 52px);
   line-height: 1.08;

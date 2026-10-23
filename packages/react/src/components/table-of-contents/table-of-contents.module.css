@@ -137,3 +137,244 @@
     border-inline-start-color: Highlight;
   }
 }
+
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Track: an icon heading, every level shown, and a line that steps in with each level. */
+.trackTitle {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-meta, 13px);
+  font-weight: 500;
+}
+.trackBody {
+  position: relative;
+}
+.trackLine {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.trackBase,
+.trackLit {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.trackBase {
+  stroke: var(--ai-border, #e4e4e7);
+}
+.trackLit {
+  stroke: var(--ai-text, #18181b);
+}
+.trackDot {
+  fill: var(--ai-text, #18181b);
+}
+.trackList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Before the line is measured, a plain hairline stands in for it. */
+.trackList:not([data-measured]) {
+  border-inline-start: 1px solid var(--ai-border, #e4e4e7);
+}
+.trackLink {
+  display: block;
+  padding-block: 5px;
+  padding-inline: calc(14px + var(--toc-depth, 0) * 12px) 0;
+  color: var(--ai-muted, #52525b);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.trackLink[data-lit],
+.trackLink[aria-current='location'] {
+  color: var(--ai-text, #18181b);
+}
+.trackLink[aria-current='location'] {
+  font-weight: 500;
+}
+@media (hover: hover) {
+  .trackLink:hover {
+    color: var(--ai-text, #18181b);
+  }
+}
+.trackLink:focus-visible {
+  outline: 2px solid var(--ai-focus, #18181b);
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+.root[data-collapsible='always']:not([data-open]) .trackBody {
+  display: none;
+}
+@media (max-width: 760px) {
+  .root[data-collapsible='narrow']:not([data-open]) .trackBody {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .trackBase {
+    stroke: GrayText;
+  }
+  .trackLit,
+  .trackDot {
+    stroke: Highlight;
+    fill: Highlight;
+  }
+}
+
+/* Ticks: a slim rail of marks for long reads; the section being read gets the longest mark. */
+.ticksRoot {
+  position: relative;
+  inline-size: fit-content;
+}
+.rail {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  min-inline-size: 32px;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.rail:focus-visible {
+  outline: 2px solid var(--ai-focus, #18181b);
+  outline-offset: 2px;
+}
+.tick {
+  display: block;
+  inline-size: 12px;
+  block-size: 1.5px;
+  border-radius: 1px;
+  background: var(--ai-control-border, #71717a);
+}
+.tick[data-depth]:not([data-depth='0']) {
+  inline-size: 8px;
+}
+.tick[data-read] {
+  background: var(--ai-muted, #52525b);
+}
+.tick[data-near='next'] {
+  inline-size: 16px;
+  background: var(--ai-muted, #52525b);
+}
+.tick[data-near='current'] {
+  inline-size: 24px;
+  block-size: 2px;
+  background: var(--ai-text, #18181b);
+}
+/* Under the pointer the marks swell around it, like a magnifier. */
+@media (hover: hover) {
+  .rail .tick:hover {
+    inline-size: 24px;
+    background: var(--ai-text, #18181b);
+  }
+  .rail .tick:has(+ .tick:hover),
+  .rail .tick:hover + .tick {
+    inline-size: 16px;
+  }
+}
+.panel {
+  position: absolute;
+  z-index: 20;
+  inset-block-start: 0;
+  inset-inline-start: calc(100% + 4px);
+  display: grid;
+  min-inline-size: 200px;
+  max-inline-size: 280px;
+  max-block-size: min(70vh, 480px);
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  border: var(--ai-border-width, 1px) solid var(--ai-border, #e4e4e7);
+  border-radius: var(--ai-radius, 12px);
+  background: var(--ai-surface, #fff);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease-out;
+}
+/* Open on a press, on keyboard focus inside, or under a pointer that can hover. */
+.ticksRoot[data-open] .panel,
+.ticksRoot:focus-within .panel {
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (hover: hover) {
+  .ticksRoot:hover .panel {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+.panelLink {
+  display: block;
+  min-block-size: 28px;
+  padding-block: 5px;
+  padding-inline: calc(8px + var(--toc-depth, 0) * 12px) 8px;
+  border-radius: 6px;
+  color: var(--ai-muted, #52525b);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+.panelLink[aria-current='location'] {
+  color: var(--ai-text, #18181b);
+  font-weight: 500;
+}
+@media (hover: hover) {
+  .panelLink:hover {
+    background: var(--ai-surface-subtle, #f4f4f5);
+    color: var(--ai-text, #18181b);
+  }
+}
+.panelLink:focus-visible {
+  outline: 2px solid var(--ai-focus, #18181b);
+  outline-offset: -2px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tick {
+    transition-property: inline-size, background-color;
+    transition-duration: var(--ai-duration-fast, 120ms);
+    transition-timing-function: var(--ai-ease, cubic-bezier(0.2, 0, 0, 1));
+  }
+  .panel {
+    translate: -4px 0;
+    transition-property: opacity, translate;
+  }
+  .ticksRoot[data-open] .panel,
+  .ticksRoot:focus-within .panel {
+    translate: 0 0;
+  }
+  @media (hover: hover) {
+    .ticksRoot:hover .panel {
+      translate: 0 0;
+    }
+  }
+}
+@media (forced-colors: active) {
+  .tick {
+    background: CanvasText;
+  }
+  .tick[data-near='current'] {
+    background: Highlight;
+  }
+}

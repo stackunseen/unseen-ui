@@ -15,6 +15,7 @@
   font-size: var(--ai-font-size, 14px);
   line-height: 1.5;
 }
+.scope,
 .scope *,
 .scope *::before,
 .scope *::after {

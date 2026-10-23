@@ -2,12 +2,13 @@
 import { useId, useMemo } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
-import { ThemeSurface } from '../../providers/theme/theme-provider.js';
+import { useThemeScope } from '../../providers/theme/theme-provider.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { useFieldControl } from '../field/field.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import selectStyles from './select.module.css';
+import m from '../../shared/styles/motion.module.css';
 
 export interface SelectOption {
   value: string;
@@ -63,6 +64,7 @@ export function Select({
   // Inside a Field the trigger takes the field's id, label and description like other controls.
   const field = useFieldControl({ ...props, disabled, required });
   const inlineId = useId();
+  const theme = useThemeScope();
   const triggerId = field.id ?? (label ? `${inlineId}-trigger` : undefined);
   const labelId = `${inlineId}-label`;
   // Reuse option elements during unrelated host updates; replace the readonly array
@@ -125,25 +127,24 @@ export function Select({
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
       <SelectPrimitive.Portal>
-        <ThemeSurface>
-          <SelectPrimitive.Content
-            className={selectStyles.selectContent}
-            position="popper"
-            sideOffset={6}
-            collisionPadding={12}
-            onCloseAutoFocus={onCloseAutoFocus}
-          >
-            <SelectPrimitive.ScrollUpButton className={selectStyles.selectScroll}>
-              <AIIcon name="collapse" />
-            </SelectPrimitive.ScrollUpButton>
-            <SelectPrimitive.Viewport className={selectStyles.selectViewport}>
-              {optionItems}
-            </SelectPrimitive.Viewport>
-            <SelectPrimitive.ScrollDownButton className={selectStyles.selectScroll}>
-              <AIIcon name="expand" />
-            </SelectPrimitive.ScrollDownButton>
-          </SelectPrimitive.Content>
-        </ThemeSurface>
+        <SelectPrimitive.Content
+          {...theme.attributes}
+          className={`${theme.scope} ${selectStyles.selectContent} ${m.pop}`}
+          position="popper"
+          sideOffset={6}
+          collisionPadding={12}
+          onCloseAutoFocus={onCloseAutoFocus}
+        >
+          <SelectPrimitive.ScrollUpButton className={selectStyles.selectScroll}>
+            <AIIcon name="collapse" />
+          </SelectPrimitive.ScrollUpButton>
+          <SelectPrimitive.Viewport className={selectStyles.selectViewport}>
+            {optionItems}
+          </SelectPrimitive.Viewport>
+          <SelectPrimitive.ScrollDownButton className={selectStyles.selectScroll}>
+            <AIIcon name="expand" />
+          </SelectPrimitive.ScrollDownButton>
+        </SelectPrimitive.Content>
       </SelectPrimitive.Portal>
     </SelectPrimitive.Root>
   );

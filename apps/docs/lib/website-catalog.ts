@@ -510,13 +510,13 @@ export const websiteCatalog: CatalogEntry[] = [
     group: 'Actions',
     aliases: ['Theme toggle', 'Dark mode switch', 'Light dark system'],
     description: 'A light, dark or system choice that drives the theme provider.',
-    states: ['Default', 'Segmented', 'Stored'],
+    states: ['Default', 'Switch', 'Subtle', 'Segmented', 'Stored'],
     contract:
-      'value · onValueChange · variant?: cycle | segmented · labels? · label? · size? · useStoredAppearance({ storageKey }) · useResolvedAppearance(value) · appearanceInitScript({ storageKey })',
+      'value · onValueChange · variant?: cycle | segmented | switch | subtle · labels? · label? · size? · useStoredAppearance({ storageKey }) · useResolvedAppearance(value) · appearanceInitScript({ storageKey })',
     responsibility:
       'Pass the value to AITheme. useStoredAppearance keeps it in this browser and follows other tabs; appearanceInitScript applies it before paint through a root attribute your stylesheet reads. Until hydration the cycle button shows a neutral mark.',
     keyboard:
-      'The cycle button names the current mode and what a press switches to; the segmented form is a radiogroup.',
+      'The cycle button names the current mode and what a press switches to. Switch and segmented are radiogroups (arrow keys move and select); subtle is one "Dark mode" button with a pressed state.',
     relatedImports: ['AITheme'],
     code: '<AppearanceToggle value={appearance} onValueChange={setAppearance} />',
   }),
@@ -542,13 +542,13 @@ export const websiteCatalog: CatalogEntry[] = [
     aliases: ['On this page', 'Toc', 'Page outline'],
     importPath: '/navigation',
     description: 'An "On this page" rail that marks the section being read.',
-    states: ['Default', 'Collapsible', 'Plain'],
+    states: ['Default', 'Track', 'Ticks', 'Collapsible', 'Plain'],
     contract:
-      'items: { id, title, items? }[] · label? · numbered? · showReading? · collapsible?: narrow | never | always · readingLine? · minItems? · activeId? · onActiveChange? · useActiveHeading(ids)',
+      'items: { id, title, items? }[] · variant?: list | track | ticks · label? · numbered? · showReading? · collapsible?: narrow | never | always · readingLine? · minItems? · activeId? · onActiveChange? · useActiveHeading(ids)',
     responsibility:
-      'Links are plain in-page anchors; nothing hijacks scrolling. The active heading is the last one past the reading line, tracked with an IntersectionObserver and a passive scroll listener. Below minItems it renders nothing.',
+      'Links are plain in-page anchors; nothing hijacks scrolling. The active heading is the last one past the reading line, tracked with an IntersectionObserver and a passive scroll listener. Track lists every level on a line that steps in per level and darkens for the sections on screen. Ticks is a slim rail for long reads that opens into the titles. Below minItems it renders nothing.',
     keyboard:
-      'Ordinary links in a navigation landmark; the active one carries aria-current="location".',
+      'Ordinary links in a navigation landmark; the active one carries aria-current="location". The ticks rail is a button with aria-expanded; focus inside opens the titles and Escape closes them.',
     code: '<TableOfContents items={outline} numbered showReading />',
   }),
   entry({

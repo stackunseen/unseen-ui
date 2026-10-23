@@ -1,0 +1,88 @@
+/*
+ * Enter and exit motion for overlays. Radix keeps closing content mounted until its exit
+ * animation ends, so each surface fades out instead of vanishing. Enters leave no transform
+ * behind once done, so text settles on whole pixels. With reduced motion, only opacity changes.
+ *
+ * pop:  menus, popovers, tooltips and selects grow from the edge nearest their trigger.
+ * rise: dialogs come up a little, with a light blur.
+ * fade: backdrops.
+ * Exits end hidden, so content a host keeps mounted (forceMount) disappears once closed.
+ */
+.pop,
+.rise,
+.fade {
+  animation: fade-in 150ms ease-out;
+}
+.pop[data-state='closed'],
+.rise[data-state='closed'],
+.fade[data-state='closed'] {
+  animation: fade-out 100ms ease-out forwards;
+}
+.pop {
+  transform-origin: var(
+    --radix-popover-content-transform-origin,
+    var(
+      --radix-dropdown-menu-content-transform-origin,
+      var(
+        --radix-context-menu-content-transform-origin,
+        var(
+          --radix-tooltip-content-transform-origin,
+          var(--radix-select-content-transform-origin, center)
+        )
+      )
+    )
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pop {
+    animation-name: pop-in;
+  }
+  .pop[data-state='closed'] {
+    animation-name: pop-out;
+  }
+  .rise {
+    animation: rise-in 200ms ease-out;
+  }
+  .rise[data-state='closed'] {
+    animation: rise-out 150ms ease-out forwards;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+@keyframes pop-out {
+  to {
+    visibility: hidden;
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+    filter: blur(4px);
+  }
+}
+@keyframes rise-out {
+  to {
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 -12px;
+    filter: blur(4px);
+  }
+}

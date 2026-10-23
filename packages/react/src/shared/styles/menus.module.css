@@ -65,7 +65,11 @@
   inline-size: max-content;
   min-inline-size: min(12rem, calc(100vw - 24px));
 }
-.content[data-state='closed'],
+/* A closing menu fades out (motion.module.css ends hidden), so it is only made inert here;
+   display: none would make Radix remove it before the fade runs. */
+.content[data-state='closed'] {
+  pointer-events: none;
+}
 .navigationContent[data-state='closed'] {
   display: none;
 }
