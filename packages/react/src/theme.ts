@@ -402,3 +402,8 @@ export function importTheme(json: string): ResolvedTheme {
   base.diagnostics = diagnose(base.light, base.dark);
   return base;
 }
+
+// Presentation options per component; also exported from the root entry. This entry has no
+// client directive, so server code can read them.
+export { componentVariants, resolveVariant } from './shared/variants.js';
+export type { ComponentVariant, VariantComponent } from './shared/variants.js';

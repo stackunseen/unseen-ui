@@ -3,6 +3,10 @@
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Component pages as Markdown for coding agents.
+/llms/*
+  Content-Type: text/markdown; charset=utf-8
+
 # HTML, metadata files and fixtures are revalidated on every request.
 /*
   X-Content-Type-Options: nosniff

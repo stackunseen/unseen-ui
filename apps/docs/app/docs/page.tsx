@@ -67,7 +67,9 @@ export default function Page() {
         <code>@stackunseen/ui-core</code> are published on npm under the <code>alpha</code> tag; pin
         exact versions, because APIs may change between prereleases. The site&apos;s examples use
         synthetic data and simulated hosts; no model is called. Coding agents can read{' '}
-        <a href="/llms.txt">llms.txt</a> and <a href="/llms-full.txt">llms-full.txt</a>.
+        <a href="/llms.txt">llms.txt</a> and <a href="/llms-full.txt">llms-full.txt</a>, or one
+        component at a time as Markdown, such as <a href="/llms/button.md">button.md</a>. Each
+        component page links to its own.
       </p>
     </>
   );

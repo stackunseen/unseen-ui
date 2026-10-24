@@ -511,18 +511,22 @@
     ] },
     { "entry": "@stackunseen/ui/theme", "exports": [
       {"name":"Appearance","kind":"type"},
+      {"name":"ComponentVariant","kind":"type"},
+      {"name":"componentVariants","kind":"constant","sameAs":"@stackunseen/ui"},
       {"name":"ContrastDiagnostic","kind":"type"},
       {"name":"createTheme","kind":"function"},
       {"name":"defaultTheme","kind":"constant"},
       {"name":"exportTheme","kind":"function"},
       {"name":"importTheme","kind":"function"},
       {"name":"ResolvedTheme","kind":"type"},
+      {"name":"resolveVariant","kind":"function","sameAs":"@stackunseen/ui"},
       {"name":"ThemeInput","kind":"type"},
       {"name":"themeToCSS","kind":"function"},
       {"name":"ThemeTokens","kind":"type"},
       {"name":"TokenName","kind":"type"},
       {"name":"tokenNames","kind":"constant"},
-      {"name":"updateTheme","description":"Geometry edits preserve resolved colour overrides; brand edits intentionally regenerate the palette.","kind":"function"}
+      {"name":"updateTheme","description":"Geometry edits preserve resolved colour overrides; brand edits intentionally regenerate the palette.","kind":"function"},
+      {"name":"VariantComponent","kind":"type"}
     ] },
     { "entry": "@stackunseen/ui/status", "exports": [
       {"name":"StatusBadge","kind":"component","sameAs":"@stackunseen/ui"},

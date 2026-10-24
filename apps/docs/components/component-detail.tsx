@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { ResetIcon } from '@radix-ui/react-icons';
+import { FileTextIcon, ResetIcon } from '@radix-ui/react-icons';
 import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import { TableOfContents } from '@stackunseen/ui/navigation';
 import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
@@ -11,10 +11,7 @@ import type { CatalogEntry } from '../lib/catalog';
 import { catalogStyles } from '../lib/catalog';
 import type { GalleryLocation } from '../lib/gallery-location';
 import { Specimen } from './specimen';
-import { markdownStates } from '../lib/markdown-fixtures';
-import { partStates } from '../lib/message-parts-fixtures';
-import { emulatorStates } from '../lib/terminal-fixtures';
-import { componentGuidance, rendererPeers } from '../lib/component-guidance';
+import { componentGuidance } from '../lib/component-guidance';
 import { isReleaseComponent } from '../lib/first-release';
 import { catalog } from '../lib/catalog';
 import { navigationGroup } from '../lib/gallery-navigation';
@@ -22,11 +19,12 @@ import { componentHref, componentSlug } from '../lib/site-paths';
 import { PropsTable } from './props-table';
 import { ComponentAnatomy } from './component-anatomy';
 import { componentAnatomy } from '../lib/component-anatomy';
+import { componentMarkdown } from '../lib/component-markdown';
+import { componentUsage } from '../lib/component-usage';
 import { tasksFor } from '../lib/tasks';
-import { componentImport } from '../lib/component-import';
 import { guidanceFor } from '../lib/usage-guidance';
 import { patternsUsing } from '../lib/pattern-usage';
-import { registryCommand, registryItemsFor } from '../lib/registry-items';
+import { registryCommand, registryItemsFor, registryOrigin } from '../lib/registry-items';
 import { behaviourNotes } from '../lib/behaviour-notes';
 
 const managers = [
@@ -133,70 +131,13 @@ export function ComponentDetail({
   const setPresentation = (style: string) => onChange({ style });
   const setCompare = (compare: boolean) => onChange({ compare });
   const setTab = (tab: string) => onChange({ tab: tab === 'code' ? 'code' : 'preview' });
-  const rich =
-    ['Message', 'StreamingResponse'].includes(entry.name) && markdownStates.includes(variant);
-  const structured = entry.name === 'Message' && partStates.includes(variant);
-  const highlightedCode =
-    entry.name === 'MarkdownCodeBlock' && !['Default', 'Long code', 'Empty'].includes(variant);
-  const advancedForm =
-    entry.name === 'AIForm' &&
-    !['Default', 'Validation', 'Pending', 'Complete', 'Error'].includes(variant);
-  const highlightedDiff = entry.name === 'CodeDiff' && variant !== 'Default';
-  const emulatedTerminal = entry.name === 'TerminalOutput' && emulatorStates.includes(variant);
-  const code =
-    entry.name === 'Modal' && variant === 'Custom header and footer'
-      ? `<Modal layout="${presentation}" open={open} onOpenChange={setOpen}\n  title="Project details" description="Review the local sample project."\n  trigger={<Button>Open details</Button>}\n  header={<div><strong>Project details</strong><span>Local draft</span></div>}\n  footer={<Button onClick={() => setOpen(false)}>Done</Button>}\n>\n  {content}\n</Modal>`
-      : emulatedTerminal
-        ? `<TerminalEmulator variant="${presentation}" output={snapshot.output} state={snapshot.state} context={snapshot.context} status={snapshot.status} connection={connection} submission={submission} inputEnabled={inputEnabled} onInput={requestInput} onResize={requestResize} onRequestStop={requestStop} onRequestClear={requestClear} />`
-        : advancedForm
-          ? `<AIForm variant="${presentation}" fields={fields} values={values} onValueChange={setValues} arrays={arrays} arrayValues={arrayValues} onArrayChange={requestArrayChange} steps={steps} step={step} onStepChange={setStep} identity={formIdentity} onSubmit={requestSubmission} status={status} receipt={receipt} />`
-          : highlightedDiff
-            ? `<HighlightedCodeDiff variant="${presentation}" path={path} before={before} after={after} baseVersion={baseVersion} nextVersion={nextVersion} language={language} status={status} />`
-            : highlightedCode
-              ? `<HighlightedCodeBlock variant="${presentation}" code={code} language={language} streaming={streaming} />`
-              : structured
-                ? `import { renderMarkdownPart } from '@stackunseen/ui/markdown';\n\n<Message renderTextPart={renderMarkdownPart} variant="${presentation}" value={message}\n  sources={sources} tools={tools} attachments={attachments}\n/>`
-                : rich
-                  ? `import { MarkdownResponse } from '@stackunseen/ui/markdown';\n\n${entry.name === 'Message' ? `<Message variant="${presentation}" value={message}\n  renderContent={({ text, state }) => <MarkdownResponse text={text ?? ''} state={state} />}\n/>` : `<MarkdownResponse variant="${presentation}" text={text} state={state} />`}`
-                  : entry.presentationProp === null
-                    ? entry.code
-                    : entry.code.replace(
-                        `<${entry.name}`,
-                        `<${entry.name} ${entry.presentationProp ?? 'variant'}="${presentation}"`,
-                      );
-  const module = emulatedTerminal
-    ? '/terminal'
-    : highlightedCode || highlightedDiff
-      ? '/highlight'
-      : entry.name === 'MarkdownCodeBlock'
-        ? '/code'
-        : entry.name === 'MarkdownResponse'
-          ? '/markdown'
-          : entry.name === 'MathFormula'
-            ? '/math'
-            : entry.name === 'MermaidDiagram'
-              ? '/mermaid'
-              : entry.name === 'RichMarkdownResponse'
-                ? '/rich-markdown'
-                : (entry.importPath ?? '');
-  const mathStyles =
-    module === '/math' ||
-    module === '/rich-markdown' ||
-    (module === '/mermaid' && ['Math labels', 'Sequence math'].includes(variant));
-  const optionalStyles =
-    module === '/application' ||
-    module === '/marketing' ||
-    module === '/navigation' ||
-    module === '/conversation-flow' ||
-    module === '/mcp-apps' ||
-    module === '/chat'
-      ? `import '@stackunseen/ui${module}.css';\n`
-      : '';
-  const peers = rendererPeers[rich || structured ? '/markdown' : module];
-  const importLine = `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : componentImport(entry).exportName} } from '@stackunseen/ui${module}';`;
+  const { module, optionalStyles, peers, importLine, usage, packages } = componentUsage(
+    entry,
+    variant,
+    presentation,
+  );
   const [manager, setManager] = useState<Manager>('npm');
   useEffect(() => setManager(storedManager()), []);
-  const packages = `@stackunseen/ui${peers?.length ? ` ${peers.join(' ')}` : ''}`;
   const installLine = `${managers.find(([name]) => name === manager)![1]} ${packages}`;
   const usedIn = patternsUsing(entry.name);
   const starters = registryItemsFor[entry.name] ?? [];
@@ -209,57 +150,8 @@ export function ComponentDetail({
         navigationGroup(item) === navigationGroup(entry),
     )
     .slice(0, 8);
-  const usage = `${rich && entry.name === 'StreamingResponse' ? '' : `import { ${emulatedTerminal ? 'TerminalEmulator' : highlightedDiff ? 'HighlightedCodeDiff' : highlightedCode ? 'HighlightedCodeBlock' : entry.name} } from '@stackunseen/ui${module}';\n`}${entry.relatedImports?.length ? `import { ${entry.relatedImports.join(', ')} } from '@stackunseen/ui';\n` : ''}import '@stackunseen/ui/styles.css';\n${optionalStyles}${emulatedTerminal ? "import '@stackunseen/ui/terminal.css';\n" : ''}${mathStyles ? "import 'katex/dist/katex.min.css';\n" : ''}\n${code}`;
   const anatomy = componentAnatomy[entry.name];
-  const pageMarkdown = [
-    `# ${entry.name}`,
-    '',
-    entry.description,
-    '',
-    ...(behaviourNotes[entry.name]
-      ? ['## Good to know', '', ...behaviourNotes[entry.name]!.map((note) => `- ${note}`), '']
-      : []),
-    '## Installation',
-    '',
-    '```bash',
-    installLine,
-    ...starters.map((item) => registryCommand(item)),
-    '```',
-    '',
-    ...(anatomy
-      ? [
-          '## Anatomy',
-          '',
-          anatomy.intro,
-          '',
-          ...anatomy.parts.flatMap((part, index) => [
-            `${index + 1}. **${part.name}**: ${part.description}${part.builtFrom.length ? ` Built from ${part.builtFrom.join(', ')}.` : ''} Props: ${part.props.map((prop) => `\`${prop}\``).join(', ')}.`,
-          ]),
-          '',
-          ...anatomy.connection.flatMap((way) => [
-            `- **${way.label}** (${way.props.map((prop) => `\`${prop}\``).join(', ')}): ${way.description}`,
-          ]),
-          '',
-        ]
-      : []),
-    '## Usage',
-    '',
-    '```tsx',
-    usage,
-    '```',
-    ...(guidance
-      ? [
-          '',
-          '## Props',
-          '',
-          ...guidance.props.map(
-            (prop) => `- \`${prop.name}\` (\`${prop.type}\`): ${prop.description}`,
-          ),
-        ]
-      : []),
-    '',
-    `Source: https://unseenui.com${componentHref(entry.name)}`,
-  ].join('\n');
+  const pageMarkdown = componentMarkdown({ entry, installLine, usage, origin: registryOrigin });
   const sections = [
     ['component-example', 'Preview'],
     ['component-install', 'Installation'],
@@ -276,6 +168,16 @@ export function ComponentDetail({
             <h1>{entry.name}</h1>
             <div className="detail-title-actions">
               <CopyButton size="sm" variant="outline" value={pageMarkdown} label="Copy page" />
+              {/* The same page as a Markdown file, with every prop, for coding agents. */}
+              <Button
+                size="sm"
+                variant="outline"
+                href={`/llms/${componentSlug(entry.name)}.md`}
+                className="detail-markdown-link"
+              >
+                <FileTextIcon width={15} height={15} aria-hidden="true" />
+                Markdown
+              </Button>
               {pagination}
             </div>
           </div>

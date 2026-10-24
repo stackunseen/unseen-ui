@@ -1,5 +1,6 @@
-import { componentVariants } from '@stackunseen/ui';
-import type { VariantComponent } from '@stackunseen/ui';
+// From the theme entry, which has no client directive, so server routes read the real lists.
+import { componentVariants } from '@stackunseen/ui/theme';
+import type { VariantComponent } from '@stackunseen/ui/theme';
 import { partStates } from './message-parts-fixtures';
 import { expandedCatalog } from './expanded-catalog';
 import { genericCatalog } from './generic-catalog';

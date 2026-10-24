@@ -117,6 +117,9 @@ export default defineConfig({
       '@stackunseen/ui/highlight': fileURLToPath(
         new URL('./packages/react/src/highlight.tsx', import.meta.url),
       ),
+      '@stackunseen/ui/manifest.json': fileURLToPath(
+        new URL('./packages/react/manifest.json', import.meta.url),
+      ),
       '@stackunseen/ui': fileURLToPath(new URL('./packages/react/src/index.ts', import.meta.url)),
     },
   },
