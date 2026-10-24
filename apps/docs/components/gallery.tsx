@@ -11,9 +11,13 @@ import {
   ColorWheelIcon,
   ComponentInstanceIcon,
   Cross2Icon,
+  DashboardIcon,
+  FileTextIcon,
   HamburgerMenuIcon,
+  LayoutIcon,
+  MagicWandIcon,
   MagnifyingGlassIcon,
-  ReaderIcon,
+  MixerHorizontalIcon,
 } from '@radix-ui/react-icons';
 import { Accordion } from '@stackunseen/ui';
 import '@stackunseen/ui/terminal.css';
@@ -72,7 +76,7 @@ const workspaces: { view: GalleryView; label: string; icon: typeof ComponentInst
   { view: 'coding', label: 'Coding studio', icon: CodeIcon },
   { view: 'templates', label: 'Templates', icon: ComponentInstanceIcon },
   { view: 'theme', label: 'Theme studio', icon: ColorWheelIcon },
-  { view: 'design', label: 'Design foundations', icon: ReaderIcon },
+  { view: 'design', label: 'Design foundations', icon: LayoutIcon },
 ];
 function focusContent() {
   requestAnimationFrame(() => {
@@ -215,7 +219,8 @@ export function Gallery({
   }[] = [
     {
       section: 'ui',
-      icon: ComponentInstanceIcon,
+      // Building blocks: forms, navigation, overlays and the rest of the interface.
+      icon: DashboardIcon,
       location: changeGalleryLocation(location, {
         view: 'components',
         component: componentSection(entry) === 'ui' ? entry.name : 'Button',
@@ -223,7 +228,7 @@ export function Gallery({
     },
     {
       section: 'ai',
-      icon: CodeIcon,
+      icon: MagicWandIcon,
       location: changeGalleryLocation(location, {
         view: 'components',
         component: componentSection(entry) === 'ai' ? entry.name : 'PromptInput',
@@ -231,7 +236,7 @@ export function Gallery({
     },
     {
       section: 'customize',
-      icon: ColorWheelIcon,
+      icon: MixerHorizontalIcon,
       location: changeGalleryLocation(location, { view: view === 'design' ? 'design' : 'theme' }),
     },
   ];
@@ -394,13 +399,15 @@ export function Gallery({
                       location={changeGalleryLocation(location, { view: workspace.view })}
                       onNavigate={navigate}
                     >
+                      <workspace.icon width={15} height={15} aria-hidden="true" />
                       {workspace.label}
                     </LocalLink>
                   );
                 })}
                 {section === 'customize' && (
-                  <Link className="component-link" href="/getting-started/#customize">
-                    Customization and icons
+                  <Link className="component-link" href="/docs/customization/">
+                    <FileTextIcon width={15} height={15} aria-hidden="true" />
+                    Themes and icons guide
                   </Link>
                 )}
                 <p className="section-description">

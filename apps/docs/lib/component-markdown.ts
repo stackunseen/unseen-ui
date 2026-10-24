@@ -78,20 +78,21 @@ export function componentMarkdown({
     '',
     ...(anatomy
       ? [
-          '## Anatomy',
+          '## Parts',
           '',
           anatomy.intro,
           '',
+          ...(anatomy.example ? ['```tsx', anatomy.example, '```', ''] : []),
           ...anatomy.parts.map(
             (part, index) =>
-              `${index + 1}. **${part.name}**: ${part.description}${part.builtFrom.length ? ` Built from ${part.builtFrom.join(', ')}.` : ''} Props: ${part.props.map((prop) => `\`${prop}\``).join(', ')}.`,
+              `${index + 1}. **${part.render ? `\`${part.render}\`` : part.name}**: ${part.description}${part.builtFrom?.length ? ` Built from ${part.builtFrom.join(', ')}.` : ''}${part.props?.length ? ` Props: ${part.props.map((prop) => `\`${prop}\``).join(', ')}.` : ''}`,
           ),
           '',
-          ...anatomy.connection.map(
+          ...(anatomy.connection ?? []).map(
             (way) =>
               `- **${way.label}** (${way.props.map((prop) => `\`${prop}\``).join(', ')}): ${way.description}`,
           ),
-          '',
+          ...(anatomy.connection ? [''] : []),
         ]
       : []),
     '## Usage',

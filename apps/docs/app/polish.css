@@ -544,19 +544,22 @@
   }
 }
 
-/* Anatomy: a numbered outline of the regions beside what draws each one and the props that shape it. */
+/* Parts: a numbered outline of the regions beside what draws each one and the props that shape it. */
 .anatomy {
   display: grid;
-  grid-template-columns: 184px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 32px;
   margin-top: 16px;
+}
+/* With a schematic, it sits beside the list. Its grid comes from the component's own layout. */
+.anatomy[data-figure] {
+  grid-template-columns: 232px minmax(0, 1fr);
 }
 .anatomy-figure {
   position: sticky;
   top: 88px;
   display: grid;
-  grid-template-rows: 36px 168px 36px 60px;
   gap: 6px;
   padding: 8px;
   border: var(--ai-border-width, 1px) solid var(--ai-border);
@@ -567,6 +570,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
+  min-width: 0;
   padding: 8px 10px;
   border: 1px dashed var(--ai-control-border);
   border-radius: 8px;
@@ -668,10 +672,12 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 20px;
   }
+  .anatomy[data-figure] {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .anatomy-figure {
     position: static;
-    grid-template-rows: 32px 96px 32px 44px;
-    width: min(100%, 280px);
+    width: min(100%, 320px);
   }
   .anatomy-connection {
     grid-template-columns: minmax(0, 1fr);
@@ -730,5 +736,48 @@ main.relay-page {
 @media (max-width: 760px) {
   .detail-specimen {
     --chat-preview-height: auto;
+  }
+}
+/* Theme studio, Design foundations and the guide carry icons like the sections above them. */
+.section-links .component-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-links .component-link > svg {
+  flex: none;
+  color: var(--ai-muted);
+}
+.section-links .component-link.active > svg {
+  color: var(--ai-text);
+}
+/* The schematic is decorative; long names give way to the numbers that the list repeats. */
+.anatomy-region-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.anatomy-example {
+  margin-top: 16px;
+}
+.explorer-main .anatomy-example h3,
+.explorer-main #component-parts > h3 {
+  margin: 24px 0 8px;
+  font-size: 15px;
+}
+.explorer-main .anatomy-parts h3 code {
+  padding: 0;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+/* In a narrow column of the schematic, the number alone stands for the region. */
+.anatomy-region {
+  container-type: inline-size;
+}
+@container (max-width: 76px) {
+  .anatomy-region-name {
+    display: none;
   }
 }

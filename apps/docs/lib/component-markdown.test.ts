@@ -28,12 +28,12 @@ describe('component Markdown for coding agents', () => {
     }
   });
 
-  it('carries the page sections, the anatomy and every prop', () => {
+  it('carries the page sections, the parts and every prop', () => {
     const chat = markdownFor('Chat');
     for (const heading of [
       '# Chat',
       '## Installation',
-      '## Anatomy',
+      '## Parts',
       '## Usage',
       '## All props',
       '## Keyboard',

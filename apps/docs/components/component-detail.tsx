@@ -18,6 +18,7 @@ import { navigationGroup } from '../lib/gallery-navigation';
 import { componentHref, componentSlug } from '../lib/site-paths';
 import { PropsTable } from './props-table';
 import { ComponentAnatomy } from './component-anatomy';
+import { InlineCode } from './inline-code';
 import { componentAnatomy } from '../lib/component-anatomy';
 import { componentMarkdown } from '../lib/component-markdown';
 import { componentUsage } from '../lib/component-usage';
@@ -155,7 +156,7 @@ export function ComponentDetail({
   const sections = [
     ['component-example', 'Preview'],
     ['component-install', 'Installation'],
-    ...(anatomy ? [['component-anatomy', 'Anatomy']] : []),
+    ...(anatomy ? [['component-parts', 'Parts']] : []),
     ['component-props', 'Usage and props'],
     ['component-customization', 'Keyboard and customization'],
     ...(tasks.length > 0 || siblings.length > 0 ? [['component-related', 'Works with']] : []),
@@ -473,11 +474,11 @@ export function ComponentDetail({
         </section>
         {anatomy && (
           <section
-            id="component-anatomy"
+            id="component-parts"
             className="api-section component-anchor"
-            aria-labelledby="component-anatomy-title"
+            aria-labelledby="component-parts-title"
           >
-            <h2 id="component-anatomy-title">Anatomy</h2>
+            <h2 id="component-parts-title">Parts</h2>
             <ComponentAnatomy name={entry.name} anatomy={anatomy} />
           </section>
         )}
@@ -615,22 +616,5 @@ export function ComponentDetail({
         items={sections.map(([id, label]) => ({ id: id!, title: label }))}
       />
     </div>
-  );
-}
-
-/** A note with `code` spans, rendered as code instead of showing the backticks. */
-function InlineCode({ text }: { text: string }) {
-  return (
-    <>
-      {text
-        .split(/(`[^`]+`)/)
-        .map((part, index) =>
-          part.startsWith('`') && part.endsWith('`') ? (
-            <code key={index}>{part.slice(1, -1)}</code>
-          ) : (
-            part
-          ),
-        )}
-    </>
   );
 }
