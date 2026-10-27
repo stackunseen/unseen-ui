@@ -96,7 +96,6 @@ export function EvalsScreen() {
   return (
     <div className={s.screen} data-template="evals">
       <PageHeader
-        headingLevel={2}
         title="Evaluations"
         description="Scores per suite and model, from the last run of each. Re-running is a request to the eval service."
         actions={

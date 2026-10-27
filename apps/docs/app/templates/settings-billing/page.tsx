@@ -15,10 +15,6 @@ export default function Page() {
       <a className="web-text-link template-workspace-back" href="/templates/">
         All templates
       </a>
-      <header className="template-workspace-heading">
-        <h1>Settings and billing</h1>
-        <p>Workspace settings with a save footer, model defaults and budgets, API keys shown once, and the plan with usage and invoices.</p>
-      </header>
       <SettingsBillingScreen />
     </main>
   );

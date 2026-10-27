@@ -111,9 +111,9 @@ async function journeys(page, { origin, output }, audit) {
     );
     const templates = page.locator('.home-templates .pattern-templates a');
     assert(
-      (await templates.count()) === 10 &&
+      (await templates.count()) === 9 &&
         (await templates.first().getAttribute('href')) === '/patterns/agent-workbench/',
-      'Home lists the ten templates',
+      'Home lists the nine browser templates',
     );
     const tasks = page.locator('.home-tasks li a');
     assert(
@@ -264,7 +264,7 @@ async function journeys(page, { origin, output }, audit) {
       'Breadth tabs sit within the first two mobile screens',
     );
     assert(
-      (await page.locator('.home-templates .pattern-templates a').count()) === 10,
+      (await page.locator('.home-templates .pattern-templates a').count()) === 9,
       'Six template links render on the phone layout',
     );
   });

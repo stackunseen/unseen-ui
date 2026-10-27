@@ -311,7 +311,6 @@ export function SettingsBillingScreen() {
   return (
     <div className={s.screen} data-template="settings-billing">
       <PageHeader
-        headingLevel={2}
         title="Settings and billing"
         description="General settings, model defaults and budgets, API keys and the plan. Saving asks the server; the footer shows its answer."
       />

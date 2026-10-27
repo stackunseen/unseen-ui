@@ -15,10 +15,6 @@ export default function Page() {
       <a className="web-text-link template-workspace-back" href="/templates/">
         All templates
       </a>
-      <header className="template-workspace-heading">
-        <h1>Analytics</h1>
-        <p>Requests, latency, tool health, spend per agent and context-window use for an agent product, from a metrics service.</p>
-      </header>
       <AnalyticsScreen />
     </main>
   );

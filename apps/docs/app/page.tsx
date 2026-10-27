@@ -76,7 +76,7 @@ export default function Page() {
             </div>
             <Link href="/templates/">All templates</Link>
           </div>
-          <TemplateCards />
+          <TemplateCards exclude="/templates/relay/" />
         </section>
         <dl className="home-facts" aria-label="At a glance">
           <div>
@@ -157,7 +157,7 @@ export default function Page() {
             </li>
           </ul>
           <p className="home-why-evidence">
-            Checked 23 October 2026: 2,239 tests pass, and automated accessibility checks (axe) find
+            Checked 28 October 2026: 2,298 tests pass, and automated accessibility checks (axe) find
             no violations on the pages we audit.
           </p>
         </section>

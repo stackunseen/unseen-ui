@@ -72,7 +72,6 @@ export function AnalyticsScreen() {
   return (
     <div className={s.screen} data-template="analytics">
       <PageHeader
-        headingLevel={2}
         title="Analytics"
         description="What the agents did this week: requests, latency, tool health and spend. Figures come from the metrics service with their meaning attached."
         actions={

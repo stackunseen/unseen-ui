@@ -15,10 +15,6 @@ export default function Page() {
       <a className="web-text-link template-workspace-back" href="/templates/">
         All templates
       </a>
-      <header className="template-workspace-heading">
-        <h1>Evaluations</h1>
-        <p>Scores per suite and model over time, failing cases and a comparison of two runs, from an eval service with the meaning of every number kept.</p>
-      </header>
       <EvalsScreen />
     </main>
   );
