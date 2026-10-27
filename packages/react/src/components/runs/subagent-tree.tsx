@@ -7,7 +7,9 @@ import { Button } from '../button/button.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
-import type { RunParty } from './shared.js';
+import { MeasuredText, formatMoney } from './shared.js';
+import type { Money, RunParty } from './shared.js';
+import type { Measurement } from '@stackunseen/ui-core';
 import s from '../../shared/styles/styles.module.css';
 import r from './runs.module.css';
 
@@ -21,6 +23,8 @@ export interface RunNode {
   children: readonly RunNode[];
   /** True when the host has more children it has not sent yet. */
   hasMore?: boolean;
+  /** This run's own cost. The tree adds the branch up and says when any part is estimated. */
+  cost?: Measurement<Money>;
 }
 export interface SubagentTreeProps extends VariantProps<'SubagentTree'> {
   root: RunNode;
@@ -35,10 +39,38 @@ export interface SubagentTreeProps extends VariantProps<'SubagentTree'> {
   staleAfterMs?: number;
   now?: string;
   label?: string;
+  locale?: string;
 }
 
 function countDescendants(node: RunNode): number {
   return node.children.reduce((total, child) => total + 1 + countDescendants(child), 0);
+}
+/**
+ * The cost of a branch: this run plus every run under it, in one currency. Mixed currencies
+ * or an unknown part make the total unknown rather than wrong.
+ */
+export function branchCost(node: RunNode): Measurement<Money> | undefined {
+  let amount = 0;
+  let currency: string | undefined;
+  let estimated = false;
+  let any = false;
+  const walk = (current: RunNode): boolean => {
+    if (current.cost) {
+      if (current.cost.kind === 'unknown') return false;
+      if (currency !== undefined && current.cost.value.currency !== currency) return false;
+      currency = current.cost.value.currency;
+      amount += current.cost.value.amount;
+      if (current.cost.kind === 'estimated') estimated = true;
+      any = true;
+    }
+    return current.children.every(walk);
+  };
+  if (!walk(node)) return { kind: 'unknown', reason: 'part of the branch is not reported' };
+  if (!any || currency === undefined) return undefined;
+  amount = Math.round(amount * 1_000_000) / 1_000_000;
+  return estimated
+    ? { kind: 'estimated', value: { amount, currency }, basis: 'the runs it contains' }
+    : { kind: 'measured', value: { amount, currency } };
 }
 
 /** Parent and child runs as a tree with the message that spawned each child. */
@@ -54,6 +86,7 @@ export function SubagentTree({
   staleAfterMs = 5 * 60_000,
   now,
   label = 'Agent runs',
+  locale,
 }: SubagentTreeProps) {
   const id = useId();
   const clock = now ?? (typeof window === 'undefined' ? undefined : new Date().toISOString());
@@ -192,6 +225,28 @@ export function SubagentTree({
           />
           {variant !== 'compact' && node.agent && (
             <span className={r.treeMeta}>{node.agent.name}</span>
+          )}
+          {node.cost && (
+            <span className={`${r.treeMeta} ${r.treeCost}`}>
+              <MeasuredText
+                measurement={node.cost}
+                format={(value) => formatMoney(value, locale)}
+              />
+              {node.children.length > 0 &&
+                (() => {
+                  const total = branchCost(node);
+                  return total ? (
+                    <>
+                      {' · '}
+                      <MeasuredText
+                        measurement={total}
+                        format={(value) => formatMoney(value, locale)}
+                      />{' '}
+                      with sub-agents
+                    </>
+                  ) : null;
+                })()}
+            </span>
           )}
         </div>
         {variant !== 'compact' && node.spawnedBy && (

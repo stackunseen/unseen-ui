@@ -205,12 +205,58 @@
   padding-inline: 14px;
 }
 .detail-frame .preview-canvas {
+  position: relative;
   display: grid;
   align-content: center;
-  min-height: 340px;
-  padding: 40px clamp(16px, 4vw, 48px);
+  min-height: 420px;
+  padding: 40px clamp(16px, 4vw, 48px) 40px;
+  padding-inline-end: clamp(56px, 6vw, 88px);
   border: 0;
   border-radius: 0;
+  background: var(--ai-surface);
+  color: var(--ai-text);
+}
+/* The preview's own light or dark reads against the canvas colour, inside the page frame. */
+.detail-frame .preview-canvas[data-preview-mode] {
+  background: var(--ai-canvas);
+}
+.preview-rail {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  display: grid;
+  gap: 2px;
+  padding: 3px;
+  border: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-radius: 10px;
+  background: var(--ai-surface);
+}
+.preview-rail-button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ai-muted);
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .preview-rail-button:hover {
+    background: var(--ai-surface-subtle);
+    color: var(--ai-text);
+  }
+}
+.preview-rail-button[aria-pressed='true'] {
+  background: var(--ai-primary-soft);
+  color: var(--ai-primary-text);
+}
+.preview-rail-button:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 1px;
 }
 .explorer-main .detail-frame .detail-specimen {
   max-width: 760px;
@@ -266,8 +312,8 @@
 }
 @media (max-width: 640px) {
   .detail-frame .preview-canvas {
-    min-height: 240px;
-    padding: 24px 16px;
+    min-height: 280px;
+    padding: 48px 16px 24px;
   }
 }
 

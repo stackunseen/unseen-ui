@@ -87,6 +87,12 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Select',
     'ToggleGroup',
   ),
+  TonePad: g(
+    'Two linked settings on one square, such as tone and length.',
+    'One number, or exact values people type.',
+    'Slider',
+    'Input',
+  ),
   Slider: g(
     'Picking a number in a range where the exact value matters less than the position.',
     'Precise values people type.',
@@ -270,6 +276,32 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'A date or a schedule.',
     'StatusBadge',
   ),
+  Numeric: g(
+    'One figure with what it means beside it: a duration, a count, a delta.',
+    'A labelled metric in a row of metrics.',
+    'Stat',
+  ),
+  Kbd: g('A key cap in a hint or a menu row.', 'The action itself.', 'Button'),
+  DotRing: g(
+    'Counts around a cycle: hours of a day, steps of a loop.',
+    'Progress toward one total.',
+    'Progress',
+  ),
+  DotBars: g(
+    'Daily or per-step counts with a range to call out.',
+    'Real axes, several series or negative values.',
+    'Chart',
+  ),
+  WeekStrip: g(
+    'A week of counts, stacked by kind, with a goal.',
+    'More than a couple of weeks.',
+    'Chart',
+  ),
+  HeatKeys: g(
+    'Which keys or cells get used, laid out like the real thing.',
+    'Counts across two named axes.',
+    'Matrix',
+  ),
   Avatar: g('A person or team, with an image or initials.', 'Voice agent presence.', 'Persona'),
   Stat: g(
     'A key number with its label and change, in a row of metrics.',
@@ -330,6 +362,11 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Rendering a reply as it streams, with interrupted and failed states.',
     'Formatted Markdown replies.',
     'MarkdownResponse',
+  ),
+  FollowUps: g(
+    'Short next steps after an answer, such as Shorter or More formal.',
+    'Fresh prompts to start a new question.',
+    'Suggestions',
   ),
   Suggestions: g(
     'Follow-up prompts sent or filled with one click.',
@@ -474,6 +511,11 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Two runs or checkpoints side by side.',
     'Two versions of one document.',
     'ArtifactDiff',
+  ),
+  AgentLanes: g(
+    'Several agents working at once, on one time axis, with hand-offs.',
+    'The steps inside one run.',
+    'ExecutionTimeline',
   ),
   SubagentTree: g(
     'Parent and child runs and what spawned each.',

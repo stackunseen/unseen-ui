@@ -17,6 +17,8 @@ export interface CardHeaderProps extends ComponentProps<'div'> {
   actions?: ReactNode;
   /** Names the actions group. */
   actionsLabel?: string;
+  /** A small icon in a round tile before the title; decorative, so the title must say what the card is. */
+  icon?: ReactNode;
 }
 export interface CardTitleProps extends ComponentProps<'h3'> {
   /** Match the containing page hierarchy. */
@@ -25,6 +27,7 @@ export interface CardTitleProps extends ComponentProps<'h3'> {
 export type CardDescriptionProps = ComponentProps<'p'>;
 export type CardContentProps = ComponentProps<'div'>;
 export type CardFooterProps = ComponentProps<'div'>;
+export type CardSectionProps = ComponentProps<'div'>;
 
 /** An ordinary section, or one link with href. Supply aria-labelledby for a named region. */
 function CardRoot({ href, external = false, className = '', children, ...props }: CardProps) {
@@ -57,22 +60,44 @@ function CardRoot({ href, external = false, className = '', children, ...props }
     </Anchor>
   );
 }
+const absent = (node: ReactNode) => node === undefined || node === null || node === false;
 export function CardHeader({
   actions,
   actionsLabel = 'Card actions',
+  icon,
   className = '',
   children,
   ...props
 }: CardHeaderProps) {
-  if (actions === undefined || actions === null || actions === false)
+  const tile = absent(icon) ? null : (
+    <span className={s.iconTile} aria-hidden="true">
+      {icon}
+    </span>
+  );
+  if (absent(actions)) {
+    if (!tile)
+      return (
+        <div {...props} className={`${s.header} ${className}`}>
+          {children}
+        </div>
+      );
     return (
-      <div {...props} className={`${s.header} ${className}`}>
-        {children}
+      <div {...props} className={`${s.headerWithIcon} ${className}`}>
+        {tile}
+        <div className={s.header}>{children}</div>
       </div>
     );
+  }
   return (
     <div {...props} className={`${s.headerWithActions} ${className}`}>
-      <div className={s.header}>{children}</div>
+      {tile ? (
+        <div className={s.headerWithIcon}>
+          {tile}
+          <div className={s.header}>{children}</div>
+        </div>
+      ) : (
+        <div className={s.header}>{children}</div>
+      )}
       <div role="group" aria-label={actionsLabel} className={s.actions}>
         {actions}
       </div>
@@ -91,6 +116,10 @@ export function CardContent({ className = '', ...props }: CardContentProps) {
 export function CardFooter({ className = '', ...props }: CardFooterProps) {
   return <div {...props} className={`${s.footer} ${className}`} />;
 }
+/** A panel one surface step inside the card, for a figure, a chart or a group of controls. */
+export function CardSection({ className = '', ...props }: CardSectionProps) {
+  return <div {...props} data-part="card-section" className={`${s.section} ${className}`} />;
+}
 
 export const Card = Object.assign(CardRoot, {
   Root: CardRoot,
@@ -99,4 +128,5 @@ export const Card = Object.assign(CardRoot, {
   Description: CardDescription,
   Content: CardContent,
   Footer: CardFooter,
+  Section: CardSection,
 });

@@ -36,7 +36,7 @@ export const componentVariants = {
   StatusBadge: ['soft', 'outline', 'plain', 'icon'],
   AgentCard: ['card', 'row', 'profile'],
   AgentSteps: ['timeline', 'cards', 'compact'],
-  ExecutionTimeline: ['timeline', 'table', 'compact'],
+  ExecutionTimeline: ['timeline', 'table', 'compact', 'waterfall'],
   ToolCall: ['card', 'terminal', 'compact', 'row'],
   ToolResult: ['code', 'text', 'expandable'],
   ToolGroup: ['stack', 'grid', 'accordion', 'list'],

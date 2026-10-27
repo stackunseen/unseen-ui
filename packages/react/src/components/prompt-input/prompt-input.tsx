@@ -5,6 +5,7 @@ import type { TextRange } from '@stackunseen/ui-core/editing';
 import { validTextRange } from '@stackunseen/ui-core/editing';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
+import { Kbd } from '../kbd/kbd.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
@@ -54,7 +55,29 @@ export interface PromptInputProps
   onMention?: (item: CommandOption) => void;
   /** The text after "@" while the mention list is open, or null when it closes. */
   onMentionQueryChange?: (query: string | null) => void;
+  /**
+   * A character limit shown as "86 / 500" under the box; sending stops past it. The hard
+   * ceiling of 20,000 characters still applies.
+   */
+  limit?: number;
+  /**
+   * Placeholders the message can carry, such as the selected text or a saved voice. Each is
+   * offered as a chip; choosing one inserts "{{id}}" at the caret, and chips already in the
+   * text show as in use. Your app substitutes the values when it sends.
+   */
+  variables?: readonly PromptVariable[];
+  onInsertVariable?: (variable: PromptVariable) => void;
+  /** Extra actions beside the variables, such as an "Enhance prompt" button. */
+  assist?: ReactNode;
 }
+export interface PromptVariable {
+  id: string;
+  label: string;
+  /** Shown as the chip's title. */
+  description?: string;
+}
+const HARD_LIMIT = 20_000;
+const token = (variable: PromptVariable) => `{{${variable.id}}}`;
 
 export function PromptInput({
   variant = 'standard',
@@ -80,9 +103,17 @@ export function PromptInput({
   mentions,
   onMention,
   onMentionQueryChange,
+  limit,
+  variables,
+  onInsertVariable,
+  assist,
   className = '',
   ...props
 }: PromptInputProps) {
+  const ceiling =
+    limit !== undefined && Number.isFinite(limit) && limit > 0
+      ? Math.min(HARD_LIMIT, Math.floor(limit))
+      : HARD_LIMIT;
   const id = useId();
   const composing = useRef(false);
   const input = useRef<HTMLTextAreaElement>(null);
@@ -112,18 +143,77 @@ export function PromptInput({
     ? disabledReason || 'Messaging is unavailable.'
     : submitDisabled
       ? submitDisabledReason || 'Sending is unavailable. Review the current request.'
-      : value.length > 20_000
-        ? 'Message exceeds 20,000 characters. Shorten it before sending.'
+      : value.length > ceiling
+        ? `Message exceeds ${ceiling.toLocaleString('en-US')} characters. Shorten it before sending.`
         : undefined;
   const ready =
     !disabled &&
     !busy &&
     !submitDisabled &&
     (allowEmptySubmit || value.trim().length > 0) &&
-    value.length <= 20_000;
+    value.length <= ceiling;
   function submit() {
     if (ready) onSubmit(value.trim());
   }
+  function insertVariable(variable: PromptVariable) {
+    const area = input.current;
+    // An unfocused textarea reports no caret; then the controlled selection or the end applies.
+    const focused =
+      area !== null && typeof document !== 'undefined' && document.activeElement === area;
+    const fallback = selection && validTextRange(selection, value) ? selection : undefined;
+    const from = focused ? area.selectionStart : (fallback?.from ?? value.length);
+    const to = focused ? area.selectionEnd : (fallback?.to ?? value.length);
+    const before = value.slice(0, from);
+    const after = value.slice(to);
+    const text = token(variable);
+    const pad = before.length && !/\s$/.test(before) ? ' ' : '';
+    const next = `${before}${pad}${text}${after.length && !/^\s/.test(after) ? ' ' : ''}${after}`;
+    const caret = before.length + pad.length + text.length;
+    onValueChange(next);
+    onInsertVariable?.(variable);
+    onSelectionChange?.({ from: caret, to: caret });
+    requestAnimationFrame(() => {
+      area?.focus();
+      area?.setSelectionRange(caret, caret);
+    });
+  }
+  const meta =
+    (variables && variables.length > 0) || assist || limit !== undefined ? (
+      <div className={own.composerMeta} data-part="composer-meta">
+        {variables && variables.length > 0 && (
+          <div role="group" aria-label="Insert variable" className={own.variables}>
+            {variables.map((variable) => {
+              const used = value.includes(token(variable));
+              return (
+                <Button
+                  key={variable.id}
+                  size="sm"
+                  variant={used ? 'secondary' : 'outline'}
+                  disabled={disabled}
+                  title={variable.description}
+                  data-in-use={used || undefined}
+                  className={own.variable}
+                  onClick={() => insertVariable(variable)}
+                >
+                  {variable.label}
+                  {used && <span className={s.srOnly}> (in the message)</span>}
+                </Button>
+              );
+            })}
+          </div>
+        )}
+        {assist && <div className={own.assist}>{assist}</div>}
+        {limit !== undefined && (
+          <span
+            className={own.count}
+            data-over={value.length > ceiling || undefined}
+            aria-hidden="true"
+          >
+            {value.length.toLocaleString('en-US')} / {ceiling.toLocaleString('en-US')}
+          </span>
+        )}
+      </div>
+    ) : null;
   return (
     <form
       {...props}
@@ -153,7 +243,7 @@ export function PromptInput({
         id={id}
         value={value}
         disabled={disabled}
-        maxLength={20_000}
+        maxLength={HARD_LIMIT}
         placeholder={placeholder}
         rows={variant === 'inline' ? 1 : variant === 'compact' ? 2 : 3}
         aria-describedby={`${id}-help`}
@@ -195,6 +285,7 @@ export function PromptInput({
           }
         }}
       />
+      {meta}
       <div className={own.composerFooter}>
         <div className={own.composerControls} data-part="composer-controls">
           {toolbar && <div className={a.composerToolbar}>{toolbar}</div>}
@@ -219,7 +310,15 @@ export function PromptInput({
           id={`${id}-help`}
           data-hint={unavailableReason ? undefined : ''}
         >
-          {unavailableReason ?? hint ?? 'Shift + Enter for a new line'}
+          {unavailableReason ??
+            hint ??
+            (variant === 'inline' ? (
+              'Shift + Enter for a new line'
+            ) : (
+              <>
+                <Kbd size="sm">Shift</Kbd> + <Kbd size="sm">Enter</Kbd> for a new line
+              </>
+            ))}
         </span>
       </div>
     </form>

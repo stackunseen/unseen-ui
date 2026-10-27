@@ -35,6 +35,10 @@ const DisplaySpecimen = dynamic(
   () => import('./website-display-specimen').then((m) => m.WebsiteDisplaySpecimen),
   { loading: ExampleLoading },
 );
+const DotsSpecimen = dynamic(
+  () => import('./website-dots-specimen').then((m) => m.WebsiteDotsSpecimen),
+  { loading: ExampleLoading },
+);
 const ControlSpecimen = dynamic(
   () => import('./website-control-specimen').then((m) => m.WebsiteControlSpecimen),
   { loading: ExampleLoading },
@@ -54,6 +58,7 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
     'Switch',
     'RadioGroup',
     'Slider',
+    'TonePad',
   ].includes(name)
     ? FormSpecimen
     : ['Popover', 'Tooltip', 'AlertDialog'].includes(name)
@@ -64,20 +69,31 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
           ? FeedbackSpecimen
           : ['Breadcrumb', 'Pagination', 'Sidebar'].includes(name)
             ? NavigationSpecimen
-            : ['ToggleGroup', 'Tag', 'Avatar', 'Stat', 'DiffStat', 'ElapsedTime'].includes(name)
+            : [
+                  'ToggleGroup',
+                  'Tag',
+                  'Avatar',
+                  'Stat',
+                  'DiffStat',
+                  'ElapsedTime',
+                  'Numeric',
+                  'Kbd',
+                ].includes(name)
               ? DisplaySpecimen
-              : ['Chip', 'Stepper', 'Matrix'].includes(name)
-                ? ControlSpecimen
-                : [
-                      'CopyButton',
-                      'InputGroup',
-                      'AppearanceToggle',
-                      'CommandPalette',
-                      'TableOfContents',
-                      'ShareMenu',
-                    ].includes(name)
-                  ? UtilitySpecimen
-                  : SurfaceSpecimen;
+              : ['DotRing', 'DotBars', 'WeekStrip', 'HeatKeys'].includes(name)
+                ? DotsSpecimen
+                : ['Chip', 'Stepper', 'Matrix'].includes(name)
+                  ? ControlSpecimen
+                  : [
+                        'CopyButton',
+                        'InputGroup',
+                        'AppearanceToggle',
+                        'CommandPalette',
+                        'TableOfContents',
+                        'ShareMenu',
+                      ].includes(name)
+                    ? UtilitySpecimen
+                    : SurfaceSpecimen;
   return (
     <div className="generic-demo" data-demo={name}>
       <Component {...props} />

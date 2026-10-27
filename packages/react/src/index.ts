@@ -228,6 +228,12 @@ export type {
 export { StatusBadge } from './components/status-badge/status-badge.js';
 export type { StatusBadgeProps } from './components/status-badge/status-badge.js';
 export { PromptInput } from './components/prompt-input/prompt-input.js';
+export { FollowUps } from './components/follow-ups/follow-ups.js';
+export type { FollowUp, FollowUpsProps } from './components/follow-ups/follow-ups.js';
+export { Kbd } from './components/kbd/kbd.js';
+export type { KbdProps } from './components/kbd/kbd.js';
+export { TonePad } from './components/tone-pad/tone-pad.js';
+export type { TonePadProps, TonePadValue, TonePadAxes } from './components/tone-pad/tone-pad.js';
 export { Message, MessageActions } from './components/message/message.js';
 export { StreamingResponse } from './components/streaming-response/streaming-response.js';
 export { Suggestions } from './components/suggestions/suggestions.js';
@@ -248,7 +254,8 @@ export type {
 export { FileDropzone } from './components/file-dropzone/file-dropzone.js';
 export type { FileDropzoneProps } from './components/file-dropzone/file-dropzone.js';
 export type { FileSelectionLimits } from './components/attachment/file-selection.js';
-export type { PromptInputProps } from './components/prompt-input/prompt-input.js';
+export type { PromptInputProps, PromptVariable } from './components/prompt-input/prompt-input.js';
+export type { ResponseProgress } from './components/streaming-response/streaming-response.js';
 export type { MessageProps } from './components/message/message.js';
 export type { StreamingResponseProps } from './components/streaming-response/streaming-response.js';
 export { MessageContent } from './components/message-content/message-content.js';
@@ -539,6 +546,21 @@ export { Avatar, avatarInitials } from './components/avatar/avatar.js';
 export type { AvatarProps } from './components/avatar/avatar.js';
 export { Stat, StatGroup } from './components/stat/stat.js';
 export type { StatProps, StatGroupProps } from './components/stat/stat.js';
+export { Numeric } from './components/numeric/numeric.js';
+export type { NumericProps } from './components/numeric/numeric.js';
+export { DotRing } from './components/data-dots/dot-ring.js';
+export type { DotRingProps } from './components/data-dots/dot-ring.js';
+export { DotBars } from './components/data-dots/dot-bars.js';
+export type { DotBarsProps } from './components/data-dots/dot-bars.js';
+export { WeekStrip } from './components/data-dots/week-strip.js';
+export type {
+  WeekStripProps,
+  WeekStripDay,
+  WeekStripSeries,
+} from './components/data-dots/week-strip.js';
+export { HeatKeys } from './components/data-dots/heat-keys.js';
+export type { HeatKeysProps, HeatKey, HeatKeyRow } from './components/data-dots/heat-keys.js';
+export type { DotDatum } from './components/data-dots/shared.js';
 export { Chip, ChipGroup } from './components/chip/chip.js';
 export type {
   ChipProps,

@@ -25,6 +25,7 @@ import {
   ContextBar,
   EvidenceGroup,
   ExecutionTimeline,
+  FollowUps,
   GroundingStatus,
   MCPServerCard,
   MCPToolList,
@@ -289,6 +290,27 @@ export function Specimen({
           submitDisabled={variant === 'Send unavailable'}
           submitDisabledReason="Wait for the file upload before sending."
           onCancel={() => setResult('Cancellation requested in demo.')}
+          limit={variant === 'Counter' || variant === 'Variables' ? 500 : undefined}
+          variables={
+            variant === 'Variables'
+              ? [
+                  { id: 'selection', label: 'selection', description: 'The selected text' },
+                  { id: 'my_voice', label: 'my voice', description: 'Your saved writing voice' },
+                ]
+              : undefined
+          }
+          onInsertVariable={(variable) => setResult(`Inserted {{${variable.id}}}.`)}
+          assist={
+            variant === 'Variables' ? (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setResult('Enhance prompt requested in demo.')}
+              >
+                Enhance prompt
+              </Button>
+            ) : undefined
+          }
           toolbar={
             variant === 'Toolbar' || variant === 'Long toolbar' ? (
               <>
@@ -364,7 +386,31 @@ export function Specimen({
         <StreamingResponse
           variant={resolveVariant('StreamingResponse', presentation)}
           text={variant === 'Waiting' ? '' : message.text}
-          state={longLabels ? 'failed' : message.state}
+          state={
+            longLabels
+              ? 'failed'
+              : variant === 'Progress'
+                ? 'streaming'
+                : variant === 'Follow-ups'
+                  ? 'complete'
+                  : message.state
+          }
+          progress={
+            variant === 'Progress'
+              ? { label: 'Writing', step: 2, of: 3, from: '142', to: '46' }
+              : undefined
+          }
+          onStop={variant === 'Progress' ? () => setResult('Stop requested in demo.') : undefined}
+          followUps={
+            variant === 'Follow-ups'
+              ? [
+                  { id: 'shorter', label: 'Shorter' },
+                  { id: 'numbers', label: 'Add numbers' },
+                  { id: 'formal', label: 'More formal' },
+                ]
+              : undefined
+          }
+          onFollowUp={(item) => setResult(`Follow-up requested: ${item.label}.`)}
           error={
             longLabels
               ? `The current request failed: ${'workspace-reference/'.repeat(12)}`
@@ -380,6 +426,20 @@ export function Specimen({
           text={message.text}
           onRetry={() => setResult('Retry requested. The server creates a new attempt.')}
           onFeedback={(helpful) => setResult(helpful ? 'Marked helpful.' : 'Marked not helpful.')}
+        />
+      );
+      break;
+    case 'FollowUps':
+      preview = (
+        <FollowUps
+          lead={variant === 'Custom lead' ? 'Next' : undefined}
+          disabled={variant === 'Disabled'}
+          items={[
+            { id: 'shorter', label: 'Shorter' },
+            { id: 'numbers', label: 'Add numbers' },
+            { id: 'formal', label: 'More formal' },
+          ]}
+          onSelect={(item) => setResult(`Follow-up requested: ${item.label}.`)}
         />
       );
       break;
@@ -459,6 +519,7 @@ export function Specimen({
       );
       break;
     case 'RunBoard':
+    case 'AgentLanes':
     case 'AttentionQueue':
     case 'RunSummaryCard':
     case 'BackgroundStatus':
@@ -493,34 +554,74 @@ export function Specimen({
         />
       );
       break;
-    case 'ExecutionTimeline':
+    case 'ExecutionTimeline': {
+      const waterfall = variant === 'Waterfall' || presentation === 'waterfall';
       preview = (
         <ExecutionTimeline
-          variant={resolveVariant('ExecutionTimeline', presentation)}
+          variant={waterfall ? 'waterfall' : resolveVariant('ExecutionTimeline', presentation)}
           entries={
             empty
               ? []
-              : [
-                  {
-                    id: '1',
-                    label: 'Searched the demo dataset',
-                    state: 'succeeded',
-                    timestamp: '2026-09-29T12:00:00Z',
-                    durationMs: 820,
-                  },
-                  {
-                    id: '2',
-                    label: 'Requested owner review',
-                    state: 'waiting-approval',
-                    timestamp: '2026-09-29T12:00:01Z',
-                  },
-                ]
+              : waterfall
+                ? [
+                    {
+                      id: 'p1',
+                      label: 'Plan the review',
+                      state: 'succeeded',
+                      timestamp: '2026-09-29T12:00:00Z',
+                      durationMs: 1_400,
+                      tokens: '2.1k tokens',
+                      cost: '$0.03',
+                    },
+                    {
+                      id: 'p1a',
+                      parentId: 'p1',
+                      label: 'Read the account list',
+                      state: 'succeeded',
+                      timestamp: '2026-09-29T12:00:00.100Z',
+                      durationMs: 820,
+                      detail: 'Tool call, no model tokens.',
+                    },
+                    {
+                      id: 'p2',
+                      label: 'Search the demo dataset',
+                      state: 'succeeded',
+                      timestamp: '2026-09-29T12:00:01.400Z',
+                      durationMs: 3_900,
+                      tokens: '4.8k tokens',
+                      cost: '$0.07',
+                    },
+                    {
+                      id: 'p3',
+                      label: 'Request owner review',
+                      state: 'waiting-approval',
+                      timestamp: '2026-09-29T12:00:05.300Z',
+                      tokens: '0.3k tokens',
+                      cost: '$0.01',
+                    },
+                  ]
+                : [
+                    {
+                      id: '1',
+                      label: 'Searched the demo dataset',
+                      state: 'succeeded',
+                      timestamp: '2026-09-29T12:00:00Z',
+                      durationMs: 820,
+                    },
+                    {
+                      id: '2',
+                      label: 'Requested owner review',
+                      state: 'waiting-approval',
+                      timestamp: '2026-09-29T12:00:01Z',
+                    },
+                  ]
           }
           filter={value === 'failed' ? 'failed' : 'all'}
           onFilterChange={setValue}
         />
       );
       break;
+    }
     case 'ToolCall':
       preview = (
         <ToolCall

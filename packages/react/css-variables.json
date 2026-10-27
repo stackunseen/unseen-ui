@@ -210,6 +210,10 @@
       "group": "type",
       "purpose": "Monospace typeface for code, paths and identifiers."
     },
+    "--ai-font-numeric": {
+      "group": "type",
+      "purpose": "Typeface for figures: Stat values, durations, counts and deltas; the monospace face when unset."
+    },
     "--ai-font-size": { "group": "type", "purpose": "Body text size of the interface." },
     "--ai-font-size-message": {
       "group": "type",
@@ -334,6 +338,30 @@
       "group": "component",
       "purpose": "Highest Matrix level, for the fill scale.",
       "setBy": "Matrix"
+    },
+    "--ai-dot-ring-size": {
+      "group": "component",
+      "purpose": "Width and height of the DotRing figure."
+    },
+    "--ai-dot-bars-height": {
+      "group": "component",
+      "purpose": "Height of the DotBars columns."
+    },
+    "--ai-dot-size": {
+      "group": "component",
+      "purpose": "Diameter of each DotBars dot."
+    },
+    "--ai-week-strip-height": {
+      "group": "component",
+      "purpose": "Height of the WeekStrip columns."
+    },
+    "--ai-heat-key-size": {
+      "group": "component",
+      "purpose": "Width and height of a HeatKeys cell."
+    },
+    "--ai-tone-pad-width": {
+      "group": "component",
+      "purpose": "Width of the TonePad, including its axis labels."
     }
   }
 }

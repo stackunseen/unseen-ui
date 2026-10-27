@@ -1,0 +1,246 @@
+/* DotRing, DotBars, WeekStrip and HeatKeys: dense figures built from dots and cells. */
+.figure {
+  display: grid;
+  gap: 8px;
+  min-inline-size: 0;
+  margin: 0;
+  color: var(--ai-text, #18181b);
+  font-size: var(--ai-font-size-meta, 13px);
+  line-height: 1.4;
+}
+.figure figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-caption, 12px);
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.numeric {
+  font-family: var(
+    --ai-font-numeric,
+    var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace)
+  );
+  font-variant-numeric: tabular-nums;
+}
+/* Ring: spokes of dots around a centre figure. */
+.ring {
+  position: relative;
+  inline-size: min(100%, var(--ai-dot-ring-size, 200px));
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+.ring svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+.ring circle {
+  fill: var(--ai-border, #e4e4e7);
+}
+.ring circle[data-on] {
+  fill: var(--ai-primary, #18181b);
+}
+.ring circle[data-on][data-level='1'] {
+  opacity: 0.45;
+}
+.ring circle[data-on][data-level='2'] {
+  opacity: 0.7;
+}
+.ring text {
+  fill: var(--ai-muted, #52525b);
+  font-size: 10px;
+}
+.centre {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 2px;
+}
+.centreValue {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.centreCaption {
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-caption, 12px);
+}
+/* Bars: one column of dots per item; a range reads darker. */
+.bars {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  align-items: end;
+  gap: 3px;
+  min-inline-size: 0;
+  block-size: var(--ai-dot-bars-height, 72px);
+}
+.bar {
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  gap: 2px;
+  block-size: 100%;
+}
+.bar i {
+  inline-size: var(--ai-dot-size, 5px);
+  block-size: var(--ai-dot-size, 5px);
+  border-radius: 50%;
+  background: var(--ai-border, #e4e4e7);
+}
+.bar i[data-on] {
+  background: var(--ai-primary, #18181b);
+  opacity: 0.55;
+}
+.bars[data-ranged] .bar[data-in-range] i[data-on] {
+  opacity: 1;
+}
+.bar[data-outlier] i[data-on] {
+  background: var(--ai-accent, var(--ai-danger, #991b1b));
+  opacity: 1;
+}
+.range {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+/* Week strip: a column per day, stacked segments, the current day in bold. */
+.week {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+.day {
+  display: grid;
+  grid-template-rows: var(--ai-week-strip-height, 56px) auto;
+  gap: 6px;
+  justify-items: stretch;
+  text-align: center;
+  color: var(--ai-muted, #52525b);
+}
+.day[data-current] {
+  color: var(--ai-text, #18181b);
+  font-weight: 600;
+}
+.stack {
+  display: grid;
+  align-content: end;
+  gap: 2px;
+}
+.stack i {
+  display: block;
+  min-block-size: 2px;
+  border-radius: 3px;
+  background: var(--seg, var(--ai-primary, #18181b));
+}
+.stack i[data-rest] {
+  background: var(--ai-border, #e4e4e7);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+.legend span::before {
+  content: '';
+  display: inline-block;
+  inline-size: 8px;
+  block-size: 8px;
+  margin-inline-end: 5px;
+  border-radius: 2px;
+  background: var(--seg, var(--ai-primary, #18181b));
+  vertical-align: 0;
+}
+/* Heat keys: rows of cells, each offset in cell units, shaded in five steps. */
+.keys {
+  display: grid;
+  gap: 4px;
+  min-inline-size: 0;
+  overflow-x: auto;
+}
+.keyRow {
+  display: flex;
+  gap: 4px;
+  padding-inline-start: calc(var(--offset, 0) * (var(--ai-heat-key-size, 32px) + 4px));
+}
+.key {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--ai-heat-key-size, 32px);
+  block-size: var(--ai-heat-key-size, 32px);
+  border-radius: 6px;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-caption, 12px);
+  font-weight: 500;
+}
+.key[data-wide] {
+  inline-size: calc(var(--ai-heat-key-size, 32px) * var(--span, 1) + 4px * (var(--span, 1) - 1));
+}
+.key[data-level='1'] {
+  background: color-mix(in srgb, var(--ai-primary, #18181b) 22%, var(--ai-surface-subtle, #f4f4f5));
+  color: var(--ai-text, #18181b);
+}
+.key[data-level='2'] {
+  background: color-mix(in srgb, var(--ai-primary, #18181b) 42%, var(--ai-surface-subtle, #f4f4f5));
+  color: var(--ai-text, #18181b);
+}
+.key[data-level='3'] {
+  background: color-mix(in srgb, var(--ai-primary, #18181b) 66%, var(--ai-surface-subtle, #f4f4f5));
+  color: var(--ai-primary-foreground, #fff);
+}
+.key[data-level='4'] {
+  background: var(--ai-primary, #18181b);
+  color: var(--ai-primary-foreground, #fff);
+}
+.scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.scale i {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 2px;
+  background: var(--ai-surface-subtle, #f4f4f5);
+}
+.scale i[data-level='1'] {
+  background: color-mix(in srgb, var(--ai-primary, #18181b) 22%, var(--ai-surface-subtle, #f4f4f5));
+}
+.scale i[data-level='2'] {
+  background: color-mix(in srgb, var(--ai-primary, #18181b) 42%, var(--ai-surface-subtle, #f4f4f5));
+}
+.scale i[data-level='3'] {
+  background: color-mix(in srgb, var(--ai-primary, #18181b) 66%, var(--ai-surface-subtle, #f4f4f5));
+}
+.scale i[data-level='4'] {
+  background: var(--ai-primary, #18181b);
+}
+@media (forced-colors: active) {
+  .ring circle[data-on],
+  .bar i[data-on],
+  .stack i,
+  .key[data-level='3'],
+  .key[data-level='4'] {
+    background: Highlight;
+    fill: Highlight;
+    opacity: 1;
+  }
+  .key {
+    border: 1px solid CanvasText;
+  }
+}

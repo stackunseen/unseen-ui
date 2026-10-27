@@ -1,6 +1,7 @@
 'use client';
 import { useId, useState } from 'react';
-import { Button, Card, StatusBadge, Table } from '@stackunseen/ui';
+import { Button, Card, Numeric, Stat, StatGroup, StatusBadge, Table } from '@stackunseen/ui';
+import { TimerIcon } from '@radix-ui/react-icons';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteSurfaceSpecimen({ name, state }: WebsiteSpecimenProps) {
@@ -26,6 +27,37 @@ export function WebsiteSurfaceSpecimen({ name, state }: WebsiteSpecimenProps) {
             </Card.Description>
           </Card>
         </div>
+      );
+    if (state === 'With icon' || state === 'Sections')
+      return (
+        <Card aria-labelledby={id} style={{ maxWidth: 360 }}>
+          <Card.Header
+            icon={<TimerIcon />}
+            actions={
+              state === 'Sections' ? <StatusBadge state="idle" label="October" /> : undefined
+            }
+          >
+            <Card.Title id={id}>Time saved</Card.Title>
+            <Card.Description>When tool calls save you time</Card.Description>
+          </Card.Header>
+          <Card.Content>
+            <Numeric size="lg" value="11.4 h" qualifier="+2.1 h vs September" />
+          </Card.Content>
+          {state === 'Sections' && (
+            <>
+              <Card.Section>
+                <StatGroup aria-label="By tool">
+                  <Stat variant="plain" label="Summarize" value="4.7 h" />
+                  <Stat variant="plain" label="Rewrite" value="3.3 h" />
+                  <Stat variant="plain" label="Translate" value="1.9 h" />
+                </StatGroup>
+              </Card.Section>
+              <Card.Section>
+                <Stat variant="plain" label="Weekly goal" value="2.6 of 3 h" note="2 days left" />
+              </Card.Section>
+            </>
+          )}
+        </Card>
       );
     return (
       <Card aria-labelledby={id}>

@@ -4,6 +4,7 @@ import type { KeyboardEvent, ReactNode } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
 import type { CommandReceipt, Measurement, Run, RunLifecycle } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
+import { ElapsedTime } from '../elapsed-time/elapsed-time.js';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover/popover.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -26,6 +27,14 @@ export interface RunCard {
   cost?: Measurement<Money>;
   /** Public activity text only. */
   summary?: string;
+  /** The last public steps, oldest first; the board shows the newest three with their times. */
+  steps?: readonly RunStep[];
+  /** A formatted model name for the card, such as "Opus 5.5". */
+  model?: string;
+}
+export interface RunStep {
+  label: string;
+  at?: string;
 }
 export type RunBoardGroup = 'active' | 'waiting' | 'done';
 export type RunAction = 'open' | 'pause' | 'resume' | 'cancel';
@@ -402,7 +411,36 @@ export function RunBoard({
                                 />
                               </span>
                             )}
+                            {card.model && <span>{card.model}</span>}
+                            {card.startedAt &&
+                              (card.run.lifecycle === 'running' || card.updatedAt) && (
+                                <span className={r.elapsed}>
+                                  {/* With a host clock the figure is the host's; without one a running card ticks. */}
+                                  <ElapsedTime
+                                    startedAt={card.startedAt}
+                                    endedAt={
+                                      card.run.lifecycle === 'running'
+                                        ? (now ?? undefined)
+                                        : card.updatedAt
+                                    }
+                                  />
+                                </span>
+                              )}
                           </div>
+                        )}
+                        {variant === 'board' && card.steps && card.steps.length > 0 && (
+                          <ol className={r.cardSteps} aria-label="Latest steps">
+                            {card.steps.slice(-3).map((step, index) => (
+                              <li key={`${step.at ?? ''}-${index}`}>
+                                <span>{step.label}</span>
+                                {step.at && (
+                                  <time dateTime={step.at} className={r.stepTime}>
+                                    {formatShortTime(step.at, locale, zone, shortClock)}
+                                  </time>
+                                )}
+                              </li>
+                            ))}
+                          </ol>
                         )}
                         {variant !== 'compact' && variant !== 'list' && card.summary && (
                           <p className={r.cardSummary}>{card.summary}</p>

@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowTopRightIcon } from '@radix-ui/react-icons';
 import { featuredApp } from '../lib/first-release';
 
 export function HomeAppExample() {
   return (
     <section className="home-template-section" aria-labelledby="home-app-title">
       <div className="home-section-heading">
-        <h2 id="home-app-title">See a full app built with them.</h2>
+        <div>
+          <h2 id="home-app-title">See a full app built with them.</h2>
+        </div>
       </div>
       <figure className="home-template-figure">
         <Link prefetch={false} href={featuredApp.href} aria-label="Open the SaaS admin example">
@@ -29,7 +30,7 @@ export function HomeAppExample() {
             local demo and reset on reload.
           </p>
           <Link prefetch={false} className="web-text-link" href={featuredApp.href}>
-            Try the app <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
+            Try the app
           </Link>
         </figcaption>
       </figure>

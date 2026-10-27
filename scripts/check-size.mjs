@@ -25,9 +25,12 @@ const metrics = {
   baseCssGzipBytes: gzipSync(css).length,
 };
 console.log(JSON.stringify(metrics, null, 2));
-// Base CSS budget: 26 KiB gzip. Raised from 20 KiB on 2026-10-09, to 25 KiB later, and to 26 KiB
-// on 2026-10-23 for AppearanceToggle's switch and subtle variants (25,684 bytes measured).
-if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 26624)
+// Base CSS budget: 28.5 KiB gzip. Raised from 20 KiB on 2026-10-09, to 25 KiB later, to 26 KiB
+// on 2026-10-23 for AppearanceToggle's switch and subtle variants (25,684 bytes measured), and to
+// 28.5 KiB on 2026-10-26 for the dot figures (DotRing, DotBars, WeekStrip, HeatKeys), TonePad,
+// Kbd, FollowUps, the composer meta row, response progress, the numeric face and the waterfall
+// (28,367 bytes measured).
+if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 29184)
   throw new Error('Initial bundle budget exceeded.');
 
 // Per-entry stylesheets (ADR 0028): core for the root entry, then what each other entry adds.
@@ -38,7 +41,8 @@ if (!sheets.includes('core.css'))
 for (const name of sheets) {
   const gzip = gzipSync(await readFile(join(sheetDir, name))).length;
   console.log(JSON.stringify({ entryCss: name, gzipBytes: gzip }));
-  if (gzip > (name === 'core.css' ? 22528 : 4096))
+  // core.css: 25 KiB since 2026-10-26 (24,730 measured), for the additions listed above.
+  if (gzip > (name === 'core.css' ? 25600 : 4096))
     throw new Error(`${name} is over its CSS budget.`);
 }
 

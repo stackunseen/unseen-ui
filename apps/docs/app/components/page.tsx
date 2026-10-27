@@ -74,9 +74,12 @@ export default function Page() {
       rail={rail}
     >
       <header className="web-page-heading">
-        <p className="web-eyebrow">The library</p>
+        <p className="web-eyebrow">{releaseCatalog.length} components</p>
         <h1>Components</h1>
-        <p>Every component with a live example, its states and the code to use it.</p>
+        <p>
+          Every tile is the component itself. Open one for the live example, its states, the props
+          and the code to use it.
+        </p>
       </header>
       <ComponentDirectory entries={entries} />
       <p className="collection-note">

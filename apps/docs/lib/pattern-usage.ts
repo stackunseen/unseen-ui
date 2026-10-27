@@ -4,6 +4,10 @@ export interface PatternLink {
   href: string;
 }
 export const patternUsage: Record<string, readonly PatternLink[]> = {
+  SubagentTree: [{ label: 'Agent operations', href: '/patterns/agent-operations/' }],
+  RunBoard: [{ label: 'Agent operations', href: '/patterns/agent-operations/' }],
+  ExecutionTimeline: [{ label: 'Agent operations', href: '/patterns/agent-operations/' }],
+  AgentLanes: [{ label: 'Agent operations', href: '/patterns/agent-operations/' }],
   AIIcon: [{ label: 'Agent Workbench', href: '/patterns/agent-workbench/' }],
   Accordion: [
     { label: 'Recoverable chat', href: '/patterns/recoverable-chat/' },

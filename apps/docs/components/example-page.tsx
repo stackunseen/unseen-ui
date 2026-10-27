@@ -3,6 +3,7 @@ import Link from 'next/link';
 export function ExamplePage({
   title,
   description,
+  eyebrow,
   backHref,
   backLabel,
   workspace = false,
@@ -11,6 +12,8 @@ export function ExamplePage({
 }: {
   title: string;
   description: string;
+  /** A short mono label above the title, such as the section the page belongs to. */
+  eyebrow?: string;
   backHref?: string;
   backLabel?: string;
   workspace?: boolean;
@@ -29,6 +32,7 @@ export function ExamplePage({
             {backLabel}
           </Link>
         )}
+        {eyebrow && <p className="web-eyebrow">{eyebrow}</p>}
         <h1>{title}</h1>
         <p>{description}</p>
       </header>

@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { HomeShowcase } from '../components/home-showcase';
 import { HomeAppExample } from '../components/home-app-example';
 import { CopyButton } from '@stackunseen/ui';
 import { HomeHeroDemo } from '../components/home-hero-demo';
 import { HomeConnect } from '../components/home-connect';
+import { HomeShips } from '../components/home-ships';
 import { componentTasks } from '../lib/tasks';
 import { LegacyGalleryRedirect } from '../components/legacy-gallery-redirect';
 import { releaseCatalog } from '../lib/first-release';
@@ -32,7 +32,8 @@ export default function Page() {
       <main id="main-content" className="web-container home-page" tabIndex={-1}>
         <section className="home-hero" aria-labelledby="home-title">
           <div className="home-intro">
-            <h1 id="home-title">The React components your AI app needs.</h1>
+            <p className="home-kicker">// ready-made UI for AI agent apps</p>
+            <h1 id="home-title">Building an AI agent? These are the screens it needs.</h1>
             <p className="home-intro-description">
               {releaseCatalog.length} components for chat, tool calls, approvals, agent progress and
               forms. Install them from npm, style them to match your brand and connect them to your
@@ -43,7 +44,7 @@ export default function Page() {
                 Browse components
               </Link>
               <Link className="web-button secondary" href="/getting-started/">
-                Get started <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+                Get started
               </Link>
             </div>
             <div className="home-intro-meta">
@@ -57,18 +58,50 @@ export default function Page() {
                   label="Copy install command"
                 />
               </span>
-              <span>Early alpha · React 19 · MIT</span>
+              <span className="home-intro-facts">
+                <span>Early alpha</span>
+                <span>React 19</span>
+                <span>MIT licence</span>
+              </span>
             </div>
           </div>
           <HomeHeroDemo />
         </section>
+        <dl className="home-facts" aria-label="At a glance">
+          <div>
+            <dt>license</dt>
+            <dd>MIT, examples included</dd>
+          </div>
+          <div>
+            <dt>stack</dt>
+            <dd>React 19 and TypeScript, no Tailwind needed</dd>
+          </div>
+          <div>
+            <dt>install</dt>
+            <dd>one npm package, one stylesheet import</dd>
+          </div>
+          <div>
+            <dt>access</dt>
+            <dd>keyboard and screen reader, documented</dd>
+          </div>
+        </dl>
+        <section className="home-problem" aria-labelledby="home-problem-title">
+          <p className="home-kicker" id="home-problem-title">
+            The problem
+          </p>
+          <p>
+            An AI agent calls tools, asks people for permission, and sometimes fails. Most UI kits
+            only give you buttons and tables. These components cover the rest.
+          </p>
+        </section>
+        <HomeShips />
         <HomeConnect />
         <section className="home-tasks" aria-labelledby="home-tasks-title">
           <div className="home-section-heading">
-            <h2 id="home-tasks-title">Start from what you&apos;re building</h2>
-            <Link href="/tasks/">
-              All tasks <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-            </Link>
+            <div>
+              <h2 id="home-tasks-title">Start from what you&apos;re building</h2>
+            </div>
+            <Link href="/tasks/">All tasks</Link>
           </div>
           <ul>
             {componentTasks.slice(0, 8).map((task) => (
@@ -84,7 +117,9 @@ export default function Page() {
         <HomeShowcase />
         <section className="home-why" aria-labelledby="home-why-title">
           <div className="home-section-heading">
-            <h2 id="home-why-title">What you get</h2>
+            <div>
+              <h2 id="home-why-title">What you get</h2>
+            </div>
           </div>
           <ul>
             <li>
@@ -133,22 +168,15 @@ export default function Page() {
           <ol>
             <li>
               <span>01</span>
-              <Link href="/getting-started/">
-                Install and set up <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-              </Link>
+              <Link href="/getting-started/">Install and set up</Link>
             </li>
             <li>
               <span>02</span>
-              <Link href="/docs/integration/">
-                Connect your data and actions{' '}
-                <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-              </Link>
+              <Link href="/docs/integration/">Connect your data and actions</Link>
             </li>
             <li>
               <span>03</span>
-              <Link href="/customize/">
-                Make the theme yours <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-              </Link>
+              <Link href="/customize/">Make the theme yours</Link>
             </li>
           </ol>
         </section>

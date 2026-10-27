@@ -1,6 +1,10 @@
 'use client';
 import type { ComponentProps, ReactNode } from 'react';
 import type { MessageData } from '@stackunseen/ui-core';
+import { Button } from '../button/button.js';
+import { FollowUps } from '../follow-ups/follow-ups.js';
+import type { FollowUp } from '../follow-ups/follow-ups.js';
+import { Kbd } from '../kbd/kbd.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
 import { Skeleton } from '../skeleton/skeleton.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -16,6 +20,25 @@ export interface StreamingResponseProps
   showStatus?: boolean;
   /** Trusted application renderer. The base entry has no Markdown dependency. */
   renderContent?: (content: { text: string; state: MessageData['state'] }) => ReactNode;
+  /**
+   * Where a multi-step answer stands, as your server reports it: "Writing 2 of 3 · 142 → 46".
+   * Shown while streaming; the bar is the step fraction, not a time estimate.
+   */
+  progress?: ResponseProgress;
+  /** With progress: a Stop action beside the line. Your server confirms when it has stopped. */
+  onStop?: () => void;
+  /** Short next steps offered once the response is complete. */
+  followUps?: readonly FollowUp[];
+  onFollowUp?: (item: FollowUp) => void;
+}
+export interface ResponseProgress {
+  /** What the step does, in one word: "Writing", "Checking". */
+  label: string;
+  step: number;
+  of: number;
+  /** A measured before and after, such as word counts, formatted by your app. */
+  from?: string;
+  to?: string;
 }
 export function StreamingResponse({
   variant = 'cursor',
@@ -24,9 +47,15 @@ export function StreamingResponse({
   error,
   renderContent,
   showStatus = true,
+  progress,
+  onStop,
+  followUps,
+  onFollowUp,
   className = '',
   ...props
 }: StreamingResponseProps) {
+  const fraction =
+    progress && progress.of > 0 ? Math.min(1, Math.max(0, progress.step / progress.of)) : 0;
   return (
     <div
       {...props}
@@ -61,7 +90,31 @@ export function StreamingResponse({
           size="small"
         />
       )}
+      {progress && state === 'streaming' && (
+        <div className={r.progress} data-part="response-progress">
+          <span className={r.progressText}>
+            {progress.label} <span className={r.numeric}>{progress.step}</span> of{' '}
+            <span className={r.numeric}>{progress.of}</span>
+          </span>
+          <span className={r.progressBar} aria-hidden="true">
+            <span style={{ inlineSize: `${fraction * 100}%` }} />
+          </span>
+          {progress.from !== undefined && progress.to !== undefined && (
+            <span className={r.numeric}>
+              {progress.from} → {progress.to}
+            </span>
+          )}
+          {onStop && (
+            <Button size="sm" variant="ghost" className={r.stop} onClick={onStop}>
+              Stop <Kbd size="sm">Esc</Kbd>
+            </Button>
+          )}
+        </div>
+      )}
       {showStatus && <ResponseStatus state={state} variant={variant} error={error} />}
+      {followUps && onFollowUp && state === 'complete' && (
+        <FollowUps className={r.followUps} items={followUps} onSelect={onFollowUp} />
+      )}
     </div>
   );
 }

@@ -47,11 +47,13 @@ export const componentTasks: readonly ComponentTask[] = [
     description: 'Many runs across threads, what is waiting on a person, and what a run did.',
     components: [
       'RunBoard',
+      'AgentLanes',
       'AttentionQueue',
       'RunSummaryCard',
       'BackgroundStatus',
       'RunCompare',
       'SubagentTree',
+      'ExecutionTimeline',
     ],
   },
   {

@@ -46,6 +46,7 @@ export const staticPaths = [
   '/patterns/recoverable-chat/',
   '/patterns/action-receipts/',
   '/patterns/research-answers/',
+  '/patterns/agent-operations/',
   '/templates/',
   '/templates/relay/',
   '/templates/saas-admin/',

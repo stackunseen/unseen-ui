@@ -36,6 +36,44 @@
   gap: 6px;
   min-width: 0;
 }
+/* Meta row: variable chips and assist actions at the start, the character count at the end. */
+.composerMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-width: 0;
+  padding: 0 6px 6px;
+}
+.variables,
+.assist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.variable {
+  border-radius: var(--ai-radius-pill, 999px);
+  font-family: var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  font-size: 12px;
+}
+.count {
+  flex: none;
+  margin-inline-start: auto;
+  color: var(--ai-muted, #52525b);
+  font-family: var(
+    --ai-font-numeric,
+    var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace)
+  );
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.count[data-over] {
+  color: var(--ai-danger, #991b1b);
+}
+.composer[data-variant='inline'] > .composerMeta {
+  flex-basis: 100%;
+}
 .composerControls {
   display: flex;
   flex-wrap: wrap;

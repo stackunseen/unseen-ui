@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Button, resolveVariant } from '@stackunseen/ui';
 import {
+  AgentLanes,
   AttentionQueue,
   BackgroundStatus,
   RunBoard,
@@ -11,6 +12,7 @@ import {
   emptyRunBoardFilter,
 } from '@stackunseen/ui/conversation-flow';
 import type {
+  AgentLane,
   AttentionItem,
   CommandReceipt,
   RunBoardFilter,
@@ -36,6 +38,13 @@ const runs: RunCard[] = [
       value: { amount: 0.42, currency: 'USD' },
       basis: 'token price list',
     },
+    startedAt: '2026-10-15T10:06:10.000Z',
+    model: 'Opus 5.5',
+    steps: [
+      { label: 'Listed 41 inactive accounts', at: '2026-10-15T10:06:40.000Z' },
+      { label: 'Checked owners for 3 of them', at: '2026-10-15T10:08:10.000Z' },
+      { label: 'Drafting the archive request', at: '2026-10-15T10:09:30.000Z' },
+    ],
   },
   {
     run: { id: 'r2', attemptId: 'a1', threadId: 't2', version: 1, lifecycle: 'queued' },
@@ -91,6 +100,7 @@ export function RunsSpecimen({
 }: {
   name:
     | 'RunBoard'
+    | 'AgentLanes'
     | 'AttentionQueue'
     | 'RunSummaryCard'
     | 'BackgroundStatus'
@@ -106,6 +116,70 @@ export function RunsSpecimen({
   const [selected, setSelected] = useState<string | null>(null);
   const [receipts, setReceipts] = useState<CommandReceipt[]>([]);
   const [items, setItems] = useState(attention);
+  const [laneTask, setLaneTask] = useState<string | null>(null);
+  if (name === 'AgentLanes') {
+    const lanes: AgentLane[] = [
+      {
+        agent: { id: 'orchestrator', name: 'Orchestrator' },
+        tasks: [
+          {
+            id: 'l1',
+            title: 'Plan the pricing page',
+            state: 'succeeded',
+            startedAt: '2026-10-15T10:00:00.000Z',
+            endedAt: '2026-10-15T10:02:30.000Z',
+            handoffTo: state === 'Hand-offs' || state === 'Default' ? 'l2' : undefined,
+            cost: '$0.05',
+          },
+          {
+            id: 'l4',
+            title: 'Assemble the page',
+            state: 'running',
+            startedAt: '2026-10-15T10:07:30.000Z',
+            cost: '$0.09',
+          },
+        ],
+      },
+      {
+        agent: { id: 'researcher', name: 'Researcher' },
+        tasks: [
+          {
+            id: 'l2',
+            title: 'Compare five competitors',
+            state: 'succeeded',
+            startedAt: '2026-10-15T10:02:40.000Z',
+            endedAt: '2026-10-15T10:05:10.000Z',
+            handoffTo: state === 'Hand-offs' || state === 'Default' ? 'l3' : undefined,
+            cost: '$0.09',
+          },
+        ],
+      },
+      {
+        agent: { id: 'writer', name: 'Writer' },
+        tasks: [
+          {
+            id: 'l3',
+            title: 'Write the three plans',
+            state: 'waiting-approval',
+            startedAt: '2026-10-15T10:05:20.000Z',
+            cost: '$0.04',
+          },
+        ],
+      },
+    ];
+    return (
+      <AgentLanes
+        label="This morning"
+        lanes={state === 'Empty' ? [] : state === 'Single lane' ? lanes.slice(0, 1) : lanes}
+        now={now}
+        selectedId={laneTask}
+        onSelect={(id) => {
+          setLaneTask(id);
+          onNotice(`Selected task ${id}.`);
+        }}
+      />
+    );
+  }
   if (name === 'RunBoard') {
     const shown =
       state === 'Empty'
@@ -124,7 +198,24 @@ export function RunsSpecimen({
                     }
                   : card,
               )
-            : runs;
+            : state === 'Live steps'
+              ? runs.map((card) =>
+                  card.run.id === 'r4'
+                    ? {
+                        ...card,
+                        startedAt: '2026-10-15T09:25:00.000Z',
+                        model: 'Haiku 5.5',
+                        steps: [
+                          {
+                            label: 'Pulled numbers from 3 dashboards',
+                            at: '2026-10-15T09:27:00.000Z',
+                          },
+                          { label: 'Posted to #metrics', at: '2026-10-15T09:29:40.000Z' },
+                        ],
+                      }
+                    : card,
+                )
+              : runs;
     return (
       <RunBoard
         variant={resolveVariant('RunBoard', presentation)}
@@ -307,10 +398,12 @@ export function RunsSpecimen({
     );
   }
   if (name === 'SubagentTree') {
+    const priced = state === 'Costs';
     const venue: RunNode = {
       run: { id: 'c2', attemptId: 'a1', threadId: 't2', version: 1, lifecycle: 'running' },
       title: 'Book the venue',
       agent: { id: 'ops', name: 'Ops agent' },
+      cost: priced ? { kind: 'measured', value: { amount: 0.18, currency: 'USD' } } : undefined,
       heartbeatAt:
         state === 'Stale child' ? '2026-10-15T09:30:00.000Z' : '2026-10-15T10:09:00.000Z',
       spawnedBy: { messageId: 'm2', excerpt: 'Find a venue for 80 people in November' },
@@ -320,6 +413,13 @@ export function RunsSpecimen({
           title: 'Compare quotes',
           agent: { id: 'ops', name: 'Ops agent' },
           spawnedBy: { messageId: 'm3', excerpt: 'Get three quotes' },
+          cost: priced
+            ? {
+                kind: 'estimated',
+                value: { amount: 0.05, currency: 'USD' },
+                basis: 'token price list',
+              }
+            : undefined,
           children:
             state === 'Depth limit'
               ? [

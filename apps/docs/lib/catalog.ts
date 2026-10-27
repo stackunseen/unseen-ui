@@ -38,6 +38,15 @@ export type GenericComponent =
   | 'Stat'
   | 'DiffStat'
   | 'ElapsedTime'
+  | 'Numeric'
+  | 'DotRing'
+  | 'DotBars'
+  | 'WeekStrip'
+  | 'HeatKeys'
+  | 'Kbd'
+  | 'TonePad'
+  | 'FollowUps'
+  | 'AgentLanes'
   | 'Calendar'
   | 'DateRangePicker'
   | 'PageHeader'
@@ -251,9 +260,11 @@ export const catalog: CatalogEntry[] = [
       'Long toolbar',
       'Send unavailable',
       'Too long',
+      'Variables',
+      'Counter',
     ],
     contract:
-      'value · onValueChange · onSubmit · busy · onCancel · attachments? · toolbar? · submitDisabled? · allowEmptySubmit?',
+      'value · onValueChange · onSubmit · busy · onCancel · attachments? · toolbar? · submitDisabled? · allowEmptySubmit? · limit? · variables? onInsertVariable? · assist?',
     responsibility: 'Your server takes the prompt, and confirms when a stop has worked.',
     code: '<PromptInput value={draft} onValueChange={setDraft} onSubmit={send} />',
   },
@@ -308,8 +319,11 @@ export const catalog: CatalogEntry[] = [
       'Long code',
       'Large content',
       'Long labels',
+      'Progress',
+      'Follow-ups',
     ],
-    contract: 'text · state · error? · renderContent?; optional MarkdownResponse from /markdown',
+    contract:
+      'text · state · error? · renderContent? · progress? onStop? · followUps? onFollowUp?; optional MarkdownResponse from /markdown',
     responsibility:
       'The main entry shows plain text. Import the Markdown entry for formatted replies, including half-finished ones. Your app owns the message state and decides which links to trust.',
     code: '<StreamingResponse text={text} state="streaming" />',
@@ -322,6 +336,19 @@ export const catalog: CatalogEntry[] = [
     contract: 'items · onSelect · mode: fill | send',
     responsibility: 'Choose whether picking a suggestion fills the composer or sends it.',
     code: '<Suggestions items={prompts} onSelect={setDraft} mode="fill" />',
+  },
+  {
+    name: 'FollowUps',
+    category: 'Conversation',
+    presentations: ['default'],
+    presentationProp: null,
+    description:
+      'Short next steps after a response, as chips with a lead word: "Then: Shorter · Add numbers".',
+    states: ['Default', 'Disabled', 'Custom lead'],
+    contract: 'items: { id, label }[] · onSelect(item) · lead? · label? · disabled?',
+    responsibility:
+      'A chip only asks. Your app sends the follow-up, shows what it did and decides when the chips go away. StreamingResponse renders these itself once the answer is complete.',
+    code: '<FollowUps items={[{ id: "shorter", label: "Shorter" }]} onSelect={send} />',
   },
   {
     name: 'Attachment',
@@ -391,10 +418,13 @@ export const catalog: CatalogEntry[] = [
   {
     name: 'ExecutionTimeline',
     category: 'Execution',
-    description: 'A timed record of what happened during a run.',
-    states: ['Default', 'Empty'],
-    contract: 'entries · filter · onFilterChange? · detail?',
-    responsibility: 'Times and durations come from your server.',
+    description:
+      'A timed record of what happened during a run, as a list, a table or a waterfall with tokens and cost per step.',
+    states: ['Default', 'Waterfall', 'Empty'],
+    contract:
+      'entries: { id, label, state, timestamp, durationMs?, detail?, cost?, tokens?, parentId? }[] · filter · onFilterChange? · detail?',
+    responsibility:
+      'Times, durations, tokens and cost come from your server, already formatted. The waterfall folds steps under their parentId and marks the slowest measured step.',
     code: '<ExecutionTimeline entries={events} />',
   },
   {
@@ -402,15 +432,33 @@ export const catalog: CatalogEntry[] = [
     category: 'Execution',
     importPath: '/conversation-flow',
     aliases: ['Run board', 'Agent runs', 'Task board'],
-    description: 'All your runs on one board, grouped by what they need, with filters and actions.',
-    states: ['Default', 'Stale heartbeat', 'Failed', 'Filtered', 'Empty'],
+    description:
+      'All your runs on one board, grouped by what they need, with live clocks, the newest steps, filters and actions.',
+    states: ['Default', 'Live steps', 'Stale heartbeat', 'Failed', 'Filtered', 'Empty'],
     contract:
-      'runs: RunCard[] · filter? · onFilterChange? · selectedId? · onSelect? · onAction? · receipts? · staleAfterMs? · now? · label? · renderCardTrailing?',
+      'runs: RunCard[] (steps?, model?, startedAt?, cost?) · filter? · onFilterChange? · selectedId? · onSelect? · onAction? · receipts? · staleAfterMs? · now? · label? · renderCardTrailing?',
     responsibility:
       'Status, times and heartbeats come from your server. A run that has gone quiet is flagged, never assumed finished. An action counts as done only once your server confirms it.',
     keyboard:
       'Arrow keys move between cards and columns; Home and End jump within a column; Enter opens a run.',
     code: '<RunBoard runs={runs} now={clock} onAction={request} />',
+  },
+  {
+    name: 'AgentLanes',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    presentations: ['default'],
+    presentationProp: null,
+    aliases: ['Agent timeline', 'Swimlanes', 'Hand-offs', 'Gantt of agents'],
+    description:
+      'Where every agent is right now: a lane per agent on one time axis, with the hand-offs drawn between lanes.',
+    states: ['Default', 'Hand-offs', 'Single lane', 'Empty'],
+    contract:
+      'lanes: { agent, tasks: { id, title, state, startedAt, endedAt?, handoffTo?, cost? }[] }[] · now? · window? · selectedId? · onSelect? · label?',
+    responsibility:
+      'Start and end times come from your server; a task without an end reaches the host clock. A hand-off is drawn only when both tasks are on the board. The same tasks are in a hidden table.',
+    keyboard: 'Each block is a button in reading order; Enter selects it.',
+    code: '<AgentLanes lanes={lanes} now={clock} onSelect={open} />',
   },
   {
     name: 'AttentionQueue',
@@ -470,12 +518,13 @@ export const catalog: CatalogEntry[] = [
     category: 'Execution',
     importPath: '/conversation-flow',
     aliases: ['Agent tree', 'Fleet view', 'Child runs'],
-    description: 'Parent and child runs as a tree with the message that spawned each child.',
-    states: ['Default', 'Stale child', 'Depth limit', 'More to load'],
+    description:
+      'Parent and child runs as a tree with the message that spawned each child, and the cost of each branch.',
+    states: ['Default', 'Costs', 'Stale child', 'Depth limit', 'More to load'],
     contract:
-      'root: RunNode · selectedId? · onSelect? · onLoadMore? · maxDepth? · expandedIds? · onExpandedChange? · now?',
+      'root: RunNode (cost?) · selectedId? · onSelect? · onLoadMore? · maxDepth? · expandedIds? · onExpandedChange? · now? · locale?',
     responsibility:
-      'Your app sends the tree and loads more children when asked. Very deep trees show a count and load the rest on request.',
+      'Your app sends the tree and loads more children when asked. Very deep trees show a count and load the rest on request. A branch total is only shown when every run in it reports a cost in one currency.',
     keyboard:
       'Arrow keys move and expand or collapse; Home and End jump; typing a letter jumps to the next matching run; Enter selects.',
     code: '<SubagentTree root={tree} onSelect={open} onLoadMore={load} />',

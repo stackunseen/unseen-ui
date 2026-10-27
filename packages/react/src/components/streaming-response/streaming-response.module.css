@@ -21,6 +21,59 @@
   margin-block: var(--ai-field-gap, 8px) 0;
 }
 
+/* Progress: one line with the step, a thin bar, the measured change and Stop. */
+.progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-block-start: var(--ai-field-gap, 8px);
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.progressText::before {
+  content: '';
+  display: inline-block;
+  inline-size: 6px;
+  block-size: 6px;
+  margin-inline-end: 6px;
+  border-radius: 50%;
+  background: var(--ai-primary, #18181b);
+  vertical-align: 1px;
+}
+.progressBar {
+  display: inline-block;
+  inline-size: 48px;
+  block-size: 3px;
+  border-radius: 2px;
+  background: var(--ai-border, #e4e4e7);
+  overflow: hidden;
+}
+.progressBar > span {
+  display: block;
+  block-size: 100%;
+  background: var(--ai-primary, #18181b);
+}
+.numeric {
+  font-family: var(
+    --ai-font-numeric,
+    var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace)
+  );
+  font-variant-numeric: tabular-nums;
+}
+.stop {
+  margin-inline-start: auto;
+}
+.root > .followUps {
+  margin-block-start: var(--ai-gap, 12px);
+}
+@media (forced-colors: active) {
+  .progressBar > span,
+  .progressText::before {
+    background: Highlight;
+  }
+}
+
 /* Moved from the shared sheet: only this component used these. */
 .cursor {
   display: inline-block;

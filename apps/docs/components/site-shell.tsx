@@ -17,6 +17,7 @@ import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
 import type { Appearance, ResolvedTheme } from '@stackunseen/ui/theme';
 import { lucideIcons } from './gallery-icons';
 import { isSiteSectionActive, siteNavigation } from '../lib/site-navigation';
+import { libraryVersion } from '../lib/library-version';
 
 interface SiteTheme {
   theme: ResolvedTheme;
@@ -106,10 +107,11 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 aria-label="Unseen UI home"
               >
                 <span className="web-mark">
-                  <BrandMark size={28} />
+                  <BrandMark size={24} />
                 </span>
                 <span>
-                  Unseen UI<small>by Stack Unseen</small>
+                  unseen<span className="web-brand-dot">.</span>ui
+                  <small>by Stack Unseen</small>
                 </span>
               </Link>
               <nav
@@ -148,6 +150,13 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   value={appearance}
                   onValueChange={setAppearance}
                 />
+                <Link
+                  className="web-header-cta"
+                  href="/getting-started/"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Get started
+                </Link>
                 <button
                   ref={button}
                   className="web-icon web-menu"
@@ -182,10 +191,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   className="web-footer-brand"
                   href="/"
                 >
-                  Unseen UI
+                  unseen<span className="web-brand-dot">.</span>ui
                 </Link>
-                {path === '/' && <p>React components by Stack Unseen. Experimental alpha.</p>}
-                {path !== '/' && <span>Experimental alpha</span>}
+                <span>by Stack Unseen</span>
               </div>
               <nav aria-label="Footer navigation">
                 {siteNavigation.map(([label, href]) => (
@@ -193,7 +201,13 @@ export function SiteShell({ children }: { children: ReactNode }) {
                     {label}
                   </Link>
                 ))}
+                <a href="/llms.txt">llms.txt</a>
               </nav>
+              <span className="web-footer-version">
+                <span>v{libraryVersion}</span>
+                <span>experimental alpha</span>
+                <span>MIT</span>
+              </span>
             </footer>
           </AITheme>
         </LinkProvider>

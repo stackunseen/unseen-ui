@@ -643,3 +643,189 @@
     padding-block: 32px;
   }
 }
+
+/* Editorial rhythm from the site mockup: numbered mono kickers, a facts strip and a problem row. */
+.home-kicker {
+  margin: 0 0 10px;
+  font-family: var(--ai-font-numeric, ui-monospace, 'SFMono-Regular', Menlo, monospace);
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ai-muted);
+  font-variant-numeric: tabular-nums;
+}
+.home-section-heading > div > .home-kicker {
+  margin-bottom: 8px;
+}
+.home-intro > .home-kicker {
+  margin-bottom: 16px;
+}
+.home-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-facts > div {
+  padding: 18px 24px 18px 0;
+  border-right: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-facts > div + div {
+  padding-left: 24px;
+}
+.home-facts > div:last-child {
+  border-right: 0;
+}
+.home-facts dt {
+  font-family: var(--ai-font-numeric, ui-monospace, 'SFMono-Regular', Menlo, monospace);
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+.home-facts dd {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--ai-text);
+}
+.home-problem {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 7fr) minmax(0, 2fr);
+  column-gap: 24px;
+  padding-block: 72px 16px;
+}
+.home-problem > p:last-child {
+  margin: 0;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+  color: var(--ai-text);
+  text-wrap: pretty;
+}
+.home-ships {
+  padding-block: 40px 16px;
+}
+.home-ships .home-section-heading {
+  padding-bottom: 20px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  margin-bottom: 0;
+}
+.home-ships-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home-ships-rows > li {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  column-gap: 24px;
+  align-items: center;
+  padding-block: 32px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-ships-notes {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.home-intro-facts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.home-ships-copy {
+  display: grid;
+  gap: 8px;
+  padding-right: 24px;
+}
+.home-ships-copy h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+.home-ships-copy h3 a {
+  text-decoration: none;
+}
+@media (hover: hover) {
+  .home-ships-copy h3 a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+.home-ships-copy > p {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.home-ships-copy > .home-kicker {
+  margin: 4px 0 0;
+}
+.home-ships-stage {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.home-ships-stage > * {
+  min-width: 0;
+}
+.home-ships-reset {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.home-start > div > .home-kicker:last-child {
+  margin: 14px 0 0;
+}
+@media (max-width: 1080px) {
+  .home-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-facts > div {
+    padding: 14px 16px 14px 0;
+    border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  }
+  .home-facts > div + div {
+    padding-left: 16px;
+  }
+  .home-facts > div:nth-child(2n) {
+    border-right: 0;
+  }
+  .home-facts > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+  .home-problem {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 12px;
+    padding-top: 48px;
+  }
+  .home-ships-rows > li {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 16px;
+    align-items: start;
+  }
+  .home-ships-copy {
+    padding-right: 0;
+  }
+}
+@media (max-width: 560px) {
+  .home-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-facts > div,
+  .home-facts > div + div {
+    padding: 12px 0;
+    border-right: 0;
+    border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+  }
+  .home-facts > div:last-child {
+    border-bottom: 0;
+  }
+}

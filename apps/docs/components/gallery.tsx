@@ -281,9 +281,7 @@ export function Gallery({
           )}
         </button>
         <span>Browse {view === 'components' ? 'components' : 'the library'}</span>
-        <Link href="/components/">
-          Component index <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-        </Link>
+        <Link href="/components/">Component index</Link>
       </nav>
       <div className="site-body">
         <aside

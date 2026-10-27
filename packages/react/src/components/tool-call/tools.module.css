@@ -63,6 +63,11 @@
 }
 .rowMeta {
   flex: none;
+  font-family: var(
+    --ai-font-numeric,
+    var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace)
+  );
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 .rowBody,

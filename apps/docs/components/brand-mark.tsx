@@ -8,23 +8,21 @@ import type { SVGProps } from 'react';
 export function BrandMark({ size = 28, ...props }: { size?: number } & SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 100 100"
+      viewBox="0 0 24 24"
       width={size}
       height={size}
       aria-hidden="true"
       focusable="false"
       {...props}
     >
-      <path d="M22 0h16q6 0 6 6v32q0 6-6 6H6q-6 0-6-6V22A22 22 0 0 1 22 0Z" fill="currentColor" />
-      <circle cx="78" cy="22" r="22" fill="var(--ai-primary, #2563eb)" />
+      {/* A 24-unit grid: at 24px every straight edge lands on a whole pixel. */}
+      <path d="M6 0h3q2 0 2 2v7q0 2-2 2H2q-2 0-2-2V6A6 6 0 0 1 6 0Z" fill="currentColor" />
+      <circle cx="18.5" cy="5.5" r="5.5" fill="var(--ai-primary, #2563eb)" />
       <path
-        d="M6 56h32q6 0 6 6v32q0 6-6 6H22A22 22 0 0 1 0 78V62q0-6 6-6Z"
+        d="M2 13h7q2 0 2 2v7q0 2-2 2H6A6 6 0 0 1 0 18v-3q0-2 2-2Z"
         fill="color-mix(in srgb, currentColor 22%, transparent)"
       />
-      <path
-        d="M62 56h16a22 22 0 0 1 22 22v16q0 6-6 6H62q-6 0-6-6V62q0-6 6-6Z"
-        fill="currentColor"
-      />
+      <path d="M15 13h3a6 6 0 0 1 6 6v3q0 2-2 2H15q-2 0-2-2v-7q0-2 2-2Z" fill="currentColor" />
     </svg>
   );
 }

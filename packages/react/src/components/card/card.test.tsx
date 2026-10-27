@@ -34,4 +34,22 @@ describe('website surface composition', () => {
     await userEvent.keyboard('{Enter}');
     expect(save).toHaveBeenCalledTimes(1);
   });
+  it('keeps an icon tile decorative and gives a section its own surface step', () => {
+    render(
+      <Card>
+        <Card.Header
+          icon={<svg data-testid="icon" />}
+          actions={<button type="button">Edit</button>}
+        >
+          <Card.Title>Time saved</Card.Title>
+          <Card.Description>When tool calls save you time</Card.Description>
+        </Card.Header>
+        <Card.Section>By tool</Card.Section>
+      </Card>,
+    );
+    expect(screen.getByTestId('icon').parentElement).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByRole('heading', { name: 'Time saved' })).toBeVisible();
+    expect(screen.getByRole('group', { name: 'Card actions' })).toBeVisible();
+    expect(screen.getByText('By tool')).toHaveAttribute('data-part', 'card-section');
+  });
 });

@@ -36,7 +36,7 @@ describe('production origin and route metadata', () => {
     expect(staticPaths).toContain('/patterns/action-receipts/');
     for (const entry of compositionCatalog)
       expect(indexablePaths).not.toContain(componentHref(entry.name));
-    expect(indexablePaths).toHaveLength(170);
+    expect(indexablePaths).toHaveLength(179);
   });
   it('uses the verified origin for canonical and social URLs', () => {
     const metadata = pageMetadata(

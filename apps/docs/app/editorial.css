@@ -1,0 +1,827 @@
+/*
+ * Editorial presentation (2026-10-27), from the site mockup, loaded last. Site chrome only:
+ * component internals keep the library's tokens. The system: one sans face at a tight tracking
+ * for titles, a mono face for every label, count, version and status; hairline-divided cells
+ * instead of floating cards; 8px corners on site surfaces; dark panels close to the canvas.
+ */
+.unseen-web {
+  /* Self-hosted IBM Plex Mono (app/layout.tsx), so labels render the same on every machine. The
+     library's mono and numeric tokens follow it, so code blocks and figures match. */
+  --site-mono: var(--font-unseen-mono, ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace);
+  --ai-font-mono: var(--site-mono);
+  --ai-font-numeric: var(--site-mono);
+  --site-line: var(--ai-border);
+  --site-line-soft: color-mix(in srgb, var(--ai-border) 55%, transparent);
+  --site-panel: var(--ai-surface);
+  --site-panel-raised: var(--ai-surface-subtle);
+  --site-radius: 8px;
+  --site-control-radius: 6px;
+}
+.unseen-web[data-site-appearance='dark'] {
+  /* Panels sit close to the ground, as in the mockup: #0e0f11 on #08090a. */
+  --site-panel: color-mix(in srgb, var(--ai-canvas) 62%, var(--ai-surface));
+  --site-panel-raised: color-mix(in srgb, var(--ai-canvas) 30%, var(--ai-surface));
+}
+
+/* Labels: every eyebrow, count, kicker and status reads in mono. */
+.web-eyebrow,
+.eyebrow,
+.pane-heading .eyebrow,
+.theme-preview .preview-caption,
+.home-kicker,
+.directory-count,
+.directory-filter-count,
+.directory-group h3,
+.component-group h2,
+.catalog-groups h2 button,
+.nav-section-title,
+.library-count,
+.web-docs-nav p,
+.version-label,
+.web-footer-version,
+.web-docs-nav nav.directory-rail a > span,
+.home-tile-footer > span,
+.home-start li > span,
+.section-description,
+.detail-used-in,
+.explorer-context {
+  font-family: var(--site-mono);
+  /* 13px: hinted mono faces lose their strokes a size smaller on 1x screens. */
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  /* A whole-pixel line box keeps stacked label rows off half pixels. */
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.web-eyebrow {
+  margin: 0 0 14px;
+  color: var(--ai-muted);
+}
+.web-eyebrow::before {
+  content: '// ';
+}
+.directory-filter-count,
+.home-tile-footer > span,
+.library-count,
+.web-docs-nav p,
+.nav-section-title,
+.section-description {
+  font-size: 12px;
+}
+
+/* Titles: tighter, heavier, no decoration. */
+.web-page-heading h1,
+.example-page-heading h1,
+.missing-page h1,
+.explorer-main .detail-heading h1,
+.home-section-heading h2,
+.home-start h2,
+.patterns-heading,
+.directory-collection > h2 {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.web-page-heading h1,
+.example-page-heading h1 {
+  font-size: clamp(34px, 3.6vw, 48px);
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+.web-page-heading > p:not(.web-eyebrow),
+.example-page-heading > p {
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 60ch;
+}
+.example-page-heading .web-text-link + h1 {
+  margin-top: 14px;
+}
+
+/* Header: 56px, hairline, mono wordmark dot, a primary action at the end.
+   Opaque and unfiltered: a translucent or blurred layer makes Chrome drop subpixel text
+   antialiasing, which reads as ragged text on 1x screens. The hairline is drawn inside the
+   56px so the 28px mark and 32px buttons centre on whole pixels. */
+.web-header {
+  min-height: 56px;
+  padding: 0 32px;
+  gap: 32px;
+  background: var(--ai-canvas);
+  border-bottom: 0;
+  box-shadow: inset 0 -1px 0 var(--site-line);
+}
+.web-brand {
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.web-brand small {
+  display: none;
+}
+.web-brand .web-brand-dot {
+  color: var(--ai-muted);
+}
+.web-mark {
+  width: 24px;
+  height: 24px;
+}
+.web-nav {
+  gap: 4px;
+  margin-left: auto;
+}
+.web-nav a {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: var(--site-control-radius);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ai-muted);
+}
+.web-nav a[aria-current] {
+  background: transparent;
+  color: var(--ai-text);
+  font-weight: 500;
+}
+.web-header-actions {
+  margin-left: 0;
+  gap: 4px;
+}
+/* The appearance switch folds its two buttons when it is squeezed; nothing here may shrink. */
+.web-header-actions > * {
+  flex: none;
+}
+@media (max-width: 780px) {
+  .web-header-actions {
+    margin-left: auto;
+  }
+  .web-header {
+    gap: 12px;
+  }
+  .web-nav.open {
+    top: 56px;
+    background: var(--ai-canvas);
+  }
+}
+.web-icon {
+  width: 32px;
+  height: 32px;
+  /* 15px icons centre on a whole pixel inside the 31px content box. */
+  padding: 1px 0 0 1px;
+  box-sizing: border-box;
+  border-radius: var(--site-control-radius);
+  color: var(--ai-muted);
+}
+/* The appearance switch's 15px icons: a 15px line box plus 1px of padding keeps them on whole
+   pixels inside the 28px buttons, like the icon buttons above. */
+/* The selector outweighs the switch's own triple-class reset of its radio padding. */
+.unseen-web .web-header .web-header-actions button[role='radio'],
+.unseen-web .web-menu {
+  padding: 1px 0 0 1px;
+}
+.unseen-web .web-header .web-header-actions button[role='radio'] > span,
+.unseen-web .web-header .web-header-actions button[role='radio'] > span > span {
+  display: block;
+  height: 15px;
+  line-height: 15px;
+}
+.web-header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* A fixed width keeps the icons before it on whole pixels; text widths are fractional. */
+  width: 108px;
+  height: 34px;
+  margin-left: 8px;
+  padding: 0;
+  border-radius: var(--site-control-radius);
+  background: var(--ai-primary);
+  color: var(--ai-primary-foreground);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+@media (hover: hover) {
+  .web-header-cta:hover {
+    background: var(--ai-primary-hover);
+  }
+}
+@media (max-width: 760px) {
+  .web-header-cta {
+    display: none;
+  }
+}
+
+/* Buttons and fields: 6px corners, no shadows. */
+.web-button {
+  border-radius: var(--site-control-radius);
+  font-size: 14px;
+  font-weight: 500;
+  padding-inline: 18px;
+}
+.web-button.secondary {
+  border-color: var(--ai-control-border);
+}
+.directory-search,
+.explorer-sidebar .search-field,
+.directory-view,
+.detail-title-actions .component-pagination a,
+.preview-rail,
+.detail-install-managers button,
+.home-showcase-theme > button {
+  border-radius: var(--site-control-radius);
+}
+.directory-view button {
+  border-radius: calc(var(--site-control-radius) - 2px);
+}
+.directory-filters button {
+  border-radius: var(--site-control-radius);
+  font-size: 13px;
+}
+.directory-filters button[aria-pressed='true'] {
+  background: transparent;
+  color: var(--ai-text);
+  box-shadow: inset 0 -2px 0 var(--ai-text);
+  border-radius: 0;
+}
+
+/* Hairline grids: cells share one line, no floating cards. */
+.home-tasks ul,
+.home-tiles,
+.directory-group[data-view='gallery'] ul,
+.pattern-templates,
+.task-list,
+.docs-links,
+.page-pager,
+.home-start ol,
+.home-why ul {
+  gap: 1px;
+  background: transparent;
+  border: var(--ai-border-width, 1px) solid var(--site-line);
+  border-radius: var(--site-radius);
+  overflow: hidden;
+}
+/* Each cell draws its own hairline; an unfilled last row then shows the page, not a strip. */
+.home-tasks li a,
+.home-tile,
+.directory-group[data-view='gallery'] li a,
+.pattern-templates a,
+.task-list li a,
+.docs-links a,
+.page-pager a {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: var(--site-panel);
+  box-shadow: 0 0 0 1px var(--site-line);
+}
+/* Cells keep their colour on hover; the title's underline is the pointer's feedback. */
+@media (hover: hover) {
+  .home-tasks li a:hover,
+  .directory-group[data-view='gallery'] li a:hover,
+  .pattern-templates a:hover,
+  .task-list li a:hover,
+  .docs-links a:hover,
+  .page-pager a:hover {
+    border-color: transparent;
+    background: var(--site-panel);
+  }
+  .home-tasks li a:hover strong,
+  .pattern-templates a:hover > strong,
+  .task-list li a:hover strong,
+  .docs-links a:hover strong,
+  .page-pager a:hover strong {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+.home-start ol,
+.home-why ul {
+  background: transparent;
+  border-inline: 0;
+  border-radius: 0;
+  gap: 0;
+}
+.home-start li,
+.home-why li {
+  border-bottom-color: var(--site-line);
+}
+.home-why li:last-child,
+.home-start li:last-child {
+  border-bottom: 0;
+}
+.page-pager a[data-next] {
+  grid-column: 2;
+}
+.page-pager a:first-child:last-child {
+  grid-column: 1 / -1;
+}
+.directory-thumb {
+  background: var(--site-panel-raised);
+  border-bottom-color: var(--site-line);
+}
+.directory-group[data-view='list'] ul {
+  border-radius: var(--site-radius);
+  border-color: var(--site-line);
+  background: var(--site-panel);
+}
+.directory-group[data-view='list'] li + li {
+  border-top-color: var(--site-line);
+}
+.directory-group strong {
+  font-weight: 500;
+}
+.directory-text > span {
+  font-size: 13px;
+}
+.directory-collection {
+  border-top-color: var(--site-line);
+}
+.directory-collection > h2 {
+  font-size: 22px;
+}
+.directory-group h3 {
+  margin-bottom: 10px;
+  color: var(--ai-muted);
+}
+.directory-group h3 > span::before {
+  content: '· ';
+}
+.home-tile {
+  border-radius: 0;
+}
+.home-tile-footer {
+  border-top-color: var(--site-line);
+}
+.home-tile-footer a {
+  border-radius: var(--site-control-radius);
+}
+.home-tasks li a {
+  padding: 16px 18px;
+}
+
+/* Patterns page. A facts strip under the heading, recipes as numbered rows with a thumbnail
+   of the recipe page, templates as a grid of application thumbnails. */
+.pattern-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 8px 0 0;
+  border-top: var(--ai-border-width, 1px) solid var(--site-line);
+  border-bottom: var(--ai-border-width, 1px) solid var(--site-line);
+}
+.pattern-facts > div {
+  padding: 16px 24px 16px 0;
+  border-right: var(--ai-border-width, 1px) solid var(--site-line);
+}
+.pattern-facts > div + div {
+  padding-left: 24px;
+}
+.pattern-facts > div:last-child {
+  border-right: 0;
+}
+.pattern-facts dt {
+  font-family: var(--site-mono);
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+.pattern-facts dd {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ai-text);
+}
+.patterns-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 48px 0 16px;
+  font-size: 22px;
+}
+.patterns-heading > span {
+  font-family: var(--site-mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ai-muted);
+}
+.patterns-heading > span {
+  margin-left: auto;
+}
+/* Thumbnails: the page's own first screen, light or dark to match the site. */
+.pattern-preview {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--site-panel-raised);
+}
+.pattern-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+.pattern-preview-name {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: grid;
+  place-items: center;
+  color: var(--ai-muted);
+  font-size: 15px;
+  font-weight: 500;
+}
+.pattern-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--ai-border-width, 1px) solid var(--site-line);
+}
+.pattern-rows > li > a {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: 32px;
+  align-items: start;
+  padding-block: 28px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--site-line);
+  color: var(--ai-text);
+  text-decoration: none;
+}
+.pattern-rows .pattern-preview {
+  border: var(--ai-border-width, 1px) solid var(--site-line);
+  border-radius: var(--site-radius);
+}
+.pattern-row-copy {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.pattern-row-copy h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.pattern-row-copy p {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--ai-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.pattern-row-stack {
+  font-family: var(--site-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ai-muted);
+}
+.pattern-row-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ai-text);
+}
+@media (hover: hover) {
+  .pattern-rows > li > a:hover .pattern-row-cta {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+.pattern-templates {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.pattern-templates a {
+  gap: 6px;
+  padding-bottom: 18px;
+}
+.pattern-templates .pattern-preview {
+  margin-bottom: 8px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--site-line);
+}
+.pattern-templates a > strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+.pattern-templates a > strong,
+.pattern-templates a > span:last-of-type,
+.pattern-templates a > small {
+  padding-inline: 18px;
+}
+.pattern-templates a > span:last-of-type {
+  font-size: 14px;
+  line-height: 1.55;
+}
+.pattern-templates a > small {
+  margin-top: 6px;
+  font-family: var(--site-mono);
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+@media (max-width: 1000px) {
+  .pattern-templates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pattern-rows > li > a {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 18px;
+  }
+}
+@media (max-width: 640px) {
+  .pattern-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pattern-facts > div:nth-child(2n) {
+    border-right: 0;
+    padding-left: 24px;
+  }
+  .pattern-facts > div:nth-child(3) {
+    padding-left: 0;
+  }
+  .pattern-facts > div:nth-child(-n + 2) {
+    border-bottom: var(--ai-border-width, 1px) solid var(--site-line);
+  }
+  .pattern-templates {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .patterns-heading > span {
+    display: none;
+  }
+}
+.task-list li a {
+  padding: 18px;
+}
+.task-list li a strong {
+  font-weight: 500;
+}
+.task-list li a small,
+.task-list li a em {
+  font-family: var(--site-mono);
+  font-size: 12px;
+  font-style: normal;
+  color: var(--ai-muted);
+}
+
+/* Frames: sidebars are indexes with hairline rows, not pill menus. */
+.web-docs-layout,
+.explorer-site {
+  min-height: calc(100dvh - 56px);
+}
+.web-docs-nav,
+.explorer-site .explorer-sidebar {
+  background: var(--site-panel);
+  border-right-color: var(--site-line);
+}
+.explorer-site {
+  background: var(--ai-canvas);
+}
+/* The pinned sidebar is an index of hairline rows; below 960px it is already a scrolling top bar. */
+@media (min-width: 961px) {
+  .web-docs-nav,
+  .explorer-site .explorer-sidebar {
+    top: 56px;
+    height: calc(100dvh - 56px);
+  }
+  .web-docs-nav {
+    padding: 24px 16px 24px 24px;
+  }
+  .web-docs-nav nav {
+    gap: 0;
+  }
+  .web-docs-nav nav a {
+    padding: 8px 0;
+    border-top: 1px solid var(--site-line-soft);
+    border-radius: 0;
+  }
+  .web-docs-nav nav a:last-child {
+    border-bottom: 1px solid var(--site-line-soft);
+  }
+}
+.web-docs-nav nav a {
+  color: var(--ai-muted);
+  font-size: 13px;
+  line-height: 20px;
+}
+.web-docs-nav nav a[aria-current='page'] {
+  background: transparent;
+  color: var(--ai-text);
+  font-weight: 500;
+}
+@media (hover: hover) {
+  .web-docs-nav nav a:hover {
+    background: transparent;
+    color: var(--ai-text);
+  }
+}
+.web-docs-nav nav.directory-rail {
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top-color: var(--site-line);
+}
+.web-docs-nav nav.directory-rail a {
+  padding: 6px 0;
+  border: 0;
+  border-radius: 0;
+}
+.web-docs-nav nav.directory-rail .directory-rail-section {
+  font-weight: 500;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--site-line-soft);
+}
+.web-docs-nav nav.directory-rail .directory-rail-section > span {
+  margin-left: auto;
+}
+.web-docs-nav nav.directory-rail ul a {
+  font-size: 13px;
+}
+@media (hover: hover) {
+  .web-docs-nav nav.directory-rail a:hover {
+    background: transparent;
+  }
+}
+.web-docs-nav p {
+  margin-top: 28px;
+}
+.explorer-sidebar {
+  padding: 16px 12px 0 20px;
+}
+.explorer-sidebar .nav-main,
+.explorer-sidebar .nav-main.active {
+  margin: 0;
+  padding: 0 4px;
+  /* 36px rows with a 35px content box: the 15px icons centre on a whole pixel. */
+  height: 36px;
+  min-height: 0;
+  line-height: 20px;
+  box-sizing: border-box;
+  border-top: 1px solid var(--site-line-soft);
+  border-radius: 0;
+  background: transparent;
+  font-weight: 400;
+  color: var(--ai-muted);
+}
+.explorer-sidebar .nav-main.active {
+  color: var(--ai-text);
+  font-weight: 500;
+}
+.workspace-nav > :last-child {
+  border-bottom: 1px solid var(--site-line-soft);
+}
+@media (hover: hover) {
+  .explorer-sidebar .nav-main:hover {
+    background: transparent;
+    color: var(--ai-text);
+  }
+}
+.explorer-sidebar .nav-main small {
+  font-family: var(--site-mono);
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+.explorer-sidebar .search-field {
+  border: 1px solid var(--ai-control-border);
+  background: transparent;
+}
+.catalog-groups h2 button {
+  font-family: var(--site-mono);
+  font-size: 12px;
+  /* A 19px line box centres the 15px chevron on a whole pixel. */
+  line-height: 19px;
+  color: var(--ai-muted);
+}
+.component-link,
+.component-link.active {
+  border-radius: var(--site-control-radius);
+  font-weight: 400;
+  color: var(--ai-muted);
+}
+.component-link.active {
+  color: var(--ai-text);
+  background: var(--site-panel-raised);
+  font-weight: 500;
+}
+.catalog-group-label small {
+  font-family: var(--site-mono);
+}
+
+/* Component page: 8px frame, mono toolbar. */
+.detail-frame {
+  border-radius: var(--site-radius);
+  border-color: var(--site-line);
+  background: var(--site-panel);
+}
+.detail-frame .preview-canvas {
+  background: var(--site-panel);
+}
+.explorer-main .detail-frame .detail-toolbar {
+  border-bottom-color: var(--site-line);
+}
+.detail-frame .preview-caption {
+  border-top-color: var(--site-line);
+  font-family: var(--site-mono);
+  font-size: 12px;
+}
+.detail-install-section .detail-install {
+  border-radius: var(--site-radius);
+}
+.detail-title-actions .component-pagination a {
+  border-color: var(--site-line);
+}
+.explorer-context {
+  color: var(--ai-muted);
+}
+
+/* Footer: wordmark, maker, index, version. */
+.web-footer,
+.web-footer.web-footer-compact {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  padding: 20px max(24px, calc((100vw - 1200px) / 2)) 28px;
+  border-top-color: var(--site-line);
+  font-size: 13px;
+  color: var(--ai-muted);
+}
+.web-footer > div {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.web-footer-brand {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.web-footer-brand .web-brand-dot {
+  color: var(--ai-muted);
+}
+.web-footer p,
+.web-footer > div > span {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ai-muted);
+}
+.web-footer nav {
+  gap: 4px 20px;
+}
+.web-footer nav a {
+  min-height: 28px;
+  color: var(--ai-muted);
+}
+@media (hover: hover) {
+  .web-footer nav a:hover {
+    color: var(--ai-text);
+    text-decoration: none;
+  }
+}
+.web-footer-version {
+  display: inline-flex;
+  gap: 14px;
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+@media (max-width: 760px) {
+  .web-footer-version {
+    margin-left: 0;
+  }
+}
+
+/* Home: the rhythm the mockup set, carried through. */
+.home-section-heading h2 {
+  letter-spacing: -0.03em;
+}
+.home-why-evidence {
+  border: 1px solid var(--site-line);
+  border-radius: var(--site-radius);
+  background: var(--site-panel);
+}
+.home-template-figure > a {
+  border-radius: var(--site-radius);
+  border-color: var(--site-line);
+  background: var(--site-panel);
+}
+.home-hero-demo [data-part='chat'] {
+  box-shadow: none;
+}
+.home-connect-code,
+.code-panel {
+  border-radius: var(--site-radius);
+}
+.home-facts,
+.home-ships .home-section-heading,
+.home-ships-rows > li,
+.home-tasks,
+.home-start {
+  border-color: var(--site-line);
+}
+
+/* 404 */
+.missing-page .web-eyebrow::before {
+  content: '';
+}

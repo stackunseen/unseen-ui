@@ -394,11 +394,12 @@ export const componentAnatomy: Readonly<Record<string, Anatomy>> = {
     kind: 'parts',
     intro: 'A section you fill with parts. Use only the ones you need.',
     example: `<Card>
-  <Card.Header actions={<Button size="sm">Edit</Button>}>
-    <Card.Title>Component library</Card.Title>
-    <Card.Description>Reusable website and AI controls.</Card.Description>
+  <Card.Header icon={<TimerIcon />} actions={<Button size="sm">Edit</Button>}>
+    <Card.Title>Time saved</Card.Title>
+    <Card.Description>When tool calls save you time</Card.Description>
   </Card.Header>
-  <Card.Content>Explore the available components.</Card.Content>
+  <Card.Content><Numeric size="lg" value="11.4 h" qualifier="vs September" /></Card.Content>
+  <Card.Section>By tool, in a panel one step inside the card</Card.Section>
   <Card.Footer>Updated today</Card.Footer>
 </Card>`,
     parts: [
@@ -411,8 +412,9 @@ export const componentAnatomy: Readonly<Record<string, Anatomy>> = {
       {
         name: 'Header',
         render: 'Card.Header',
-        description: 'Title and description, with optional actions beside them.',
-        props: ['actions', 'actionsLabel'],
+        description:
+          'Title and description, with an optional icon tile before them and actions beside them.',
+        props: ['icon', 'actions', 'actionsLabel'],
       },
       {
         name: 'Title',
@@ -422,6 +424,11 @@ export const componentAnatomy: Readonly<Record<string, Anatomy>> = {
       },
       { name: 'Description', render: 'Card.Description', description: 'A line under the title.' },
       { name: 'Content', render: 'Card.Content', description: 'The main content.' },
+      {
+        name: 'Section',
+        render: 'Card.Section',
+        description: 'A panel one surface step inside the card, for figures or grouped controls.',
+      },
       {
         name: 'Footer',
         render: 'Card.Footer',

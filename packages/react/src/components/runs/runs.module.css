@@ -285,6 +285,188 @@
   gap: 8px;
   padding-top: 2px;
 }
+.elapsed,
+.stepTime,
+.laneBlockCost {
+  font-family: var(
+    --ai-font-numeric,
+    var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace)
+  );
+  font-variant-numeric: tabular-nums;
+}
+/* The newest steps of a run, dotted, with the time at the end of each line. */
+.cardSteps {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: var(--ai-control-radius, 10px);
+  background: var(--ai-surface-subtle, #f4f4f5);
+  list-style: none;
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-caption, 12px);
+  line-height: 1.5;
+}
+.cardSteps li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.cardSteps li::before {
+  content: '·';
+  flex: none;
+  margin-inline-end: 4px;
+}
+.cardSteps li > span {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.cardSteps li:last-child {
+  color: var(--ai-text, #18181b);
+}
+.stepTime {
+  flex: none;
+  font-size: 11px;
+}
+/* Lanes: a lane per agent on one time axis, hand-offs drawn between lanes. */
+.lanes {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.lanesBody {
+  display: grid;
+  grid-template-columns: minmax(80px, 140px) minmax(0, 1fr);
+  gap: 0 8px;
+}
+.laneNames {
+  display: grid;
+  grid-auto-rows: var(--lane-height, 44px);
+}
+.laneName {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-inline-end: 4px;
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-meta, 13px);
+  overflow-wrap: anywhere;
+}
+.laneTracks {
+  position: relative;
+  display: grid;
+  grid-auto-rows: var(--lane-height, 44px);
+  min-width: 0;
+  border-radius: var(--ai-control-radius, 10px);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 calc(var(--lane-height, 44px) - 1px),
+    var(--ai-border, #e4e4e7) calc(var(--lane-height, 44px) - 1px) var(--lane-height, 44px)
+  );
+}
+.laneLinks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.laneLinks path {
+  fill: none;
+  stroke: var(--ai-muted, #52525b);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  vector-effect: non-scaling-stroke;
+}
+.laneLinks line {
+  stroke: var(--ai-primary, #18181b);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.lane {
+  position: relative;
+  min-width: 0;
+}
+.laneBlock {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 8px;
+  border: 1px solid var(--ai-border, #e4e4e7);
+  border-radius: 8px;
+  background: var(--ai-surface, #fff);
+  color: var(--ai-text, #18181b);
+  font: inherit;
+  font-size: var(--ai-font-size-caption, 12px);
+  text-align: start;
+  overflow: hidden;
+  cursor: pointer;
+}
+.laneBlock[data-state='running'] {
+  border-color: var(--ai-primary, #18181b);
+  background: color-mix(in srgb, var(--ai-primary, #18181b) 12%, var(--ai-surface, #fff));
+}
+.laneBlock[data-live] {
+  border-inline-end-style: dashed;
+}
+.laneBlock[data-state='failed'] {
+  border-color: var(--ai-danger, #991b1b);
+  background: var(--ai-danger-soft, #fee2e2);
+}
+.laneBlock[data-state='waiting-approval'],
+.laneBlock[data-state='waiting-input'] {
+  border-color: var(--ai-warning, #92400e);
+  background: var(--ai-warning-soft, #fef3c7);
+}
+.laneBlock[data-selected] {
+  box-shadow: 0 0 0 2px var(--ai-primary, #18181b);
+}
+.laneBlock:focus-visible {
+  outline: 2px solid var(--ai-focus, #18181b);
+  outline-offset: 2px;
+}
+.laneBlockTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.laneBlockCost {
+  flex: none;
+  color: var(--ai-muted, #52525b);
+  font-size: 11px;
+}
+.laneAxis {
+  display: flex;
+  justify-content: space-between;
+  padding-inline-start: calc(min(140px, max(80px, 20%)) + 8px);
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-caption, 12px);
+}
+@media (max-width: 520px) {
+  .lanesBody {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+  .laneAxis {
+    padding-inline-start: 80px;
+  }
+}
+@media (forced-colors: active) {
+  .laneBlock[data-state='running'] {
+    border-color: Highlight;
+  }
+  .laneLinks path,
+  .laneLinks line {
+    stroke: CanvasText;
+  }
+}
 .measure[data-meaning='estimated'] abbr {
   text-decoration: none;
 }
@@ -570,6 +752,16 @@ span.treeToggle {
 .treeMeta {
   color: var(--ai-muted, #52525b);
   font-size: var(--ai-font-size-meta, 13px);
+}
+.treeCost {
+  margin-inline-start: auto;
+  font-family: var(
+    --ai-font-numeric,
+    var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace)
+  );
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .treeSpawn,
 .treeMore {

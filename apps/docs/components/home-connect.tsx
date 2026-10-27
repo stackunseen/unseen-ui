@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { HomeConnectCode } from './home-connect-code';
 
 const files = [
@@ -59,14 +58,10 @@ export function HomeConnect() {
         </p>
         <ul>
           <li>
-            <Link href="/docs/integration/">
-              Connect to your app <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-            </Link>
+            <Link href="/docs/integration/">Connect to your app</Link>
           </li>
           <li>
-            <Link href="/components/chat/">
-              See the Chat guide <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-            </Link>
+            <Link href="/components/chat/">See the Chat guide</Link>
           </li>
         </ul>
         <p className="home-connect-note">

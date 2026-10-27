@@ -1,6 +1,15 @@
 'use client';
 import { useState } from 'react';
-import { Field, Input, Textarea, Checkbox, Switch, RadioGroup, Slider } from '@stackunseen/ui';
+import {
+  Field,
+  Input,
+  Textarea,
+  Checkbox,
+  Switch,
+  RadioGroup,
+  Slider,
+  TonePad,
+} from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteFormSpecimen({ name, state }: WebsiteSpecimenProps) {
@@ -18,6 +27,27 @@ export function WebsiteFormSpecimen({ name, state }: WebsiteSpecimenProps) {
   const [choice, setChoice] = useState('public');
   const [range, setRange] = useState(state === 'Range' ? [25, 75] : [50]);
   const disabled = state === 'Disabled';
+  const [tone, setTone] = useState({ x: 0.3, y: 0.7 });
+  if (name === 'TonePad')
+    return (
+      <>
+        <Field
+          label="Tone"
+          labelAs="span"
+          description="About 45 words at this setting."
+          disabled={disabled}
+        >
+          <TonePad
+            value={tone}
+            onValueChange={setTone}
+            axes={{ x: ['Formal', 'Casual'], y: ['Detailed', 'Brief'] }}
+          />
+        </Field>
+        <p className="generic-demo-status">
+          {Math.round(tone.x * 100)}% casual · {Math.round(tone.y * 100)}% brief
+        </p>
+      </>
+    );
   const invalid = state === 'Invalid';
   const description = 'This value is controlled by the local example.';
   if (name === 'Checkbox' || name === 'Switch') {

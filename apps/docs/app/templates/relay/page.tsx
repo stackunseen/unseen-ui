@@ -1,4 +1,3 @@
-import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { pageMetadata } from '../../../lib/site-seo';
 import { componentHref } from '../../../lib/site-paths';
 export const metadata = pageMetadata(
@@ -17,7 +16,7 @@ export default function Page() {
           components in the catalog.
         </p>
         <a className="web-text-link" href="#run-relay">
-          Run it locally <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+          Run it locally
         </a>
       </header>
       <section>
@@ -50,7 +49,7 @@ export default function Page() {
           preview.
         </p>
         <a className="web-text-link" href="/docs/customization/">
-          Adapt the theme and icons <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+          Adapt the theme and icons
         </a>
       </section>
       <section>

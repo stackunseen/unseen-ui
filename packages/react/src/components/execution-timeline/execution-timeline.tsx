@@ -1,4 +1,5 @@
 'use client';
+import type React from 'react';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Select } from '../select/select.js';
 import type { DetailLevel, DetailProps, VariantProps } from '../../shared/variants.js';
@@ -13,6 +14,102 @@ export interface TimelineEntry {
   timestamp: string;
   durationMs?: number;
   detail?: string;
+  /** A formatted cost for this step, such as "$0.04"; the host formats it. */
+  cost?: string;
+  /** A formatted token count, such as "1.2k tokens". */
+  tokens?: string;
+  /** The step this one ran inside; the waterfall folds children under their parent. */
+  parentId?: string;
+}
+
+const startOf = (entry: TimelineEntry) => {
+  const ms = Date.parse(entry.timestamp);
+  return Number.isFinite(ms) ? ms : undefined;
+};
+const measured = (entry: TimelineEntry) =>
+  entry.durationMs !== undefined && Number.isFinite(entry.durationMs) && entry.durationMs >= 0
+    ? entry.durationMs
+    : undefined;
+
+function Waterfall({ entries, detail }: { entries: TimelineEntry[]; detail: DetailLevel }) {
+  const starts = entries.map(startOf).filter((v): v is number => v !== undefined);
+  const origin = starts.length ? Math.min(...starts) : 0;
+  const ends = entries.map((entry) => (startOf(entry) ?? origin) + (measured(entry) ?? 0));
+  const total = Math.max(1, ...ends.map((end) => end - origin));
+  const durations = entries.map(measured).filter((v): v is number => v !== undefined);
+  const slowest = durations.length ? Math.max(...durations) : undefined;
+  const ids = new Set(entries.map((entry) => entry.id));
+  const children = new Map<string, TimelineEntry[]>();
+  const roots: TimelineEntry[] = [];
+  for (const entry of entries) {
+    if (entry.parentId && ids.has(entry.parentId) && entry.parentId !== entry.id) {
+      const list = children.get(entry.parentId) ?? [];
+      list.push(entry);
+      children.set(entry.parentId, list);
+    } else roots.push(entry);
+  }
+  const row = (entry: TimelineEntry) => {
+    const start = startOf(entry) ?? origin;
+    const duration = measured(entry);
+    const left = ((start - origin) / total) * 100;
+    const width = duration === undefined ? 0 : (duration / total) * 100;
+    return (
+      <div className={own.wfRow} data-state={entry.state}>
+        <span className={own.wfLabel}>
+          <strong>{entry.label}</strong>
+          <small>
+            <ObservationTime value={entry.timestamp} />
+          </small>
+          {entry.detail && <small>{entry.detail}</small>}
+        </span>
+        <span className={own.wfTrack} aria-hidden="true">
+          <span
+            className={own.wfBar}
+            data-slowest={slowest !== undefined && duration === slowest ? '' : undefined}
+            data-unmeasured={duration === undefined ? '' : undefined}
+            style={{ insetInlineStart: `${left}%`, inlineSize: `${Math.max(0.8, width)}%` }}
+          />
+        </span>
+        <span className={own.wfMeta}>
+          <span className={own.numeric}>{timelineDuration(entry.durationMs, detail) ?? '—'}</span>
+          {entry.tokens && <span className={own.numeric}>{entry.tokens}</span>}
+          {entry.cost && <span className={own.numeric}>{entry.cost}</span>}
+          {slowest !== undefined && duration === slowest && (
+            <span className={own.wfSlowest}>Slowest</span>
+          )}
+          <StatusBadge state={entry.state} variant="icon" />
+        </span>
+      </div>
+    );
+  };
+  const render = (list: TimelineEntry[]): React.ReactNode => (
+    <ol className={own.wfList}>
+      {list.map((entry) => {
+        const nested = children.get(entry.id);
+        return (
+          <li key={entry.id} className={own.wfItem}>
+            {nested && nested.length > 0 ? (
+              <details open className={own.wfFold}>
+                <summary className={own.wfSummary}>{row(entry)}</summary>
+                {render(nested)}
+              </details>
+            ) : (
+              row(entry)
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  );
+  return (
+    <div className={own.waterfall}>
+      {entries.length === 0 ? <p className={s.muted}>No matching events.</p> : render(roots)}
+      <div className={own.wfAxis} aria-hidden="true">
+        <span className={own.numeric}>0 ms</span>
+        <span className={own.numeric}>{timelineDuration(total, 'compact')}</span>
+      </div>
+    </div>
+  );
 }
 
 function timelineDuration(durationMs: number | undefined, detail: DetailLevel): string | undefined {
@@ -49,7 +146,9 @@ export function ExecutionTimeline({
           />
         </label>
       )}
-      {variant === 'table' ? (
+      {variant === 'waterfall' ? (
+        <Waterfall entries={shown} detail={detail} />
+      ) : variant === 'table' ? (
         <div
           className={s.tableScroll}
           tabIndex={0}
@@ -103,6 +202,8 @@ export function ExecutionTimeline({
                   {timelineDuration(e.durationMs, detail)
                     ? ` · ${timelineDuration(e.durationMs, detail)}`
                     : ''}
+                  {e.tokens ? ` · ${e.tokens}` : ''}
+                  {e.cost ? ` · ${e.cost}` : ''}
                 </div>
                 {e.detail && <p>{e.detail}</p>}
               </div>

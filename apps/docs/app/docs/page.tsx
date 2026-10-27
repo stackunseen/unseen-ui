@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
   'Documentation',
@@ -46,9 +45,7 @@ export default function Page() {
       <div className="docs-links">
         {guides.map(([href, title, description]) => (
           <Link key={href} href={href}>
-            <strong>
-              {title} <ArrowRightIcon width={15} height={15} aria-hidden="true" />
-            </strong>
+            <strong>{title}</strong>
             <span>{description.replace(/`/g, '')}</span>
           </Link>
         ))}

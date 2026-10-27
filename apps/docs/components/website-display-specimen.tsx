@@ -1,6 +1,16 @@
 'use client';
 import { useState } from 'react';
-import { Avatar, DiffStat, ElapsedTime, Stat, StatGroup, Tag, ToggleGroup } from '@stackunseen/ui';
+import {
+  Avatar,
+  DiffStat,
+  ElapsedTime,
+  Kbd,
+  Numeric,
+  Stat,
+  StatGroup,
+  Tag,
+  ToggleGroup,
+} from '@stackunseen/ui';
 import type { ToggleGroupOption } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 import { StarIcon } from '@radix-ui/react-icons';
@@ -146,8 +156,42 @@ export function WebsiteDisplaySpecimen({ name, state, presentation }: WebsiteSpe
         )}
       </div>
     );
+  if (name === 'Kbd')
+    return state === 'Combination' ? (
+      <p style={{ margin: 0 }}>
+        <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>K</Kbd> opens the weekly recap
+      </p>
+    ) : state === 'Small' ? (
+      <p style={{ margin: 0, fontSize: 13 }}>
+        <Kbd size="sm">↑</Kbd> <Kbd size="sm">↓</Kbd> to move · <Kbd size="sm">Enter</Kbd> to run
+      </p>
+    ) : (
+      <p style={{ margin: 0 }}>
+        Press <Kbd>Enter</Kbd> to send
+      </p>
+    );
+  if (name === 'Numeric')
+    return state === 'Headline' ? (
+      <Numeric size="lg" value="11.4 h" qualifier="vs September" />
+    ) : state === 'Row' ? (
+      <div style={{ display: 'grid', gap: 8 }}>
+        <Numeric value="1,284" qualifier="runs in October" />
+        <Numeric value="32 s" qualifier="per run" />
+      </div>
+    ) : state === 'Trend' ? (
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        <Numeric size="sm" tone="up" value="+2.1 h" qualifier="saved" />
+        <Numeric size="sm" tone="down" value="−4%" qualifier="churn" />
+        <Numeric size="sm" tone="primary" value="+18%" qualifier="chords run" />
+      </div>
+    ) : (
+      <p style={{ margin: 0 }}>
+        Searched accounts <Numeric size="sm" value="820 ms" />
+      </p>
+    );
   if (name === 'Stat') {
-    const variant = presentation === 'plain' ? 'plain' : 'card';
+    const variant =
+      presentation === 'plain' ? 'plain' : presentation === 'inset' ? 'inset' : 'card';
     return state === 'Group' || state === 'Default' ? (
       <StatGroup aria-label="Usage">
         <Stat

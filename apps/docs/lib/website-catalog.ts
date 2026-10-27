@@ -94,6 +94,22 @@ export const websiteCatalog: CatalogEntry[] = [
     code: '<Field label="Project visibility" labelAs="span"><RadioGroup value={visibility} onValueChange={setVisibility} options={[{value: "public", label: "Public"}, {value: "private", label: "Private"}]} /></Field>',
   }),
   entry({
+    name: 'TonePad',
+    group: 'Forms',
+    aliases: ['2D slider', 'Tone control', 'XY pad', 'Formal to casual'],
+    description:
+      'Two choices on one square: drag the handle between Formal and Casual, Brief and Detailed.',
+    states: ['Default', 'Disabled'],
+    contract:
+      'value: { x, y } (0–1) · onValueChange · axes: { x: [left, right], y: [bottom, top] } · step? · label? · disabled?',
+    responsibility:
+      'Name both axes with the real words your model uses. The pad is made of two native sliders, one per axis, so keyboard and screen-reader users set the same two numbers.',
+    keyboard:
+      'Tab visits the two sliders; arrow keys move one step, Home and End to the ends. The square itself takes pointer input.',
+    relatedImports: ['Field', 'Slider'],
+    code: '<Field label="Tone" labelAs="span"><TonePad value={tone} onValueChange={setTone} axes={{ x: ["Formal", "Casual"], y: ["Detailed", "Brief"] }} /></Field>',
+  }),
+  entry({
     name: 'Slider',
     group: 'Forms',
     aliases: ['Range', 'Range input'],
@@ -309,9 +325,18 @@ export const websiteCatalog: CatalogEntry[] = [
     aliases: ['Content card', 'Surface', 'Panel', 'Link card', 'Resource card', 'Section header'],
     description:
       'A box with a header (title, description and actions), a body and a footer, or a card that is one big link.',
-    states: ['Default', 'Header actions', 'With action', 'Link', 'External link', 'Long content'],
+    states: [
+      'Default',
+      'Header actions',
+      'With icon',
+      'Sections',
+      'With action',
+      'Link',
+      'External link',
+      'Long content',
+    ],
     contract:
-      'Native section props · href? · external? · Card.Header actions? actionsLabel? · Card.Title as?: h2–h6 · Card.Description/Content/Footer',
+      'Native section props · href? · external? · Card.Header icon? actions? actionsLabel? · Card.Title as?: h2–h6 · Card.Description/Content/Section/Footer',
     responsibility:
       'Pick a heading level that fits the page. Add aria-labelledby only when the card should be a named region. With href the whole card is one link, so keep buttons and other links out of it.',
     keyboard:
@@ -398,6 +423,93 @@ export const websiteCatalog: CatalogEntry[] = [
     code: '<ElapsedTime startedAt={turn.startedAt} endedAt={turn.endedAt} />',
   }),
   entry({
+    name: 'Numeric',
+    group: 'Data Display',
+    aliases: ['Figure', 'Number with unit', 'Delta', 'Tabular number'],
+    description:
+      'A figure in the numeric face with its qualifier in words, so numbers line up across a screen.',
+    states: ['Headline', 'Row', 'Meta', 'Trend'],
+    contract: 'value · qualifier? · size?: lg | md | sm · tone?: neutral | up | down | primary',
+    responsibility:
+      'Format the figure and its sign in the application. Tone only backs up a sign that is already in the text. Stat, ElapsedTime and ToolCall durations use the same face, set with --ai-font-numeric.',
+    keyboard: 'Inert content; it adds no tab stop.',
+    relatedImports: ['Stat', 'ElapsedTime'],
+    code: '<Numeric size="lg" value="11.4 h" qualifier="vs September" />',
+  }),
+  entry({
+    name: 'Kbd',
+    group: 'Data Display',
+    aliases: ['Key cap', 'Keyboard shortcut', 'Shortcut hint'],
+    description: 'One key cap, for shortcut hints beside actions and in menus.',
+    states: ['Default', 'Combination', 'Small'],
+    contract: 'size?: default | sm · native kbd props',
+    responsibility:
+      'Put each key in its own Kbd and the "+" as text between them, so the keys are read as words. Keep the real shortcut in your app; the cap is a hint.',
+    keyboard: 'Inert content.',
+    relatedImports: ['CommandPalette', 'PromptInput'],
+    code: '<Kbd>Shift</Kbd> + <Kbd>Enter</Kbd>',
+  }),
+  entry({
+    name: 'DotRing',
+    group: 'Data Display',
+    aliases: ['Clock ring', 'Radial histogram', 'Hours of the day'],
+    description:
+      'A ring of dotted spokes, one per hour or step, denser where the value is higher, with a figure in the centre.',
+    states: ['Default', 'Sparse', 'Empty'],
+    contract:
+      'label · data: { label, value }[] · max? · depth? · value? · caption? · ticks? · unit?',
+    responsibility:
+      'Pass measured counts in order, clockwise from the top. The centre figure is formatted by your app. The same values are in a hidden table, so nothing is said by dots alone.',
+    keyboard: 'Inert content; the hidden table is read in order.',
+    relatedImports: ['Numeric', 'Card'],
+    code: '<DotRing label="Runs by hour" data={hours} value="32 s" caption="per run" ticks={[{ at: 0, label: "00" }, { at: 12, label: "12" }]} />',
+  }),
+  entry({
+    name: 'DotBars',
+    group: 'Data Display',
+    aliases: ['Dot histogram', 'Range on chart', 'Daily counts'],
+    description:
+      'A histogram built from dots, one column per day or step, with a highlighted range and an accent outlier.',
+    states: ['Default', 'Range', 'Outlier', 'Empty'],
+    contract:
+      'label · data: { label, value }[] · max? · rows? · range?: { start, end } · rangeLabel? · outliers?: number[] · axis?: [start, end] · unit?',
+    responsibility:
+      'The range only highlights; your app picks it and sums its figures for rangeLabel. Pass the axis labels as text. Every value is in a hidden table.',
+    keyboard: 'Inert content; the hidden table is read in order.',
+    relatedImports: ['Numeric', 'Chart'],
+    code: '<DotBars label="Runs in October" data={days} range={{ start: 6, end: 19 }} rangeLabel="Oct 7 – 20 · 642 runs" axis={["Oct 1", "Oct 31"]} />',
+  }),
+  entry({
+    name: 'WeekStrip',
+    group: 'Data Display',
+    aliases: ['Week bars', 'Stacked days', 'Weekly goal'],
+    description:
+      'Seven columns with the series stacked inside each and the current day in bold, for a week at a glance.',
+    states: ['Default', 'Single series', 'Goal'],
+    contract:
+      'label · days: { label, values: Record<seriesId, number> }[] · series: { id, label, swatch? }[] · max? · current? · unit? · legend?',
+    responsibility:
+      'Pass counts by series id per day. max sets the column that reads full; use it for a goal so the empty part of each column shows what is left. Every count is in a hidden table.',
+    keyboard: 'Inert content; the hidden table is read in order.',
+    relatedImports: ['Stat', 'Progress'],
+    code: '<WeekStrip label="This week" days={week} series={[{ id: "summarize", label: "Summarize" }, { id: "rewrite", label: "Rewrite", swatch: "var(--ai-secondary)" }]} current={4} />',
+  }),
+  entry({
+    name: 'HeatKeys',
+    group: 'Data Display',
+    aliases: ['Keyboard heat map', 'Grid heat map', 'Shortcut usage'],
+    description:
+      'A grid of cells shaded in four steps by their value, laid out like a keyboard or any grid, with the label kept on every cell.',
+    states: ['Default', 'Grid', 'Empty'],
+    contract:
+      'label · rows: { keys: { id, label, value, span? }[], offset? }[] · max? · scale?: [low, high] · unit?',
+    responsibility:
+      'Lay the rows out yourself with offsets in cell units. Shading backs up the printed label; every count is in a hidden table. For counts across two named axes, use Matrix.',
+    keyboard: 'Inert content; the hidden table is read in order.',
+    relatedImports: ['Matrix'],
+    code: '<HeatKeys label="Keys you reach for" rows={keyboard} scale={["Fewer", "More"]} />',
+  }),
+  entry({
     name: 'Avatar',
     group: 'Data Display',
     aliases: ['Profile picture', 'Initials', 'User image'],
@@ -418,14 +530,14 @@ export const websiteCatalog: CatalogEntry[] = [
         'A formatted number with its label, optional change and note, for rows of metrics.',
       states: ['Default', 'With trend', 'Group'],
       contract:
-        'label · value · delta? · trend?: up | down | neutral · note? · StatGroup: native div props',
+        'label · value · delta? · trend?: up | down | neutral · note? · variant?: card | plain | inset · StatGroup: native div props',
       responsibility:
         'Format numbers, units and signs in the application. Trend color only backs up text that already shows the sign. Renders on the server.',
       keyboard: 'Inert content; it adds no tab stop.',
       relatedImports: ['StatGroup'],
       code: '<StatGroup aria-label="Usage">\n  <Stat label="Active users" value="1,204" delta="+12%" trend="up" note="Last 30 days" />\n</StatGroup>',
     }),
-    presentations: ['card', 'plain'],
+    presentations: ['card', 'plain', 'inset'],
     presentationProp: 'variant',
   },
   entry({

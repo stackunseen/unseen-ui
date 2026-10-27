@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { ArrowRightIcon, ArrowTopRightIcon, CheckIcon } from '@radix-ui/react-icons';
+import { CheckIcon } from '@radix-ui/react-icons';
 import {
   AgentSteps,
   Button,
@@ -63,7 +63,7 @@ function Tile({
       <footer className="home-tile-footer">
         <span>{group}</span>
         <Link prefetch={false} href={componentHref(name)}>
-          {name} <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
+          {name}
         </Link>
       </footer>
     </article>
@@ -111,7 +111,7 @@ export function HomeShowcase() {
             </button>
           ))}
           <Link prefetch={false} className="web-text-link" href="/customize/">
-            Theme Studio <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+            Theme Studio
           </Link>
         </div>
       </div>

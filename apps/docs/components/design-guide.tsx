@@ -25,7 +25,7 @@ export function DesignGuide({
       </div>
       <section className="design-section">
         <div>
-          <span className="eyebrow">01 · Color</span>
+          <span className="eyebrow">Color</span>
           <h2>Give color a job.</h2>
           <p>
             Primary marks actions and selection. Secondary supports a second action. Success,
@@ -53,7 +53,7 @@ export function DesignGuide({
       </section>
       <section className="design-section">
         <div>
-          <span className="eyebrow">02 · Shape</span>
+          <span className="eyebrow">Shape</span>
           <h2>Corners follow purpose.</h2>
           <p>Controls, reading surfaces and composers use separate corner tokens.</p>
         </div>
@@ -72,7 +72,7 @@ export function DesignGuide({
       </section>
       <section className="design-section">
         <div>
-          <span className="eyebrow">03 · Edges and elevation</span>
+          <span className="eyebrow">Edges and elevation</span>
           <h2>One edge is enough.</h2>
           <p>
             Inputs use a single fine outline, without an inset bevel or permanent ring. Keyboard
@@ -90,7 +90,7 @@ export function DesignGuide({
       </section>
       <section className="design-section">
         <div>
-          <span className="eyebrow">04 · Interaction</span>
+          <span className="eyebrow">Interaction</span>
           <h2>Clarity through every state.</h2>
           <p>
             Keep labels and destructive action details visible. Disclosures hold supporting
@@ -113,7 +113,7 @@ export function DesignGuide({
         </div>
       </section>
       <section className="design-placement-section">
-        <span className="eyebrow">05 · Space and actions</span>
+        <span className="eyebrow">Space and actions</span>
         <h2>Keep actions with their content.</h2>
         <p>
           Keep row actions beside their item and Send after the composer tools. Controls wrap in
@@ -129,7 +129,7 @@ export function DesignGuide({
         <ViewportExample />
       </section>
       <section className="design-placement-section">
-        <span className="eyebrow">06 · Application foundations</span>
+        <span className="eyebrow">Application foundations</span>
         <h2>A workspace around the components.</h2>
         <p>
           The workspace has named regions and a resizable inspector that becomes a drawer on narrow
@@ -138,7 +138,7 @@ export function DesignGuide({
         <WorkspaceExample />
       </section>
       <section className="design-placement-section">
-        <span className="eyebrow">07 · Recovery and ownership</span>
+        <span className="eyebrow">Recovery and ownership</span>
         <h2>Keep the original request in view.</h2>
         <p>
           Transport, current data, acknowledgement and execution have separate meanings. Try a lost
@@ -147,7 +147,7 @@ export function DesignGuide({
         <RecoveryExample />
       </section>
       <section className="design-placement-section">
-        <span className="eyebrow">08 · Attachments and recovery</span>
+        <span className="eyebrow">Attachments and recovery</span>
         <h2>Keep each file and its actions together.</h2>
         <p>
           Three compact layouts share committed byte counts, exact original receipts and explicit

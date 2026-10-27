@@ -21,11 +21,14 @@ export { RunBoard, emptyRunBoardFilter } from './components/runs/run-board.js';
 export type {
   RunBoardProps,
   RunCard,
+  RunStep,
   RunBoardFilter,
   RunBoardGroup,
   RunAction,
   RunActionRequest,
 } from './components/runs/run-board.js';
+export { AgentLanes } from './components/runs/agent-lanes.js';
+export type { AgentLanesProps, AgentLane, LaneTask } from './components/runs/agent-lanes.js';
 export { AttentionQueue } from './components/runs/attention-queue.js';
 export type { AttentionQueueProps, AttentionItem } from './components/runs/attention-queue.js';
 export { RunSummaryCard } from './components/runs/run-summary-card.js';
@@ -41,7 +44,7 @@ export type { RunParty, Money } from './components/runs/shared.js';
 export type { CommandReceipt, Measurement, HeartbeatState } from '@stackunseen/ui-core';
 export { RunCompare } from './components/runs/run-compare.js';
 export type { RunCompareProps, RunCompareSide } from './components/runs/run-compare.js';
-export { SubagentTree } from './components/runs/subagent-tree.js';
+export { SubagentTree, branchCost } from './components/runs/subagent-tree.js';
 export type { SubagentTreeProps, RunNode } from './components/runs/subagent-tree.js';
 export { ScopeGrantList } from './components/governance/scope-grant-list.js';
 export type {

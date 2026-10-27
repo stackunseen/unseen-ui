@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { FileTextIcon, ResetIcon } from '@radix-ui/react-icons';
-import { Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
+import { FileTextIcon, MoonIcon, ResetIcon, SunIcon } from '@radix-ui/react-icons';
+import { AITheme, Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import { TableOfContents } from '@stackunseen/ui/navigation';
 import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
 import '@stackunseen/ui/navigation.css';
@@ -86,6 +86,9 @@ const centredPreviews = new Set([
   'BranchSwitcher',
   'Sidecar',
   'UsageMeter',
+  'Kbd',
+  'TonePad',
+  'FollowUps',
 ]);
 
 // Rows and disclosures that grow when opened: a centred column keeps them from jumping sideways.
@@ -127,6 +130,8 @@ export function ComponentDetail({
   const { state: variant, style: presentation, compare, tab } = location;
   const [reset, setReset] = useState(0);
   const [allStates, setAllStates] = useState(false);
+  // The preview's own light or dark, apart from the page; undefined follows the page.
+  const [previewMode, setPreviewMode] = useState<'light' | 'dark' | undefined>();
   const when = guidanceFor(entry.name);
   const setVariant = (state: string) => onChange({ state });
   const setPresentation = (style: string) => onChange({ style });
@@ -301,9 +306,6 @@ export function ComponentDetail({
                 {allStates ? 'Show selected state' : `All ${entry.states.length} states`}
               </Button>
             )}
-            <Button variant="ghost" onClick={() => setReset((value) => value + 1)}>
-              <ResetIcon width={15} height={15} aria-hidden="true" /> Reset example
-            </Button>
           </div>
           <Tabs
             label="Component example"
@@ -315,7 +317,43 @@ export function ComponentDetail({
                 label: 'Preview',
                 content: (
                   <>
-                    <div className="preview-canvas">
+                    <AITheme
+                      appearance={previewMode}
+                      className="preview-canvas"
+                      data-preview-mode={previewMode}
+                    >
+                      <div className="preview-rail" role="group" aria-label="Preview options">
+                        <button
+                          type="button"
+                          className="preview-rail-button"
+                          aria-label="Preview in light mode"
+                          aria-pressed={previewMode === 'light'}
+                          onClick={() =>
+                            setPreviewMode((mode) => (mode === 'light' ? undefined : 'light'))
+                          }
+                        >
+                          <SunIcon width={15} height={15} aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          className="preview-rail-button"
+                          aria-label="Preview in dark mode"
+                          aria-pressed={previewMode === 'dark'}
+                          onClick={() =>
+                            setPreviewMode((mode) => (mode === 'dark' ? undefined : 'dark'))
+                          }
+                        >
+                          <MoonIcon width={15} height={15} aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          className="preview-rail-button"
+                          aria-label="Reset example"
+                          onClick={() => setReset((value) => value + 1)}
+                        >
+                          <ResetIcon width={15} height={15} aria-hidden="true" />
+                        </button>
+                      </div>
                       <div
                         data-fit={
                           compare || allStates
@@ -364,7 +402,7 @@ export function ComponentDetail({
                           />
                         )}
                       </div>
-                    </div>
+                    </AITheme>
                     {(compare || allStates) && (
                       <p className="preview-caption">
                         {compare
@@ -562,7 +600,7 @@ export function ComponentDetail({
             Change shared colors, spacing, corners and icons with the theme. Use the component's
             supported props to adapt its content and layout.{' '}
             <Link href="/docs/customization/">Customization guide</Link>
-            {' · '}
+            {' and '}
             <Link href="/customize/">Theme Studio</Link>
           </p>
         </section>

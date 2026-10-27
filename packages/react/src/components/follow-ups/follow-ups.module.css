@@ -1,0 +1,15 @@
+/* FollowUps: a lead word and pill chips, after a response. */
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-inline-size: 0;
+}
+.lead {
+  color: var(--ai-muted, #52525b);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.chip {
+  border-radius: var(--ai-radius-pill, 999px);
+}

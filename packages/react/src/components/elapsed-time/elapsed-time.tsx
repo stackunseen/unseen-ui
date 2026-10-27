@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import type { ComponentProps } from 'react';
+import d from '../../shared/styles/display.module.css';
 
 export interface ElapsedTimeProps extends Omit<ComponentProps<'time'>, 'children' | 'dateTime'> {
   /** When the work started (a Date, an ISO string or epoch milliseconds). */
@@ -38,7 +39,13 @@ function isoDuration(ms: number) {
  * Time spent on a run or turn. While it runs it ticks once a second; once it ends it stops.
  * It is not a live region, so screen readers are not interrupted every second.
  */
-export function ElapsedTime({ startedAt, endedAt, durationMs, ...props }: ElapsedTimeProps) {
+export function ElapsedTime({
+  startedAt,
+  endedAt,
+  durationMs,
+  className = '',
+  ...props
+}: ElapsedTimeProps) {
   const start = toMs(startedAt);
   const end = endedAt === undefined ? undefined : toMs(endedAt);
   const running = end === undefined && durationMs === undefined;
@@ -54,6 +61,7 @@ export function ElapsedTime({ startedAt, endedAt, durationMs, ...props }: Elapse
     // The server and the browser read different clocks while running.
     <time
       {...props}
+      className={`${d.numeric} ${className}`}
       dateTime={isoDuration(ms)}
       data-running={running || undefined}
       suppressHydrationWarning
