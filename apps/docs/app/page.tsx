@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { CopyButton } from '@stackunseen/ui';
 import { HomeBreadth } from '../components/home-breadth';
 import { HomeConnect } from '../components/home-connect';
+import { HomeAgents } from '../components/home-agents';
+import { HomeFaq } from '../components/home-faq';
 import { TemplateCards, templateListings } from '../components/template-cards';
 import { componentTasks } from '../lib/tasks';
 import { LegacyGalleryRedirect } from '../components/legacy-gallery-redirect';
@@ -95,6 +97,7 @@ export default function Page() {
           </div>
         </dl>
         <HomeConnect />
+        <HomeAgents />
         <section className="home-tasks" aria-labelledby="home-tasks-title">
           <div className="home-section-heading">
             <div>
@@ -147,10 +150,10 @@ export default function Page() {
             <li>
               <strong>Ready for your coding agent</strong>
               <span>
-                Point Cursor, Claude Code or any AI tool at llms.txt, read the component manifest
-                that ships in the package, or add starters from the shadcn registry.
+                Add the MCP endpoint to Claude Code or Cursor, press Copy prompt on any component
+                page, or point any tool at llms.txt and the Markdown page per component.
               </span>
-              <a href="/llms.txt">Open llms.txt</a>
+              <Link href="/docs/coding-agents/">Set up your agent</Link>
             </li>
           </ul>
           <p className="home-why-evidence">
@@ -158,6 +161,7 @@ export default function Page() {
             no violations on the pages we audit.
           </p>
         </section>
+        <HomeFaq />
         <section className="home-start" aria-labelledby="home-start-title">
           <div>
             <h2 id="home-start-title">Add it to your app in three steps.</h2>

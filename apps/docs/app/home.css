@@ -708,3 +708,60 @@
     gap: 4px;
   }
 }
+
+/* FAQ: plain disclosures in a hairline list, the question as the summary. */
+.home-faq {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-faq-list {
+  display: grid;
+}
+.home-faq-list details {
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-faq-list details:first-child {
+  border-top: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-faq-list summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  cursor: pointer;
+  list-style: none;
+  font-size: 16px;
+  font-weight: 550;
+}
+.home-faq-list summary::-webkit-details-marker {
+  display: none;
+}
+.home-faq-list summary::after {
+  content: '+';
+  flex: none;
+  width: 20px;
+  color: var(--ai-muted);
+  font-weight: 400;
+  text-align: center;
+}
+.home-faq-list details[open] summary::after {
+  content: '–';
+}
+.home-faq-list summary:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.home-faq-list details > p {
+  margin: 0;
+  padding: 0 36px 18px 0;
+  max-width: 72ch;
+  color: var(--ai-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+.home-faq-list details > p a {
+  color: var(--ai-text);
+}

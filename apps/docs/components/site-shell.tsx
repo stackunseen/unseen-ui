@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { BrandMark } from './brand-mark';
 import { SitePalette, SitePaletteButton } from './site-palette';
+import { GitHubLink } from './github-link';
 import { AITheme, AppearanceToggle, IconsProvider, LinkProvider } from '@stackunseen/ui';
 import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
 import type { Appearance, ResolvedTheme } from '@stackunseen/ui/theme';
@@ -147,6 +148,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                     onValueChange={setAppearance}
                   />
                 </IconsProvider>
+                <GitHubLink />
                 <Link
                   className="web-header-cta"
                   href="/getting-started/"
@@ -199,6 +201,15 @@ export function SiteShell({ children }: { children: ReactNode }) {
                     {label}
                   </Link>
                 ))}
+                <Link prefetch={false} href="/docs/changelog/">
+                  Changelog
+                </Link>
+                <a href="https://github.com/stackunseen/unseen-ui" rel="noreferrer">
+                  GitHub
+                </a>
+                <Link prefetch={false} href="/legal/">
+                  Legal
+                </Link>
                 <a href="/llms.txt">llms.txt</a>
               </nav>
               <span className="web-footer-version">

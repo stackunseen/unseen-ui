@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import {
   ConfidenceNote,
+  ContextWindowMeter,
   FeedbackCapture,
   ProvenanceBadge,
   UsageMeter,
@@ -19,7 +20,7 @@ export function TrustSpecimen({
   presentation,
   onNotice,
 }: {
-  name: 'UsageMeter' | 'ProvenanceBadge' | 'ConfidenceNote' | 'FeedbackCapture';
+  name: 'UsageMeter' | 'ContextWindowMeter' | 'ProvenanceBadge' | 'ConfidenceNote' | 'FeedbackCapture';
   state: string;
   presentation?: string;
   onNotice: (text: string) => void;
@@ -58,6 +59,37 @@ export function TrustSpecimen({
   }, [pending, onNotice]);
 
   switch (name) {
+    case 'ContextWindowMeter': {
+      const variant = resolveVariant('ContextWindowMeter', presentation);
+      const segments = [
+        { id: 'system', label: 'System prompt', tokens: 2100 },
+        { id: 'memory', label: 'Memories', tokens: 900 },
+        { id: 'tools', label: 'Tool results', tokens: state === 'Near limit' ? 21000 : 8400 },
+        { id: 'messages', label: 'Messages', tokens: state === 'Near limit' ? 6200 : 3100 },
+      ];
+      if (state === 'Unknown')
+        return (
+          <ContextWindowMeter
+            variant={variant}
+            value={{ kind: 'unknown', reason: 'the provider did not report usage' }}
+          />
+        );
+      if (state === 'Estimated')
+        return (
+          <ContextWindowMeter
+            variant={variant}
+            value={{ kind: 'estimated', value: { segments, limit: 32000 }, basis: 'tokenizer estimate', at }}
+          />
+        );
+      if (state === 'No limit')
+        return <ContextWindowMeter variant={variant} value={{ kind: 'measured', value: { segments }, at }} />;
+      return (
+        <ContextWindowMeter
+          variant={variant}
+          value={{ kind: 'measured', value: { segments, limit: 32000 }, at }}
+        />
+      );
+    }
     case 'UsageMeter': {
       const variant = resolveVariant('UsageMeter', presentation);
       if (state === 'Cost')

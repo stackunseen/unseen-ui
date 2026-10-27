@@ -3,3 +3,49 @@
   display: grid;
   gap: var(--ai-gap, 12px);
 }
+
+/* ContextWindowMeter: segments drawn to scale against the limit. */
+.windowBar {
+  display: flex;
+  gap: 2px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--ai-surface-subtle, #f4f4f5);
+  overflow: hidden;
+}
+.windowSegment {
+  flex: 0 0 auto;
+  min-width: 2px;
+  background: var(--ai-primary, #18181b);
+  opacity: 0.9;
+}
+.windowSegment:nth-child(2n) {
+  opacity: 0.6;
+}
+.windowSegment:nth-child(3n) {
+  opacity: 0.4;
+}
+[data-tone='warning'] .windowSegment {
+  background: var(--ai-warning, #92400e);
+}
+[data-tone='danger'] .windowSegment {
+  background: var(--ai-danger, #991b1b);
+}
+.windowSegments {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.windowSegments > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.windowSegments dt {
+  color: var(--ai-muted, #52525b);
+}
+.windowSegments dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}

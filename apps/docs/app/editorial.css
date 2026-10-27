@@ -768,7 +768,8 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 16px 24px;
-  padding: 20px max(24px, calc((100vw - 1200px) / 2)) 28px;
+  /* The same inset as .web-container, so the three groups fit on one row at 1440. */
+  padding: 20px max(24px, calc((100vw - 1248px) / 2)) 24px;
   border-top-color: var(--site-line);
   font-size: 13px;
   color: var(--ai-muted);
@@ -861,4 +862,67 @@
   align-items: center;
   gap: 4px;
   color: var(--ai-text);
+}
+
+/* Header and footer on narrow screens: the repository link lives in the footer there, and the
+   compact footer keeps to two short rows. */
+@media (max-width: 760px) {
+  .web-github {
+    display: none;
+  }
+}
+.web-footer.web-footer-compact {
+  padding: 16px max(24px, calc((100vw - 1248px) / 2)) 20px;
+  gap: 12px 20px;
+}
+.web-footer.web-footer-compact > div > span {
+  display: none;
+}
+.web-footer.web-footer-compact nav {
+  gap: 8px 16px;
+}
+@media (max-width: 760px) {
+  .web-footer.web-footer-compact {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px 20px 12px;
+    gap: 6px 16px;
+  }
+  .web-footer.web-footer-compact nav {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 2px 12px;
+    font-size: 12px;
+  }
+  .web-footer.web-footer-compact .web-footer-version {
+    margin-left: auto;
+  }
+  .web-footer.web-footer-compact .web-footer-version > span:not(:first-child) {
+    display: none;
+  }
+}
+.web-footer.web-footer-compact .web-footer-version > span:nth-child(2) {
+  display: none;
+}
+@media (max-width: 760px) {
+  .web-footer.web-footer-compact nav {
+    line-height: 1.4;
+  }
+  .web-footer.web-footer-compact nav a[href='/llms.txt'] {
+    display: none;
+  }
+}
+/* The agent section's contract line wraps instead of widening the page on phones. */
+.detail-agent,
+.detail-agent-facts {
+  min-width: 0;
+  max-width: 100%;
+}
+.detail-agent-facts dd,
+.detail-agent-facts code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }

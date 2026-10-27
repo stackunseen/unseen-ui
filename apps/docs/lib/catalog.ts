@@ -64,6 +64,8 @@ export type GenericComponent =
   | 'MarketingFAQ'
   | 'MarketingContact'
   | 'MarketingArticle'
+  | 'MarketingReveal'
+  | 'MarketingNumber'
   | 'Button'
   | 'IconButton'
   | 'Modal'
@@ -530,6 +532,34 @@ export const catalog: CatalogEntry[] = [
     code: '<SubagentTree root={tree} onSelect={open} onLoadMore={load} />',
   },
   {
+    name: 'AgentSteering',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Steer agent', 'Mid-run instruction', 'Nudge'],
+    description:
+      'Queue a note for a running agent’s next step without stopping it, and see whether each note was applied.',
+    states: ['Default', 'Sending', 'Acknowledged', 'Failed', 'Finished run'],
+    contract:
+      'run: Run · notes: SteeringNote[] · onSubmit({ runId, runVersion, text }) · submission? · disabledReason? · maxLength?',
+    responsibility:
+      'A note carries the run version it was written against; your server applies, holds or rejects it and reports which. The draft stays until the server has the note, and a finished run takes none.',
+    keyboard: 'Tab to the field; Enter in the form sends; the button is disabled while sending.',
+    code: '<AgentSteering run={run} notes={notes} onSubmit={send} submission={submission} />',
+  },
+  {
+    name: 'CostLedger',
+    category: 'Execution',
+    importPath: '/conversation-flow',
+    aliases: ['Cost table', 'Spend', 'Token ledger', 'Budget'],
+    description:
+      'Where the money went, run by run, with measured and estimated costs kept apart and never added together.',
+    states: ['Default', 'Host total', 'Mixed currencies', 'Empty'],
+    contract: 'rows: CostLedgerRow[] · total? · period? · onOpen? · locale?',
+    responsibility:
+      'The footer adds only measured rows and counts the estimated and unknown ones, unless your billing supplies the total. Rows in two currencies get no sum.',
+    code: '<CostLedger rows={rows} period="Today" onOpen={openRun} />',
+  },
+  {
     name: 'ToolCall',
     category: 'Tools',
     description: 'A tool request with its input, result, failure and duration.',
@@ -657,6 +687,18 @@ export const catalog: CatalogEntry[] = [
     responsibility:
       'Measured, estimated and unknown numbers look different. Without a limit there’s no percentage, and an unknown amount shows the reason instead of zero.',
     code: '<UsageMeter label="Context" value={measured({ used: 12400, limit: 32000 })} />',
+  },
+  {
+    name: 'ContextWindowMeter',
+    category: 'State & status',
+    aliases: ['Context window', 'Token window', 'Context usage'],
+    description:
+      'How full the model’s context window is and what fills it, drawn to scale from the numbers your server supplies.',
+    states: ['Default', 'Near limit', 'No limit', 'Estimated', 'Unknown'],
+    contract: 'value: Measurement<{ segments, limit? }> · warnAt? · label? · locale?',
+    responsibility:
+      'Segments come from your server, not from counting in the browser. A percentage shows only with a limit; an estimate says what it was estimated from; an unknown window shows the reason.',
+    code: '<ContextWindowMeter variant="detail" value={measured({ segments, limit: 32000 })} />',
   },
   {
     name: 'ProvenanceBadge',
@@ -841,6 +883,19 @@ export const catalog: CatalogEntry[] = [
     contract: 'items · usage? · onRemove?',
     responsibility: 'Connected, selected and actually included are shown as different things.',
     code: '<ContextBar items={context} usage={usage} />',
+  },
+  {
+    name: 'MemoryPanel',
+    category: 'Context',
+    aliases: ['Memories', 'Saved memory', 'What it remembers'],
+    description:
+      'What the assistant remembers, with where each memory came from, how far it reaches and whether it was used just now.',
+    states: ['Default', 'Pending request', 'Rejected request', 'Filtered', 'Empty'],
+    contract:
+      'entries: MemoryEntry[] · query · onQueryChange · onRequest({ entryId, action }) · receipts? · locale?',
+    responsibility:
+      'Pin, unpin and forget ask your server; a row shows the pending receipt and changes only when the server’s entries change. Provenance is shown, never inferred.',
+    code: '<MemoryPanel entries={entries} query={query} onQueryChange={setQuery} onRequest={request} />',
   },
   {
     name: 'ArtifactPanel',

@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { Button, resolveVariant } from '@stackunseen/ui';
+import { Button, MemoryPanel, resolveVariant } from '@stackunseen/ui';
+import type { MemoryEntry } from '@stackunseen/ui';
 import {
   AgentLanes,
+  AgentSteering,
+  CostLedger,
   AttentionQueue,
   BackgroundStatus,
   RunBoard,
@@ -11,6 +14,7 @@ import {
   SubagentTree,
   emptyRunBoardFilter,
 } from '@stackunseen/ui/conversation-flow';
+import type { SubmissionState } from '@stackunseen/ui-core';
 import type {
   AgentLane,
   AttentionItem,
@@ -105,7 +109,10 @@ export function RunsSpecimen({
     | 'RunSummaryCard'
     | 'BackgroundStatus'
     | 'RunCompare'
-    | 'SubagentTree';
+    | 'SubagentTree'
+    | 'AgentSteering'
+    | 'CostLedger'
+    | 'MemoryPanel';
   state: string;
   presentation?: string;
   onNotice: (text: string) => void;
@@ -117,6 +124,116 @@ export function RunsSpecimen({
   const [receipts, setReceipts] = useState<CommandReceipt[]>([]);
   const [items, setItems] = useState(attention);
   const [laneTask, setLaneTask] = useState<string | null>(null);
+  const [steering, setSteering] = useState<SubmissionState>(
+    state === 'Sending'
+      ? 'submitting'
+      : state === 'Acknowledged'
+        ? 'acknowledged'
+        : state === 'Failed'
+          ? 'failed'
+          : 'idle',
+  );
+  const [memoryQuery, setMemoryQuery] = useState(state === 'Filtered' ? 'staging' : '');
+  const [memoryReceipts, setMemoryReceipts] = useState<Record<string, CommandReceipt>>(
+    state === 'Pending request'
+      ? { m2: { commandId: 'c1', status: 'submitting' } }
+      : state === 'Rejected request'
+        ? { m2: { commandId: 'c1', status: 'failed', message: 'a policy holds project memories' } }
+        : {},
+  );
+  if (name === 'AgentSteering')
+    return (
+      <AgentSteering
+        variant={resolveVariant('AgentSteering', presentation)}
+        run={{
+          id: 'r1',
+          attemptId: 'a1',
+          threadId: 't1',
+          version: 4,
+          lifecycle: state === 'Finished run' ? 'succeeded' : 'running',
+        }}
+        notes={[
+          {
+            id: 'n1',
+            text: 'Skip the archive step; the owner will do it by hand.',
+            at: '2026-10-15T10:04:00.000Z',
+            status: 'applied',
+            detail: 'Used by step 4',
+          },
+          {
+            id: 'n2',
+            text: 'Write the summary in British English.',
+            at: '2026-10-15T10:08:30.000Z',
+            status: 'queued',
+          },
+        ]}
+        submission={steering}
+        onSubmit={(request) => {
+          setSteering('submitting');
+          onNotice(`Note for run ${request.runId} version ${request.runVersion} sent; waiting for the server.`);
+          window.setTimeout(() => setSteering('acknowledged'), 900);
+        }}
+      />
+    );
+  if (name === 'CostLedger') {
+    const usd = (amount: number) => ({ amount, currency: 'USD' });
+    const rows = [
+      { id: 'a', title: 'Archive inactive accounts', agent: 'Ops agent', model: 'Opus 5.5', tokens: { kind: 'measured' as const, value: 6200 }, cost: { kind: 'measured' as const, value: usd(0.31) } },
+      { id: 'b', title: 'Index the handbook', agent: 'Docs agent', model: 'Sonnet 5.5', tokens: { kind: 'measured' as const, value: 14800 }, cost: { kind: 'estimated' as const, value: usd(0.42), basis: 'token price list' } },
+      { id: 'c', title: 'Send renewal reminders', agent: 'Ops agent', model: 'Haiku 5.5', cost: { kind: 'unknown' as const, reason: 'provider offline' } },
+      { id: 'd', title: 'Weekly digest', agent: 'Docs agent', model: 'Haiku 5.5', tokens: { kind: 'measured' as const, value: 2100 }, cost: { kind: 'measured' as const, value: state === 'Mixed currencies' ? { amount: 0.02, currency: 'EUR' } : usd(0.02) } },
+    ];
+    return (
+      <CostLedger
+        variant={resolveVariant('CostLedger', presentation)}
+        rows={state === 'Empty' ? [] : rows}
+        period="today"
+        total={state === 'Host total' ? { kind: 'measured', value: usd(0.81) } : undefined}
+        onOpen={(row) => onNotice(`Open run ${row.id}.`)}
+      />
+    );
+  }
+  if (name === 'MemoryPanel') {
+    const entries: MemoryEntry[] = [
+      {
+        id: 'm1',
+        text: 'Prefers replies in British English.',
+        scope: 'user',
+        source: { kind: 'conversation', label: 'Chat on 12 October', at: '2026-10-12T09:00:00.000Z' },
+        pinned: true,
+        usedInContext: true,
+      },
+      {
+        id: 'm2',
+        text: 'The staging database resets every night at 02:00.',
+        scope: 'project',
+        source: { kind: 'host', label: 'Workspace settings', at: '2026-10-20T09:00:00.000Z' },
+      },
+      {
+        id: 'm3',
+        text: 'Account reviews go to the owner before archival.',
+        scope: 'session',
+        source: { kind: 'person', label: 'Priya', at: '2026-10-15T10:01:00.000Z' },
+        usedInContext: true,
+      },
+    ];
+    return (
+      <MemoryPanel
+        variant={resolveVariant('MemoryPanel', presentation)}
+        entries={state === 'Empty' ? [] : entries}
+        query={memoryQuery}
+        onQueryChange={setMemoryQuery}
+        receipts={memoryReceipts}
+        onRequest={(request) => {
+          setMemoryReceipts((previous) => ({
+            ...previous,
+            [request.entryId]: { commandId: `${request.entryId}-${request.action}`, status: 'submitting' },
+          }));
+          onNotice(`${request.action} requested for ${request.entryId}; the server decides.`);
+        }}
+      />
+    );
+  }
   if (name === 'AgentLanes') {
     const lanes: AgentLane[] = [
       {

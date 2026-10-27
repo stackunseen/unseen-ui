@@ -204,6 +204,26 @@ export const marketingCatalog: CatalogEntry[] = [
     code: '<MarketingHero title="A shared home for your work" description={description} actions={actions}>\n  {productPreview}\n</MarketingHero>',
   }),
   marketing({
+    name: 'MarketingReveal',
+    category: 'Motion',
+    description: 'Fades and lifts a section into place the first time it scrolls into view; still in the HTML from the start.',
+    states: ['Default'],
+    contract: 'children · delayMs? · repeat?',
+    responsibility:
+      'Content is readable before the transition and shown at once under reduced motion or without IntersectionObserver. Stagger a row with delayMs.',
+    code: '<MarketingReveal delayMs={120}>\n  <MarketingFeatures … />\n</MarketingReveal>',
+  }),
+  marketing({
+    name: 'MarketingNumber',
+    category: 'Motion',
+    description: 'A figure that counts up when it scrolls into view, with the real value in the text the whole time.',
+    states: ['Default'],
+    contract: 'value · format? · durationMs?',
+    responsibility:
+      'Your site supplies the figure; the component never computes one. Screen readers get the final value; reduced motion skips the count.',
+    code: '<MarketingNumber value={1200} format={(n) => `${n.toLocaleString()} teams`} />',
+  }),
+  marketing({
     name: 'MarketingFeatures',
     category: 'Website sections',
     description: 'A concise feature list with optional icons and supporting content.',

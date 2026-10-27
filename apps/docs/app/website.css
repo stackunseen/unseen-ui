@@ -1839,3 +1839,27 @@
   color: var(--ai-muted);
   font-size: 13.5px;
 }
+
+/* The repository link in the header: icon plus the star count once GitHub has answered. */
+.web-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding-inline: 10px;
+  border-radius: 6px;
+  color: var(--ai-text);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+@media (hover: hover) {
+  .web-github:hover {
+    background: var(--ai-surface-subtle);
+  }
+}
+@media (max-width: 760px) {
+  .web-github span {
+    display: none;
+  }
+}

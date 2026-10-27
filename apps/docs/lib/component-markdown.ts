@@ -135,3 +135,19 @@ export function componentMarkdown({
     '',
   ].join('\n');
 }
+
+/**
+ * The page as a prompt for a coding agent: what to do, then the page itself. The same text
+ * works in Claude, Cursor, ChatGPT or v0, so one button covers them.
+ */
+export function componentPrompt(name: string, markdown: string) {
+  return [
+    `Add the ${name} component from Unseen UI (@stackunseen/ui, a React 19 component library) to this project.`,
+    '',
+    'Follow the documentation below exactly: install the package, import the stylesheet once, use the import path shown, pass the props as described, and keep the component controlled by my application state. Do not mark an action as done unless my server confirms it.',
+    '',
+    '---',
+    '',
+    markdown,
+  ].join('\n');
+}

@@ -31,6 +31,14 @@ const patterns = [
     ['components/coding-studio.tsx', 'components/coding-studio'],
   ],
   ['SaaS admin', '/templates/saas-admin/', ['components/saas-admin']],
+  ['Evaluations', '/templates/evals/', ['components/screens/evals-screen.tsx']],
+  ['Analytics', '/templates/analytics/', ['components/screens/analytics-screen.tsx']],
+  [
+    'Settings and billing',
+    '/templates/settings-billing/',
+    ['components/screens/settings-billing-screen.tsx'],
+  ],
+  ['App shells', '/templates/app-shells/', ['components/screens/app-shells-screen.tsx']],
   ['Marketing', '/templates/marketing/', ['components/marketing-template']],
 ];
 

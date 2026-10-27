@@ -310,3 +310,27 @@
     border: 1px solid CanvasText;
   }
 }
+/* Sample figures under the intent strip; each counts up once as it scrolls into view. */
+.figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  padding-block: 0 2.5rem;
+}
+.figures p {
+  margin: 0;
+  color: var(--ai-muted);
+  font-size: 0.875rem;
+}
+.figures [data-part='marketing-number'] {
+  display: block;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ai-text);
+}
+@media (max-width: 600px) {
+  .figures {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

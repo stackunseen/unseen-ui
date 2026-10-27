@@ -20,7 +20,7 @@ import { PropsTable } from './props-table';
 import { ComponentAnatomy } from './component-anatomy';
 import { InlineCode } from './inline-code';
 import { componentAnatomy } from '../lib/component-anatomy';
-import { componentMarkdown } from '../lib/component-markdown';
+import { componentMarkdown, componentPrompt } from '../lib/component-markdown';
 import { componentUsage } from '../lib/component-usage';
 import { tasksFor } from '../lib/tasks';
 import { guidanceFor } from '../lib/usage-guidance';
@@ -163,6 +163,7 @@ export function ComponentDetail({
     ['component-install', 'Installation'],
     ...(anatomy ? [['component-parts', 'Parts']] : []),
     ['component-props', 'Usage and props'],
+    ['component-agent', 'For your coding agent'],
     ['component-customization', 'Keyboard and customization'],
     ...(tasks.length > 0 || siblings.length > 0 ? [['component-related', 'Works with']] : []),
   ];
@@ -582,6 +583,51 @@ export function ComponentDetail({
             )}
           </div>
           <PropsTable slug={componentSlug(entry.name)} />
+        </section>
+        <section
+          id="component-agent"
+          className="api-section component-anchor detail-agent"
+          aria-labelledby="component-agent-title"
+        >
+          <h2 id="component-agent-title">For your coding agent</h2>
+          <p>
+            Give the agent this page instead of a screenshot. The prompt wraps the page with the
+            install and import lines and the rule that your server, not a click, completes an
+            action.
+          </p>
+          <dl className="detail-agent-facts">
+            <div>
+              <dt>Contract</dt>
+              <dd>
+                <InlineCode text={entry.contract} />
+              </dd>
+            </div>
+            <div>
+              <dt>Keeps honest</dt>
+              <dd>{entry.responsibility}</dd>
+            </div>
+            <div>
+              <dt>MCP</dt>
+              <dd>
+                <code>read_component &quot;{entry.name}&quot;</code> on the{' '}
+                <Link prefetch={false} href="/docs/coding-agents/">
+                  docs endpoint
+                </Link>
+              </dd>
+            </div>
+          </dl>
+          <div className="detail-agent-actions">
+            <CopyButton
+              size="sm"
+              variant="outline"
+              value={componentPrompt(entry.name, pageMarkdown)}
+              label="Copy prompt"
+            />
+            <CopyButton size="sm" variant="ghost" value={pageMarkdown} label="Copy page as Markdown" />
+            <Button size="sm" variant="ghost" href={`/llms/${componentSlug(entry.name)}.md`}>
+              Open the Markdown file
+            </Button>
+          </div>
         </section>
         <section
           id="component-customization"

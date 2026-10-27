@@ -43,6 +43,10 @@ const pages = {
   'coding-studio': '/patterns/coding-studio/',
   'workspace-integrations': '/patterns/workspace-integrations/',
   'saas-admin': '/templates/saas-admin/',
+  evals: '/templates/evals/',
+  analytics: '/templates/analytics/',
+  'settings-billing': '/templates/settings-billing/',
+  'app-shells': '/templates/app-shells/',
   marketing: '/templates/marketing/',
   relay: '/templates/relay/',
 };

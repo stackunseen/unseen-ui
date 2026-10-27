@@ -23,3 +23,25 @@
 .marketing :global(.uim-footer) {
   padding-block: 32px;
 }
+.motionRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.motionRow > p {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ai-muted);
+}
+.motionRow > p > [data-part='marketing-number'] {
+  display: block;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ai-text);
+}
+@media (max-width: 600px) {
+  .motionRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

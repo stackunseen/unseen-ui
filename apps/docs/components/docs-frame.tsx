@@ -11,6 +11,7 @@ export const docsLinks: readonly FrameLink[] = [
   ['Design tokens', '/docs/tokens/'],
   ['Connect to your app', '/docs/integration/'],
   ['Migrate from AI Elements', '/docs/migrate-from-ai-elements/'],
+  ['Use it with a coding agent', '/docs/coding-agents/'],
   ['Changelog', '/docs/changelog/'],
 ];
 

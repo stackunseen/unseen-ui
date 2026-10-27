@@ -9,7 +9,9 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingHero,
+  MarketingNumber,
   MarketingPricing,
+  MarketingReveal,
 } from '@stackunseen/ui/marketing';
 import '@stackunseen/ui/marketing.css';
 import s from './optional-specimen.module.css';
@@ -59,6 +61,36 @@ export function MarketingSpecimen({ name, state = 'Default' }: { name: string; s
           <p>Project notes, team decisions and a clear next step.</p>
         </Card>
       </MarketingHero>
+    );
+  else if (name === 'MarketingReveal')
+    content = (
+      <div className={s.motionRow}>
+        {['Project notes', 'Shared decisions', 'The next step'].map((title, index) => (
+          <MarketingReveal key={title} delayMs={index * 120}>
+            <Card>
+              <Card.Title as="h3">{title}</Card.Title>
+              <p>Each card eases in as it scrolls into view; the text is there from the start.</p>
+            </Card>
+          </MarketingReveal>
+        ))}
+      </div>
+    );
+  else if (name === 'MarketingNumber')
+    content = (
+      <div className={s.motionRow}>
+        <p>
+          <MarketingNumber value={1200} format={(count) => `${count.toLocaleString('en-US')}`} />
+          <span> teams</span>
+        </p>
+        <p>
+          <MarketingNumber value={48000} format={(count) => `${Math.round(count / 1000)}k`} />
+          <span> notes kept</span>
+        </p>
+        <p>
+          <MarketingNumber value={999} format={(count) => `${(count / 10).toFixed(1)}%`} />
+          <span> uptime, sample figure</span>
+        </p>
+      </div>
     );
   else if (name === 'MarketingFeatures')
     content = (

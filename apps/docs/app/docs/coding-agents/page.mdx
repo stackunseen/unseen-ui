@@ -1,0 +1,43 @@
+# Use it with a coding agent
+
+Everything on this site is also published in forms an agent can read. Pick the one your tool supports; they all come from the same source, so they never disagree with the pages.
+
+## The MCP endpoint
+
+The site runs a small MCP server at `https://unseenui.com/api/mcp` (Streamable HTTP, no session, no keys). It offers four tools: `search`, `list_components`, `read_component` and `read_overview`.
+
+Claude Code:
+
+```sh
+claude mcp add --transport http unseen-ui https://unseenui.com/api/mcp
+```
+
+Cursor, Windsurf and most editors take the same URL in their MCP settings file:
+
+```json
+{
+  "mcpServers": {
+    "unseen-ui": { "url": "https://unseenui.com/api/mcp" }
+  }
+}
+```
+
+Then ask the agent to add a component. It will search the catalog, read the component's page with every prop, and follow the install and import lines on it.
+
+## Copy prompt
+
+Every component page has a **Copy prompt** button beside **Copy page**. It copies the page as Markdown with a short instruction on top: install the package, import the stylesheet once, keep the component controlled by your state, and never mark an action as done until your server confirms it. Paste it into Claude, ChatGPT, Cursor or v0.
+
+## Files you can point at
+
+- [`/llms.txt`](/llms.txt): what the library is, how to install it, and one line per component with its page.
+- [`/llms-full.txt`](/llms-full.txt): every component with its contract, responsibility and example. Long; use it when the tool can take a large file.
+- `/llms/<component>.md`: one component as Markdown, for example [`/llms/approval-card.md`](/llms/approval-card.md). The **Markdown** button on each page opens it.
+- `/search-index.json`: the index the command palette and the MCP server search.
+- `manifest.json` inside the npm package: every export with its props and the CSS variables it reads, generated from the type declarations.
+
+## What the agent should know
+
+- The package is `@stackunseen/ui`; the stylesheet is `@stackunseen/ui/styles.css`, imported once. Some components live on a subpath such as `@stackunseen/ui/conversation-flow` with its own CSS; the component page says which.
+- Components are controlled: they show the value you pass and call back when a person acts. They never fetch, and they never complete an action on their own.
+- Approval decisions carry the proposal version. Your server acknowledges them; the card shows the result only after that.

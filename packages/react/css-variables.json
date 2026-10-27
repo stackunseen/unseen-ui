@@ -276,6 +276,10 @@
       "group": "component",
       "purpose": "Scrollbar room of WorkspaceShell panes; auto when their content scrolls itself."
     },
+    "--ai-waterfall-figures": {
+      "group": "component",
+      "purpose": "Width of the figures column (duration, tokens, cost) in the ExecutionTimeline waterfall; 300px by default."
+    },
     "--ai-sidecar-width": { "group": "component", "purpose": "Width of the Sidecar panel." },
     "--ai-sidecar-inset": {
       "group": "component",

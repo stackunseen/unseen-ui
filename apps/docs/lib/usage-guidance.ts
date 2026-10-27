@@ -497,6 +497,17 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'All runs including those that need nothing.',
     'RunBoard',
   ),
+  AgentSteering: g(
+    'Changing what a running agent does next without cancelling it.',
+    'Starting a new run or answering a question the agent asked.',
+    'PromptInput',
+    'ClarificationRequest',
+  ),
+  CostLedger: g(
+    'Cost per run or step over a period, with measured and estimated amounts kept apart.',
+    'One number for the current request.',
+    'UsageMeter',
+  ),
   RunSummaryCard: g(
     'What a run did, read afterwards, with what it changed.',
     'Live progress.',
@@ -594,6 +605,12 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Source details.',
     'SourceCard',
   ),
+  ContextWindowMeter: g(
+    'How full the context window is and what fills it.',
+    'A single cost or token number.',
+    'UsageMeter',
+    'ContextInspector',
+  ),
   ConfidenceNote: g(
     'A calibrated confidence score with its scope, method and date.',
     'Usage numbers.',
@@ -634,6 +651,21 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Reviewing and correcting what the assistant remembers.',
     'Request context.',
     'ContextInspector',
+  ),
+  MarketingReveal: g(
+    'Easing a marketing section into view as the page scrolls.',
+    'Application screens, where motion delays reading.',
+    'MarketingFeatures',
+  ),
+  MarketingNumber: g(
+    'A headline figure on a marketing page that counts up once.',
+    'Live or changing numbers in an application.',
+    'Stat',
+  ),
+  MemoryPanel: g(
+    'Browsing, pinning and forgetting memories with their provenance.',
+    'Correcting the text of one memory.',
+    'MemoryControls',
   ),
   ModelSelector: g(
     'Picking the model for the next request.',

@@ -52,6 +52,14 @@ export { ThreadList, groupThreadsByDate } from './components/thread-list/thread-
 export { BranchSwitcher } from './components/branch-switcher/branch-switcher.js';
 export { MessageQueue } from './components/message-queue/message-queue.js';
 export { MemoryControls } from './components/memory-controls/memory-controls.js';
+export { MemoryPanel } from './components/memory-panel/memory-panel.js';
+export type {
+  MemoryPanelProps,
+  MemoryEntry,
+  MemoryScope,
+  MemoryAction,
+  MemoryRequest,
+} from './components/memory-panel/memory-panel.js';
 export type { ThreadListProps, ThreadDateGroup } from './components/thread-list/thread-list.js';
 export type { ThreadSummary, ConversationBranch, QueuedMessage } from '@stackunseen/ui-core';
 export type { BranchSwitcherProps } from './components/branch-switcher/branch-switcher.js';
@@ -495,6 +503,12 @@ export type {
 } from './components/input-group/input-group.js';
 export type { DetailLevel, DetailProps } from './shared/variants.js';
 export { UsageMeter } from './components/trust/usage-meter.js';
+export { ContextWindowMeter } from './components/trust/context-window-meter.js';
+export type {
+  ContextWindowMeterProps,
+  ContextWindow,
+  ContextSegment,
+} from './components/trust/context-window-meter.js';
 export type { UsageMeterProps, Usage } from './components/trust/usage-meter.js';
 export { ProvenanceBadge } from './components/trust/provenance-badge.js';
 export type {

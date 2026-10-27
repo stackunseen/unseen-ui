@@ -492,6 +492,7 @@ export function Specimen({
         );
       break;
     case 'UsageMeter':
+    case 'ContextWindowMeter':
     case 'ProvenanceBadge':
     case 'ConfidenceNote':
     case 'FeedbackCapture':
@@ -525,6 +526,9 @@ export function Specimen({
     case 'BackgroundStatus':
     case 'RunCompare':
     case 'SubagentTree':
+    case 'AgentSteering':
+    case 'CostLedger':
+    case 'MemoryPanel':
       preview = (
         <RunsSpecimen
           key={`${name}:${variant}`}

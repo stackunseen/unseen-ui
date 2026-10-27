@@ -45,6 +45,15 @@ export type { CommandReceipt, Measurement, HeartbeatState } from '@stackunseen/u
 export { RunCompare } from './components/runs/run-compare.js';
 export type { RunCompareProps, RunCompareSide } from './components/runs/run-compare.js';
 export { SubagentTree, branchCost } from './components/runs/subagent-tree.js';
+export { AgentSteering } from './components/runs/agent-steering.js';
+export type {
+  AgentSteeringProps,
+  SteeringNote,
+  SteeringNoteStatus,
+  SteeringRequest,
+} from './components/runs/agent-steering.js';
+export { CostLedger } from './components/runs/cost-ledger.js';
+export type { CostLedgerProps, CostLedgerRow } from './components/runs/cost-ledger.js';
 export type { SubagentTreeProps, RunNode } from './components/runs/subagent-tree.js';
 export { ScopeGrantList } from './components/governance/scope-grant-list.js';
 export type {

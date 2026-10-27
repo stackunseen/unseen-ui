@@ -783,3 +783,79 @@ span.treeToggle {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* AgentSteering: the notes already sent, then a composer for the next one. */
+.steering {
+  display: grid;
+  gap: var(--ai-gap, 12px);
+  min-width: 0;
+}
+.steeringNotes {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.steeringNote {
+  display: grid;
+  gap: 4px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--ai-border, #e4e4e7);
+}
+.steeringNote:last-child {
+  border-bottom: 0;
+}
+.steeringNote[data-status='rejected'] .steeringText {
+  color: var(--ai-muted, #52525b);
+  text-decoration: line-through;
+}
+.steeringText {
+  margin: 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.steeringForm {
+  display: grid;
+  gap: 8px;
+}
+
+/* CostLedger: a table of runs with the measured total in the footer. */
+.ledger {
+  min-width: 0;
+  overflow-x: auto;
+}
+.ledger tfoot th,
+.ledger tfoot td {
+  border-top: 1px solid var(--ai-border, #e4e4e7);
+  font-weight: 500;
+}
+.ledgerNumber {
+  text-align: end !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ledgerList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ledgerRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ai-border, #e4e4e7);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.ledgerRow:last-child {
+  border-bottom: 0;
+}
+.ledgerTitle {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ledgerFooter {
+  margin: 8px 0 0;
+  font-size: var(--ai-font-size-meta, 13px);
+}

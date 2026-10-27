@@ -68,7 +68,11 @@ export function navigationGroup(entry: CatalogEntry): string {
     return group;
   }
   if (section === 'marketing')
-    return entry.category === 'Site navigation' ? 'Site navigation' : 'Website sections';
+    return entry.category === 'Site navigation'
+      ? 'Site navigation'
+      : entry.category === 'Motion'
+        ? 'Motion'
+        : 'Website sections';
   return catalogGroup(entry);
 }
 export function sectionCatalog(section: GallerySection) {

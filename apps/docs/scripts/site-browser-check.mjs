@@ -111,9 +111,9 @@ async function journeys(page, { origin, output }, audit) {
     );
     const templates = page.locator('.home-templates .pattern-templates a');
     assert(
-      (await templates.count()) === 6 &&
+      (await templates.count()) === 10 &&
         (await templates.first().getAttribute('href')) === '/patterns/agent-workbench/',
-      'Home lists the six templates',
+      'Home lists the ten templates',
     );
     const tasks = page.locator('.home-tasks li a');
     assert(
@@ -182,7 +182,9 @@ async function journeys(page, { origin, output }, audit) {
     );
     const listState = {
       url: page.url(),
-      rows: await page.locator('.directory-group[data-view="list"] li').count(),
+      rows: await page
+        .locator('.directory-collection:not(.directory-featured) .directory-group[data-view="list"] li')
+        .count(),
       thumbs: await page.locator('.directory-thumb').count(),
       total,
     };
@@ -221,8 +223,11 @@ async function journeys(page, { origin, output }, audit) {
   });
   await scenario('Theme surfaces and recovery', async () => {
     await page.goto(`${origin}/customize/`);
-    const mode = page.getByRole('button', { name: 'Switch to dark mode' });
-    if (await mode.count()) await mode.click();
+    // The header switch is a segmented group named "Color mode" with Light and Dark options.
+    await page
+      .locator('[data-part="appearance-toggle"] :is(button, [role="radio"])', { hasText: /^Dark$/ })
+      .first()
+      .click();
     await page.getByRole('button', { name: 'Backgrounds and text', exact: true }).click();
     const color = page.getByLabel('dark page background', { exact: true });
     await color.fill('#121214');
@@ -259,7 +264,7 @@ async function journeys(page, { origin, output }, audit) {
       'Breadth tabs sit within the first two mobile screens',
     );
     assert(
-      (await page.locator('.home-templates .pattern-templates a').count()) === 6,
+      (await page.locator('.home-templates .pattern-templates a').count()) === 10,
       'Six template links render on the phone layout',
     );
   });
@@ -366,7 +371,8 @@ async function journeys(page, { origin, output }, audit) {
           if (!typography.includes('plexSans'))
             throw new Error('The site does not use its self-hosted IBM Plex Sans family');
           const footer = await page.locator('.web-footer').boundingBox();
-          if (route !== '/' && footer.height > (width === 320 ? 112 : 80))
+          // Seven footer links wrap to three rows on a 320px screen; one row of them at 1440.
+          if (route !== '/' && footer.height > (width === 320 ? 128 : 80))
             throw new Error('Internal footer is too tall');
           if (
             await page.getByRole('heading', { name: 'What your app handles', exact: true }).count()
