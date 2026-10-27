@@ -1,10 +1,8 @@
 import Link from 'next/link';
-import { HomeShowcase } from '../components/home-showcase';
-import { HomeAppExample } from '../components/home-app-example';
 import { CopyButton } from '@stackunseen/ui';
-import { HomeHeroDemo } from '../components/home-hero-demo';
+import { HomeBreadth } from '../components/home-breadth';
 import { HomeConnect } from '../components/home-connect';
-import { HomeShips } from '../components/home-ships';
+import { TemplateCards, templateListings } from '../components/template-cards';
 import { componentTasks } from '../lib/tasks';
 import { LegacyGalleryRedirect } from '../components/legacy-gallery-redirect';
 import { releaseCatalog } from '../lib/first-release';
@@ -34,10 +32,12 @@ export default function Page() {
           <div className="home-intro">
             <p className="home-kicker">// ready-made UI for AI agent apps</p>
             <h1 id="home-title">Building an AI agent? These are the screens it needs.</h1>
+          </div>
+          <div className="home-intro-aside">
             <p className="home-intro-description">
-              {releaseCatalog.length} components for chat, tool calls, approvals, agent progress and
-              forms. Install them from npm, style them to match your brand and connect them to your
-              own server. People only see an action as done once your server confirms it.
+              {releaseCatalog.length} React components for chat, tool calls, approvals, agent runs,
+              sources and forms, plus {templateListings.length} whole applications to start from.
+              Nothing shows as done until your server confirms it.
             </p>
             <div className="home-intro-actions">
               <Link className="web-button primary" href="/components/">
@@ -65,7 +65,16 @@ export default function Page() {
               </span>
             </div>
           </div>
-          <HomeHeroDemo />
+        </section>
+        <HomeBreadth />
+        <section className="home-templates" aria-labelledby="home-templates-title">
+          <div className="home-section-heading">
+            <div>
+              <h2 id="home-templates-title">Whole applications, running with sample data.</h2>
+            </div>
+            <Link href="/templates/">All templates</Link>
+          </div>
+          <TemplateCards />
         </section>
         <dl className="home-facts" aria-label="At a glance">
           <div>
@@ -85,16 +94,6 @@ export default function Page() {
             <dd>keyboard and screen reader, documented</dd>
           </div>
         </dl>
-        <section className="home-problem" aria-labelledby="home-problem-title">
-          <p className="home-kicker" id="home-problem-title">
-            The problem
-          </p>
-          <p>
-            An AI agent calls tools, asks people for permission, and sometimes fails. Most UI kits
-            only give you buttons and tables. These components cover the rest.
-          </p>
-        </section>
-        <HomeShips />
         <HomeConnect />
         <section className="home-tasks" aria-labelledby="home-tasks-title">
           <div className="home-section-heading">
@@ -114,7 +113,6 @@ export default function Page() {
             ))}
           </ul>
         </section>
-        <HomeShowcase />
         <section className="home-why" aria-labelledby="home-why-title">
           <div className="home-section-heading">
             <div>
@@ -160,7 +158,6 @@ export default function Page() {
             no violations on the pages we audit.
           </p>
         </section>
-        <HomeAppExample />
         <section className="home-start" aria-labelledby="home-start-title">
           <div>
             <h2 id="home-start-title">Add it to your app in three steps.</h2>

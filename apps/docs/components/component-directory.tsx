@@ -13,6 +13,7 @@ import {
 import type { ComponentSection } from '../lib/component-collections';
 import { directorySearch, groupAnchor, readDirectoryLocation } from '../lib/directory-location';
 import { componentTasks } from '../lib/tasks';
+import { agentOperationsCollection } from '../lib/agent-operations';
 import { matchesQuery } from '../lib/search';
 export interface DirectoryEntry {
   name: string;
@@ -157,6 +158,36 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
           </button>
         </div>
       </div>
+      {section === 'all' && !query && (
+        <section
+          className="directory-collection directory-featured"
+          id={agentOperationsCollection.id}
+          aria-labelledby="agent-operations-title"
+        >
+          <h2 id="agent-operations-title">{agentOperationsCollection.title}</h2>
+          <p className="directory-collection-description">
+            {agentOperationsCollection.description}
+          </p>
+          <p className="directory-featured-links">
+            <Link href={agentOperationsCollection.pattern.href}>
+              {agentOperationsCollection.pattern.label}
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+            <Link href={agentOperationsCollection.task.href}>
+              {agentOperationsCollection.task.label}
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+          </p>
+          <div className="directory-group" data-view={view}>
+            <EntryList
+              view={view}
+              entries={agentOperationsCollection.components
+                .map((name) => entries.find((entry) => entry.name === name))
+                .filter((entry): entry is DirectoryEntry => Boolean(entry))}
+            />
+          </div>
+        </section>
+      )}
       {componentSections.map((collection) => {
         const items = filtered.filter((entry) => entry.section === collection);
         if (!items.length) return null;
@@ -181,49 +212,7 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
                   <h3>
                     {group} <span>{members.length}</span>
                   </h3>
-                  <ul>
-                    {members.map((entry) => (
-                      <li key={entry.name}>
-                        <Link prefetch={false} href={entry.href}>
-                          {view === 'gallery' && (
-                            <span className="directory-thumb" aria-hidden="true">
-                              {entry.preview ? (
-                                <>
-                                  <img
-                                    className="directory-thumb-light"
-                                    src={`${entry.preview}-light.webp`}
-                                    alt=""
-                                    width={480}
-                                    height={300}
-                                    loading="lazy"
-                                    decoding="async"
-                                  />
-                                  <img
-                                    className="directory-thumb-dark"
-                                    src={`${entry.preview}-dark.webp`}
-                                    alt=""
-                                    width={480}
-                                    height={300}
-                                    loading="lazy"
-                                    decoding="async"
-                                  />
-                                </>
-                              ) : (
-                                <span className="directory-thumb-name">{entry.name}</span>
-                              )}
-                            </span>
-                          )}
-                          <span className="directory-text">
-                            <strong>
-                              {entry.name}
-                              <ArrowUpRight size={16} aria-hidden="true" />
-                            </strong>
-                            <span>{entry.description}</span>
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                  <EntryList view={view} entries={members} />
                 </div>
               );
             })}
@@ -246,6 +235,54 @@ export function ComponentDirectory({ entries }: { entries: DirectoryEntry[] }) {
         </div>
       )}
     </>
+  );
+}
+/** The tiles or rows of one group; the featured set and every category share them. */
+function EntryList({ view, entries }: { view: string; entries: DirectoryEntry[] }) {
+  return (
+    <ul>
+      {entries.map((entry) => (
+        <li key={entry.name}>
+          <Link prefetch={false} href={entry.href}>
+            {view === 'gallery' && (
+              <span className="directory-thumb" aria-hidden="true">
+                {entry.preview ? (
+                  <>
+                    <img
+                      className="directory-thumb-light"
+                      src={`${entry.preview}-light.webp`}
+                      alt=""
+                      width={480}
+                      height={300}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <img
+                      className="directory-thumb-dark"
+                      src={`${entry.preview}-dark.webp`}
+                      alt=""
+                      width={480}
+                      height={300}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </>
+                ) : (
+                  <span className="directory-thumb-name">{entry.name}</span>
+                )}
+              </span>
+            )}
+            <span className="directory-text">
+              <strong>
+                {entry.name}
+                <ArrowUpRight size={16} aria-hidden="true" />
+              </strong>
+              <span>{entry.description}</span>
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 function subscribe(listener: () => void) {

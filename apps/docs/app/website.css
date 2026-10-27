@@ -358,13 +358,11 @@
   opacity: 1;
 }
 @media (hover: hover) {
-  .home-search:hover,
   .directory-search:hover,
   .explorer-sidebar .search-field:hover {
     border-color: var(--ai-text);
   }
 }
-.home-search:focus-within,
 .directory-search:focus-within,
 .explorer-sidebar .search-field:focus-within {
   outline: 2px solid var(--ai-focus);
@@ -407,7 +405,6 @@
 }
 @media (hover: hover) {
   .docs-links a:hover strong,
-  .home-finder-heading a:hover,
   .web-footer nav a:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
@@ -1579,10 +1576,6 @@
 }
 .theme-export {
   scroll-margin-top: 100px;
-}
-.home-template-figure .home-template-note {
-  font-size: 13px;
-  color: var(--ai-muted);
 }
 
 /* Start by task on the catalog index */

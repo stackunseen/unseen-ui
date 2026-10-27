@@ -827,21 +827,12 @@
   border-radius: var(--site-radius);
   background: var(--site-panel);
 }
-.home-template-figure > a {
-  border-radius: var(--site-radius);
-  border-color: var(--site-line);
-  background: var(--site-panel);
-}
-.home-hero-demo [data-part='chat'] {
-  box-shadow: none;
-}
+
 .home-connect-code,
 .code-panel {
   border-radius: var(--site-radius);
 }
 .home-facts,
-.home-ships .home-section-heading,
-.home-ships-rows > li,
 .home-tasks,
 .home-start {
   border-color: var(--site-line);
@@ -850,4 +841,24 @@
 /* 404 */
 .missing-page .web-eyebrow::before {
   content: '';
+}
+
+/* The featured collection on the catalog index: the same block as a category, with its two
+   links in a row under the description. */
+.directory-featured {
+  border-top: 0;
+  padding-top: 0;
+}
+.directory-featured-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: -4px 0 20px;
+  font-size: 14px;
+}
+.directory-featured-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ai-text);
 }

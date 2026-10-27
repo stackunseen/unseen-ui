@@ -64,6 +64,13 @@ async function journeys(page, { origin, output }, audit) {
       await page.locator('#main-content').evaluate((node) => node === document.activeElement),
       'Skip link reaches main content',
     );
+    const tabs = page.getByRole('tablist', { name: 'Component examples by job' });
+    assert(
+      (await tabs.getByRole('tab').count()) === 5 &&
+        (await page.locator('.home-tile').count()) === 2,
+      'Home opens on the breadth strip with the agent runs tab',
+    );
+    await tabs.getByRole('tab', { name: 'Chat' }).click();
     const composer = page.locator('.home-hero-demo textarea');
     await composer.fill('Summarize');
     await composer.press('Enter');
@@ -78,11 +85,6 @@ async function journeys(page, { origin, output }, audit) {
     assert(
       await page.locator('.home-hero-demo').getByText('Summarize', { exact: true }).isVisible(),
       'Hero composer sends to the simulated chat and discloses that no model answered',
-    );
-    await page.getByLabel('Workspace name', { exact: true }).fill('Review Sandbox');
-    assert(
-      (await page.getByLabel('Workspace name', { exact: true }).inputValue()) === 'Review Sandbox',
-      'Showcase form field is controlled locally',
     );
     const hero = page.locator('.home-hero-demo');
     assert(
@@ -100,6 +102,18 @@ async function journeys(page, { origin, output }, audit) {
     assert(
       await hero.getByText('Denied', { exact: true }).isVisible(),
       'Hero rejection settles the simulated tool as denied',
+    );
+    await tabs.getByRole('tab', { name: 'Forms' }).click();
+    await page.getByLabel('Workspace name', { exact: true }).fill('Review Sandbox');
+    assert(
+      (await page.getByLabel('Workspace name', { exact: true }).inputValue()) === 'Review Sandbox',
+      'Forms tile is controlled locally',
+    );
+    const templates = page.locator('.home-templates .pattern-templates a');
+    assert(
+      (await templates.count()) === 6 &&
+        (await templates.first().getAttribute('href')) === '/patterns/agent-workbench/',
+      'Home lists the six templates',
     );
     const tasks = page.locator('.home-tasks li a');
     assert(
@@ -119,29 +133,6 @@ async function journeys(page, { origin, output }, audit) {
         'true',
       'Validated theme preference survives refresh',
     );
-    const finder = page.getByRole('searchbox', { name: 'Find a component in the library' });
-    await finder.fill('approval');
-    assert(
-      await page.locator('.home-found-components a[href="/components/approval-card/"]').isVisible(),
-      'Homepage search discovers AI components',
-    );
-    await finder.fill('no-match-123');
-    assert(
-      await page.getByText('No match yet. Try “forms” or “prompt”.', { exact: true }).isVisible(),
-      'Homepage search explains its empty state',
-    );
-    await finder.fill('');
-    await page.getByRole('button', { name: 'UI · 56', exact: true }).click();
-    assert(
-      await page.locator('.home-found-components a[href="/components/input/"]').isVisible(),
-      'Homepage collection filters show relevant starter components',
-    );
-    assert(
-      await page
-        .getByRole('link', { name: 'Open the SaaS admin example', exact: true })
-        .isVisible(),
-      'Homepage exposes the working application link',
-    );
   });
   await scenario('Catalog discovery', async () => {
     await page.goto(`${origin}/components/#component-search`);
@@ -154,13 +145,14 @@ async function journeys(page, { origin, output }, audit) {
       Number.parseInt((await page.locator('.directory-count').innerText()).trim(), 10);
     const total = await announced();
     assert(
-      total > 100 && (await page.locator('.directory-group li').count()) === total,
+      total > 100 &&
+        (await page.locator('.directory-collection:not(.directory-featured) .directory-group li').count()) === total,
       'All announced entries are rendered in the catalog',
     );
     await page.getByRole('button', { name: /^AI components/ }).click();
     assert(
       (await announced()) < total &&
-        (await page.locator('.directory-group li').count()) === (await announced()),
+        (await page.locator('.directory-collection:not(.directory-featured) .directory-group li').count()) === (await announced()),
       'AI filter narrows to its announced count',
     );
     await search.fill('does-not-exist-xyz');
@@ -170,10 +162,12 @@ async function journeys(page, { origin, output }, audit) {
     );
     await page.getByRole('button', { name: 'Clear search' }).click();
     assert(
-      (await page.locator('.directory-group li').count()) === total,
+      (await page.locator('.directory-collection:not(.directory-featured) .directory-group li').count()) === total,
       'Clear search restores all entries',
     );
-    const thumbs = page.locator('.directory-thumb img.directory-thumb-light');
+    const thumbs = page.locator(
+      '.directory-collection:not(.directory-featured) .directory-thumb img.directory-thumb-light',
+    );
     await thumbs.first().scrollIntoViewIfNeeded();
     assert(
       (await thumbs.count()) === total &&
@@ -258,10 +252,15 @@ async function journeys(page, { origin, output }, audit) {
   await scenario('Mobile discovery', async () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(origin);
-    const bounds = await page.locator('.home-found-components').boundingBox();
+    const tabs = page.getByRole('tablist', { name: 'Component examples by job' });
+    const bounds = await tabs.boundingBox();
     assert(
-      bounds.y + bounds.height < 844,
-      'Four homepage component links fit in the first mobile viewport',
+      bounds && bounds.y < 844 * 2 && (await tabs.getByRole('tab').count()) === 5,
+      'Breadth tabs sit within the first two mobile screens',
+    );
+    assert(
+      (await page.locator('.home-templates .pattern-templates a').count()) === 6,
+      'Six template links render on the phone layout',
     );
   });
   await scenario('Mobile menu keyboard', async () => {

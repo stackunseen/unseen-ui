@@ -10,8 +10,9 @@ import {
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { BrandMark } from './brand-mark';
+import { SitePalette, SitePaletteButton } from './site-palette';
 import { AITheme, AppearanceToggle, IconsProvider, LinkProvider } from '@stackunseen/ui';
 import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
 import type { Appearance, ResolvedTheme } from '@stackunseen/ui/theme';
@@ -135,13 +136,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 ))}
               </nav>
               <div className="web-header-actions">
-                <a
-                  className="web-icon"
-                  href="/components/#component-search"
-                  aria-label="Find a component"
-                >
-                  <Search size={16} aria-hidden="true" />
-                </a>
+                <SitePaletteButton />
                 {/* Two choices, as most sites offer; System stays the start until one is picked. */}
                 <IconsProvider icons={{ sun: Sun, moon: Moon }}>
                   <AppearanceToggle
@@ -185,6 +180,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </div>
             </header>
             {children}
+            <SitePalette />
             <footer className={`web-footer${path === '/' ? '' : ' web-footer-compact'}`}>
               <div>
                 <Link

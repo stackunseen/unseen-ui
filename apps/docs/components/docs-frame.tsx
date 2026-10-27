@@ -4,7 +4,7 @@ import { NavResizer } from './nav-resizer';
 import { GuideOutline, GuidePager } from './guide-extras';
 
 type FrameLink = readonly [label: string, href: string];
-const docsLinks: readonly FrameLink[] = [
+export const docsLinks: readonly FrameLink[] = [
   ['Overview', '/docs/'],
   ['Getting started', '/getting-started/'],
   ['Themes and icons', '/docs/customization/'],

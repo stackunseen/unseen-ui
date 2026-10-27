@@ -13,6 +13,7 @@ import { componentHref } from '../../lib/site-paths';
 import { componentPreview } from '../../lib/component-previews';
 import { releaseSections, sectionGroups, sectionLabels } from '../../lib/component-collections';
 import { pageMetadata } from '../../lib/site-seo';
+import { agentOperationsCollection } from '../../lib/agent-operations';
 export const metadata = pageMetadata(
   'React component catalog',
   `Browse ${releaseCatalog.length} experimental React components for application UI and AI workflows. Search live examples, presentation styles, usage and props.`,
@@ -31,6 +32,12 @@ export default function Page() {
   }));
   const rail = (
     <nav className="directory-rail" aria-label="Component categories">
+      <div>
+        <a className="directory-rail-section" href={`#${agentOperationsCollection.id}`}>
+          {agentOperationsCollection.title}
+          <span>{agentOperationsCollection.components.length}</span>
+        </a>
+      </div>
       {releaseSections.map((section) => (
         <div key={section}>
           <a className="directory-rail-section" href={`#${section}`}>

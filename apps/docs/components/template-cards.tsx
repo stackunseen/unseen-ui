@@ -58,6 +58,50 @@ export const templateListings: TemplateListing[] = [
   },
 ];
 
+/** Recipes: one job end to end, in the order the Patterns page lists them. */
+export const recipeListings: TemplateListing[] = [
+  {
+    href: '/patterns/ai-sdk-chat/',
+    title: 'Chat on the Vercel AI SDK',
+    description:
+      'Connect Chat to useChat. Tools marked needsApproval wait for a person; replies render as Markdown.',
+    preview: 'ai-sdk-chat',
+    kind: 'Recipe',
+  },
+  {
+    href: '/patterns/recoverable-chat/',
+    title: 'Recoverable chat',
+    description:
+      'Disconnect a local conversation, inspect an unknown submission and check the original receipt before continuing.',
+    preview: 'recoverable-chat',
+    kind: 'Recipe',
+  },
+  {
+    href: '/patterns/action-receipts/',
+    title: 'Approval and action receipts',
+    description:
+      'Review a version-bound action, then follow acceptance, execution and partial failure as separate states.',
+    preview: 'action-receipts',
+    kind: 'Recipe',
+  },
+  {
+    href: '/patterns/research-answers/',
+    title: 'Research answers',
+    description:
+      'Read an answer alongside the sources for each claim. Inspect unavailable evidence and supplied freshness.',
+    preview: 'research-answers',
+    kind: 'Recipe',
+  },
+  {
+    href: '/patterns/agent-operations/',
+    title: 'Agent operations',
+    description:
+      'A board of runs with live steps and cost, a lane per agent with hand-offs, a waterfall of one run and the tree of who started whom.',
+    preview: 'agent-operations',
+    kind: 'Recipe',
+  },
+];
+
 /** The library components a page imports, from the generated usage index. */
 export const componentsOf = (href: string) =>
   Object.entries(patternUsage)

@@ -4,6 +4,7 @@ import {
   PatternPreview,
   TemplateCards,
   componentsOf,
+  recipeListings as recipes,
   templateListings,
 } from '../../components/template-cards';
 import { pageMetadata } from '../../lib/site-seo';
@@ -12,50 +13,6 @@ export const metadata = pageMetadata(
   'Runnable recipes and application templates built with Unseen UI: AI SDK chat with approvals, recoverable chat, action receipts, research answers, agent operations, an agent workbench, a coding studio, workspace integrations, a SaaS admin, a marketing site and Relay.',
   '/patterns/',
 );
-interface Listing {
-  href: string;
-  title: string;
-  description: string;
-  /** File stem under public/previews/patterns, written by scripts/capture-pattern-previews.mjs. */
-  preview: string;
-}
-const recipes: Listing[] = [
-  {
-    href: '/patterns/ai-sdk-chat/',
-    title: 'Chat on the Vercel AI SDK',
-    description:
-      'Connect Chat to useChat. Tools marked needsApproval wait for a person; replies render as Markdown.',
-    preview: 'ai-sdk-chat',
-  },
-  {
-    href: '/patterns/recoverable-chat/',
-    title: 'Recoverable chat',
-    description:
-      'Disconnect a local conversation, inspect an unknown submission and check the original receipt before continuing.',
-    preview: 'recoverable-chat',
-  },
-  {
-    href: '/patterns/action-receipts/',
-    title: 'Approval and action receipts',
-    description:
-      'Review a version-bound action, then follow acceptance, execution and partial failure as separate states.',
-    preview: 'action-receipts',
-  },
-  {
-    href: '/patterns/research-answers/',
-    title: 'Research answers',
-    description:
-      'Read an answer alongside the sources for each claim. Inspect unavailable evidence and supplied freshness.',
-    preview: 'research-answers',
-  },
-  {
-    href: '/patterns/agent-operations/',
-    title: 'Agent operations',
-    description:
-      'An inbox of runs with live steps and cost, a lane per agent with hand-offs, a waterfall of one run and the tree of who started whom.',
-    preview: 'agent-operations',
-  },
-];
 const linkedComponents = new Set(
   [...recipes, ...templateListings].flatMap((entry) => componentsOf(entry.href)),
 ).size;

@@ -5,12 +5,19 @@
   grid-template-columns: minmax(0, 1fr);
   padding-bottom: 80px;
 }
+/* Hero: the headline on the left, the one-sentence promise and the actions on the right, both
+   on the same baseline. The breadth strip under it is the first screen's real content. */
 .home-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  align-items: center;
-  gap: 48px;
-  padding-block: 40px 32px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 24px 64px;
+  padding-block: 56px 40px;
+  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
+}
+.home-intro-aside {
+  display: grid;
+  min-width: 0;
 }
 .home-intro {
   padding-block: 0;
@@ -26,37 +33,8 @@
   align-items: center;
   gap: 8px;
 }
-.home-hero-demo {
-  margin: 0;
-  min-width: 0;
-}
-.home-hero-demo [data-part='chat'] {
-  /* Tall enough for the question, the tool call and the approval with no scrolling inside. */
-  --ai-chat-height: 664px;
-  box-shadow: 0 24px 48px -32px rgb(0 0 0 / 0.35);
-}
-/* On short screens both columns start at the top, so the heading and the demo line up. */
-@media (min-width: 1081px) and (max-height: 820px) {
-  .home-hero {
-    align-items: start;
-  }
-  .home-intro {
-    padding-top: 48px;
-  }
-}
-.home-hero-demo figcaption {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 10px;
-  color: var(--ai-muted);
-  font-size: 12.5px;
-  line-height: 1.5;
-}
-.home-hero-demo figcaption a {
-  flex: none;
-  color: var(--ai-text);
-}
+
+
 .home-tasks {
   padding-block: 24px 32px;
   border-top: var(--ai-border-width, 1px) solid var(--ai-border);
@@ -120,14 +98,9 @@
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  /* Stacked: a readable width, and the chat grows with its content instead of scrolling inside
-     the page, which traps scrolling on touch screens. */
-  .home-hero-demo {
-    max-width: 640px;
-  }
-  .home-hero-demo [data-part='chat'] {
-    --ai-chat-height: auto;
-  }
+  
+
+  
   .home-tasks ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -136,10 +109,7 @@
   .home-tasks ul {
     grid-template-columns: 1fr;
   }
-  .home-hero-demo figcaption {
-    flex-direction: column;
-    gap: 4px;
-  }
+  
 }
 .home-intro .web-eyebrow {
   margin-bottom: 16px;
@@ -152,11 +122,11 @@
   letter-spacing: -0.04em;
 }
 .home-intro-description {
-  font-size: 19px;
+  font-size: 18px;
   line-height: 1.55;
   color: var(--ai-muted);
-  max-width: 66ch;
-  margin: 20px 0;
+  max-width: 52ch;
+  margin: 0 0 20px;
 }
 .home-intro-meta {
   display: flex;
@@ -175,9 +145,6 @@
   text-underline-offset: 4px;
 }
 
-.home-template-section {
-  padding-top: 56px;
-}
 .home-section-heading {
   display: flex;
   align-items: end;
@@ -200,10 +167,7 @@
   flex-shrink: 0;
   font-size: 14px;
 }
-/* Showcase: one real component per tinted tile; the site theme applies to every tile at once. */
-.home-showcase {
-  padding-top: 40px;
-}
+
 .home-showcase-theme {
   display: flex;
   align-items: center;
@@ -340,52 +304,6 @@
   margin-right: auto;
 }
 
-.home-template-figure {
-  margin: 20px 0 0;
-}
-.home-template-figure > a {
-  display: block;
-  border: var(--ai-border-width, 1px) solid var(--ai-border);
-  border-radius: var(--ai-radius);
-  overflow: hidden;
-  background: var(--ai-surface);
-}
-.home-template-figure img {
-  display: block;
-  width: 100%;
-  /* The top of the app tells the story; the full screenshot was a whole screen of scrolling. */
-  height: auto;
-  max-height: 460px;
-  object-fit: cover;
-  object-position: top;
-}
-.home-template-dark {
-  display: none !important;
-}
-.unseen-web[data-site-appearance='dark'] .home-template-light {
-  display: none;
-}
-.unseen-web[data-site-appearance='dark'] .home-template-dark {
-  display: block !important;
-}
-.home-template-figure figcaption {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 32px;
-  padding-top: 16px;
-}
-.home-template-figure figcaption p {
-  max-width: 64ch;
-  color: var(--ai-muted);
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.65;
-}
-.home-template-figure figcaption a {
-  flex-shrink: 0;
-  font-size: 14px;
-}
 .home-start {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -465,18 +383,14 @@
     line-height: 1.55;
     margin-block: 18px;
   }
-  .home-desktop-break {
-    display: none;
-  }
+  
   .home-intro-meta {
     display: grid;
     gap: 10px;
     font-size: 12px;
   }
 
-  .home-template-section {
-    padding-top: 40px;
-  }
+  
   .home-section-heading {
     display: grid;
     gap: 12px;
@@ -502,18 +416,9 @@
     order: -2;
   }
 
-  .home-showcase {
-    padding-top: 32px;
-  }
-  .home-template-figure figcaption {
-    display: grid;
-    gap: 12px;
-  }
-  .home-template-figure img {
-    aspect-ratio: 1.3;
-    object-fit: cover;
-    object-position: left top;
-  }
+  
+  
+  
   .home-start {
     grid-template-columns: 1fr;
     margin-top: 40px;
@@ -688,99 +593,13 @@
   font-size: 14px;
   color: var(--ai-text);
 }
-.home-problem {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 7fr) minmax(0, 2fr);
-  column-gap: 24px;
-  padding-block: 72px 16px;
-}
-.home-problem > p:last-child {
-  margin: 0;
-  font-size: clamp(22px, 2.2vw, 28px);
-  line-height: 1.3;
-  letter-spacing: -0.015em;
-  font-weight: 500;
-  color: var(--ai-text);
-  text-wrap: pretty;
-}
-.home-ships {
-  padding-block: 40px 16px;
-}
-.home-ships .home-section-heading {
-  padding-bottom: 20px;
-  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
-  margin-bottom: 0;
-}
-.home-ships-rows {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.home-ships-rows > li {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  column-gap: 24px;
-  align-items: center;
-  padding-block: 32px;
-  border-bottom: var(--ai-border-width, 1px) solid var(--ai-border);
-}
-.home-ships-notes {
-  margin: 0;
-  color: var(--ai-muted);
-  font-size: 13px;
-  line-height: 1.6;
-}
+
 .home-intro-facts {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 16px;
 }
-.home-ships-copy {
-  display: grid;
-  gap: 8px;
-  padding-right: 24px;
-}
-.home-ships-copy h3 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 550;
-  letter-spacing: -0.01em;
-}
-.home-ships-copy h3 a {
-  text-decoration: none;
-}
-@media (hover: hover) {
-  .home-ships-copy h3 a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-}
-.home-ships-copy > p {
-  margin: 0;
-  color: var(--ai-muted);
-  font-size: 15px;
-  line-height: 1.55;
-}
-.home-ships-copy > .home-kicker {
-  margin: 4px 0 0;
-}
-.home-ships-stage {
-  display: grid;
-  gap: 8px;
-  min-width: 0;
-}
-.home-ships-stage > * {
-  min-width: 0;
-}
-.home-ships-reset {
-  justify-self: start;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 13px;
-  cursor: pointer;
-}
+
 .home-start > div > .home-kicker:last-child {
   margin: 14px 0 0;
 }
@@ -801,19 +620,9 @@
   .home-facts > div:nth-last-child(-n + 2) {
     border-bottom: 0;
   }
-  .home-problem {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 12px;
-    padding-top: 48px;
-  }
-  .home-ships-rows > li {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 16px;
-    align-items: start;
-  }
-  .home-ships-copy {
-    padding-right: 0;
-  }
+  
+  
+  
 }
 @media (max-width: 560px) {
   .home-facts {
@@ -827,5 +636,75 @@
   }
   .home-facts > div:last-child {
     border-bottom: 0;
+  }
+}
+
+/* The breadth strip: five jobs as tabs, each a hairline grid of live tiles. */
+.home-breadth {
+  padding-block: 40px 8px;
+}
+.home-breadth [role=tablist] {
+  margin-bottom: 20px;
+}
+.home-tile[data-span=3] {
+  grid-column: 1 / -1;
+}
+.home-tile-reset {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.home-breadth .home-hero-demo {
+  margin: 0;
+  min-width: 0;
+}
+.home-breadth .home-hero-demo [data-part=chat] {
+  /* Tall enough for the question, the tool call and the approval with no scrolling inside. */
+  --ai-chat-height: 600px;
+  box-shadow: none;
+}
+.home-hero-demo figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  color: var(--ai-muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.home-hero-demo figcaption a {
+  flex: none;
+  color: var(--ai-text);
+}
+/* The six templates as the same thumbnail grid the Patterns page uses. */
+.home-templates {
+  padding-block: 40px 48px;
+}
+@media (max-width: 1080px) {
+  .home-breadth .home-hero-demo {
+    max-width: 640px;
+  }
+  .home-breadth .home-hero-demo [data-part=chat] {
+    --ai-chat-height: auto;
+  }
+}
+@media (max-width: 640px) {
+  .home-hero {
+    gap: 12px;
+    padding-block: 36px 28px;
+  }
+  .home-breadth {
+    padding-top: 32px;
+  }
+  .home-tile[data-span=3] {
+    grid-column: auto;
+  }
+  .home-hero-demo figcaption {
+    flex-direction: column;
+    gap: 4px;
   }
 }
