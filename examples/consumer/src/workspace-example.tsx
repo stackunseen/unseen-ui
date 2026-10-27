@@ -268,12 +268,15 @@ export function WorkspaceExample() {
                 key={name}
                 size="sm"
                 variant="ghost"
+                href={`#${name.toLowerCase()}`}
                 aria-current={selected === name ? 'page' : undefined}
-                disabled={!!draft.trim()}
+                aria-disabled={!!draft.trim() || undefined}
                 title={
                   draft.trim() ? 'Add the local message before switching workspace.' : undefined
                 }
-                onClick={() => {
+                onClick={(event) => {
+                  event.preventDefault();
+                  if (draft.trim()) return;
                   setSelected(name);
                   setRows([]);
                   setRevision((value) => value + 1);

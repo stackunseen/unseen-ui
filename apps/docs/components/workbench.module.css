@@ -71,7 +71,9 @@
 .reviewLink {
   display: grid;
   gap: 4px;
+  box-sizing: border-box;
   text-align: left;
+  text-decoration: none;
   width: 100%;
   min-width: 0;
   border: 1px solid transparent;

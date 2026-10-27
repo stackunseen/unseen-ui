@@ -81,7 +81,7 @@ describe('Agent workbench template', () => {
     await user.click(screen.getByRole('button', { name: 'New review' }));
     expect(screen.getByRole('textbox', { name: 'Message' })).toBeEnabled();
     await user.click(
-      within(screen.getByRole('navigation', { name: 'Local reviews' })).getByRole('button', {
+      within(screen.getByRole('navigation', { name: 'Local reviews' })).getByRole('link', {
         name: /Decision unconfirmed/,
       }),
     );
@@ -160,7 +160,7 @@ describe('Agent workbench template', () => {
     await user.clear(screen.getByRole('textbox', { name: 'Message' }));
     await user.type(screen.getByRole('textbox', { name: 'Message' }), 'Review Avery’s accounts');
     const nav = screen.getByRole('navigation', { name: 'Local reviews' });
-    await user.click(within(nav).getByRole('button', { name: 'Account review Draft' }));
+    await user.click(within(nav).getByRole('link', { name: 'Account review Draft' }));
     expect(screen.getByRole('textbox', { name: 'Message' })).toHaveValue(
       'Review Morgan’s accounts',
     );
@@ -168,7 +168,7 @@ describe('Agent workbench template', () => {
     expect(screen.getByRole('textbox', { name: 'Message' })).toHaveValue(
       'Find inactive accounts and prepare them for review.',
     );
-    await user.click(within(nav).getByRole('button', { name: 'New review 2 Draft' }));
+    await user.click(within(nav).getByRole('link', { name: 'New review 2 Draft' }));
     expect(screen.getByRole('textbox', { name: 'Message' })).toHaveValue('Review Avery’s accounts');
   });
 

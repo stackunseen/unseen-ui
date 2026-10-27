@@ -37,11 +37,16 @@
   flex-wrap: wrap;
   gap: 8px;
 }
-.navigation button {
+.navigation a {
   justify-content: start;
   flex: 1 1 7rem;
+  text-decoration: none;
 }
-.navigation button[aria-current] {
+.navigation a[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: default;
+}
+.navigation a[aria-current] {
   color: var(--ai-primary-text);
   background: var(--ai-primary-soft);
 }

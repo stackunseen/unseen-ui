@@ -60,10 +60,14 @@ function ReviewLink({
     review.host.runtime.getServerSnapshot,
   );
   return (
-    <button
+    <a
       className={s.reviewLink}
+      href={`#review-${review.id}`}
       aria-current={selected ? 'page' : undefined}
-      onClick={onSelect}
+      onClick={(event) => {
+        event.preventDefault();
+        onSelect();
+      }}
     >
       <span>{review.title}</span>
       <small>
@@ -73,7 +77,7 @@ function ReviewLink({
             ? 'Draft'
             : snapshot.run.lifecycle.replaceAll('-', ' ')}
       </small>
-    </button>
+    </a>
   );
 }
 
