@@ -29,8 +29,11 @@
   background: var(--ai-primary, #18181b);
   border-radius: 50%;
 }
-/* Waterfall: a bar per step on one time axis, children folded under their parent. */
+/* Waterfall: a bar per step on one time axis, children folded under their parent. Every row
+   uses the same three columns, with a fixed figures column, so the tracks line up as one axis;
+   nesting indents the label alone (--wf-depth, set by the component on each nested list). */
 .waterfall {
+  --wf-columns: minmax(160px, 1fr) minmax(120px, 2fr) var(--ai-waterfall-figures, 300px);
   display: grid;
   gap: 8px;
   min-width: 0;
@@ -46,9 +49,8 @@
   min-width: 0;
 }
 .wfFold > .wfList {
-  margin-inline-start: 16px;
-  padding-inline-start: 8px;
-  border-inline-start: 1px solid var(--ai-border, #e4e4e7);
+  margin: 0;
+  padding: 0;
 }
 .wfSummary {
   list-style: none;
@@ -74,7 +76,7 @@
 }
 .wfRow {
   display: grid;
-  grid-template-columns: minmax(120px, 1.2fr) minmax(80px, 2fr) auto;
+  grid-template-columns: var(--wf-columns);
   align-items: center;
   gap: 4px 12px;
   padding: 4px 6px;
@@ -89,6 +91,7 @@
 .wfLabel {
   display: grid;
   min-width: 0;
+  padding-inline-start: calc(var(--wf-depth, 0) * 20px);
   overflow-wrap: anywhere;
 }
 .wfLabel strong {
@@ -124,8 +127,10 @@
 }
 .wfMeta {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
-  gap: 10px;
+  gap: 4px 10px;
   color: var(--ai-muted, #52525b);
   white-space: nowrap;
 }
@@ -144,18 +149,31 @@
   font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
+/* The axis labels sit under the track column, where the bars are. */
 .wfAxis {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: var(--wf-columns);
+  gap: 0 12px;
   padding-inline: 6px;
   color: var(--ai-muted, #52525b);
 }
+.wfAxis > span {
+  grid-column: 2;
+  grid-row: 1;
+}
+.wfAxis > span:last-child {
+  justify-self: end;
+}
 @media (max-width: 520px) {
-  .wfRow {
-    grid-template-columns: minmax(0, 1fr) auto;
+  .waterfall {
+    --wf-columns: minmax(0, 1fr) auto;
   }
-  .wfTrack {
+  .wfTrack,
+  .wfAxis > span {
     grid-column: 1 / -1;
+  }
+  .wfAxis > span:last-child {
+    grid-row: 1;
   }
 }
 @media (forced-colors: active) {

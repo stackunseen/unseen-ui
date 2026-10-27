@@ -82,8 +82,9 @@ function Waterfall({ entries, detail }: { entries: TimelineEntry[]; detail: Deta
       </div>
     );
   };
-  const render = (list: TimelineEntry[]): React.ReactNode => (
-    <ol className={own.wfList}>
+  // Depth drives the label indent only, so every row's track and figures share one axis.
+  const render = (list: TimelineEntry[], depth = 0): React.ReactNode => (
+    <ol className={own.wfList} style={{ '--wf-depth': depth } as React.CSSProperties}>
       {list.map((entry) => {
         const nested = children.get(entry.id);
         return (
@@ -91,7 +92,7 @@ function Waterfall({ entries, detail }: { entries: TimelineEntry[]; detail: Deta
             {nested && nested.length > 0 ? (
               <details open className={own.wfFold}>
                 <summary className={own.wfSummary}>{row(entry)}</summary>
-                {render(nested)}
+                {render(nested, depth + 1)}
               </details>
             ) : (
               row(entry)

@@ -556,6 +556,28 @@
     display: none;
   }
 }
+/* Agent operations recipe: four screens as headed sections on the page column, no inset card,
+   a hairline between them. */
+.example-page-recipe > .example-page-content > .agent-operations {
+  padding: 0;
+  gap: 48px;
+}
+.agent-operations-section {
+  gap: 16px;
+}
+.agent-operations-section + .agent-operations-section {
+  padding-top: 40px;
+  border-top: var(--ai-border-width, 1px) solid var(--site-line);
+}
+.agent-operations-section > h2 {
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.agent-operations-section > p {
+  margin-bottom: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+}
 .task-list li a {
   padding: 18px;
 }
