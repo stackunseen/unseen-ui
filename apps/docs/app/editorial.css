@@ -185,6 +185,18 @@
   height: 15px;
   line-height: 15px;
 }
+/* Site chrome icons on 1x screens: the 15px glyphs are thin, so they take the text colour and a
+   0.3px outline that thickens their strokes without moving their edges off the pixel grid. */
+.web-header .web-icon {
+  color: var(--ai-text);
+}
+.web-header svg path,
+.explorer-sidebar svg path,
+.web-docs-nav svg path,
+.web-footer svg path {
+  stroke: currentColor;
+  stroke-width: 0.3px;
+}
 .web-header-cta {
   display: inline-flex;
   align-items: center;
