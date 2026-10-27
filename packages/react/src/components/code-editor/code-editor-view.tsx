@@ -103,23 +103,38 @@ function configuration(props: CodeEditorProps, descriptionId: string): Extension
       : []),
   ];
 }
+// The editor, not the scroller, carries the minimum height: the scroller then has a definite
+// height to fill, so the gutter runs the full height of the box instead of stopping at the
+// last line. Code and line numbers share the theme's mono family and one line height.
 const editorTheme = EditorView.theme({
   '&': {
     color: 'var(--ai-text, #0f172a)',
     backgroundColor: 'var(--ai-surface, #fff)',
     fontSize: 'var(--ai-font-size, 14px)',
+    minHeight: 'var(--ai-code-editor-min-height, 180px)',
+  },
+  '.cm-scroller': {
+    flex: '1 1 auto',
+    overflow: 'auto',
+    maxHeight: 'var(--ai-code-editor-max-height, 480px)',
+    fontFamily: 'var(--ai-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace)',
+    lineHeight: '1.6',
   },
   '.cm-content': {
-    fontFamily: 'ui-monospace, SFMono-Regular, Consolas, monospace',
-    padding: '12px 0',
+    padding: '10px 0',
     caretColor: 'var(--ai-primary-text, #1d4ed8)',
   },
-  '.cm-scroller': { overflow: 'auto', minHeight: '180px', maxHeight: '480px' },
+  '.cm-line': { padding: '0 12px 0 8px' },
+  // CodeMirror sizes the gutter to the content (an inline min-height); stretching it as a flex
+  // item fills the editor's minimum height instead, so short files still get a full-height gutter.
   '.cm-gutters': {
+    height: 'auto',
+    alignSelf: 'stretch',
     color: 'var(--ai-muted, #475569)',
     backgroundColor: 'var(--ai-surface-subtle, #f1f5f9)',
     borderRight: '1px solid var(--ai-border, #cbd5e1)',
   },
+  '.cm-lineNumbers .cm-gutterElement': { padding: '0 10px 0 12px' },
   '.cm-cursor': { borderLeftColor: 'var(--ai-primary-text, #1d4ed8)' },
   '&.cm-focused .cm-selectionBackground, .cm-selectionBackground': {
     backgroundColor: 'var(--ai-primary-soft, #dbeafe)',

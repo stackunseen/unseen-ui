@@ -11,8 +11,8 @@
   font-size: 14px;
   line-height: 1.6;
 }
-.root :global(.cm-scroller) {
-  min-height: 180px;
+.root :global(.cm-editor) {
+  --ai-code-editor-min-height: 180px;
 }
 .actions {
   display: flex;

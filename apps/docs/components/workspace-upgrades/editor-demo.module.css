@@ -14,14 +14,14 @@
   flex-wrap: wrap;
   gap: 8px;
 }
-.root :global(.cm-scroller) {
-  min-height: 220px;
+.root :global(.cm-editor) {
+  --ai-code-editor-min-height: 220px;
 }
 .root > p {
   font-size: 14px;
 }
 @media (max-width: 600px) {
-  .root :global(.cm-scroller) {
-    min-height: 180px;
+  .root :global(.cm-editor) {
+    --ai-code-editor-min-height: 180px;
   }
 }

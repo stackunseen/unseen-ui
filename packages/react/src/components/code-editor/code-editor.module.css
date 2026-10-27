@@ -31,13 +31,13 @@
   padding: 8px 12px;
   overflow-wrap: anywhere;
 }
+/* One focus ring, around the whole editor; the content area draws none of its own. */
 .root :global(.cm-editor.cm-focused) {
   outline: 2px solid var(--ai-focus, #27272a);
   outline-offset: -2px;
 }
 .root :global(.cm-content:focus-visible) {
-  outline: 2px solid var(--ai-focus, #27272a);
-  outline-offset: -2px;
+  outline: none;
 }
 .diagnostics {
   padding: 8px 12px 8px 32px;
