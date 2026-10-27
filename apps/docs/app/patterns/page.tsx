@@ -114,16 +114,16 @@ function Preview({ preview, title }: { preview: string; title: string }) {
         className="directory-thumb-light"
         src={`/previews/patterns/${preview}-light.webp`}
         alt=""
-        width={640}
-        height={400}
+        width={1280}
+        height={800}
         unoptimized
       />
       <Image
         className="directory-thumb-dark"
         src={`/previews/patterns/${preview}-dark.webp`}
         alt=""
-        width={640}
-        height={400}
+        width={1280}
+        height={800}
         unoptimized
       />
       <span className="pattern-preview-name">{title}</span>

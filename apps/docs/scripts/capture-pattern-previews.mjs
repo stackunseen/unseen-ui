@@ -99,7 +99,7 @@ async function capture(page, { origin, entries, width, height }) {
             const scale = width / image.width;
             // Anchor to the top: the first screen of a page is what a visitor meets.
             context.drawImage(image, 0, 0, image.width * scale, image.height * scale);
-            return canvas.toDataURL('image/webp', 0.8).split(',')[1];
+            return canvas.toDataURL('image/webp', 0.82).split(',')[1];
           },
           { data: png.toString('base64'), width, height, background: box.background },
         );
@@ -120,7 +120,7 @@ try {
   const filename = resolve(work, 'capture.js');
   await writeFile(
     filename,
-    `async page => {\nreturn (${capture.toString()})(page, ${JSON.stringify({ origin, entries, width: 640, height: 400 })});\n}`,
+    `async page => {\nreturn (${capture.toString()})(page, ${JSON.stringify({ origin, entries, width: 1280, height: 800 })});\n}`,
   );
   const results = JSON.parse(
     await command(['run-code', `--filename=${filename}`, '--raw'], 600000),
