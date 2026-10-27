@@ -67,12 +67,12 @@ describe('connected SaaS admin template', () => {
       receipt: vi.fn(async () => undefined),
     };
     const { user } = setup(service);
-    await user.click(screen.getByRole('button', { name: 'Organization settings' }));
+    await user.click(screen.getByRole('link', { name: 'Organization settings' }));
     await replace(user, /Organization name/, 'Unknown save');
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
     await user.click(await screen.findByRole('button', { name: 'Check if it went through' }));
     expect(await screen.findByText(/original receipt is still unavailable/)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Customers' })).toBeDisabled();
+    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute('aria-disabled', 'true');
     expect(service.submit).toHaveBeenCalledOnce();
     expect(service.receipt).toHaveBeenCalledOnce();
     expect(initial.read().organizations[0]!.settings.name).toBe('Northstar Studio');
@@ -100,7 +100,7 @@ describe('connected SaaS admin template', () => {
   it('creates a validated record and focuses the first invalid field before server submission', async () => {
     const { user, host } = setup();
     const submit = vi.spyOn(host, 'submit');
-    await user.click(screen.getByRole('button', { name: 'Customers' }));
+    await user.click(screen.getByRole('link', { name: 'Customers' }));
     await user.click(screen.getByRole('button', { name: 'Create customer' }));
     await user.type(screen.getByLabelText(/Customer name/), 'Robin Patel');
     await user.click(screen.getByRole('button', { name: 'Save customer' }));
@@ -117,9 +117,9 @@ describe('connected SaaS admin template', () => {
   });
   it('keeps and discards a draft through guarded navigation and organization changes', async () => {
     const { user, host } = setup();
-    await user.click(screen.getByRole('button', { name: 'Organization settings' }));
+    await user.click(screen.getByRole('link', { name: 'Organization settings' }));
     await replace(user, /Organization name/, 'Unsaved name');
-    await user.click(screen.getByRole('button', { name: 'Customers' }));
+    await user.click(screen.getByRole('link', { name: 'Customers' }));
     expect(screen.getByRole('alertdialog')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Keep editing' }));
     expect(screen.getByLabelText(/Organization name/)).toHaveValue('Unsaved name');
@@ -131,7 +131,7 @@ describe('connected SaaS admin template', () => {
       'Fieldwork Collective',
     );
     expect(host.read().organizations[0]!.settings.name).toBe('Northstar Studio');
-    await user.click(screen.getByRole('button', { name: 'Customers' }));
+    await user.click(screen.getByRole('link', { name: 'Customers' }));
     expect(screen.getByText('1 of 1 customers')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'View Alex Morgan' })).not.toBeInTheDocument();
   });
@@ -144,11 +144,11 @@ describe('connected SaaS admin template', () => {
         }),
     });
     const { user } = setup(host);
-    await user.click(screen.getByRole('button', { name: 'Organization settings' }));
+    await user.click(screen.getByRole('link', { name: 'Organization settings' }));
     await replace(user, /Organization name/, 'Saved Later');
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
     expect(host.read().organizations[0]!.settings.name).toBe('Northstar Studio');
-    expect(screen.getByRole('button', { name: 'Customers' })).toBeDisabled();
+    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute('aria-disabled', 'true');
     expect(screen.getByLabelText(/Organization name/)).toBeDisabled();
     expect(
       screen.queryByText('Organization settings saved in the local demo.'),
@@ -167,7 +167,7 @@ describe('connected SaaS admin template', () => {
       receipt = vi.spyOn(host, 'receipt');
     await user.click(screen.getByRole('button', { name: 'Demo behavior' }));
     await select(user, 'Next action result', 'Reject action');
-    await user.click(screen.getByRole('button', { name: 'Organization settings' }));
+    await user.click(screen.getByRole('link', { name: 'Organization settings' }));
     await replace(user, /Organization name/, 'Recovered Studio');
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
     expect(await screen.findByText(/simulated server rejected this action/)).toBeInTheDocument();
@@ -177,7 +177,7 @@ describe('connected SaaS admin template', () => {
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
     expect(await screen.findByText(/saved view may be stale/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Customers' })).toBeDisabled();
+    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute('aria-disabled', 'true');
     const version = host.read().version;
     await user.click(screen.getByRole('button', { name: 'Check if it went through' }));
     expect(
@@ -192,7 +192,7 @@ describe('connected SaaS admin template', () => {
   });
   it('changes an acknowledged demo role and rejects removal of the only owner', async () => {
     const { user, host } = setup();
-    await user.click(screen.getByRole('button', { name: 'Members & roles' }));
+    await user.click(screen.getByRole('link', { name: 'Members & roles' }));
     await user.click(screen.getByRole('button', { name: 'Edit role for Riley Quinn' }));
     await select(user, 'Demo role', 'Viewer');
     await user.click(screen.getByRole('button', { name: 'Save demo role' }));
@@ -210,7 +210,7 @@ describe('connected SaaS admin template', () => {
   });
   it('validates seats and updates only the local sample plan', async () => {
     const { user, host } = setup();
-    await user.click(screen.getByRole('button', { name: 'Plan & billing' }));
+    await user.click(screen.getByRole('link', { name: 'Plan & billing' }));
     await replace(user, /Demo seats/, '2');
     await user.click(screen.getByRole('button', { name: 'Save demo plan' }));
     expect(screen.getByLabelText(/Demo seats/)).toHaveAttribute('aria-invalid', 'true');
@@ -225,7 +225,7 @@ describe('connected SaaS admin template', () => {
   });
   it('wires controlled grid sorting, paging and empty-filter recovery', async () => {
     const { user } = setup();
-    await user.click(screen.getByRole('button', { name: 'Customers' }));
+    await user.click(screen.getByRole('link', { name: 'Customers' }));
     expect(screen.getByText(/Page 1 of 2/)).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Next page' }));
     expect(screen.getByText(/Page 2 of 2/)).toBeInTheDocument();

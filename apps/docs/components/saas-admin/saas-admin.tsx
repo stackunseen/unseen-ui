@@ -124,15 +124,20 @@ export function SaaSAdmin({ host: suppliedHost }: { host?: SaaSAdminHost } = {})
               )
             }
           />
+          {/* Pages are links, as in any app: the hash names the page and the click is routed
+              through the workspace's navigation so an unsaved draft can still intercept it. */}
           <nav aria-label="SaaS admin pages" className={s.navigation}>
             {pages.map((item) => (
               <Button
                 key={item.id}
                 variant="ghost"
+                href={`#${item.id}`}
                 aria-label={item.label}
                 aria-current={location.page === item.id ? 'page' : undefined}
-                disabled={blocked}
-                onClick={() => {
+                aria-disabled={blocked || undefined}
+                onClick={(event) => {
+                  event.preventDefault();
+                  if (blocked) return;
                   if (
                     location.page !== item.id ||
                     location.customerId ||
