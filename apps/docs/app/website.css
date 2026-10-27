@@ -407,8 +407,6 @@
 }
 @media (hover: hover) {
   .docs-links a:hover strong,
-  .pattern-list > a:hover h2,
-  .pattern-list > a:hover h3,
   .home-finder-heading a:hover,
   .web-footer nav a:hover {
     text-decoration: underline;
@@ -1154,10 +1152,6 @@
   }
   .web-docs-nav p {
     display: none;
-  }
-  .pattern-list {
-    grid-template-columns: 1fr;
-    gap: 20px;
   }
   .relay-workflow {
     grid-template-columns: 1fr;

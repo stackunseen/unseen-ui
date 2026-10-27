@@ -1,9 +1,10 @@
 'use client';
-import { ArrowUpRight, Check, Code, Layers, Share2 } from 'lucide-react';
+import { ArrowUpRight, Check, Layers } from 'lucide-react';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle, Card } from '@stackunseen/ui';
 import s from './templates.module.css';
 import { componentHref } from '../lib/site-paths';
+import { TemplateCards } from './template-cards';
 import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
 
 const componentGroups = [
@@ -18,68 +19,20 @@ export function Templates() {
       <header className="page-heading">
         <span className="eyebrow">Application templates</span>
         <h1>Templates</h1>
-        <p>Try a complete local workflow, adapt its source and connect your services.</p>
+        <p>
+          Whole applications built from the library. Open one in the browser, or run Relay locally,
+          adapt its source and connect your services.
+        </p>
       </header>
 
-      <div className="pattern-list template-options">
-        <Link prefetch={false} href="/templates/saas-admin/">
-          <Layers width={30} height={30} aria-hidden="true" />
-          <div>
-            <h2>SaaS admin</h2>
-            <p>
-              Manage sample customers, member roles, organization settings and plan details. Try
-              rejected saves and lost acknowledgements.
-            </p>
-            <span>
-              Open the local template{' '}
-              <ArrowUpRight size={16} aria-hidden="true" />
-            </span>
-          </div>
-        </Link>
-        <Link prefetch={false} href="/templates/marketing/">
-          <Layers width={30} height={30} aria-hidden="true" />
-          <div>
-            <h2>Marketing website</h2>
-            <p>
-              A fictional product site with responsive navigation, plan cards, a FAQ and a contact
-              form. Built from reusable marketing blocks.
-            </p>
-            <span>
-              Open the local template{' '}
-              <ArrowUpRight size={16} aria-hidden="true" />
-            </span>
-          </div>
-        </Link>
-        <Link prefetch={false} href="/patterns/agent-workbench/">
-          <Share2 width={30} height={30} aria-hidden="true" />
-          <div>
-            <h2>Agent Workbench</h2>
-            <p>
-              Review accounts, inspect sources and manage version-bound decisions. Search, sessions,
-              cancellation and recovery are interactive.
-            </p>
-            <span>
-              Open the local template{' '}
-              <ArrowUpRight size={16} aria-hidden="true" />
-            </span>
-          </div>
-        </Link>
-        <Link prefetch={false} href="/patterns/coding-studio/">
-          <Code width={30} height={30} aria-hidden="true" />
-          <div>
-            <h2>Coding Studio</h2>
-            <p>
-              Edit sample files, stage changes and apply a reviewed patch. Test and terminal results
-              use a disclosed local simulation.
-            </p>
-            <span>
-              Open the local template{' '}
-              <ArrowUpRight size={16} aria-hidden="true" />
-            </span>
-          </div>
-        </Link>
-      </div>
+      <h2 className="patterns-heading" id="browser-templates">
+        In the browser <span>sample data, no keys</span>
+      </h2>
+      <TemplateCards exclude="/templates/relay/" />
 
+      <h2 className="patterns-heading" id="relay">
+        Relay <span>a reference app to run locally</span>
+      </h2>
       <Card className={s.template} role="region" aria-labelledby="relay-template-title">
         <div className={s.summary}>
           <div className={s.identity}>

@@ -1,7 +1,11 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { ExamplePage } from '../../components/example-page';
-import { patternUsage } from '../../lib/pattern-usage';
+import {
+  PatternPreview,
+  TemplateCards,
+  componentsOf,
+  templateListings,
+} from '../../components/template-cards';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
   'Patterns',
@@ -52,84 +56,10 @@ const recipes: Listing[] = [
     preview: 'agent-operations',
   },
 ];
-const templates: (Listing & { kind: string })[] = [
-  {
-    href: '/patterns/agent-workbench/',
-    title: 'Agent Workbench',
-    description: 'Sessions, accounts, sources, review decisions and uncertain receipts.',
-    preview: 'agent-workbench',
-    kind: 'Workspace',
-  },
-  {
-    href: '/patterns/coding-studio/',
-    title: 'Coding Studio',
-    description: 'Files, staged changes, tests and version-bound apply receipts.',
-    preview: 'coding-studio',
-    kind: 'Workspace',
-  },
-  {
-    href: '/patterns/workspace-integrations/',
-    title: 'Workspace integrations',
-    description:
-      'Controlled editing, file reviews, artifact drafts and conversation revisions with a bounded local host.',
-    preview: 'workspace-integrations',
-    kind: 'Workspace',
-  },
-  {
-    href: '/templates/saas-admin/',
-    title: 'SaaS admin',
-    description: 'Customers, members, roles, settings and illustrative billing.',
-    preview: 'saas-admin',
-    kind: 'Application',
-  },
-  {
-    href: '/templates/marketing/',
-    title: 'Marketing website',
-    description: 'Eight marketing blocks composed into a product site.',
-    preview: 'marketing',
-    kind: 'Website',
-  },
-  {
-    href: '/templates/relay/',
-    title: 'Relay',
-    description: 'A customer dashboard with an assistant, run locally with Vite.',
-    preview: 'relay',
-    kind: 'Vite app',
-  },
-];
-/** The library components each page imports, from the generated usage index. */
-const componentsOf = (href: string) =>
-  Object.entries(patternUsage)
-    .filter(([, links]) => links.some((link) => link.href === href))
-    .map(([name]) => name)
-    .sort((a, b) => a.localeCompare(b));
 const linkedComponents = new Set(
-  [...recipes, ...templates].flatMap((entry) => componentsOf(entry.href)),
+  [...recipes, ...templateListings].flatMap((entry) => componentsOf(entry.href)),
 ).size;
 const two = (count: number) => String(count).padStart(2, '0');
-function Preview({ preview, title }: { preview: string; title: string }) {
-  return (
-    <span className="pattern-preview" aria-hidden="true">
-      <Image
-        className="directory-thumb-light"
-        src={`/previews/patterns/${preview}-light.webp`}
-        alt=""
-        width={1280}
-        height={800}
-        unoptimized
-      />
-      <Image
-        className="directory-thumb-dark"
-        src={`/previews/patterns/${preview}-dark.webp`}
-        alt=""
-        width={1280}
-        height={800}
-        unoptimized
-      />
-      <span className="pattern-preview-name">{title}</span>
-    </span>
-  );
-}
 export default function Page() {
   return (
     <ExamplePage
@@ -145,7 +75,7 @@ export default function Page() {
         </div>
         <div>
           <dt>Templates</dt>
-          <dd>{two(templates.length)}</dd>
+          <dd>{two(templateListings.length)}</dd>
         </div>
         <div>
           <dt>Components in use</dt>
@@ -165,7 +95,7 @@ export default function Page() {
           return (
             <li key={recipe.href}>
               <Link href={recipe.href}>
-                <Preview preview={recipe.preview} title={recipe.title} />
+                <PatternPreview preview={recipe.preview} title={recipe.title} />
                 <span className="pattern-row-copy">
                   <h3>{recipe.title}</h3>
                   <p>{recipe.description}</p>
@@ -182,24 +112,7 @@ export default function Page() {
       <h2 className="patterns-heading" id="templates">
         Templates <span>whole applications</span>
       </h2>
-      <ul className="pattern-templates">
-        {templates.map((template) => {
-          const count = componentsOf(template.href).length;
-          return (
-            <li key={template.href}>
-              <Link href={template.href}>
-                <Preview preview={template.preview} title={template.title} />
-                <strong>{template.title}</strong>
-                <span>{template.description}</span>
-                <small>
-                  {template.kind}
-                  {count > 0 && `, ${count} components`}
-                </small>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <TemplateCards />
       <p className="collection-note">
         Reusable <Link href="/components/?collection=application">application patterns</Link> and{' '}
         <Link href="/components/?collection=marketing">marketing blocks</Link> have their own

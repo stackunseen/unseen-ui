@@ -58,9 +58,6 @@
   margin: 0 0 14px;
   color: var(--ai-muted);
 }
-.web-eyebrow::before {
-  content: '// ';
-}
 .directory-filter-count,
 .home-tile-footer > span,
 .library-count,
@@ -408,9 +405,6 @@
   letter-spacing: 0;
   color: var(--ai-muted);
 }
-.patterns-heading > span {
-  margin-left: auto;
-}
 /* Thumbnails: the page's own first screen, light or dark to match the site. */
 .pattern-preview {
   position: relative;
@@ -444,10 +438,10 @@
 }
 .pattern-rows > li > a {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  column-gap: 32px;
-  align-items: start;
-  padding-block: 28px;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+  column-gap: 40px;
+  align-items: center;
+  padding-block: 24px;
   border-bottom: var(--ai-border-width, 1px) solid var(--site-line);
   color: var(--ai-text);
   text-decoration: none;
@@ -458,12 +452,12 @@
 }
 .pattern-row-copy {
   display: grid;
-  gap: 10px;
-  align-content: start;
+  gap: 8px;
+  align-content: center;
 }
 .pattern-row-copy h3 {
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.015em;
 }
@@ -484,7 +478,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 14px;
   font-weight: 500;
   color: var(--ai-text);
@@ -500,7 +494,14 @@
 }
 .pattern-templates a {
   gap: 6px;
-  padding-bottom: 18px;
+  padding-bottom: 20px;
+}
+/* The Templates page: headed sections with the same rhythm as the Patterns page. */
+.templates-page .patterns-heading:first-of-type {
+  margin-top: 40px;
+}
+.templates-page .patterns-heading + .pattern-templates {
+  margin-bottom: 8px;
 }
 .pattern-templates .pattern-preview {
   margin-bottom: 8px;
