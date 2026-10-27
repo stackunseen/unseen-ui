@@ -61,7 +61,8 @@ export function GenericSpecimen({
   if (websiteNames.has(name))
     return <WebsiteSpecimen name={name} state={state} presentation={presentation} />;
   if (applicationNames.has(name)) return <ApplicationSpecimen name={name} state={state} />;
-  if (marketingNames.has(name)) return <MarketingSpecimen name={name} state={state} />;
+  if (marketingNames.has(name))
+    return <MarketingSpecimen name={name} state={state} presentation={presentation} />;
   if (aiExtrasNames.has(name)) return <AIExtrasSpecimen name={name} state={state} />;
   if (name === 'SplitPane') return <SplitPaneSpecimen state={state} presentation={presentation} />;
   if (['Sidecar', 'WorkspaceShell'].includes(name))

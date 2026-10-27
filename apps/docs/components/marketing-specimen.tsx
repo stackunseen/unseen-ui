@@ -9,6 +9,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingHero,
+  MarketingIllustration,
   MarketingNumber,
   MarketingPricing,
   MarketingReveal,
@@ -21,7 +22,15 @@ const navigation = [
   { id: 'blocks', label: 'Browse blocks', href: '/components/#ui' },
 ];
 
-export function MarketingSpecimen({ name, state = 'Default' }: { name: string; state?: string }) {
+export function MarketingSpecimen({
+  name,
+  state = 'Default',
+  presentation,
+}: {
+  name: string;
+  state?: string;
+  presentation?: string;
+}) {
   const id = useId();
   const [question, setQuestion] = useState('');
   const [notice, setNotice] = useState('');
@@ -61,6 +70,19 @@ export function MarketingSpecimen({ name, state = 'Default' }: { name: string; s
           <p>Project notes, team decisions and a clear next step.</p>
         </Card>
       </MarketingHero>
+    );
+  else if (name === 'MarketingIllustration')
+    content = (
+      <MarketingIllustration
+        variant={
+          presentation === 'integrations' ||
+          presentation === 'approval' ||
+          presentation === 'empty'
+            ? presentation
+            : 'agents'
+        }
+        title="Sample illustration"
+      />
     );
   else if (name === 'MarketingReveal')
     content = (

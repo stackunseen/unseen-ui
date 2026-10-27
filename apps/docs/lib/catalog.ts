@@ -66,6 +66,7 @@ export type GenericComponent =
   | 'MarketingArticle'
   | 'MarketingReveal'
   | 'MarketingNumber'
+  | 'MarketingIllustration'
   | 'Button'
   | 'IconButton'
   | 'Modal'

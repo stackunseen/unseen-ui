@@ -657,6 +657,11 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Application screens, where motion delays reading.',
     'MarketingFeatures',
   ),
+  MarketingIllustration: g(
+    'A small themed scene beside a hero, a feature or an empty state on a marketing page.',
+    'Product screenshots or data; show the real thing.',
+    'MarketingHero',
+  ),
   MarketingNumber: g(
     'A headline figure on a marketing page that counts up once.',
     'Live or changing numbers in an application.',

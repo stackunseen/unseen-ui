@@ -72,7 +72,9 @@ export function navigationGroup(entry: CatalogEntry): string {
       ? 'Site navigation'
       : entry.category === 'Motion'
         ? 'Motion'
-        : 'Website sections';
+        : entry.category === 'Illustrations'
+          ? 'Illustrations'
+          : 'Website sections';
   return catalogGroup(entry);
 }
 export function sectionCatalog(section: GallerySection) {

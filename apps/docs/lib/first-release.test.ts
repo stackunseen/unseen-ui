@@ -13,7 +13,7 @@ describe('first-release discovery and saved routes', () => {
         (section) => releaseCatalog.filter((entry) => componentSection(entry) === section).length,
       ),
     ).toEqual([65, 93]);
-    expect(compositionCatalog).toHaveLength(18);
+    expect(compositionCatalog).toHaveLength(19);
     expect([...releaseCatalog, ...compositionCatalog]).toHaveLength(catalog.length);
     expect(releaseCatalog.some((entry) => entry.name === 'DataGrid')).toBe(true);
   });

@@ -223,6 +223,21 @@ export const marketingCatalog: CatalogEntry[] = [
       'Your site supplies the figure; the component never computes one. Screen readers get the final value; reduced motion skips the count.',
     code: '<MarketingNumber value={1200} format={(n) => `${n.toLocaleString()} teams`} />',
   }),
+  {
+    ...marketing({
+      name: 'MarketingIllustration',
+      category: 'Illustrations',
+      description:
+        'Four small line scenes for landing pages, drawn in the theme’s own colours: an agent team, integrations, an approval, an empty state.',
+      states: ['Default'],
+      contract: 'variant: agents | integrations | approval | empty · title?',
+      responsibility:
+        'Decorative unless you pass a title, which becomes the accessible name. Colours follow the theme and both appearances; the slight motion stops under reduced motion.',
+      code: '<MarketingIllustration variant="agents" title="An orchestrator and three agents" />',
+    }),
+    presentations: ['agents', 'integrations', 'approval', 'empty'],
+    presentationProp: 'variant',
+  },
   marketing({
     name: 'MarketingFeatures',
     category: 'Website sections',

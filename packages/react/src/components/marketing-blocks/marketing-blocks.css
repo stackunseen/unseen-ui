@@ -439,3 +439,85 @@
     transition: none;
   }
 }
+
+/* Illustrations: strokes and fills from the theme, so a scene matches any palette. */
+.uim-illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 480px;
+  color: var(--ai-text);
+}
+.uim-ill-line {
+  fill: var(--ai-surface);
+  stroke: var(--ai-border);
+  stroke-width: 1.5;
+}
+.uim-ill-ring {
+  fill: none;
+  stroke: var(--ai-border);
+  stroke-width: 1.5;
+  transform-origin: 160px 100px;
+}
+.uim-ill-edge {
+  fill: none;
+  stroke: var(--ai-border);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.uim-ill-text {
+  fill: var(--ai-border);
+}
+.uim-ill-soft {
+  fill: var(--ai-surface-subtle);
+}
+.uim-ill-dot,
+.uim-ill-fill {
+  fill: var(--ai-primary);
+}
+.uim-ill-check {
+  fill: none;
+  stroke: var(--ai-primary-foreground, #fff);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.uim-ill-float {
+  animation: uim-ill-float 4s ease-in-out infinite;
+}
+.uim-ill-spin {
+  animation: uim-ill-spin 24s linear infinite;
+}
+.uim-ill-pulse {
+  animation: uim-ill-pulse 2.4s ease-in-out infinite;
+}
+@keyframes uim-ill-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes uim-ill-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes uim-ill-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .uim-ill-float,
+  .uim-ill-spin,
+  .uim-ill-pulse {
+    animation: none;
+  }
+}

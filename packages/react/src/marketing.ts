@@ -10,6 +10,11 @@ export {
   MarketingContact,
   MarketingArticle,
 } from './components/marketing-blocks/marketing-blocks.js';
+export { MarketingIllustration } from './components/marketing-blocks/marketing-illustration.js';
+export type {
+  MarketingIllustrationProps,
+  MarketingIllustrationName,
+} from './components/marketing-blocks/marketing-illustration.js';
 export { MarketingReveal, MarketingNumber } from './components/marketing-blocks/marketing-motion.js';
 export type {
   MarketingRevealProps,
