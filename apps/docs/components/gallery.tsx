@@ -4,21 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CodeIcon,
-  ColorWheelIcon,
-  ComponentInstanceIcon,
-  Cross2Icon,
-  DashboardIcon,
-  FileTextIcon,
-  HamburgerMenuIcon,
-  LayoutIcon,
-  MagicWandIcon,
-  MagnifyingGlassIcon,
-  MixerHorizontalIcon,
-} from '@radix-ui/react-icons';
+import { ArrowLeft, ArrowRight, Blocks, Code, FileText, LayoutDashboard, LayoutTemplate, Menu, Palette, Search, SlidersHorizontal, WandSparkles, X } from 'lucide-react';
 import { Accordion } from '@stackunseen/ui';
 import '@stackunseen/ui/terminal.css';
 import 'katex/dist/katex.min.css';
@@ -70,13 +56,13 @@ function subscribe(listener: () => void) {
   };
 }
 const browserSearch = () => window.location.search;
-const workspaces: { view: GalleryView; label: string; icon: typeof ComponentInstanceIcon }[] = [
-  { view: 'components', label: 'Components', icon: ComponentInstanceIcon },
-  { view: 'workbench', label: 'Agent workbench', icon: CodeIcon },
-  { view: 'coding', label: 'Coding studio', icon: CodeIcon },
-  { view: 'templates', label: 'Templates', icon: ComponentInstanceIcon },
-  { view: 'theme', label: 'Theme studio', icon: ColorWheelIcon },
-  { view: 'design', label: 'Design foundations', icon: LayoutIcon },
+const workspaces: { view: GalleryView; label: string; icon: typeof Blocks }[] = [
+  { view: 'components', label: 'Components', icon: Blocks },
+  { view: 'workbench', label: 'Agent workbench', icon: Code },
+  { view: 'coding', label: 'Coding studio', icon: Code },
+  { view: 'templates', label: 'Templates', icon: Blocks },
+  { view: 'theme', label: 'Theme studio', icon: Palette },
+  { view: 'design', label: 'Design foundations', icon: LayoutTemplate },
 ];
 function focusContent() {
   requestAnimationFrame(() => {
@@ -214,13 +200,13 @@ export function Gallery({
   const groupNames = sectionGroups(section);
   const destinations: {
     section: GallerySection;
-    icon: typeof ComponentInstanceIcon;
+    icon: typeof Blocks;
     location: GalleryLocation;
   }[] = [
     {
       section: 'ui',
       // Building blocks: forms, navigation, overlays and the rest of the interface.
-      icon: DashboardIcon,
+      icon: LayoutDashboard,
       location: changeGalleryLocation(location, {
         view: 'components',
         component: componentSection(entry) === 'ui' ? entry.name : 'Button',
@@ -228,7 +214,7 @@ export function Gallery({
     },
     {
       section: 'ai',
-      icon: MagicWandIcon,
+      icon: WandSparkles,
       location: changeGalleryLocation(location, {
         view: 'components',
         component: componentSection(entry) === 'ai' ? entry.name : 'PromptInput',
@@ -236,7 +222,7 @@ export function Gallery({
     },
     {
       section: 'customize',
-      icon: MixerHorizontalIcon,
+      icon: SlidersHorizontal,
       location: changeGalleryLocation(location, { view: view === 'design' ? 'design' : 'theme' }),
     },
   ];
@@ -275,9 +261,9 @@ export function Gallery({
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? (
-            <Cross2Icon width={15} height={15} aria-hidden="true" />
+            <X size={16} aria-hidden="true" />
           ) : (
-            <HamburgerMenuIcon width={15} height={15} aria-hidden="true" />
+            <Menu size={16} aria-hidden="true" />
           )}
         </button>
         <span>Browse {view === 'components' ? 'components' : 'the library'}</span>
@@ -301,7 +287,7 @@ export function Gallery({
                   navigate(next);
                 }}
               >
-                <Icon width={15} height={15} aria-hidden="true" />
+                <Icon size={16} aria-hidden="true" />
                 <span>{sectionLabels[item]}</span>
                 {componentSections.some((collection) => collection === item) && (
                   <small aria-hidden="true">{sectionCatalog(item).length}</small>
@@ -311,7 +297,7 @@ export function Gallery({
           </nav>
           <div className="library-search">
             <label className="search-field">
-              <MagnifyingGlassIcon width={15} height={15} aria-hidden="true" />
+              <Search size={16} aria-hidden="true" />
               <input
                 ref={searchInput}
                 type="search"
@@ -397,14 +383,14 @@ export function Gallery({
                       location={changeGalleryLocation(location, { view: workspace.view })}
                       onNavigate={navigate}
                     >
-                      <workspace.icon width={15} height={15} aria-hidden="true" />
+                      <workspace.icon size={16} aria-hidden="true" />
                       {workspace.label}
                     </LocalLink>
                   );
                 })}
                 {section === 'customize' && (
                   <Link className="component-link" href="/docs/customization/">
-                    <FileTextIcon width={15} height={15} aria-hidden="true" />
+                    <FileText size={16} aria-hidden="true" />
                     Themes and icons guide
                   </Link>
                 )}
@@ -457,7 +443,7 @@ export function Gallery({
                       onNavigate={navigate}
                       aria-label={`Previous component: ${previous.name}`}
                     >
-                      <ArrowLeftIcon width={15} height={15} aria-hidden="true" />
+                      <ArrowLeft size={16} aria-hidden="true" />
                     </LocalLink>
                   )}
                   {next && (
@@ -466,7 +452,7 @@ export function Gallery({
                       onNavigate={navigate}
                       aria-label={`Next component: ${next.name}`}
                     >
-                      <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+                      <ArrowRight size={16} aria-hidden="true" />
                     </LocalLink>
                   )}
                 </nav>
@@ -481,7 +467,7 @@ export function Gallery({
                         rel="prev"
                       >
                         <span>
-                          <ArrowLeftIcon width={15} height={15} aria-hidden="true" /> Previous
+                          <ArrowLeft size={16} aria-hidden="true" /> Previous
                         </span>
                         <strong>{previous.name}</strong>
                       </LocalLink>
@@ -494,7 +480,7 @@ export function Gallery({
                         data-next=""
                       >
                         <span>
-                          Next <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+                          Next <ArrowRight size={16} aria-hidden="true" />
                         </span>
                         <strong>{next.name}</strong>
                       </LocalLink>

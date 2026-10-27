@@ -10,7 +10,7 @@ import {
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Cross2Icon, HamburgerMenuIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { BrandMark } from './brand-mark';
 import { AITheme, AppearanceToggle, IconsProvider, LinkProvider } from '@stackunseen/ui';
 import { createTheme, exportTheme, importTheme } from '@stackunseen/ui/theme';
@@ -140,16 +140,18 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   href="/components/#component-search"
                   aria-label="Find a component"
                 >
-                  <MagnifyingGlassIcon width={15} height={15} aria-hidden="true" />
+                  <Search size={16} aria-hidden="true" />
                 </a>
                 {/* Two choices, as most sites offer; System stays the start until one is picked. */}
-                <AppearanceToggle
-                  variant="switch"
-                  size="sm"
-                  label="Color mode"
-                  value={appearance}
-                  onValueChange={setAppearance}
-                />
+                <IconsProvider icons={{ sun: Sun, moon: Moon }}>
+                  <AppearanceToggle
+                    variant="switch"
+                    size="sm"
+                    label="Color mode"
+                    value={appearance}
+                    onValueChange={setAppearance}
+                  />
+                </IconsProvider>
                 <Link
                   className="web-header-cta"
                   href="/getting-started/"
@@ -175,9 +177,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   }}
                 >
                   {menuOpen ? (
-                    <Cross2Icon width={15} height={15} aria-hidden="true" />
+                    <X size={16} aria-hidden="true" />
                   ) : (
-                    <HamburgerMenuIcon width={15} height={15} aria-hidden="true" />
+                    <Menu size={16} aria-hidden="true" />
                   )}
                 </button>
               </div>

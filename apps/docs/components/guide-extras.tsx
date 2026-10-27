@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { TableOfContents } from '@stackunseen/ui/navigation';
 import '@stackunseen/ui/navigation.css';
 
@@ -47,7 +47,7 @@ export function GuidePager({ links }: { links: readonly FrameLink[] }) {
       {previous && (
         <Link href={previous[1]} rel="prev">
           <span>
-            <ArrowLeftIcon width={15} height={15} aria-hidden="true" /> Previous
+            <ArrowLeft size={16} aria-hidden="true" /> Previous
           </span>
           <strong>{previous[0]}</strong>
         </Link>
@@ -55,7 +55,7 @@ export function GuidePager({ links }: { links: readonly FrameLink[] }) {
       {next && (
         <Link href={next[1]} rel="next" data-next="">
           <span>
-            Next <ArrowRightIcon width={15} height={15} aria-hidden="true" />
+            Next <ArrowRight size={16} aria-hidden="true" />
           </span>
           <strong>{next[0]}</strong>
         </Link>

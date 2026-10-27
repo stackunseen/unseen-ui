@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowTopRightIcon } from '@radix-ui/react-icons';
+import { ArrowUpRight } from 'lucide-react';
 import { Tabs } from '@stackunseen/ui';
 const templates = [
   {
@@ -30,7 +30,7 @@ export function HomeTemplates() {
           <h2 id="home-template-title">Explore a complete screen.</h2>
         </div>
         <Link prefetch={false} className="web-text-link" href="/templates/">
-          All templates <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
+          All templates <ArrowUpRight size={16} aria-hidden="true" />
         </Link>
       </div>
       <Tabs
@@ -71,7 +71,7 @@ export function HomeTemplates() {
                 </p>
                 <p>{template.description}</p>
                 <Link prefetch={false} className="web-text-link" href={template.href}>
-                  Open the template <ArrowTopRightIcon width={15} height={15} aria-hidden="true" />
+                  Open the template <ArrowUpRight size={16} aria-hidden="true" />
                 </Link>
               </figcaption>
             </figure>

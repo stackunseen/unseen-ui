@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { FileTextIcon, MoonIcon, ResetIcon, SunIcon } from '@radix-ui/react-icons';
+import { FileText, Moon, RotateCcw, Sun } from 'lucide-react';
 import { AITheme, Button, Tabs, Select, CopyButton } from '@stackunseen/ui';
 import { TableOfContents } from '@stackunseen/ui/navigation';
 import { HighlightedCodeBlock } from '@stackunseen/ui/highlight';
@@ -181,7 +181,7 @@ export function ComponentDetail({
                 href={`/llms/${componentSlug(entry.name)}.md`}
                 className="detail-markdown-link"
               >
-                <FileTextIcon width={15} height={15} aria-hidden="true" />
+                <FileText size={16} aria-hidden="true" />
                 Markdown
               </Button>
               {pagination}
@@ -332,7 +332,7 @@ export function ComponentDetail({
                             setPreviewMode((mode) => (mode === 'light' ? undefined : 'light'))
                           }
                         >
-                          <SunIcon width={15} height={15} aria-hidden="true" />
+                          <Sun size={16} aria-hidden="true" />
                         </button>
                         <button
                           type="button"
@@ -343,7 +343,7 @@ export function ComponentDetail({
                             setPreviewMode((mode) => (mode === 'dark' ? undefined : 'dark'))
                           }
                         >
-                          <MoonIcon width={15} height={15} aria-hidden="true" />
+                          <Moon size={16} aria-hidden="true" />
                         </button>
                         <button
                           type="button"
@@ -351,7 +351,7 @@ export function ComponentDetail({
                           aria-label="Reset example"
                           onClick={() => setReset((value) => value + 1)}
                         >
-                          <ResetIcon width={15} height={15} aria-hidden="true" />
+                          <RotateCcw size={16} aria-hidden="true" />
                         </button>
                       </div>
                       <div

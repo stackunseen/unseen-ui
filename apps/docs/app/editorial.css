@@ -166,8 +166,6 @@
 .web-icon {
   width: 32px;
   height: 32px;
-  /* 15px icons centre on a whole pixel inside the 31px content box. */
-  padding: 1px 0 0 1px;
   box-sizing: border-box;
   border-radius: var(--site-control-radius);
   color: var(--ai-muted);
@@ -189,13 +187,6 @@
    0.3px outline that thickens their strokes without moving their edges off the pixel grid. */
 .web-header .web-icon {
   color: var(--ai-text);
-}
-.web-header svg path,
-.explorer-sidebar svg path,
-.web-docs-nav svg path,
-.web-footer svg path {
-  stroke: currentColor;
-  stroke-width: 0.3px;
 }
 .web-header-cta {
   display: inline-flex;

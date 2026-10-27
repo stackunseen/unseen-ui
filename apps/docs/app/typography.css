@@ -1,6 +1,6 @@
 /* Site reading scale. Library specimens retain their own semantic sizes. */
 html {
-  --ai-font-family: var(--font-unseen), Arial, sans-serif;
+  --ai-font-family: var(--font-unseen), 'Segoe UI', Arial, sans-serif;
   --ai-font-size: 15px;
   /* Reserve the scrollbar so pages of different heights do not shift sideways. */
   scrollbar-gutter: stable;
