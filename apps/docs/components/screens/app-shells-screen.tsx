@@ -128,7 +128,9 @@ export function AppShellsScreen() {
                 <div className={s.shellMain}>
                   <strong>212 terms</strong>
                   <p className={s.note}>Product names and their approved German translations. The translator checks each draft against this list.</p>
-                  <StatusBadge state="succeeded" label="Checked 08:39" />
+                  <div>
+                    <StatusBadge state="succeeded" label="Checked 08:39" />
+                  </div>
                 </div>
               }
             />
