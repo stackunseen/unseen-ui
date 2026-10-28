@@ -171,6 +171,12 @@
   overflow: hidden;
   background: var(--ai-canvas);
 }
+.shellBoxAuto {
+  height: auto;
+}
+.shellMain > [data-part='status-badge'] {
+  justify-self: start;
+}
 .shellNav {
   display: grid;
   gap: 2px;

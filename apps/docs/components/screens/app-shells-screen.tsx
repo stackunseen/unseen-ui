@@ -118,7 +118,7 @@ export function AppShellsScreen() {
       <section className={s.shellFrame} aria-labelledby="shell-contained">
         <h2 id="shell-contained">Contained tool shell</h2>
         <p>The compact variant for a tool embedded in a page: navigation and main only, no header, the page keeps the scroll.</p>
-        <div className={s.shellBox} style={{ height: 360 }}>
+        <div className={`${s.shellBox} ${s.shellBoxAuto}`}>
           <WorkspaceShell
               label="Glossary"
               variant="contained"
