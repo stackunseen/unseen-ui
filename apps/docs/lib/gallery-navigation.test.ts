@@ -46,8 +46,8 @@ describe('library collections', () => {
     expect(sectionCatalog('patterns')).toEqual([]);
     expect(siteNavigation.map(([label]) => label)).toEqual([
       'Components',
-      'Patterns',
-      'Getting Started',
+      'Templates',
+      'Docs',
       'Customize',
     ]);
     for (const path of ['/patterns/coding-studio/', '/patterns/recoverable-chat/', '/templates/'])
@@ -55,9 +55,9 @@ describe('library collections', () => {
         siteNavigation
           .filter(([, href]) => isSiteSectionActive(path, href))
           .map(([label]) => label),
-      ).toEqual(['Patterns']);
+      ).toEqual(['Templates']);
     for (const path of ['/getting-started/', '/docs/integration/', '/docs/customization/'])
-      expect(isSiteSectionActive(path, '/getting-started/')).toBe(true);
+      expect(isSiteSectionActive(path, '/docs/')).toBe(true);
     // Each page lights up the section whose sidebar it shows, and only that one.
     for (const [path, label] of [
       ['/design/', 'Customize'],

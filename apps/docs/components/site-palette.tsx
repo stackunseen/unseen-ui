@@ -10,7 +10,13 @@ import { siteNavigation } from '../lib/site-navigation';
 /** The places the palette lists before anything is typed. */
 const pages: CommandPaletteItem[] = [
   ...siteNavigation.map(([label, href]) => ({ id: `nav-${href}`, label, href, group: 'Pages' })),
-  { id: 'nav-/templates/', label: 'Templates', href: '/templates/', group: 'Pages' },
+  {
+    id: 'nav-/getting-started/',
+    label: 'Getting started',
+    href: '/getting-started/',
+    group: 'Pages',
+  },
+  { id: 'nav-/patterns/', label: 'Patterns', href: '/patterns/', group: 'Pages' },
   { id: 'nav-/tasks/', label: 'Tasks', href: '/tasks/', group: 'Pages' },
   { id: 'nav-/docs/changelog/', label: 'Changelog', href: '/docs/changelog/', group: 'Pages' },
 ];
@@ -76,13 +82,17 @@ export function SitePaletteButton() {
   return (
     <button
       type="button"
-      className="web-icon"
+      className="web-search"
       aria-label="Search the site"
       aria-keyshortcuts="Control+K Meta+K"
       title="Search (Ctrl+K)"
       onClick={palette.open}
     >
       <Search size={16} aria-hidden="true" />
+      <span className="web-search-label">Search</span>
+      <kbd className="web-search-key" aria-hidden="true">
+        ⌘K
+      </kbd>
     </button>
   );
 }

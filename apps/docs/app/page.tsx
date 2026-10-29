@@ -32,7 +32,7 @@ export default function Page() {
       <main id="main-content" className="web-container home-page" tabIndex={-1}>
         <section className="home-hero" aria-labelledby="home-title">
           <div className="home-intro">
-            <p className="home-kicker">// ready-made UI for AI agent apps</p>
+            <p className="home-kicker">React components for AI agent apps</p>
             <h1 id="home-title">Building an AI agent? These are the screens it needs.</h1>
           </div>
           <div className="home-intro-aside">
@@ -61,8 +61,9 @@ export default function Page() {
                 />
               </span>
               <span className="home-intro-facts">
-                <span>Early alpha</span>
                 <span>React 19</span>
+                <span>TypeScript</span>
+                <span>No Tailwind needed</span>
                 <span>MIT licence</span>
               </span>
             </div>

@@ -8,7 +8,7 @@ import './website.css';
 import './typography.css';
 import './home.css';
 import './polish.css';
-import './editorial.css';
+import './system.css';
 import { SiteShell } from '../components/site-shell';
 import { pageMetadata, siteDescription, siteOrigin } from '../lib/site-seo';
 import { navWidthScript } from '../lib/nav-width';

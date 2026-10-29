@@ -74,9 +74,10 @@ export default function Page() {
       mainClassName="directory-page"
       links={[
         ['All components', '/components/'],
-        ['Patterns', '/patterns/'],
-        ['Customize', '/customize/'],
-        ['Getting started', '/getting-started/'],
+        ['By task', '/tasks/'],
+        ['Design tokens', '/docs/tokens/'],
+        ['Theme studio', '/customize/'],
+        ['Design foundations', '/design/'],
       ]}
       rail={rail}
     >

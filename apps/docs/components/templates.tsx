@@ -29,6 +29,13 @@ export function Templates() {
         In the browser <span>sample data, no keys</span>
       </h2>
       <TemplateCards exclude="/templates/relay/" />
+      <p className={s.patternsNote}>
+        Smaller compositions, such as a recoverable chat or an agent operations screen, are on the{' '}
+        <Link prefetch={false} href="/patterns/">
+          Patterns page
+        </Link>
+        .
+      </p>
 
       <h2 className="patterns-heading" id="relay">
         Relay <span>a reference app to run locally</span>
@@ -90,8 +97,7 @@ export function Templates() {
             </li>
           </ol>
           <p className={s.workflowFootnote}>
-            <Check size={16} aria-hidden="true" /> No external account or API key
-            required
+            <Check size={16} aria-hidden="true" /> No external account or API key required
           </p>
         </div>
       </Card>
@@ -127,8 +133,7 @@ pnpm template:dev`}
             Adapt the theme, icons and sample data. The source guide maps screens to components.
           </p>
           <Link prefetch={false} className={s.textLink} href="/getting-started/#customize">
-            Theme and icon customization{' '}
-            <ArrowUpRight size={16} aria-hidden="true" />
+            Theme and icon customization <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </section>
         <section className={s.map} aria-labelledby="relay-components-title">

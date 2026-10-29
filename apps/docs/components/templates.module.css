@@ -249,3 +249,13 @@
     min-block-size: 44px;
   }
 }
+
+.patternsNote {
+  margin: 16px 0 0;
+  font-size: 14px;
+  color: var(--ai-muted);
+}
+.patternsNote a {
+  color: var(--ai-primary-text, var(--ai-primary));
+  font-weight: 500;
+}
