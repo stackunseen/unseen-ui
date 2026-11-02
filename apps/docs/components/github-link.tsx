@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 
 export const repositoryUrl = 'https://github.com/stackunseen/unseen-ui';
-const api = 'https://api.github.com/repos/stackunseen/unseen-ui';
 const key = 'unseen-ui-stars';
 
 /**
- * The repository link in the header. The star count comes from GitHub's public API, is cached
- * for the session, and is left out entirely when the request fails or the number is unknown.
+ * The repository link in the header. The star count is read once per build
+ * (scripts/github-stars.mjs) into /github.json on this site, so page views never call GitHub.
+ * It is cached for the session and left out entirely when the number is unknown.
  */
 export function GitHubLink() {
   const [stars, setStars] = useState<number | null>(null);
@@ -22,13 +22,13 @@ export function GitHubLink() {
     } catch {
       // Storage may be unavailable; the count is simply fetched again.
     }
-    fetch(api, { headers: { accept: 'application/vnd.github+json' } })
+    fetch('/github.json')
       .then((response) => (response.ok ? response.json() : null))
-      .then((data: { stargazers_count?: unknown } | null) => {
-        if (cancelled || typeof data?.stargazers_count !== 'number') return;
-        setStars(data.stargazers_count);
+      .then((data: { stars?: unknown } | null) => {
+        if (cancelled || typeof data?.stars !== 'number') return;
+        setStars(data.stars);
         try {
-          sessionStorage.setItem(key, String(data.stargazers_count));
+          sessionStorage.setItem(key, String(data.stars));
         } catch {
           // Ignore storage failures.
         }

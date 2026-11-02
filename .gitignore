@@ -74,6 +74,8 @@ id_ed25519
 .wrangler/
 # shadcn registry: generated on every docs build with the current package version.
 /apps/docs/public/r/
+# Written by apps/docs/scripts/github-stars.mjs on every build.
+/apps/docs/public/github.json
 
 # Local tool configuration.
 .claude/
