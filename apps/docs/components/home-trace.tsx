@@ -30,14 +30,14 @@ export function HomeTrace() {
   return (
     <figure className="home-trace" aria-label="A live agent run">
       <header className="home-trace-head">
-        <span className="home-trace-title">
+        <h2 className="home-trace-title">
           <span
             className="home-trace-signal"
             data-live={!answered ? '' : undefined}
             aria-hidden="true"
           />
           Account cleanup
-        </span>
+        </h2>
         <StatusBadge
           state={state}
           label={

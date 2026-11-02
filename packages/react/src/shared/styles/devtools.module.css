@@ -139,8 +139,10 @@
 .snippet code {
   flex: 1;
   min-width: 0;
-  overflow-x: auto;
-  white-space: pre;
+  /* A long command wraps rather than scrolling: a scroller here would hold content keyboard
+     users cannot reach. The copy button still copies the exact text. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .frame[data-internal='true'] {
   color: var(--ai-muted, #52525b);

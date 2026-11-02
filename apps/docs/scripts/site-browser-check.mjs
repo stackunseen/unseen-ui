@@ -66,7 +66,7 @@ async function journeys(page, { origin, output }, audit) {
     );
     const tabs = page.getByRole('tablist', { name: 'Component examples by job' });
     assert(
-      (await tabs.getByRole('tab').count()) === 5 &&
+      (await tabs.getByRole('tab').count()) === 6 &&
         (await page.locator('.home-tile').count()) === 2,
       'Home opens on the breadth strip with the agent runs tab',
     );
@@ -146,13 +146,17 @@ async function journeys(page, { origin, output }, audit) {
     const total = await announced();
     assert(
       total > 100 &&
-        (await page.locator('.directory-collection:not(.directory-featured) .directory-group li').count()) === total,
+        (await page
+          .locator('.directory-collection:not(.directory-featured) .directory-group li')
+          .count()) === total,
       'All announced entries are rendered in the catalog',
     );
     await page.getByRole('button', { name: /^AI components/ }).click();
     assert(
       (await announced()) < total &&
-        (await page.locator('.directory-collection:not(.directory-featured) .directory-group li').count()) === (await announced()),
+        (await page
+          .locator('.directory-collection:not(.directory-featured) .directory-group li')
+          .count()) === (await announced()),
       'AI filter narrows to its announced count',
     );
     await search.fill('does-not-exist-xyz');
@@ -162,7 +166,9 @@ async function journeys(page, { origin, output }, audit) {
     );
     await page.getByRole('button', { name: 'Clear search' }).click();
     assert(
-      (await page.locator('.directory-collection:not(.directory-featured) .directory-group li').count()) === total,
+      (await page
+        .locator('.directory-collection:not(.directory-featured) .directory-group li')
+        .count()) === total,
       'Clear search restores all entries',
     );
     const thumbs = page.locator(
@@ -171,7 +177,11 @@ async function journeys(page, { origin, output }, audit) {
     await thumbs.first().scrollIntoViewIfNeeded();
     assert(
       (await thumbs.count()) === total &&
-        (await thumbs.first().evaluate((image) => image.complete && image.naturalWidth === 480)),
+        (await thumbs.first().evaluate(async (image) => {
+          // The thumbnail loads lazily; wait for it instead of reading it mid-load.
+          await image.decode().catch(() => {});
+          return image.complete && image.naturalWidth === 720;
+        })),
       'Gallery cards carry a loaded captured preview',
     );
     await page.getByRole('button', { name: 'List', exact: true }).click();
@@ -183,7 +193,9 @@ async function journeys(page, { origin, output }, audit) {
     const listState = {
       url: page.url(),
       rows: await page
-        .locator('.directory-collection:not(.directory-featured) .directory-group[data-view="list"] li')
+        .locator(
+          '.directory-collection:not(.directory-featured) .directory-group[data-view="list"] li',
+        )
         .count(),
       thumbs: await page.locator('.directory-thumb').count(),
       total,
@@ -260,7 +272,7 @@ async function journeys(page, { origin, output }, audit) {
     const tabs = page.getByRole('tablist', { name: 'Component examples by job' });
     const bounds = await tabs.boundingBox();
     assert(
-      bounds && bounds.y < 844 * 2 && (await tabs.getByRole('tab').count()) === 5,
+      bounds && bounds.y < 844 * 2 && (await tabs.getByRole('tab').count()) === 6,
       'Breadth tabs sit within the first two mobile screens',
     );
     assert(

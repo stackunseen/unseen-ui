@@ -23,6 +23,8 @@
   /* The signal: the one colour the site adds, for what is live or needs a person. */
   --site-signal: #e8590c;
   --site-signal-soft: color-mix(in srgb, #e8590c 12%, transparent);
+  /* The signal as text: darker, so small type keeps 4.5:1 on the canvas and on its own tint. */
+  --site-signal-text: #a63e0a;
   --site-accent-tint: var(--site-panel-raised);
   --site-label: var(--ai-muted);
   /* A faint measuring grid behind stages. */
@@ -39,6 +41,7 @@
   --site-line-strong: color-mix(in srgb, var(--ai-text) 35%, var(--ai-border));
   --site-signal: #ff7a33;
   --site-signal-soft: color-mix(in srgb, #ff7a33 16%, transparent);
+  --site-signal-text: #ff7a33;
 }
 
 /* Labels: small sans, tracked, upper case. Counts and versions keep mono for tabular figures. */
@@ -1407,10 +1410,6 @@ html[data-frame] .example-page-workspace {
 .install-chooser-panel [data-part='snippet'] {
   min-width: 0;
 }
-.install-chooser-panel [data-part='snippet'] code {
-  overflow-x: auto;
-  white-space: nowrap;
-}
 .install-chooser-panel > a {
   justify-self: start;
   font-size: 14px;
@@ -1538,7 +1537,7 @@ html[data-frame] .example-page-workspace {
   text-transform: none;
 }
 .home-kicker {
-  color: var(--site-signal);
+  color: var(--site-signal-text);
 }
 .web-brand .web-brand-dot,
 .web-footer-brand .web-brand-dot {
@@ -1629,7 +1628,7 @@ html[data-frame] .example-page-workspace {
 }
 .new-badge {
   background: var(--site-signal-soft);
-  color: var(--site-signal);
+  color: var(--site-signal-text);
   font-family: var(--site-mono);
   font-weight: 500;
   letter-spacing: 0;
@@ -1769,4 +1768,10 @@ html[data-frame] .example-page-workspace {
 .web-search-key {
   min-width: 46px;
   text-align: center;
+}
+h2.home-trace-title {
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 20px;
 }
