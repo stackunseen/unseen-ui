@@ -302,6 +302,26 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Counts across two named axes.',
     'Matrix',
   ),
+  Sparkline: g(
+    'A trend beside a number, in a stat card or a table cell.',
+    'Reading exact values off an axis.',
+    'Chart',
+  ),
+  BarList: g(
+    'Ranked totals: tokens by tool, spend by agent, calls by model.',
+    'Values over time.',
+    'Chart',
+  ),
+  Tracker: g(
+    'How each day or run went, for uptime, nightly evals or a run history.',
+    'Counts that need a scale.',
+    'DotBars',
+  ),
+  DonutChart: g(
+    'A few shares of one total, such as spend by model.',
+    'More than five or six parts, or values that do not add up to a whole.',
+    'BarList',
+  ),
   Avatar: g('A person or team, with an image or initials.', 'Voice agent presence.', 'Persona'),
   Stat: g(
     'A key number with its label and change, in a row of metrics.',

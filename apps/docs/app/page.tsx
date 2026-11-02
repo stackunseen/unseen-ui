@@ -4,6 +4,7 @@ import { HomeBreadth } from '../components/home-breadth';
 import { HomeConnect } from '../components/home-connect';
 import { HomeAgents } from '../components/home-agents';
 import { HomeFaq } from '../components/home-faq';
+import { HomeTrace } from '../components/home-trace';
 import { TemplateCards, templateListings } from '../components/template-cards';
 import { componentTasks } from '../lib/tasks';
 import { LegacyGalleryRedirect } from '../components/legacy-gallery-redirect';
@@ -33,13 +34,11 @@ export default function Page() {
         <section className="home-hero" aria-labelledby="home-title">
           <div className="home-intro">
             <p className="home-kicker">React components for AI agent apps</p>
-            <h1 id="home-title">Building an AI agent? These are the screens it needs.</h1>
-          </div>
-          <div className="home-intro-aside">
+            <h1 id="home-title">The screens your agent needs, with nothing faked.</h1>
             <p className="home-intro-description">
-              {releaseCatalog.length} React components for chat, tool calls, approvals, agent runs,
-              sources and forms, plus {templateListings.length} whole applications to start from.
-              Nothing shows as done until your server confirms it.
+              {releaseCatalog.length} components for chat, tool calls, approvals, agent runs,
+              sources and dashboards, plus {templateListings.length} whole applications. A click
+              only sends a request; the screen shows done when your server says so.
             </p>
             <div className="home-intro-actions">
               <Link className="web-button primary" href="/components/">
@@ -60,14 +59,23 @@ export default function Page() {
                   label="Copy install command"
                 />
               </span>
-              <span className="home-intro-facts">
-                <span>React 19</span>
-                <span>TypeScript</span>
-                <span>No Tailwind needed</span>
-                <span>MIT licence</span>
-              </span>
             </div>
+            <dl className="home-spec">
+              <div>
+                <dt>React</dt>
+                <dd>19</dd>
+              </div>
+              <div>
+                <dt>Styling</dt>
+                <dd>Plain CSS, no Tailwind</dd>
+              </div>
+              <div>
+                <dt>Licence</dt>
+                <dd>MIT</dd>
+              </div>
+            </dl>
           </div>
+          <HomeTrace />
         </section>
         <HomeBreadth />
         <section className="home-templates" aria-labelledby="home-templates-title">

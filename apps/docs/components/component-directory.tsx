@@ -15,6 +15,7 @@ import { directorySearch, groupAnchor, readDirectoryLocation } from '../lib/dire
 import { componentTasks } from '../lib/tasks';
 import { agentOperationsCollection } from '../lib/agent-operations';
 import { matchesQuery } from '../lib/search';
+import { newComponents } from '../lib/new-components';
 export interface DirectoryEntry {
   name: string;
   href: string;
@@ -252,8 +253,8 @@ function EntryList({ view, entries }: { view: string; entries: DirectoryEntry[] 
                       className="directory-thumb-light"
                       src={`${entry.preview}-light.webp`}
                       alt=""
-                      width={480}
-                      height={300}
+                      width={720}
+                      height={450}
                       loading="lazy"
                       decoding="async"
                     />
@@ -261,8 +262,8 @@ function EntryList({ view, entries }: { view: string; entries: DirectoryEntry[] 
                       className="directory-thumb-dark"
                       src={`${entry.preview}-dark.webp`}
                       alt=""
-                      width={480}
-                      height={300}
+                      width={720}
+                      height={450}
                       loading="lazy"
                       decoding="async"
                     />
@@ -275,6 +276,7 @@ function EntryList({ view, entries }: { view: string; entries: DirectoryEntry[] 
             <span className="directory-text">
               <strong>
                 {entry.name}
+                {newComponents.has(entry.name) && <span className="new-badge">New</span>}
                 <ArrowUpRight size={16} aria-hidden="true" />
               </strong>
               <span>{entry.description}</span>

@@ -8,27 +8,37 @@
   --site-mono: var(--font-unseen-mono, ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace);
   --ai-font-mono: var(--site-mono);
   --ai-font-numeric: var(--site-mono);
-  --site-canvas: color-mix(in srgb, var(--ai-canvas) 92%, var(--ai-border));
+  /* One flat canvas; panels are drawn by hairlines, not lifted by shadows. */
+  --site-canvas: var(--ai-canvas);
   --site-panel: var(--ai-surface);
-  --site-panel-raised: color-mix(in srgb, var(--ai-surface) 70%, var(--ai-canvas));
-  --site-line: color-mix(in srgb, var(--ai-border) 85%, transparent);
-  --site-line-soft: color-mix(in srgb, var(--ai-border) 50%, transparent);
-  --site-radius: 14px;
-  --site-radius-sm: 10px;
-  --site-control-radius: 8px;
-  --site-shadow: 0 1px 2px rgba(16, 20, 28, 0.04), 0 2px 8px rgba(16, 20, 28, 0.04);
-  --site-shadow-hover: 0 2px 4px rgba(16, 20, 28, 0.05), 0 12px 28px rgba(16, 20, 28, 0.08);
-  --site-accent-tint: color-mix(in srgb, var(--ai-primary) 10%, transparent);
+  --site-panel-raised: color-mix(in srgb, var(--ai-surface) 94%, var(--ai-text));
+  --site-line: color-mix(in srgb, var(--ai-border) 90%, transparent);
+  --site-line-soft: color-mix(in srgb, var(--ai-border) 55%, transparent);
+  --site-line-strong: color-mix(in srgb, var(--ai-text) 28%, var(--ai-border));
+  --site-radius: 10px;
+  --site-radius-sm: 8px;
+  --site-control-radius: 7px;
+  --site-shadow: none;
+  --site-shadow-hover: none;
+  /* The signal: the one colour the site adds, for what is live or needs a person. */
+  --site-signal: #e8590c;
+  --site-signal-soft: color-mix(in srgb, #e8590c 12%, transparent);
+  --site-accent-tint: var(--site-panel-raised);
   --site-label: var(--ai-muted);
+  /* A faint measuring grid behind stages. */
+  --site-grid:
+    linear-gradient(var(--site-line-soft) 1px, transparent 1px) 0 0 / 100% 24px,
+    linear-gradient(90deg, var(--site-line-soft) 1px, transparent 1px) 0 0 / 24px 100%;
   background: var(--site-canvas);
 }
 .unseen-web[data-site-appearance='dark'] {
   --site-canvas: var(--ai-canvas);
-  --site-panel: color-mix(in srgb, var(--ai-surface) 88%, white);
-  --site-panel-raised: color-mix(in srgb, var(--ai-surface) 80%, white);
-  --site-line: color-mix(in srgb, var(--ai-border) 100%, transparent);
-  --site-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --site-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --site-panel: color-mix(in srgb, var(--ai-surface) 70%, var(--ai-canvas));
+  --site-panel-raised: color-mix(in srgb, var(--ai-surface) 92%, white);
+  --site-line: var(--ai-border);
+  --site-line-strong: color-mix(in srgb, var(--ai-text) 35%, var(--ai-border));
+  --site-signal: #ff7a33;
+  --site-signal-soft: color-mix(in srgb, #ff7a33 16%, transparent);
 }
 
 /* Labels: small sans, tracked, upper case. Counts and versions keep mono for tabular figures. */
@@ -504,23 +514,32 @@
 .page-pager a:first-child:last-child {
   grid-column: 1 / -1;
 }
-/* Catalog tiles: the thumbnail sits in a framed preview area; the text below has room. */
+/* Catalog cards: three wide cards per row, each with a framed stage that shows the component
+   near its real size (2x captures from the component page), the name and one line under it. */
+.directory-group[data-view='gallery'] ul {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
 .directory-thumb {
-  margin: 10px 10px 0;
+  margin: 8px 8px 0;
+  aspect-ratio: 16 / 10;
   border: 1px solid var(--site-line-soft);
-  border-bottom: 1px solid var(--site-line-soft);
   border-radius: var(--site-radius-sm);
-  background: var(--site-panel-raised);
+  background: var(--ai-surface);
 }
 .directory-thumb img {
-  object-position: top left;
+  object-fit: cover;
+  object-position: center;
+}
+.directory-thumb-name {
+  font-size: 15px;
+  font-weight: 600;
 }
 .directory-text {
   padding: 12px 16px 16px;
   gap: 4px;
 }
 .directory-group strong {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
@@ -534,8 +553,14 @@
   }
 }
 .directory-text > span {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.5;
+}
+@media (max-width: 640px) {
+  .directory-group[data-view='gallery'] ul {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
 }
 .directory-group[data-view='list'] ul {
   border-radius: var(--site-radius);
@@ -994,25 +1019,94 @@
   }
 }
 
-/* Component page: a 14px frame with a quiet canvas, the toolbar on the panel colour. */
+/* Component page: one framed stage. The Preview / Code switch and the example controls share a
+   48px header bar; the stage under it is the app surface, so subtle fills stay visible. */
 .detail-frame {
+  position: relative;
+  container-type: inline-size;
   border-radius: var(--site-radius);
-  border-color: var(--site-line);
+  border: 1px solid var(--site-line);
   background: var(--site-panel);
   box-shadow: var(--site-shadow);
   overflow: hidden;
 }
-.detail-frame .preview-canvas {
-  background: var(--site-canvas);
-}
 .explorer-main .detail-frame .detail-toolbar {
-  border-bottom-color: var(--site-line);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--site-line);
   background: var(--site-panel);
+}
+.detail-frame > div > [role='tablist'] {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 48px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--site-line);
+  background: var(--site-panel);
+  box-shadow: none;
+}
+.detail-frame > div > [role='tablist'] > [role='tab'] {
+  height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ai-muted);
+}
+.detail-frame > div > [role='tablist'] > [role='tab']::after {
+  display: none;
+}
+.detail-frame > div > [role='tablist'] > [role='tab'][aria-selected='true'] {
+  background: var(--site-panel-raised);
+  color: var(--ai-text);
+  box-shadow: inset 0 0 0 1px var(--site-line);
+}
+@container (min-width: 700px) {
+  .explorer-main .detail-frame .detail-toolbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    flex-wrap: nowrap;
+    height: 48px;
+    padding: 0 10px;
+    gap: 6px;
+    border: 0;
+    background: transparent;
+  }
+  /* The selects carry their own accessible names; the visible words make way for the tabs. */
+  .explorer-main .detail-frame .detail-toolbar label {
+    font-size: 0;
+    gap: 0;
+  }
+  .explorer-main .detail-frame .detail-toolbar label > button {
+    min-width: 0;
+    font-size: 13px;
+  }
+}
+.detail-frame .preview-canvas {
+  min-height: 400px;
+  background: var(--ai-surface);
+}
+.detail-frame .preview-canvas[data-preview-mode] {
+  background: var(--ai-canvas);
+}
+.preview-rail {
+  border-radius: var(--site-control-radius);
+  border: 1px solid var(--site-line);
+  background: var(--site-panel);
+  box-shadow: var(--site-shadow);
 }
 .detail-frame .preview-caption {
   border-top-color: var(--site-line);
   font-size: 13px;
   color: var(--ai-muted);
+}
+.detail-frame .code-example {
+  padding: 16px;
 }
 .detail-install-section .detail-install {
   border-radius: var(--site-radius);
@@ -1031,6 +1125,15 @@
 }
 .explorer-context {
   color: var(--ai-muted);
+}
+.explorer-main .detail-heading h1 {
+  font-size: 34px;
+  letter-spacing: -0.03em;
+}
+.explorer-main .api-section > h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 /* Docs overview: the guide cards as a two-column grid. */
@@ -1165,4 +1268,505 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+/* Template pages: the way back and the device switch share one bar; tablet and phone widths load
+   the page in a framed device stage. In that frame (?frame=1) the site chrome is hidden. */
+.template-viewport-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.template-viewport-bar .template-workspace-back {
+  margin: 0;
+}
+.template-viewport-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--site-line);
+  border-radius: 10px;
+  background: var(--site-panel);
+  box-shadow: var(--site-shadow);
+}
+.template-viewport-switch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ai-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.template-viewport-switch button[aria-checked='true'] {
+  background: var(--site-panel-raised);
+  color: var(--ai-text);
+  box-shadow: inset 0 0 0 1px var(--site-line);
+}
+.template-viewport-switch button:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 1px;
+}
+@media (max-width: 760px) {
+  .template-viewport-switch {
+    display: none;
+  }
+}
+.template-device {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  border: 1px solid var(--site-line);
+  border-radius: var(--site-radius);
+  background:
+    radial-gradient(circle at 1px 1px, var(--site-line) 1px, transparent 0) 0 0 / 20px 20px,
+    var(--site-canvas);
+}
+.template-device iframe {
+  max-width: 100%;
+  height: min(860px, calc(100dvh - 200px));
+  border: 1px solid var(--site-line);
+  border-radius: 20px;
+  background: var(--ai-canvas);
+  box-shadow: var(--site-shadow-hover);
+}
+.template-device p {
+  margin: 0;
+  font-family: var(--site-mono);
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+html[data-frame] .web-header,
+html[data-frame] .web-footer,
+html[data-frame] .web-skip,
+html[data-frame] .template-viewport-bar {
+  display: none !important;
+}
+html[data-frame] .template-workspace,
+html[data-frame] .example-page-workspace {
+  padding-top: 16px;
+}
+
+/* Getting started: the four ways to install, as one tabbed card. */
+.install-chooser {
+  margin: 24px 0 8px;
+  border: 1px solid var(--site-line);
+  border-radius: var(--site-radius);
+  background: var(--site-panel);
+  box-shadow: var(--site-shadow);
+  overflow: hidden;
+}
+.install-chooser > div > [role='tablist'] {
+  display: flex;
+  gap: 2px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--site-line);
+  box-shadow: none;
+  overflow-x: auto;
+}
+.install-chooser > div > [role='tablist'] > [role='tab'] {
+  height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ai-muted);
+  white-space: nowrap;
+}
+.install-chooser > div > [role='tablist'] > [role='tab']::after {
+  display: none;
+}
+.install-chooser > div > [role='tablist'] > [role='tab'][aria-selected='true'] {
+  background: var(--site-panel-raised);
+  color: var(--ai-text);
+  box-shadow: inset 0 0 0 1px var(--site-line);
+}
+.install-chooser-panel {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px 18px;
+}
+.install-chooser-panel > p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ai-muted);
+}
+.install-chooser-panel [data-part='snippet'] {
+  min-width: 0;
+}
+.install-chooser-panel [data-part='snippet'] code {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.install-chooser-panel > a {
+  justify-self: start;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* "New" marks on recently added components, in the catalog and the component sidebar. */
+.new-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  margin-inline-start: 8px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--ai-success-soft, #dcfce7);
+  color: var(--ai-success-text, var(--ai-text));
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  line-height: 1;
+}
+.directory-group strong .new-badge {
+  margin-inline: 0 auto;
+}
+.template-viewport-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.template-viewport-open {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--site-line);
+  border-radius: 10px;
+  background: var(--site-panel);
+  box-shadow: var(--site-shadow);
+  color: var(--ai-text);
+}
+@media (hover: hover) {
+  .template-viewport-open:hover {
+    border-color: var(--ai-control-border);
+  }
+}
+
+/* Home Dashboards tab: a row of headline figures with trends, a stacked history, meters. */
+.home-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+.home-kpi {
+  display: grid;
+  gap: 10px;
+  padding: 4px 20px;
+  border-inline-start: 1px solid var(--site-line);
+}
+.home-kpi:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+.home-kpi:last-child {
+  padding-inline-end: 0;
+}
+.home-dashboard-stack {
+  display: grid;
+  gap: 24px;
+}
+.home-meters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.home-dashboard .home-tile-stage {
+  align-content: start;
+}
+@media (max-width: 1080px) {
+  .home-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 20px;
+  }
+  .home-kpi:nth-child(3) {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+  .home-meters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .home-kpis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home-kpi {
+    padding-inline: 0;
+    border-inline-start: 0;
+  }
+}
+.home-tile[data-span='3'] {
+  grid-column: 1 / -1;
+}
+
+/* Identity (2026-10-29): what makes the site read as Unseen UI. Mono labels in sentence case,
+   hairline panels that darken on hover, a signal mark for the current place, and the live trace
+   in the hero on a measuring grid. */
+.web-eyebrow,
+.eyebrow,
+.home-kicker,
+.directory-group h3,
+.catalog-groups h2 button,
+.nav-section-title,
+.web-docs-nav p,
+.section-description,
+.patterns-heading > span,
+.pattern-facts dt,
+.home-facts dt,
+.web-docs-nav nav.directory-rail .directory-rail-section {
+  font-family: var(--site-mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.home-kicker {
+  color: var(--site-signal);
+}
+.web-brand .web-brand-dot,
+.web-footer-brand .web-brand-dot {
+  color: var(--site-signal);
+}
+/* Header: the current section is marked by a signal line under it, not a filled pill. */
+.web-nav a,
+.web-nav a[aria-current] {
+  position: relative;
+  background: transparent;
+}
+.web-nav a[aria-current]::after {
+  content: '';
+  position: absolute;
+  inset-inline: 12px;
+  bottom: -13px;
+  height: 2px;
+  background: var(--site-signal);
+}
+@media (hover: hover) {
+  .web-nav a:hover {
+    background: transparent;
+    color: var(--ai-text);
+  }
+}
+@media (max-width: 780px) {
+  .web-nav a[aria-current]::after {
+    display: none;
+  }
+}
+.web-search {
+  background: var(--site-panel);
+}
+.web-header-cta {
+  box-shadow: none;
+}
+/* Sidebars: the current row is ink on a quiet fill with a signal tick. */
+.web-docs-nav nav a[aria-current='page'],
+.explorer-sidebar .nav-main.active,
+.component-link.active {
+  position: relative;
+  background: var(--site-panel-raised);
+  color: var(--ai-text);
+}
+.web-docs-nav nav a[aria-current='page']::before,
+.explorer-sidebar .nav-main.active::before,
+.component-link.active::before {
+  content: '';
+  position: absolute;
+  inset-block: 8px;
+  inset-inline-start: 0;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--site-signal);
+}
+@media (hover: hover) {
+  .web-docs-nav nav a[aria-current='page']:hover,
+  .explorer-sidebar .nav-main.active:hover {
+    background: var(--site-panel-raised);
+  }
+}
+/* Cards: hairline panels; hover darkens the line and nothing moves. */
+@media (hover: hover) {
+  .home-tasks li a:hover,
+  .directory-group[data-view='gallery'] li a:hover,
+  .pattern-templates a:hover,
+  .task-list li a:hover,
+  .docs-links a:hover,
+  .page-pager a:hover {
+    transform: none;
+    border-color: var(--site-line-strong);
+  }
+}
+.directory-thumb,
+.pattern-templates .pattern-preview {
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--site-line);
+  border-radius: 0;
+}
+.pattern-templates a {
+  padding-top: 0;
+}
+.directory-tasks button[aria-pressed='true'] {
+  background: var(--site-signal-soft);
+  border-color: color-mix(in srgb, var(--site-signal) 45%, transparent);
+  color: var(--ai-text);
+}
+.new-badge {
+  background: var(--site-signal-soft);
+  color: var(--site-signal);
+  font-family: var(--site-mono);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.detail-frame .preview-canvas {
+  background: var(--ai-surface) var(--site-grid);
+}
+.detail-frame .preview-canvas[data-preview-mode] {
+  background: var(--ai-canvas) var(--site-grid);
+}
+
+/* Hero: words on the left, the live run on the right. */
+.home-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: 32px 56px;
+  padding-block: 56px;
+  border-bottom: 1px solid var(--site-line);
+}
+.home-intro h1 {
+  margin: 0 0 18px;
+  font-size: clamp(38px, 4.2vw, 58px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.home-intro-description {
+  max-width: 50ch;
+  margin-bottom: 24px;
+}
+.home-install {
+  box-shadow: none;
+}
+.home-spec {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0 0;
+}
+.home-spec > div {
+  display: grid;
+  gap: 2px;
+  padding: 0 20px;
+  border-inline-start: 1px solid var(--site-line);
+}
+.home-spec > div:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+.home-spec dt {
+  font-family: var(--site-mono);
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+.home-spec dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+.home-trace {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--site-line);
+  border-radius: 12px;
+  background: var(--site-panel) var(--site-grid);
+}
+.home-trace-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 2px 14px;
+}
+.home-trace-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--site-mono);
+  font-size: 13px;
+  color: var(--ai-text);
+}
+.home-trace-signal {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ai-muted);
+}
+.home-trace-signal[data-live] {
+  background: var(--site-signal);
+  box-shadow: 0 0 0 4px var(--site-signal-soft);
+  animation: home-trace-pulse 1.8s ease-in-out infinite;
+}
+@keyframes home-trace-pulse {
+  50% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-trace-signal[data-live] {
+    animation: none;
+  }
+}
+.home-trace-steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home-trace-steps > li {
+  min-width: 0;
+}
+.home-trace-foot {
+  padding: 14px 2px 0;
+  font-family: var(--site-mono);
+  font-size: 12px;
+  color: var(--ai-muted);
+}
+@media (max-width: 1080px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Code blocks in guides: the library's block draws the frame and the header rule. The article's
+   own pre box would add a second border under the header and a smaller radius inside the
+   larger one, so it stands down inside a library block. */
+.web-article [data-part='code-block'] pre,
+.relay-page [data-part='code-block'] pre,
+.docs-article [data-part='code-block'] pre {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.web-search-key:empty {
+  visibility: hidden;
+}
+.web-search-key {
+  min-width: 46px;
+  text-align: center;
 }

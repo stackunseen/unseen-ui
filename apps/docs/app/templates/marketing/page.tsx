@@ -1,3 +1,4 @@
+import { TemplateViewport } from '../../../components/template-viewport';
 import { MarketingTemplate } from '../../../components/marketing-template/marketing-template';
 import '@stackunseen/ui/marketing.css';
 import { pageMetadata } from '../../../lib/site-seo';
@@ -11,7 +12,9 @@ export const metadata = pageMetadata(
 export default function Page() {
   return (
     <main id="main-content" className="template-workspace" tabIndex={-1}>
-      <MarketingTemplate />
+      <TemplateViewport backHref="/templates/" backLabel="All templates">
+        <MarketingTemplate />
+      </TemplateViewport>
     </main>
   );
 }

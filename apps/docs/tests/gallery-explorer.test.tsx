@@ -24,7 +24,7 @@ import {
 
 describe('gallery links', () => {
   it('maps every component to one scoped navigation group without changing its identity', () => {
-    expect(sectionCatalog('ui')).toHaveLength(65);
+    expect(sectionCatalog('ui')).toHaveLength(69);
     expect(sectionCatalog('ai')).toHaveLength(93);
     expect(
       new Set(

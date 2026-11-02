@@ -35,6 +35,10 @@ const DisplaySpecimen = dynamic(
   () => import('./website-display-specimen').then((m) => m.WebsiteDisplaySpecimen),
   { loading: ExampleLoading },
 );
+const MarksSpecimen = dynamic(
+  () => import('./website-marks-specimen').then((m) => m.WebsiteMarksSpecimen),
+  { loading: ExampleLoading },
+);
 const DotsSpecimen = dynamic(
   () => import('./website-dots-specimen').then((m) => m.WebsiteDotsSpecimen),
   { loading: ExampleLoading },
@@ -82,18 +86,20 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
               ? DisplaySpecimen
               : ['DotRing', 'DotBars', 'WeekStrip', 'HeatKeys'].includes(name)
                 ? DotsSpecimen
-                : ['Chip', 'Stepper', 'Matrix'].includes(name)
-                  ? ControlSpecimen
-                  : [
-                        'CopyButton',
-                        'InputGroup',
-                        'AppearanceToggle',
-                        'CommandPalette',
-                        'TableOfContents',
-                        'ShareMenu',
-                      ].includes(name)
-                    ? UtilitySpecimen
-                    : SurfaceSpecimen;
+                : ['Sparkline', 'BarList', 'Tracker', 'DonutChart'].includes(name)
+                  ? MarksSpecimen
+                  : ['Chip', 'Stepper', 'Matrix'].includes(name)
+                    ? ControlSpecimen
+                    : [
+                          'CopyButton',
+                          'InputGroup',
+                          'AppearanceToggle',
+                          'CommandPalette',
+                          'TableOfContents',
+                          'ShareMenu',
+                        ].includes(name)
+                      ? UtilitySpecimen
+                      : SurfaceSpecimen;
   return (
     <div className="generic-demo" data-demo={name}>
       <Component {...props} />

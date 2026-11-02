@@ -6,17 +6,24 @@ import { CheckIcon } from '@radix-ui/react-icons';
 import {
   AgentSteps,
   ApprovalCard,
+  BarList,
   Button,
+  Chart,
   Checkbox,
+  DonutChart,
+  DotBars,
   EvidenceGroup,
   Field,
   Input,
   Select,
   SourceCard,
+  Sparkline,
+  Stat,
   StatusBadge,
   Switch,
   Tabs,
   ToolCall,
+  Tracker,
   UsageMeter,
 } from '@stackunseen/ui';
 import type { ApprovalProposal, SubmissionState } from '@stackunseen/ui';
@@ -293,9 +300,193 @@ function Forms() {
   );
 }
 
+// Fixed figures for the Dashboards tab, so the page and its screenshots repeat.
+const latencyDays = [212, 198, 230, 245, 221, 190, 176, 182, 169, 158, 166, 149, 141, 152].map(
+  (value, index) => ({ label: `Oct ${index + 1}`, value }),
+);
+const runDays = [41, 38, 44, 52, 47, 30, 28, 55, 61, 58, 63, 49, 36, 66].map((value, index) => ({
+  label: `Oct ${index + 1}`,
+  value,
+}));
+const evalDays = Array.from({ length: 30 }, (_, index) => ({
+  label: `Day ${index + 1}`,
+  status: ([11, 23].includes(index) ? 'failed' : [5, 17].includes(index) ? 'degraded' : 'ok') as
+    'ok' | 'failed' | 'degraded',
+}));
+
+const requestDays = ['Oct 21', 'Oct 22', 'Oct 23', 'Oct 24', 'Oct 25', 'Oct 26', 'Oct 27'];
+const requestSeries = [
+  { id: 'pro', label: 'atlas-pro', values: [310, 342, 365, 398, 240, 212, 401] },
+  { id: 'fast', label: 'atlas-fast', values: [820, 864, 902, 951, 612, 540, 1004] },
+].map((series) => ({
+  id: series.id,
+  label: series.label,
+  points: series.values.map((value, index) => ({ label: requestDays[index]!, value })),
+}));
+const octoberRuns = [
+  12, 14, 11, 9, 16, 4, 3, 22, 26, 31, 28, 24, 6, 5, 30, 34, 29, 38, 41, 36, 9, 7, 33, 35, 32, 30,
+  27, 8, 6, 25, 23,
+].map((value, day) => ({ label: `Oct ${day + 1}`, value }));
+const kpis = [
+  {
+    label: 'Runs today',
+    value: '66',
+    delta: '+14%',
+    trend: 'up' as const,
+    data: runDays,
+    variant: 'bar' as const,
+  },
+  {
+    label: 'Success rate',
+    value: '97.4%',
+    delta: '+0.6 pt',
+    trend: 'up' as const,
+    data: [95.1, 95.8, 96.2, 95.4, 96.9, 97.1, 96.8, 97.4].map((value, index) => ({
+      label: `Day ${index + 1}`,
+      value,
+    })),
+    variant: 'line' as const,
+  },
+  {
+    label: 'p95 latency',
+    value: '152 ms',
+    delta: '-28%',
+    trend: 'neutral' as const,
+    data: latencyDays,
+    variant: 'area' as const,
+  },
+  {
+    label: 'Spend today',
+    value: '$41.20',
+    delta: '+$3.10',
+    trend: 'neutral' as const,
+    data: [31, 34, 29, 38, 36, 41, 38, 41].map((value, index) => ({
+      label: `Day ${index + 1}`,
+      value,
+    })),
+    variant: 'line' as const,
+  },
+];
+
+const dashboardAt = '2026-10-27T10:10:00.000Z';
+
+function Dashboards() {
+  return (
+    <div className="home-tiles home-dashboard">
+      <Tile name="Sparkline" group="Data display" span={3}>
+        <div className="home-kpis">
+          {kpis.map((kpi) => (
+            <div key={kpi.label} className="home-kpi">
+              <Stat
+                variant="plain"
+                label={kpi.label}
+                value={kpi.value}
+                delta={kpi.delta}
+                trend={kpi.trend}
+              />
+              <Sparkline
+                label={`${kpi.label}, recent days`}
+                data={kpi.data}
+                variant={kpi.variant}
+                markLast={kpi.variant !== 'bar'}
+              />
+            </div>
+          ))}
+        </div>
+      </Tile>
+      <Tile name="Chart" group="Data display" span={2}>
+        <Chart
+          title="Requests by model"
+          series={requestSeries}
+          unit="requests"
+          source="metrics service"
+          variant="bar"
+          showLegend
+        />
+      </Tile>
+      <Tile name="DonutChart" group="Data display">
+        <DonutChart
+          label="Spend by model, October"
+          unit="USD"
+          value="$1,284"
+          caption="this month"
+          data={[
+            { id: 'pro', label: 'atlas-pro', value: 742 },
+            { id: 'fast', label: 'atlas-fast', value: 318 },
+            { id: 'embed', label: 'embeddings', value: 164 },
+            { id: 'other', label: 'Other', value: 60 },
+          ]}
+        />
+      </Tile>
+      <Tile name="Tracker" group="Data display" span={2}>
+        <div className="home-dashboard-stack">
+          <Tracker
+            label="Nightly eval runs, last 30 days"
+            segments={evalDays}
+            summary="28 of 30 passed"
+            axis={['30 days ago', 'Today']}
+          />
+          <DotBars
+            label="Runs per day in October"
+            unit="runs"
+            data={octoberRuns}
+            range={{ start: 14, end: 19 }}
+            rangeLabel="Oct 15 – 20, 208 runs"
+            axis={['Oct 1', 'Oct 31']}
+          />
+        </div>
+      </Tile>
+      <Tile name="BarList" group="Data display">
+        <BarList
+          label="Tool calls by tool"
+          headings={['Tool', 'Calls']}
+          items={[
+            { id: 'search', label: 'search_docs', value: 1240, display: '1,240' },
+            { id: 'read', label: 'read_file', value: 860, display: '860' },
+            { id: 'sql', label: 'run_query', value: 412, display: '412' },
+            { id: 'mail', label: 'send_email', value: 96, display: '96' },
+            { id: 'deploy', label: 'deploy_preview', value: 31, display: '31' },
+          ]}
+        />
+      </Tile>
+      <Tile name="UsageMeter" group="Context & memory" span={3}>
+        <div className="home-meters">
+          <UsageMeter
+            variant="detail"
+            label="Monthly budget"
+            unit="currency"
+            value={{
+              kind: 'measured',
+              value: { used: 1284, limit: 2000 },
+              at: dashboardAt,
+            }}
+          />
+          <UsageMeter
+            variant="detail"
+            label="Context window"
+            value={{ kind: 'measured', value: { used: 27400, limit: 32000 }, at: dashboardAt }}
+          />
+          <UsageMeter
+            variant="detail"
+            label="Requests this minute"
+            unit="count"
+            value={{
+              kind: 'estimated',
+              value: { used: 410, limit: 600 },
+              basis: 'last minute',
+              at: dashboardAt,
+            }}
+          />
+        </div>
+      </Tile>
+    </div>
+  );
+}
+
 const tabs = [
   { value: 'runs', label: 'Agent runs', content: <AgentRuns /> },
   { value: 'approvals', label: 'Approvals', content: <Approvals /> },
+  { value: 'dashboards', label: 'Dashboards', content: <Dashboards /> },
   { value: 'chat', label: 'Chat', content: <HomeHeroDemo /> },
   { value: 'sources', label: 'Sources', content: <Sources /> },
   { value: 'forms', label: 'Forms', content: <Forms /> },

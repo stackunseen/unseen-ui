@@ -1,10 +1,25 @@
 'use client';
 import Link from 'next/link';
+import { newComponents } from '../lib/new-components';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Blocks, Code, FileText, LayoutDashboard, LayoutTemplate, Menu, Palette, Search, SlidersHorizontal, WandSparkles, X } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Blocks,
+  Code,
+  FileText,
+  LayoutDashboard,
+  LayoutTemplate,
+  Menu,
+  Palette,
+  Search,
+  SlidersHorizontal,
+  WandSparkles,
+  X,
+} from 'lucide-react';
 import { Accordion } from '@stackunseen/ui';
 import '@stackunseen/ui/terminal.css';
 import 'katex/dist/katex.min.css';
@@ -244,6 +259,11 @@ export function Gallery({
       }}
     >
       {item.name}
+      {newComponents.has(item.name) && (
+        <span className="new-badge" aria-hidden="true">
+          New
+        </span>
+      )}
       {showGroup && <small aria-hidden="true">{navigationGroup(item)}</small>}
     </LocalLink>
   );
@@ -260,11 +280,7 @@ export function Gallery({
           aria-controls="library-navigation"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          {menuOpen ? (
-            <X size={16} aria-hidden="true" />
-          ) : (
-            <Menu size={16} aria-hidden="true" />
-          )}
+          {menuOpen ? <X size={16} aria-hidden="true" /> : <Menu size={16} aria-hidden="true" />}
         </button>
         <span>Browse {view === 'components' ? 'components' : 'the library'}</span>
         <Link href="/components/">Component index</Link>

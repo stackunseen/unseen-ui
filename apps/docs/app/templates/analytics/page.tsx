@@ -1,3 +1,4 @@
+import { TemplateViewport } from '../../../components/template-viewport';
 import { AnalyticsScreen } from '../../../components/screens/analytics-screen';
 import '@stackunseen/ui/application.css';
 import '@stackunseen/ui/conversation-flow.css';
@@ -12,10 +13,9 @@ export const metadata = pageMetadata(
 export default function Page() {
   return (
     <main id="main-content" className="template-workspace template-app-mode" tabIndex={-1}>
-      <a className="web-text-link template-workspace-back" href="/templates/">
-        All templates
-      </a>
-      <AnalyticsScreen />
+      <TemplateViewport backHref="/templates/" backLabel="All templates">
+        <AnalyticsScreen />
+      </TemplateViewport>
     </main>
   );
 }

@@ -3,6 +3,7 @@ import { CommandPalette, useCommandPalette } from '@stackunseen/ui/navigation';
 import type { CommandPaletteItem } from '@stackunseen/ui/navigation';
 import '@stackunseen/ui/navigation.css';
 import { Search } from 'lucide-react';
+import { useSyncExternalStore } from 'react';
 import { matchesQuery, searchScore } from '../lib/search';
 import type { SiteSearchItem } from '../lib/search-index';
 import { siteNavigation } from '../lib/site-navigation';
@@ -79,6 +80,13 @@ export function SitePalette() {
 /** The header's search control: opens the palette, and names the shortcut for keyboard users. */
 export function SitePaletteButton() {
   const palette = useCommandPalette();
+  // The hint names the key this machine uses; it stays empty until the platform is known, so
+  // the server render never shows a Mac key on Windows.
+  const shortcut = useSyncExternalStore(
+    noSubscription,
+    () => (/Mac|iPhone|iPad/.test(navigator.userAgent) ? '⌘K' : 'Ctrl K'),
+    () => '',
+  );
   return (
     <button
       type="button"
@@ -91,8 +99,10 @@ export function SitePaletteButton() {
       <Search size={16} aria-hidden="true" />
       <span className="web-search-label">Search</span>
       <kbd className="web-search-key" aria-hidden="true">
-        ⌘K
+        {shortcut}
       </kbd>
     </button>
   );
 }
+
+const noSubscription = () => () => {};

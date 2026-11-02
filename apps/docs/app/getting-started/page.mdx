@@ -1,9 +1,12 @@
 import { FirstExample } from '../../components/getting-started/example';
 import { OptionalEntries } from '../../components/getting-started/optional-entries';
+import { InstallChooser } from '../../components/getting-started/install-chooser';
 
 # Getting started
 
 Install the package, render one component, then add what you need. Unseen UI is in early alpha, so APIs can still change between releases.
+
+<InstallChooser />
 
 ## 1. Install from npm
 
@@ -84,6 +87,8 @@ export function FirstExample() {
 ```
 
 The value and the callback live in your app. To save to a server, call your API instead of updating local state, and show the result once it answers. Read [Connect to your app](/docs/integration/) before you wire up tools, approvals or anything that runs actions.
+
+<span id="other-ways-to-start" />
 
 ### Other ways to start
 

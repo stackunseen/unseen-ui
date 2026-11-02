@@ -21,6 +21,35 @@ Status words: `observed` means seen in the browser or read in the code today; `p
 | Figma kit, blog, Discord, paid Pro | None | Not in scope for the library site. |
 | Approvals, tool calls, agent runs, server-confirmed actions | ApprovalCard, PermissionRequest, ToolCall, RunBoard, ExecutionTimeline, SubagentTree, AgentLanes, host-acknowledged state, `observed` | Already the headline on the home page. Keep it first. |
 
+## Wider survey: libraries in the same space
+
+Read on 2026-10-29 from each project's own site. Claims are theirs, not measured here.
+
+| Library | What it does well | What Unseen UI takes from it | Status here |
+| --- | --- | --- | --- |
+| [Tremor](https://www.tremor.so/) | 35+ dashboard components on Recharts: spark charts, donut, bar list, tracker, progress circle; 300+ blocks; live previews beside code | The small dashboard figures an agent product needs | Built: Sparkline, BarList, Tracker, DonutChart in the root entry, with hidden tables and no colour-only meaning |
+| [AI Elements](https://elements.ai-sdk.dev/) | 49 shadcn-based pieces in Chatbot, Code, Voice and Workflow groups; one live composed demo on the home page; deprecated at the end of November 2026 | Live composed demo up front; grouped sidebar | Already present: home showcase tabs, grouped catalog; a Dashboards tab added |
+| [assistant-ui](https://www.assistant-ui.com/) | Chat primitives, tool UI, approval card, permission grant, many runtimes (AI SDK, LangGraph, AG-UI, A2A), per-page Markdown, llms-full.txt, MCP | Agent-readable docs, approval elements | Already present: per-component Markdown, llms.txt, MCP endpoint, ApprovalCard, PermissionRequest. Runtimes stay out of scope (the host owns orchestration) |
+| [prompt-kit](https://www.prompt-kit.com/) | 21 chat components, live example and copy-ready code per component, New badges | New badges | Built: New badges on catalog cards and the component sidebar (lib/new-components.ts) |
+| [shadcn/ui blocks](https://ui.shadcn.com/blocks) | Preview and Code tabs per block, open in new tab, refresh, install command | Open a template on its own | Built: device switch (desktop, tablet, phone) and open-in-new-tab on every template page |
+| [Untitled UI React](https://www.untitledui.com/react) | Category cards with counts, application vs marketing split, CLI init, MCP, Figma sync, paid tiers | Category counts and a clear split | Present: rail sections with counts, UI vs AI split. Figma kit and paid tiers are out of scope |
+
+## Built in this pass (2026-10-29, local, not committed)
+
+- Site system (app/system.css), segregated navigation, header search field.
+- Component pages: one header bar with Preview / Code on the left and the example controls on the right; a white stage.
+- Catalog: three wide cards per row with a framed stage; thumbnails recaptured at 2x and near the component's real size.
+- Templates: Desktop, Tablet and Phone widths in a framed device stage, and open in a new tab (`?frame=1` hides the site chrome before first paint).
+- Getting started: a four-way install chooser (npm, starter, shadcn, coding agent) with copyable commands.
+- Library: Sparkline, BarList, Tracker, DonutChart, documented in the catalog with states, usage guidance and props; base CSS budget raised to 28.75 KiB with a note.
+- Home: a Dashboards tab in the live showcase.
+
+## Still open
+
+- Live (not captured) previews inside catalog cards. Captured thumbnails were kept because a live mount of every specimen can open portals and run timers on the index page.
+- Stacked bar and scatter charts.
+- A Figma kit, a blog and paid tiers are product decisions, not library work.
+
 ## Order of work
 
 1. Site design system: header, hero, cards, rails, component page, footer. Light and dark. (this pass)

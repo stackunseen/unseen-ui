@@ -21,7 +21,13 @@ const config = resolve(work, 'config.json');
 await writeFile(
   config,
   JSON.stringify({
-    browser: { browserName: 'chromium', isolated: true, launchOptions: { headless: true } },
+    browser: {
+      browserName: 'chromium',
+      isolated: true,
+      launchOptions: { headless: true },
+      // 2x pixels, so a card that shows the component near its real size stays sharp.
+      contextOptions: { deviceScaleFactor: 2 },
+    },
   }),
 );
 const command = async (args, timeout = 60000) =>
@@ -126,9 +132,10 @@ async function capture(page, { origin, slugs, width, height }) {
           results[`${slug}-${scheme}`] = { error: 'no preview' };
           continue;
         }
-        const pad = 20;
-        // A floor on the crop keeps small controls at their natural size instead of blown up.
-        const minWidth = 300;
+        const pad = 24;
+        // The crop's floor is the card's own width in CSS pixels, so a control that fits the
+        // card is shown at its real size and only larger components are scaled down.
+        const minWidth = width / 2;
         const ratio = width / height;
         let x = box.inner.x - pad,
           y = box.inner.y - pad,
@@ -199,7 +206,7 @@ try {
     const filename = resolve(work, 'capture.js');
     await writeFile(
       filename,
-      `async page => {\nreturn (${capture.toString()})(page, ${JSON.stringify({ origin, slugs: batch, width: 480, height: 300 })});\n}`,
+      `async page => {\nreturn (${capture.toString()})(page, ${JSON.stringify({ origin, slugs: batch, width: 720, height: 450 })});\n}`,
     );
     const results = JSON.parse(
       await command(['run-code', `--filename=${filename}`, '--raw'], 600000),

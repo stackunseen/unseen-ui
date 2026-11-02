@@ -510,6 +510,64 @@ export const websiteCatalog: CatalogEntry[] = [
     code: '<HeatKeys label="Keys you reach for" rows={keyboard} scale={["Fewer", "More"]} />',
   }),
   entry({
+    name: 'Sparkline',
+    group: 'Data Display',
+    aliases: ['Spark chart', 'Trend line', 'Mini chart'],
+    description:
+      'A word-sized trend for a stat card or a table cell, as a line, an area or bars, with gaps left open.',
+    states: ['Default', 'Area', 'Bars', 'Gap', 'In a stat'],
+    contract:
+      'label · data: { label, value: number | null }[] · variant?: line | area | bar · tone?: neutral | positive | negative · markLast? · unit?',
+    responsibility:
+      'Print the number it belongs to beside it; the line has no axis. Pass null for a sample you did not get, so the line breaks instead of joining across it. Every sample is in a hidden table.',
+    keyboard: 'Inert content; the hidden table is read in order.',
+    relatedImports: ['Stat', 'Chart'],
+    code: '<Sparkline label="p95 latency, last 14 days" unit="ms" data={days} variant="area" markLast />',
+  }),
+  entry({
+    name: 'BarList',
+    group: 'Data Display',
+    aliases: ['Ranked list', 'Top list', 'Leaderboard'],
+    description:
+      'Ranked rows with a bar behind each name, for tokens by tool, spend by agent or calls by model.',
+    states: ['Default', 'Headings', 'Empty'],
+    contract: 'label · items: { id, label, value, display? }[] · max? · headings?: [name, value]',
+    responsibility:
+      'Sort the rows and format each value in your app; the bar repeats the printed value and never replaces it.',
+    keyboard: 'Inert content; the list is read in order.',
+    relatedImports: ['Card', 'DonutChart'],
+    code: '<BarList label="Tool calls by tool" headings={["Tool", "Calls"]} items={tools} />',
+  }),
+  entry({
+    name: 'Tracker',
+    group: 'Data Display',
+    aliases: ['Status strip', 'Uptime bar', 'Run history'],
+    description:
+      'A strip of blocks, one per day or run, coloured by how it went, for nightly evals, uptime or a run history.',
+    states: ['Default', 'No data'],
+    contract:
+      'label · segments: { label, status: ok | degraded | failed | unknown, detail? }[] · summary? · axis?: [start, end]',
+    responsibility:
+      'Pass what your server recorded; a period with nothing recorded is unknown, never ok. Each block names its status in words, and every block is in a hidden table.',
+    keyboard: 'Inert content; the hidden table is read in order.',
+    relatedImports: ['StatusBadge', 'Card'],
+    code: '<Tracker label="Nightly eval runs" segments={days} summary="28 of 30 runs passed" axis={["30 days ago", "Today"]} />',
+  }),
+  entry({
+    name: 'DonutChart',
+    group: 'Data Display',
+    aliases: ['Pie chart', 'Share chart', 'Ring chart'],
+    description:
+      'Shares of one total as a ring, with the total in the centre and every share printed in the legend.',
+    states: ['Default', 'Single slice', 'No legend'],
+    contract: 'label · data: { id, label, value, swatch? }[] · value? · caption? · legend? · unit?',
+    responsibility:
+      'Use it for a few parts of one whole. Format the centre figure in your app. Shares are printed in the legend and the hidden table, so no slice is read by colour alone.',
+    keyboard: 'Inert content; the hidden table is read in order.',
+    relatedImports: ['BarList', 'Card'],
+    code: '<DonutChart label="Spend by model" data={spend} value="$1,284" caption="this month" />',
+  }),
+  entry({
     name: 'Avatar',
     group: 'Data Display',
     aliases: ['Profile picture', 'Initials', 'User image'],

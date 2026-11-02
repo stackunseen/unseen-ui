@@ -1,3 +1,4 @@
+import { TemplateViewport } from '../../../components/template-viewport';
 import { AppShellsScreen } from '../../../components/screens/app-shells-screen';
 import '@stackunseen/ui/application.css';
 import '@stackunseen/ui/conversation-flow.css';
@@ -12,14 +13,16 @@ export const metadata = pageMetadata(
 export default function Page() {
   return (
     <main id="main-content" className="template-workspace template-app-mode" tabIndex={-1}>
-      <a className="web-text-link template-workspace-back" href="/templates/">
-        All templates
-      </a>
-      <header className="template-workspace-heading">
-        <h1>App shells</h1>
-        <p>Three application shells from WorkspaceShell: a dashboard with an inspector, a chat app with collapsing navigation, and a contained tool.</p>
-      </header>
-      <AppShellsScreen />
+      <TemplateViewport backHref="/templates/" backLabel="All templates">
+        <header className="template-workspace-heading">
+          <h1>App shells</h1>
+          <p>
+            Three application shells from WorkspaceShell: a dashboard with an inspector, a chat app
+            with collapsing navigation, and a contained tool.
+          </p>
+        </header>
+        <AppShellsScreen />
+      </TemplateViewport>
     </main>
   );
 }
