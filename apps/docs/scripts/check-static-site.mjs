@@ -51,7 +51,12 @@ for (const file of files) {
       : canonical || robots !== 'noindex, nofollow'
   )
     failures.push(`${path}: incorrect origin/indexing metadata`);
-  if (html.includes('preview-widths') || html.includes('aria-label="Preview width"'))
+  // The component preview's width toggle was removed on 2026-10-06 and must not return. Template
+  // pages have their own device switch (Desktop, Tablet, Phone), which is intended.
+  if (
+    html.includes('preview-widths') ||
+    (path.startsWith('/components/') && html.includes('aria-label="Preview width"'))
+  )
     failures.push(`${path}: removed preview width UI still rendered`);
   titles.add(title);
   descriptions.add(description);
