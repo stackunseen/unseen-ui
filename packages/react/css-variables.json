@@ -363,6 +363,22 @@
       "group": "component",
       "purpose": "Width and height of a HeatKeys cell."
     },
+    "--ai-sparkline-width": {
+      "group": "component",
+      "purpose": "Width of the Sparkline figure."
+    },
+    "--ai-sparkline-height": {
+      "group": "component",
+      "purpose": "Height of the Sparkline figure."
+    },
+    "--ai-tracker-height": {
+      "group": "component",
+      "purpose": "Height of the Tracker blocks."
+    },
+    "--ai-donut-size": {
+      "group": "component",
+      "purpose": "Width and height of the DonutChart ring."
+    },
     "--ai-tone-pad-width": {
       "group": "component",
       "purpose": "Width of the TonePad, including its axis labels."

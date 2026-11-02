@@ -1,5 +1,5 @@
 'use client';
-import { useId, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { DataTable } from '../data-table/data-table.js';
 import { Accordion } from '../accordion/accordion.js';
 import { Button } from '../button/button.js';
@@ -79,6 +79,20 @@ export function Chart({
   variant = 'bar',
 }: ChartProps) {
   const prefix = `chart-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+  // The plot is drawn at the width of its container, so it fills a card instead of scrolling
+  // inside it. It scrolls only when the categories need more room than the container has.
+  const [available, setAvailable] = useState<number | null>(null);
+  const observer = useRef<ResizeObserver | null>(null);
+  const measure = useCallback((node: HTMLDivElement | null) => {
+    observer.current?.disconnect();
+    observer.current = null;
+    if (!node || typeof ResizeObserver === 'undefined') return;
+    const update = () => setAvailable(Math.floor(node.clientWidth) || null);
+    update();
+    observer.current = new ResizeObserver(update);
+    observer.current.observe(node);
+  }, []);
+  useEffect(() => () => observer.current?.disconnect(), []);
   const heading = typeof title === 'string' ? title.slice(0, 2000) : 'Chart';
   const measurement =
     typeof unit === 'string' && unit.trim() ? unit.slice(0, 200) : 'Unit not supplied';
@@ -168,10 +182,12 @@ export function Chart({
   const visible = model.groups
     .map((group, index) => ({ group, index }))
     .filter(({ group }) => !hiddenSeries.includes(group.id));
-  const width = Math.max(
-    520,
-    model.categories.length * (variant === 'bar' ? visible.length * 14 + 30 : 44) + 112,
+  const needed = Math.max(
+    320,
+    model.categories.length * (variant === 'bar' ? visible.length * 14 + 30 : 36) + 112,
   );
+  const width = available !== null && available > needed ? available : needed;
+  const overflowing = available !== null && needed > available;
   const left = 84,
     right = width - 28,
     top = 24,
@@ -294,7 +310,13 @@ export function Chart({
       ) : !numericVisible ? (
         <p className={s.muted}>No numeric chart values reported.</p>
       ) : (
-        <div className={c.scroll} role="group" aria-label={`${heading} chart`} tabIndex={0}>
+        <div
+          ref={measure}
+          className={c.scroll}
+          role="group"
+          aria-label={`${heading} chart`}
+          tabIndex={0}
+        >
           <svg
             className={css.plot}
             width={width}
@@ -407,10 +429,13 @@ export function Chart({
           treated as zero.
         </p>
       )}
-      <p className={s.muted}>
-        Scroll horizontally if needed, or open Chart data for all values.
-        {hiddenSeries.length ? ' Legend selection affects the plot only.' : ''}
-      </p>
+      {(overflowing || hiddenSeries.length > 0) && (
+        <p className={s.muted}>
+          {overflowing ? 'Scroll sideways to see every value, or open Chart data.' : ''}
+          {overflowing && hiddenSeries.length ? ' ' : ''}
+          {hiddenSeries.length ? 'Legend selection affects the plot only.' : ''}
+        </p>
+      )}
       <Accordion
         region={false}
         type="single"

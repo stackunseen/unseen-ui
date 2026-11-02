@@ -67,39 +67,28 @@ export function CostLedger({
   label = 'Cost ledger',
 }: CostLedgerProps) {
   const sum = sumMeasured(rows, locale);
-  const footer = total ? (
-    <>
-      <MeasuredText measurement={total} format={(value) => formatMoney(value, locale)} />
-      <span className={s.muted}> reported by your billing</span>
-    </>
-  ) : sum.mixed ? (
-    <span className={s.muted}>Rows use more than one currency; no total.</span>
-  ) : (
-    <>
-      {sum.text ? (
-        <>
-          <span className={r.measure} data-meaning="measured">
-            {sum.text}
-          </span>
-          <span className={s.muted}> measured across {sum.measured} of {rows.length}</span>
-        </>
-      ) : (
-        <span className={s.muted}>Nothing measured yet</span>
-      )}
-      {(sum.estimated > 0 || sum.unknown > 0) && (
-        <span className={s.muted}>
-          {' · '}
-          {[
-            sum.estimated > 0 && `${sum.estimated} estimated`,
-            sum.unknown > 0 && `${sum.unknown} unknown`,
-          ]
-            .filter(Boolean)
-            .join(', ')}{' '}
-          not included
-        </span>
-      )}
-    </>
-  );
+  // The total splits in two: the figure, which lines up under the Cost column, and the words
+  // that say what it covers, which sit under the row label so the column stays narrow.
+  const figure = total ? (
+    <MeasuredText measurement={total} format={(value) => formatMoney(value, locale)} />
+  ) : sum.mixed ? null : sum.text ? (
+    <span className={r.measure} data-meaning="measured">
+      {sum.text}
+    </span>
+  ) : null;
+  const skipped = [
+    sum.estimated > 0 && `${sum.estimated} estimated`,
+    sum.unknown > 0 && `${sum.unknown} unknown`,
+  ]
+    .filter(Boolean)
+    .join(', ');
+  const note = total
+    ? 'Reported by your billing'
+    : sum.mixed
+      ? 'Rows use more than one currency; no total.'
+      : `${sum.text ? `Measured across ${sum.measured} of ${rows.length}` : 'Nothing measured yet'}${
+          skipped ? `; ${skipped} not included` : ''
+        }`;
   const title = (row: CostLedgerRow) =>
     onOpen ? (
       <button type="button" className={r.opener} onClick={() => onOpen(row)}>
@@ -112,7 +101,12 @@ export function CostLedger({
     );
   if (variant === 'compact')
     return (
-      <section className={r.ledger} data-part="cost-ledger" data-variant={variant} aria-label={label}>
+      <section
+        className={r.ledger}
+        data-part="cost-ledger"
+        data-variant={variant}
+        aria-label={label}
+      >
         <ul className={r.ledgerList}>
           {rows.map((row) => (
             <li key={row.id} className={r.ledgerRow}>
@@ -121,7 +115,11 @@ export function CostLedger({
             </li>
           ))}
         </ul>
-        <p className={r.ledgerFooter}>{footer}</p>
+        <p className={r.ledgerFooter}>
+          {figure}
+          {figure && ' '}
+          <span className={s.muted}>{note}</span>
+        </p>
       </section>
     );
   return (
@@ -158,7 +156,10 @@ export function CostLedger({
                 />
               </td>
               <td className={r.ledgerNumber}>
-                <MeasuredText measurement={row.cost} format={(value) => formatMoney(value, locale)} />
+                <MeasuredText
+                  measurement={row.cost}
+                  format={(value) => formatMoney(value, locale)}
+                />
               </td>
             </tr>
           ))}
@@ -174,8 +175,9 @@ export function CostLedger({
           <tr>
             <th scope="row" colSpan={4}>
               {period ? `Total, ${period}` : 'Total'}
+              <span className={r.ledgerNote}>{note}</span>
             </th>
-            <td className={r.ledgerNumber}>{footer}</td>
+            <td className={r.ledgerNumber}>{figure ?? '—'}</td>
           </tr>
         </tfoot>
       </table>

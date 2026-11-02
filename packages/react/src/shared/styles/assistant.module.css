@@ -348,8 +348,10 @@
   height: 15px;
 }
 /* The menu's heading is a quiet caption above the list, not a dialog title. */
-.modelMenu {
-  /* A menu, not a form: rows run close to the edges. */
+/* A menu, not a form: rows run close to the edges. The popover root is also a theme scope that
+   sets its own panel padding, so the value is set on the body inside it too. */
+.modelMenu,
+.modelMenu > * {
   --ai-panel-padding: 6px;
 }
 .modelMenu :is(h2, h3, h4, h5, h6) {

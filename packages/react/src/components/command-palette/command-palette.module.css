@@ -97,6 +97,18 @@
   overscroll-behavior: contain;
   padding: 6px;
   scroll-padding-block: 6px;
+  /* A thin bar keeps the right edge close to the left one when results scroll. */
+  scrollbar-width: thin;
+}
+/* The whole search row is the field: focus shows as a line under it, not as a ring drawn around
+   the bare input inside the row. The theme scope's generic focus ring is more specific than
+   .input, so this selector repeats the row to outweigh it. */
+.field .input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.field:has(.input:focus-visible) {
+  box-shadow: inset 0 -2px 0 var(--ai-focus, #18181b);
 }
 .note {
   padding: 14px 10px;

@@ -467,6 +467,11 @@
     stroke: CanvasText;
   }
 }
+/* The hidden meaning text is absolutely positioned; anchoring it here keeps it inside a scrolling
+   ledger instead of widening the page on narrow screens. */
+.measure {
+  position: relative;
+}
 .measure[data-meaning='estimated'] abbr {
   text-decoration: none;
 }
@@ -828,6 +833,21 @@ span.treeToggle {
 .ledger tfoot td {
   border-top: 1px solid var(--ai-border, #e4e4e7);
   font-weight: 500;
+}
+/* Break a long word only when nothing else fits, so short names such as an agent or a model keep
+   their column instead of shrinking to one letter. */
+.ledger th,
+.ledger td {
+  overflow-wrap: break-word;
+}
+.ledger tbody td:not(.ledgerNumber) {
+  white-space: nowrap;
+}
+.ledgerNote {
+  display: block;
+  margin-top: 2px;
+  color: var(--ai-muted, #52525b);
+  font-weight: 400;
 }
 .ledgerNumber {
   text-align: end !important;

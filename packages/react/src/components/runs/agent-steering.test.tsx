@@ -57,8 +57,7 @@ describe('CostLedger', () => {
     render(<CostLedger rows={rows} period="today" />);
     const table = screen.getByRole('table', { name: /Cost ledger, today/ });
     expect(table).toHaveTextContent('$0.33');
-    expect(table).toHaveTextContent('measured across 2 of 4');
-    expect(table).toHaveTextContent('1 estimated, 1 unknown not included');
+    expect(table).toHaveTextContent('Measured across 2 of 4; 1 estimated, 1 unknown not included');
     expect(table).toHaveTextContent('~$0.42');
     expect(table).toHaveTextContent('Unknown (provider offline)');
   });
@@ -66,7 +65,7 @@ describe('CostLedger', () => {
     const { rerender } = render(
       <CostLedger rows={rows} total={{ kind: 'measured', value: { amount: 1.5, currency: 'EUR' } }} />,
     );
-    expect(screen.getByRole('table')).toHaveTextContent('€1.50 reported by your billing');
+    expect(screen.getByRole('table')).toHaveTextContent('Reported by your billing€1.50');
     rerender(
       <CostLedger
         variant="compact"

@@ -575,6 +575,18 @@ export type {
 export { HeatKeys } from './components/data-dots/heat-keys.js';
 export type { HeatKeysProps, HeatKey, HeatKeyRow } from './components/data-dots/heat-keys.js';
 export type { DotDatum } from './components/data-dots/shared.js';
+export { Sparkline } from './components/data-marks/sparkline.js';
+export type { SparklineProps, SparkPoint } from './components/data-marks/sparkline.js';
+export { BarList } from './components/data-marks/bar-list.js';
+export type { BarListProps, BarListItem } from './components/data-marks/bar-list.js';
+export { Tracker } from './components/data-marks/tracker.js';
+export type {
+  TrackerProps,
+  TrackerSegment,
+  TrackerStatus,
+} from './components/data-marks/tracker.js';
+export { DonutChart } from './components/data-marks/donut-chart.js';
+export type { DonutChartProps, DonutSlice } from './components/data-marks/donut-chart.js';
 export { Chip, ChipGroup } from './components/chip/chip.js';
 export type {
   ChipProps,
