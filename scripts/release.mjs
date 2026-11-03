@@ -262,10 +262,12 @@ if (command === 'plan' || command === 'prepare') {
             entry.channel,
             '--registry',
             registry,
-            '--provenance=false',
+            // Signed provenance links each version to this repository and workflow run; npm
+            // only accepts it from a public repository.
+            '--provenance',
             '--ignore-scripts',
           ],
-          { NODE_AUTH_TOKEN: token, NPM_TOKEN: '', NPM_CONFIG_PROVENANCE: 'false' },
+          { NODE_AUTH_TOKEN: token, NPM_TOKEN: '', NPM_CONFIG_PROVENANCE: 'true' },
         ),
       );
     },

@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 
 export const repositoryUrl = 'https://github.com/stackunseen/unseen-ui';
 const key = 'unseen-ui-stars';
+// The star count is hidden for now; the header shows only the GitHub mark. Set to true to show
+// the count from /github.json again.
+const showStars = false;
 
 /**
  * The repository link in the header. The star count is read once per build
@@ -12,6 +15,7 @@ const key = 'unseen-ui-stars';
 export function GitHubLink() {
   const [stars, setStars] = useState<number | null>(null);
   useEffect(() => {
+    if (!showStars) return;
     let cancelled = false;
     try {
       const cached = sessionStorage.getItem(key);

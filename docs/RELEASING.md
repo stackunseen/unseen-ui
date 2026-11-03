@@ -47,4 +47,4 @@ This is already done for both packages; it's here for reference.
 
 A brand-new package can't have a trusted publisher until it exists on npm. For a first publish, either publish core and then React from a logged-in terminal with two-factor authentication, or add a short-lived granular token as the `NPM_TOKEN` secret (the workflow uses it when present). Delete the secret and the token as soon as that release is done.
 
-npm provenance is turned off (`--provenance=false` in `scripts/release.mjs`) because npm only supports provenance from public repositories. Remove that flag once the repository is public.
+Versions are published with npm provenance (`--provenance` in `scripts/release.mjs`), so each one on npm links to the commit and workflow run that built it. npm accepts provenance only from a public repository; if the repository is ever made private again, a release fails at publish until the flag is removed.
