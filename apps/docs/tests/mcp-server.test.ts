@@ -102,7 +102,9 @@ describe('docs MCP server', () => {
     expect(overview.result.content[0].text).toContain('# Unseen UI');
   });
   it('answers batches, rejects unknown methods and bad JSON, and refuses foreign origins', async () => {
-    const batch = await (await post([rpc('ping', undefined, 'a'), rpc('nope', undefined, 'b')])).json();
+    const batch = await (
+      await post([rpc('ping', undefined, 'a'), rpc('nope', undefined, 'b')])
+    ).json();
     expect(batch).toHaveLength(2);
     expect(batch[1].error.code).toBe(-32601);
     const bad = await handleMcp(

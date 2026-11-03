@@ -66,7 +66,8 @@ export const templateListings: TemplateListing[] = [
   {
     href: '/templates/app-shells/',
     title: 'App shells',
-    description: 'A dashboard with an inspector, a chat app with collapsing navigation, a contained tool.',
+    description:
+      'A dashboard with an inspector, a chat app with collapsing navigation, a contained tool.',
     preview: 'app-shells',
     kind: 'Layouts',
   },

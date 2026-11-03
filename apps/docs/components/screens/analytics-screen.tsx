@@ -15,7 +15,10 @@ const requestsByModel = [
   ...series,
   points: series.points.map((value, index) => ({ label: days[index]!, value })),
 }));
-const latency = days.map((label, index) => ({ label, value: [1.8, 1.9, 2.4, 2.1, 1.7, 1.6, 2.2][index]! }));
+const latency = days.map((label, index) => ({
+  label,
+  value: [1.8, 1.9, 2.4, 2.1, 1.7, 1.6, 2.2][index]!,
+}));
 interface ToolRow {
   id: string;
   tool: string;
@@ -26,14 +29,33 @@ interface ToolRow {
 }
 const tools: ToolRow[] = [
   { id: 't1', tool: 'search_orders', calls: 4120, failed: 12, p95: 640, state: 'succeeded' },
-  { id: 't2', tool: 'payments.refunds.preview', calls: 380, failed: 0, p95: 1210, state: 'succeeded' },
+  {
+    id: 't2',
+    tool: 'payments.refunds.preview',
+    calls: 380,
+    failed: 0,
+    p95: 1210,
+    state: 'succeeded',
+  },
   { id: 't3', tool: 'kb.fetch', calls: 2210, failed: 96, p95: 880, state: 'failed' },
   { id: 't4', tool: 'translate.glossary', calls: 960, failed: 3, p95: 410, state: 'succeeded' },
   { id: 't5', tool: 'images.resize', calls: 2140, failed: 1460, p95: 2900, state: 'failed' },
 ];
 const toolColumns: readonly DataGridColumn<ToolRow>[] = [
-  { id: 'tool', header: 'Tool', sortable: true, rowHeader: true, cell: (row) => <code>{row.tool}</code> },
-  { id: 'calls', header: 'Calls', sortable: true, align: 'end', cell: (row) => row.calls.toLocaleString('en-US') },
+  {
+    id: 'tool',
+    header: 'Tool',
+    sortable: true,
+    rowHeader: true,
+    cell: (row) => <code>{row.tool}</code>,
+  },
+  {
+    id: 'calls',
+    header: 'Calls',
+    sortable: true,
+    align: 'end',
+    cell: (row) => row.calls.toLocaleString('en-US'),
+  },
   {
     id: 'failed',
     header: 'Failure rate',
@@ -45,7 +67,9 @@ const toolColumns: readonly DataGridColumn<ToolRow>[] = [
   {
     id: 'state',
     header: 'Last hour',
-    cell: (row) => <StatusBadge state={row.state} label={row.state === 'failed' ? 'Failing' : 'Healthy'} />,
+    cell: (row) => (
+      <StatusBadge state={row.state} label={row.state === 'failed' ? 'Failing' : 'Healthy'} />
+    ),
   },
 ];
 const usd = (amount: number) => ({ amount, currency: 'USD' });
@@ -90,10 +114,34 @@ export function AnalyticsScreen() {
         }
       />
       <div className={s.stats}>
-        <Stat label="Requests" value="23,480" delta="+12% on the week before" trend="up" note="Measured, 7 days" />
-        <Stat label="Tokens" value="41.2M" delta="+9%" trend="up" note="Input and output, measured" />
-        <Stat label="Spend" value="$318.40" delta="+4%" trend="up" note="Measured by billing; estimates excluded" />
-        <Stat label="p95 latency" value="2.2 s" delta="+0.4 s" trend="down" note="First token, 7-day p95" />
+        <Stat
+          label="Requests"
+          value="23,480"
+          delta="+12% on the week before"
+          trend="up"
+          note="Measured, 7 days"
+        />
+        <Stat
+          label="Tokens"
+          value="41.2M"
+          delta="+9%"
+          trend="up"
+          note="Input and output, measured"
+        />
+        <Stat
+          label="Spend"
+          value="$318.40"
+          delta="+4%"
+          trend="up"
+          note="Measured by billing; estimates excluded"
+        />
+        <Stat
+          label="p95 latency"
+          value="2.2 s"
+          delta="+0.4 s"
+          trend="down"
+          note="First token, 7-day p95"
+        />
       </div>
       <div className={s.grid}>
         <section className={`${s.panel} ${s.wide}`} aria-labelledby="analytics-requests">
@@ -158,7 +206,10 @@ export function AnalyticsScreen() {
               at: '2026-10-27T08:00:00Z',
             }}
           />
-          <p className={s.note}>Tool results take the most room. Trimming kb.fetch output would free about a quarter of the window.</p>
+          <p className={s.note}>
+            Tool results take the most room. Trimming kb.fetch output would free about a quarter of
+            the window.
+          </p>
         </section>
         <section className={`${s.panel} ${s.full}`} aria-labelledby="analytics-spend">
           <div className={s.panelHead}>
@@ -168,11 +219,45 @@ export function AnalyticsScreen() {
           <CostLedger
             period="last 7 days"
             rows={[
-              { id: 'support', title: 'Support agent', agent: 'Support', model: 'Sonnet 5.5', tokens: { kind: 'measured', value: 18_400_000 }, cost: { kind: 'measured', value: usd(141.2) } },
-              { id: 'orders', title: 'Orders agent', agent: 'Orders', model: 'Opus 5.5', tokens: { kind: 'measured', value: 6_100_000 }, cost: { kind: 'measured', value: usd(98.6) } },
-              { id: 'translator', title: 'Translator', agent: 'Translator', model: 'Sonnet 5.5', tokens: { kind: 'measured', value: 11_900_000 }, cost: { kind: 'measured', value: usd(61.4) } },
-              { id: 'media', title: 'Media agent', agent: 'Media', model: 'Haiku 5.5', tokens: { kind: 'measured', value: 4_800_000 }, cost: { kind: 'measured', value: usd(17.2) } },
-              { id: 'evals', title: 'Evaluations', agent: 'Eval service', model: 'Mixed', cost: { kind: 'estimated', value: usd(28.9), basis: 'token price list' } },
+              {
+                id: 'support',
+                title: 'Support agent',
+                agent: 'Support',
+                model: 'Sonnet 5.5',
+                tokens: { kind: 'measured', value: 18_400_000 },
+                cost: { kind: 'measured', value: usd(141.2) },
+              },
+              {
+                id: 'orders',
+                title: 'Orders agent',
+                agent: 'Orders',
+                model: 'Opus 5.5',
+                tokens: { kind: 'measured', value: 6_100_000 },
+                cost: { kind: 'measured', value: usd(98.6) },
+              },
+              {
+                id: 'translator',
+                title: 'Translator',
+                agent: 'Translator',
+                model: 'Sonnet 5.5',
+                tokens: { kind: 'measured', value: 11_900_000 },
+                cost: { kind: 'measured', value: usd(61.4) },
+              },
+              {
+                id: 'media',
+                title: 'Media agent',
+                agent: 'Media',
+                model: 'Haiku 5.5',
+                tokens: { kind: 'measured', value: 4_800_000 },
+                cost: { kind: 'measured', value: usd(17.2) },
+              },
+              {
+                id: 'evals',
+                title: 'Evaluations',
+                agent: 'Eval service',
+                model: 'Mixed',
+                cost: { kind: 'estimated', value: usd(28.9), basis: 'token price list' },
+              },
             ]}
             total={{ kind: 'measured', value: usd(318.4) }}
             onOpen={(row) => setNotice(`Open the ${row.title} runs.`)}

@@ -83,9 +83,21 @@ export function MarketingTemplate() {
       </div>
       <div className={s.figures} aria-label="Sample figures">
         {[
-          { value: 1200, format: (count: number) => count.toLocaleString('en-US'), label: 'teams keep their notes here (sample figure)' },
-          { value: 48000, format: (count: number) => `${Math.round(count / 1000)}k`, label: 'decisions recorded (sample figure)' },
-          { value: 92, format: (count: number) => `${count}%`, label: 'say the next step is clearer (sample figure)' },
+          {
+            value: 1200,
+            format: (count: number) => count.toLocaleString('en-US'),
+            label: 'teams keep their notes here (sample figure)',
+          },
+          {
+            value: 48000,
+            format: (count: number) => `${Math.round(count / 1000)}k`,
+            label: 'decisions recorded (sample figure)',
+          },
+          {
+            value: 92,
+            format: (count: number) => `${count}%`,
+            label: 'say the next step is clearer (sample figure)',
+          },
         ].map((figure, index) => (
           <MarketingReveal key={figure.label} delayMs={index * 120}>
             <p>

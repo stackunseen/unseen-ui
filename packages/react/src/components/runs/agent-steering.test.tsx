@@ -15,8 +15,20 @@ describe('AgentSteering', () => {
       <AgentSteering
         run={run}
         notes={[
-          { id: 'n1', text: 'Skip the archive step', at: '2026-10-27T08:30:00Z', status: 'applied', detail: 'Step 4' },
-          { id: 'n2', text: 'Use the EU region', at: '2026-10-27T08:31:00Z', status: 'rejected', detail: 'Run moved on' },
+          {
+            id: 'n1',
+            text: 'Skip the archive step',
+            at: '2026-10-27T08:30:00Z',
+            status: 'applied',
+            detail: 'Step 4',
+          },
+          {
+            id: 'n2',
+            text: 'Use the EU region',
+            at: '2026-10-27T08:31:00Z',
+            status: 'rejected',
+            detail: 'Run moved on',
+          },
         ]}
         onSubmit={onSubmit}
       />,
@@ -28,7 +40,11 @@ describe('AgentSteering', () => {
     expect(send).toBeDisabled();
     await user.type(field, 'Stop after the dry run');
     await user.click(send);
-    expect(onSubmit).toHaveBeenCalledWith({ runId: 'r1', runVersion: 4, text: 'Stop after the dry run' });
+    expect(onSubmit).toHaveBeenCalledWith({
+      runId: 'r1',
+      runVersion: 4,
+      text: 'Stop after the dry run',
+    });
     rerender(<AgentSteering run={run} notes={[]} onSubmit={onSubmit} submission="submitting" />);
     expect(field).toBeDisabled();
     expect(field).toHaveValue('Stop after the dry run');
@@ -40,7 +56,9 @@ describe('AgentSteering', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Received');
   });
   it('refuses notes for a finished run and says why', () => {
-    render(<AgentSteering run={{ ...run, lifecycle: 'succeeded' }} notes={[]} onSubmit={vi.fn()} />);
+    render(
+      <AgentSteering run={{ ...run, lifecycle: 'succeeded' }} notes={[]} onSubmit={vi.fn()} />,
+    );
     expect(screen.getByLabelText('Note for the next step')).toBeDisabled();
     expect(screen.getByRole('status')).toHaveTextContent('The run has finished');
   });
@@ -48,10 +66,34 @@ describe('AgentSteering', () => {
 
 describe('CostLedger', () => {
   const rows = [
-    { id: 'a', title: 'Refund batch', agent: 'Orders', model: 'Opus', tokens: { kind: 'measured' as const, value: 6200 }, cost: { kind: 'measured' as const, value: { amount: 0.31, currency: 'USD' } } },
-    { id: 'b', title: 'Translate', agent: 'Translator', cost: { kind: 'estimated' as const, value: { amount: 0.42, currency: 'USD' }, basis: 'token price list' } },
-    { id: 'c', title: 'Image cache', cost: { kind: 'unknown' as const, reason: 'provider offline' } },
-    { id: 'd', title: 'Payouts', cost: { kind: 'measured' as const, value: { amount: 0.02, currency: 'USD' } } },
+    {
+      id: 'a',
+      title: 'Refund batch',
+      agent: 'Orders',
+      model: 'Opus',
+      tokens: { kind: 'measured' as const, value: 6200 },
+      cost: { kind: 'measured' as const, value: { amount: 0.31, currency: 'USD' } },
+    },
+    {
+      id: 'b',
+      title: 'Translate',
+      agent: 'Translator',
+      cost: {
+        kind: 'estimated' as const,
+        value: { amount: 0.42, currency: 'USD' },
+        basis: 'token price list',
+      },
+    },
+    {
+      id: 'c',
+      title: 'Image cache',
+      cost: { kind: 'unknown' as const, reason: 'provider offline' },
+    },
+    {
+      id: 'd',
+      title: 'Payouts',
+      cost: { kind: 'measured' as const, value: { amount: 0.02, currency: 'USD' } },
+    },
   ];
   it('adds only measured rows and counts the rest', () => {
     render(<CostLedger rows={rows} period="today" />);
@@ -63,13 +105,19 @@ describe('CostLedger', () => {
   });
   it('prefers the host total and refuses to add mixed currencies', () => {
     const { rerender } = render(
-      <CostLedger rows={rows} total={{ kind: 'measured', value: { amount: 1.5, currency: 'EUR' } }} />,
+      <CostLedger
+        rows={rows}
+        total={{ kind: 'measured', value: { amount: 1.5, currency: 'EUR' } }}
+      />,
     );
     expect(screen.getByRole('table')).toHaveTextContent('Reported by your billing€1.50');
     rerender(
       <CostLedger
         variant="compact"
-        rows={[rows[0]!, { ...rows[3]!, cost: { kind: 'measured', value: { amount: 1, currency: 'EUR' } } }]}
+        rows={[
+          rows[0]!,
+          { ...rows[3]!, cost: { kind: 'measured', value: { amount: 1, currency: 'EUR' } } },
+        ]}
       />,
     );
     expect(screen.getByText(/more than one currency/)).toBeInTheDocument();

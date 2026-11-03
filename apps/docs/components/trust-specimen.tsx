@@ -20,7 +20,8 @@ export function TrustSpecimen({
   presentation,
   onNotice,
 }: {
-  name: 'UsageMeter' | 'ContextWindowMeter' | 'ProvenanceBadge' | 'ConfidenceNote' | 'FeedbackCapture';
+  name:
+    'UsageMeter' | 'ContextWindowMeter' | 'ProvenanceBadge' | 'ConfidenceNote' | 'FeedbackCapture';
   state: string;
   presentation?: string;
   onNotice: (text: string) => void;
@@ -78,11 +79,21 @@ export function TrustSpecimen({
         return (
           <ContextWindowMeter
             variant={variant}
-            value={{ kind: 'estimated', value: { segments, limit: 32000 }, basis: 'tokenizer estimate', at }}
+            value={{
+              kind: 'estimated',
+              value: { segments, limit: 32000 },
+              basis: 'tokenizer estimate',
+              at,
+            }}
           />
         );
       if (state === 'No limit')
-        return <ContextWindowMeter variant={variant} value={{ kind: 'measured', value: { segments }, at }} />;
+        return (
+          <ContextWindowMeter
+            variant={variant}
+            value={{ kind: 'measured', value: { segments }, at }}
+          />
+        );
       return (
         <ContextWindowMeter
           variant={variant}

@@ -206,7 +206,8 @@ export const marketingCatalog: CatalogEntry[] = [
   marketing({
     name: 'MarketingReveal',
     category: 'Motion',
-    description: 'Fades and lifts a section into place the first time it scrolls into view; still in the HTML from the start.',
+    description:
+      'Fades and lifts a section into place the first time it scrolls into view; still in the HTML from the start.',
     states: ['Default'],
     contract: 'children · delayMs? · repeat?',
     responsibility:
@@ -216,7 +217,8 @@ export const marketingCatalog: CatalogEntry[] = [
   marketing({
     name: 'MarketingNumber',
     category: 'Motion',
-    description: 'A figure that counts up when it scrolls into view, with the real value in the text the whole time.',
+    description:
+      'A figure that counts up when it scrolls into view, with the real value in the text the whole time.',
     states: ['Default'],
     contract: 'value · format? · durationMs?',
     responsibility:

@@ -76,7 +76,10 @@ const runs: RunCard[] = [
     steps: [
       { label: 'Loaded the glossary, 212 terms', at: '2026-10-27T08:12:30.000Z' },
       { label: 'Translated 31 of 46 articles', at: '2026-10-27T08:38:40.000Z' },
-      { label: 'Checking “Shipping to the EU” against the glossary', at: '2026-10-27T08:39:55.000Z' },
+      {
+        label: 'Checking “Shipping to the EU” against the glossary',
+        at: '2026-10-27T08:39:55.000Z',
+      },
     ],
   },
   {

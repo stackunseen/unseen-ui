@@ -72,7 +72,10 @@ describe('connected SaaS admin template', () => {
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
     await user.click(await screen.findByRole('button', { name: 'Check if it went through' }));
     expect(await screen.findByText(/original receipt is still unavailable/)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
     expect(service.submit).toHaveBeenCalledOnce();
     expect(service.receipt).toHaveBeenCalledOnce();
     expect(initial.read().organizations[0]!.settings.name).toBe('Northstar Studio');
@@ -148,7 +151,10 @@ describe('connected SaaS admin template', () => {
     await replace(user, /Organization name/, 'Saved Later');
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
     expect(host.read().organizations[0]!.settings.name).toBe('Northstar Studio');
-    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
     expect(screen.getByLabelText(/Organization name/)).toBeDisabled();
     expect(
       screen.queryByText('Organization settings saved in the local demo.'),
@@ -177,7 +183,10 @@ describe('connected SaaS admin template', () => {
     await user.click(screen.getByRole('button', { name: 'Save changes' }));
     expect(await screen.findByText(/saved view may be stale/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled();
-    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('link', { name: 'Customers' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
     const version = host.read().version;
     await user.click(screen.getByRole('button', { name: 'Check if it went through' }));
     expect(

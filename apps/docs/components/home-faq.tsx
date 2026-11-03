@@ -8,8 +8,8 @@ const questions = [
       <>
         No. The package ships its own stylesheet; import it once and every component is styled.
         Colours, radius and spacing come from CSS variables, so a Tailwind project can keep its
-        setup and a plain CSS project needs nothing extra. See <Link href="/customize/">Theme Studio</Link>{' '}
-        for the token list.
+        setup and a plain CSS project needs nothing extra. See{' '}
+        <Link href="/customize/">Theme Studio</Link> for the token list.
       </>
     ),
   },
@@ -19,8 +19,8 @@ const questions = [
     answer: (
       <>
         Nothing. Every component, pattern and template is MIT licensed, including the agent and
-        approval pieces. There is no paid tier. The <Link href="/legal/">licence page</Link> has
-        the full text.
+        approval pieces. There is no paid tier. The <Link href="/legal/">licence page</Link> has the
+        full text.
       </>
     ),
   },
@@ -53,10 +53,10 @@ const questions = [
     question: 'Is it accessible?',
     answer: (
       <>
-        Keyboard and screen-reader behaviour is documented on each component page, overlays trap
-        and return focus, live regions announce streaming and status changes, and reduced-motion
-        preferences are respected. Automated axe checks run on the audited pages; the evidence
-        line above states the last result.
+        Keyboard and screen-reader behaviour is documented on each component page, overlays trap and
+        return focus, live regions announce streaming and status changes, and reduced-motion
+        preferences are respected. Automated axe checks run on the audited pages; the evidence line
+        above states the last result.
       </>
     ),
   },
@@ -67,8 +67,8 @@ const questions = [
       <>
         Yes. <a href="/llms.txt">llms.txt</a> and <a href="/llms-full.txt">llms-full.txt</a> index
         the site, every component page has a Markdown version and a “Copy prompt” button, the
-        package ships a component manifest, and the MCP endpoint serves the same pages to an
-        editor that supports it.
+        package ships a component manifest, and the MCP endpoint serves the same pages to an editor
+        that supports it.
       </>
     ),
   },

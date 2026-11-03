@@ -12,21 +12,22 @@ export default function Page() {
     <DocsFrame guide>
       <h1>Licence, privacy and contact</h1>
       <p>
-        Three short answers: the code is MIT licensed, this site keeps your theme choice in your
-        own browser and nothing else, and questions go to the repository.
+        Three short answers: the code is MIT licensed, this site keeps your theme choice in your own
+        browser and nothing else, and questions go to the repository.
       </p>
       <h2 id="licence">Licence</h2>
       <p>
         The packages <code>@stackunseen/ui</code> and <code>@stackunseen/ui-core</code>, the
-        examples, the templates and this site’s source are released under the MIT licence,
-        copyright Stack Unseen. You may use, copy, modify and redistribute them in commercial and
-        private projects as long as the licence text and copyright notice stay with the code.
-        The software is provided without warranty of any kind.
+        examples, the templates and this site’s source are released under the MIT licence, copyright
+        Stack Unseen. You may use, copy, modify and redistribute them in commercial and private
+        projects as long as the licence text and copyright notice stay with the code. The software
+        is provided without warranty of any kind.
       </p>
       <p>
         The site self-hosts IBM Plex Sans and IBM Plex Mono under the SIL Open Font License; the
-        licence text ships at <a href="/fonts/ibm-plex-sans-OFL.txt">/fonts/ibm-plex-sans-OFL.txt</a>.
-        Icons come from Lucide (ISC) and Radix Icons (MIT).
+        licence text ships at{' '}
+        <a href="/fonts/ibm-plex-sans-OFL.txt">/fonts/ibm-plex-sans-OFL.txt</a>. Icons come from
+        Lucide (ISC) and Radix Icons (MIT).
       </p>
       <h2 id="privacy">Privacy</h2>
       <p>
@@ -47,8 +48,8 @@ export default function Page() {
         <a href={`${repositoryUrl}/issues`} rel="noreferrer">
           issue tracker
         </a>{' '}
-        on GitHub. Security reports can be opened as a private advisory on the same repository.
-        For everything else, see the <Link href="/docs/">documentation overview</Link>.
+        on GitHub. Security reports can be opened as a private advisory on the same repository. For
+        everything else, see the <Link href="/docs/">documentation overview</Link>.
       </p>
     </DocsFrame>
   );

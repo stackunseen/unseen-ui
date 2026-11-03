@@ -38,8 +38,16 @@ export const tools = [
     inputSchema: {
       type: 'object',
       properties: {
-        query: { type: 'string', description: 'What you are looking for, such as "approval card" or "agent runs".' },
-        limit: { type: 'integer', minimum: 1, maximum: 50, description: 'Maximum results; 10 by default.' },
+        query: {
+          type: 'string',
+          description: 'What you are looking for, such as "approval card" or "agent runs".',
+        },
+        limit: {
+          type: 'integer',
+          minimum: 1,
+          maximum: 50,
+          description: 'Maximum results; 10 by default.',
+        },
       },
       required: ['query'],
     },
@@ -56,7 +64,11 @@ export const tools = [
     inputSchema: {
       type: 'object',
       properties: {
-        name: { type: 'string', description: 'The component name, such as "ApprovalCard", or its page slug, such as "approval-card".' },
+        name: {
+          type: 'string',
+          description:
+            'The component name, such as "ApprovalCard", or its page slug, such as "approval-card".',
+        },
       },
       required: ['name'],
     },
@@ -67,7 +79,9 @@ export const tools = [
       'The site overview for agents (llms.txt): what the library is, how to install it, and the index of pages. Pass full=true for llms-full.txt, which is long.',
     inputSchema: {
       type: 'object',
-      properties: { full: { type: 'boolean', description: 'Return llms-full.txt instead of llms.txt.' } },
+      properties: {
+        full: { type: 'boolean', description: 'Return llms-full.txt instead of llms.txt.' },
+      },
     },
   },
 ] as const;
@@ -82,7 +96,10 @@ const slugOf = (name: string) =>
     .toLowerCase();
 
 const text = (value: string) => ({ content: [{ type: 'text', text: value }] });
-const toolError = (message: string) => ({ content: [{ type: 'text', text: message }], isError: true });
+const toolError = (message: string) => ({
+  content: [{ type: 'text', text: message }],
+  isError: true,
+});
 
 async function readIndex(options: McpOptions): Promise<SiteSearchItem[]> {
   const response = await options.fetchAsset('/search-index.json');
@@ -109,7 +126,10 @@ export async function callTool(
         .sort((a, b) => b.score - a.score)
         .slice(0, limit)
         .map(({ item }) => item);
-      if (!items.length) return text(`No matches for "${query}". Try a job, such as "approvals", or a component name.`);
+      if (!items.length)
+        return text(
+          `No matches for "${query}". Try a job, such as "approvals", or a component name.`,
+        );
       return text(
         `${items.length} result${items.length === 1 ? '' : 's'} for "${query}":\n${items.map(describe).join('\n')}\n\nRead a component with read_component, or open the URL on https://unseenui.com.`,
       );
@@ -125,11 +145,16 @@ export async function callTool(
       const slug = slugOf(name);
       if (!slug) return toolError('name is required.');
       const response = await options.fetchAsset(`/llms/${slug}.md`);
-      if (!response.ok) return toolError(`No component page for "${name}". Use list_components or search to find the name.`);
+      if (!response.ok)
+        return toolError(
+          `No component page for "${name}". Use list_components or search to find the name.`,
+        );
       return text(await response.text());
     }
     case 'read_overview': {
-      const response = await options.fetchAsset(args.full === true ? '/llms-full.txt' : '/llms.txt');
+      const response = await options.fetchAsset(
+        args.full === true ? '/llms-full.txt' : '/llms.txt',
+      );
       if (!response.ok) return toolError(`Overview unavailable (${response.status}).`);
       return text(await response.text());
     }
@@ -138,7 +163,10 @@ export async function callTool(
   }
 }
 
-async function handleOne(message: JsonRpcRequest, options: McpOptions): Promise<JsonRpcResponse | null> {
+async function handleOne(
+  message: JsonRpcRequest,
+  options: McpOptions,
+): Promise<JsonRpcResponse | null> {
   const id = message.id ?? null;
   if (message.jsonrpc !== '2.0' || typeof message.method !== 'string')
     return { jsonrpc: '2.0', id, error: { code: -32600, message: 'Invalid request' } };
@@ -170,7 +198,11 @@ async function handleOne(message: JsonRpcRequest, options: McpOptions): Promise<
         return { jsonrpc: '2.0', id, result: await callTool(name, args, options) };
       }
       default:
-        return { jsonrpc: '2.0', id, error: { code: -32601, message: `Method not found: ${message.method}` } };
+        return {
+          jsonrpc: '2.0',
+          id,
+          error: { code: -32601, message: `Method not found: ${message.method}` },
+        };
     }
   } catch (error) {
     return {
@@ -188,9 +220,13 @@ function corsHeaders(origin: string | null, allowed: readonly string[]) {
     'MCP-Protocol-Version': protocolVersion,
     'Cache-Control': 'no-store',
   };
-  if (origin && (allowed.includes(origin) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))) {
+  if (
+    origin &&
+    (allowed.includes(origin) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin))
+  ) {
     headers['Access-Control-Allow-Origin'] = origin;
-    headers['Access-Control-Allow-Headers'] = 'content-type, accept, mcp-protocol-version, mcp-session-id';
+    headers['Access-Control-Allow-Headers'] =
+      'content-type, accept, mcp-protocol-version, mcp-session-id';
     headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS';
     headers.Vary = 'Origin';
   }
@@ -217,7 +253,10 @@ export async function handleMcp(request: Request, options: McpOptions): Promise<
       { status: 200, headers: { ...headers, 'content-type': 'application/json; charset=utf-8' } },
     );
   if (request.method !== 'POST')
-    return new Response('Method not allowed', { status: 405, headers: { ...headers, Allow: 'POST, OPTIONS, GET' } });
+    return new Response('Method not allowed', {
+      status: 405,
+      headers: { ...headers, Allow: 'POST, OPTIONS, GET' },
+    });
   let body: unknown;
   try {
     body = await request.json();
@@ -228,9 +267,9 @@ export async function handleMcp(request: Request, options: McpOptions): Promise<
     );
   }
   const messages = Array.isArray(body) ? (body as JsonRpcRequest[]) : [body as JsonRpcRequest];
-  const responses = (await Promise.all(messages.map((message) => handleOne(message, options)))).filter(
-    (response): response is JsonRpcResponse => response !== null,
-  );
+  const responses = (
+    await Promise.all(messages.map((message) => handleOne(message, options)))
+  ).filter((response): response is JsonRpcResponse => response !== null);
   if (!responses.length) return new Response(null, { status: 202, headers });
   return new Response(JSON.stringify(Array.isArray(body) ? responses : responses[0]), {
     status: 200,

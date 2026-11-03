@@ -2,7 +2,7 @@
 
 Unseen UI is an experimental alpha. Prereleases are published on npm under the `alpha` tag; pin exact versions. Newest first.
 
-## 0.1.0-alpha.11 — 22 October 2026
+## 0.1.0-alpha.11 — 3 November 2026
 
 ### Upgrade notes
 
@@ -85,6 +85,19 @@ Unseen UI is an experimental alpha. Prereleases are published on npm under the `
 - **Overlay motion:** Modal and AlertDialog rise in with a light blur, Popover, Tooltip, DropdownMenu, ContextMenu and Select grow from the edge nearest their trigger, and backdrops fade. Each exit is shorter than its enter, and with reduced motion only opacity changes.
 - **AppearanceToggle:** `variant="switch"`, a sun and moon pill with only light and dark, and `variant="subtle"`, one quiet icon that cross-fades between them. Both start from the system's choice while the value is `system`. The dark-mode glyph is now a plain crescent.
 - **TableOfContents:** `variant="track"` lists every level on a line that steps in with each level and darkens for the sections on screen, ending in a dot. `variant="ticks"` is a slim rail of marks for long reads, the current section longest, that opens into the titles on hover, focus or a press.
+- **Dashboard figures:** new Sparkline (a word-sized trend for a stat or a table cell), BarList (ranked rows with a bar behind each printed value), Tracker (one block per day or run, coloured by status and named in a tooltip) and DonutChart (shares of one total, with the total in the centre and a legend that prints each share).
+- **Dot figures:** new DotRing, DotBars, WeekStrip and HeatKeys for counts drawn as dots or shaded cells. Every figure keeps its values in a hidden table and never relies on colour alone.
+- **Numeric:** new. A figure in tabular digits with its qualifier in words; Stat, ElapsedTime and ToolCall durations share its style, so numbers line up. Stat gains `variant="inset"` for small figures inside a card, and Card gains `icon` and `Card.Section`.
+- **Agent runs** (`/conversation-flow`): new AgentLanes (a lane per agent on one time axis, with hand-offs between lanes), AgentSteering (queue a note for a running agent's next step, bound to the run version it was written against), and CostLedger (cost per run that never adds measured and estimated figures together). SubagentTree takes a per-run `cost` and adds up each branch; `branchCost` is exported. RunBoard cards take `steps` and `model`.
+- **ExecutionTimeline:** steps take `cost`, `tokens` and `parentId`, and the waterfall folds children under their parent on one shared axis.
+- **Assistant:** new MemoryPanel (what the assistant remembers, where each memory came from and whether it was used; pin and forget are requests the host confirms), FollowUps (next-step chips after a reply), ContextWindowMeter (what fills the context window, from host numbers, marked when estimated) and TonePad (two settings on one square, built from two native sliders).
+- **Kbd:** new. One key cap; put each key of a combination in its own Kbd.
+- **PromptInput:** `variables` offers placeholders as chips that insert `{{id}}` at the caret, `limit` shows a character count and stops sending past it, and `assist` holds extra actions such as "Enhance prompt".
+- **StreamingResponse:** `progress` shows where a multi-step answer stands as your server reports it, with an optional Stop action.
+- **Marketing** (`/marketing`): MarketingIllustration (four line drawings in the theme's colours), MarketingReveal (content that fades in on first view and is readable from the start) and MarketingNumber (a figure that counts up once, with the final value in the HTML). All three respect reduced motion.
+- **Variants on the server:** `componentVariants` and `resolveVariant` are exported from `@stackunseen/ui/theme`, which has no client directive. `useThemeScope` lets overlay content carry the theme without a wrapper.
+- **CodeEditor:** code and line numbers use the theme's mono font, the gutter fills the editor's minimum height (`--ai-code-editor-min-height`, `--ai-code-editor-max-height`), and only the editor draws a focus ring.
+- **Fixes:** Chart draws at its container's width and scrolls only when the data needs more room; CostLedger keeps the total's figure in the Cost column; ModelSelector's menu padding reaches the popover body; CommandPalette shows search focus as an underline; TestResults rows line up with the header; Snippet wraps long commands instead of scrolling.
 
 ## 0.1.0-alpha.10 — 20 October 2026
 

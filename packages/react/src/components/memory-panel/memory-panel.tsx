@@ -77,7 +77,8 @@ export function MemoryPanel({
   const id = useId();
   const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const shown = entries.filter((entry) => {
-    const haystack = `${entry.text} ${scopeLabels[entry.scope]} ${entry.source.label}`.toLowerCase();
+    const haystack =
+      `${entry.text} ${scopeLabels[entry.scope]} ${entry.source.label}`.toLowerCase();
     return words.every((word) => haystack.includes(word));
   });
   const used = entries.filter((entry) => entry.usedInContext).length;
@@ -122,7 +123,11 @@ export function MemoryPanel({
                     {formatTime(entry.source.at, locale, timeZone)}
                   </span>
                 </div>
-                <div className={own.actions} role="group" aria-label={`Actions for memory ${entry.id}`}>
+                <div
+                  className={own.actions}
+                  role="group"
+                  aria-label={`Actions for memory ${entry.id}`}
+                >
                   <Button
                     size="sm"
                     variant="outline"
@@ -144,7 +149,9 @@ export function MemoryPanel({
                   {note && (
                     <span className={s.muted} role="status">
                       {note}
-                      {receipt?.status === 'failed' && receipt.message ? `: ${receipt.message}` : ''}
+                      {receipt?.status === 'failed' && receipt.message
+                        ? `: ${receipt.message}`
+                        : ''}
                     </span>
                   )}
                 </div>

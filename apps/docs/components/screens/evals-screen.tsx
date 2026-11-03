@@ -19,12 +19,72 @@ interface EvalRun {
   at: string;
 }
 const runs: EvalRun[] = [
-  { id: 'e1', suite: 'Support replies', model: 'Opus 5.5', score: 0.93, previous: 0.91, cases: 240, failed: 17, state: 'succeeded', at: '2026-10-27T07:40:00Z' },
-  { id: 'e2', suite: 'Support replies', model: 'Sonnet 5.5', score: 0.88, previous: 0.89, cases: 240, failed: 29, state: 'succeeded', at: '2026-10-27T07:38:00Z' },
-  { id: 'e3', suite: 'Refund policy', model: 'Opus 5.5', score: 0.97, previous: 0.95, cases: 80, failed: 2, state: 'succeeded', at: '2026-10-27T07:21:00Z' },
-  { id: 'e4', suite: 'Refund policy', model: 'Haiku 5.5', score: 0.81, previous: 0.86, cases: 80, failed: 15, state: 'succeeded', at: '2026-10-27T07:19:00Z' },
-  { id: 'e5', suite: 'Tool selection', model: 'Opus 5.5', score: 0.9, previous: 0.9, cases: 120, failed: 12, state: 'running', at: '2026-10-27T08:35:00Z' },
-  { id: 'e6', suite: 'Tool selection', model: 'Sonnet 5.5', score: 0, previous: 0.84, cases: 120, failed: 0, state: 'failed', at: '2026-10-27T08:30:00Z' },
+  {
+    id: 'e1',
+    suite: 'Support replies',
+    model: 'Opus 5.5',
+    score: 0.93,
+    previous: 0.91,
+    cases: 240,
+    failed: 17,
+    state: 'succeeded',
+    at: '2026-10-27T07:40:00Z',
+  },
+  {
+    id: 'e2',
+    suite: 'Support replies',
+    model: 'Sonnet 5.5',
+    score: 0.88,
+    previous: 0.89,
+    cases: 240,
+    failed: 29,
+    state: 'succeeded',
+    at: '2026-10-27T07:38:00Z',
+  },
+  {
+    id: 'e3',
+    suite: 'Refund policy',
+    model: 'Opus 5.5',
+    score: 0.97,
+    previous: 0.95,
+    cases: 80,
+    failed: 2,
+    state: 'succeeded',
+    at: '2026-10-27T07:21:00Z',
+  },
+  {
+    id: 'e4',
+    suite: 'Refund policy',
+    model: 'Haiku 5.5',
+    score: 0.81,
+    previous: 0.86,
+    cases: 80,
+    failed: 15,
+    state: 'succeeded',
+    at: '2026-10-27T07:19:00Z',
+  },
+  {
+    id: 'e5',
+    suite: 'Tool selection',
+    model: 'Opus 5.5',
+    score: 0.9,
+    previous: 0.9,
+    cases: 120,
+    failed: 12,
+    state: 'running',
+    at: '2026-10-27T08:35:00Z',
+  },
+  {
+    id: 'e6',
+    suite: 'Tool selection',
+    model: 'Sonnet 5.5',
+    score: 0,
+    previous: 0.84,
+    cases: 120,
+    failed: 0,
+    state: 'failed',
+    at: '2026-10-27T08:30:00Z',
+  },
 ];
 const history = [
   { label: '20 Oct', value: 0.86 },
@@ -37,11 +97,28 @@ const history = [
   { label: '27 Oct', value: 0.93 },
 ];
 const cases: TestResult[] = [
-  { id: 'c1', name: 'Refund within 14 days: approves and cites the policy', state: 'passed', durationMs: 1800 },
+  {
+    id: 'c1',
+    name: 'Refund within 14 days: approves and cites the policy',
+    state: 'passed',
+    durationMs: 1800,
+  },
   { id: 'c2', name: 'Refund after 14 days: declines politely', state: 'passed', durationMs: 1650 },
-  { id: 'c3', name: 'Double charge: offers refund, never promises timing', state: 'failed', durationMs: 2100, detail: 'Promised "within 24 hours". Expected: no delivery promise.' },
+  {
+    id: 'c3',
+    name: 'Double charge: offers refund, never promises timing',
+    state: 'failed',
+    durationMs: 2100,
+    detail: 'Promised "within 24 hours". Expected: no delivery promise.',
+  },
   { id: 'c4', name: 'Unknown order number: asks for it once', state: 'passed', durationMs: 900 },
-  { id: 'c5', name: 'Angry tone: stays calm, no apology loop', state: 'failed', durationMs: 2400, detail: 'Apologised four times. Expected: at most once.' },
+  {
+    id: 'c5',
+    name: 'Angry tone: stays calm, no apology loop',
+    state: 'failed',
+    durationMs: 2400,
+    detail: 'Apologised four times. Expected: at most once.',
+  },
   { id: 'c6', name: 'Gift card refund: routes to a person', state: 'passed', durationMs: 1200 },
 ];
 const percent = (value: number) => `${Math.round(value * 100)}%`;
@@ -65,7 +142,12 @@ const columns: readonly DataGridColumn<EvalRun>[] = [
       return delta === 0 ? '±0' : `${delta > 0 ? '+' : ''}${delta} pts`;
     },
   },
-  { id: 'cases', header: 'Cases', align: 'end', cell: (row) => `${row.cases - row.failed}/${row.cases}` },
+  {
+    id: 'cases',
+    header: 'Cases',
+    align: 'end',
+    cell: (row) => `${row.cases - row.failed}/${row.cases}`,
+  },
   { id: 'state', header: 'State', cell: (row) => <StatusBadge state={row.state} /> },
 ];
 
@@ -99,15 +181,30 @@ export function EvalsScreen() {
         title="Evaluations"
         description="Scores per suite and model, from the last run of each. Re-running is a request to the eval service."
         actions={
-          <Button size="sm" onClick={() => setNotice('Run requested for all suites; the eval service queues it.')}>
+          <Button
+            size="sm"
+            onClick={() => setNotice('Run requested for all suites; the eval service queues it.')}
+          >
             Run all suites
           </Button>
         }
       />
       <div className={s.stats}>
-        <Stat label="Pass rate, all suites" value="91%" delta="+2 pts since 20 Oct" trend="up" note="Measured on 27 Oct" />
+        <Stat
+          label="Pass rate, all suites"
+          value="91%"
+          delta="+2 pts since 20 Oct"
+          trend="up"
+          note="Measured on 27 Oct"
+        />
         <Stat label="Cases run today" value="880" note="6 runs, 1 still running" />
-        <Stat label="Regressions" value={String(regressions.length)} delta={regressions.length ? 'Needs a look' : 'None'} trend={regressions.length ? 'down' : 'neutral'} note="Score below the previous run" />
+        <Stat
+          label="Regressions"
+          value={String(regressions.length)}
+          delta={regressions.length ? 'Needs a look' : 'None'}
+          trend={regressions.length ? 'down' : 'neutral'}
+          note="Score below the previous run"
+        />
         <Stat label="Eval cost today" value="$4.12" note="Measured by billing" />
       </div>
       <div className={s.grid}>
@@ -129,7 +226,9 @@ export function EvalsScreen() {
         <section className={`${s.panel} ${s.side}`} aria-labelledby="evals-failing">
           <div className={s.panelHead}>
             <h2 id="evals-failing">Failing cases</h2>
-            <span>{current.suite}, {current.model}</span>
+            <span>
+              {current.suite}, {current.model}
+            </span>
           </div>
           <TestResults
             variant="compact"
@@ -179,7 +278,13 @@ export function EvalsScreen() {
             left={{
               label: 'Opus 5.5',
               summary: {
-                run: { id: 'e1', attemptId: 'a1', threadId: 'eval', version: 1, lifecycle: 'succeeded' },
+                run: {
+                  id: 'e1',
+                  attemptId: 'a1',
+                  threadId: 'eval',
+                  version: 1,
+                  lifecycle: 'succeeded',
+                },
                 goal: 'Answer 240 support tickets the way the guide says',
                 outcome: 'succeeded',
                 summary: '223 of 240 passed. Failures cluster on refund timing promises.',
@@ -192,7 +297,13 @@ export function EvalsScreen() {
             right={{
               label: 'Sonnet 5.5',
               summary: {
-                run: { id: 'e2', attemptId: 'a1', threadId: 'eval', version: 1, lifecycle: 'succeeded' },
+                run: {
+                  id: 'e2',
+                  attemptId: 'a1',
+                  threadId: 'eval',
+                  version: 1,
+                  lifecycle: 'succeeded',
+                },
                 goal: 'Answer 240 support tickets the way the guide says',
                 outcome: 'partial',
                 summary: '211 of 240 passed. Failures include tone and timing promises.',

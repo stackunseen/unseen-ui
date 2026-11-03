@@ -1,6 +1,14 @@
 'use client';
 import { useState } from 'react';
-import { AgentSteps, Button, Message, PromptInput, StatusBadge, Stat, ToolCall } from '@stackunseen/ui';
+import {
+  AgentSteps,
+  Button,
+  Message,
+  PromptInput,
+  StatusBadge,
+  Stat,
+  ToolCall,
+} from '@stackunseen/ui';
 import { WorkspaceShell } from '@stackunseen/ui/layout';
 import { steps, tool } from '../../lib/fixtures';
 import s from './screens.module.css';
@@ -34,7 +42,10 @@ export function AppShellsScreen() {
     <div className={s.shells} data-template="app-shells">
       <section className={s.shellFrame} aria-labelledby="shell-dashboard">
         <h2 id="shell-dashboard">Dashboard shell</h2>
-        <p>Header, navigation column, scrolling main and an inspector on the right, with pane scrolling inside a bounded height.</p>
+        <p>
+          Header, navigation column, scrolling main and an inspector on the right, with pane
+          scrolling inside a bounded height.
+        </p>
         <div className={s.shellBox}>
           <WorkspaceShell
             label="Dashboard"
@@ -46,12 +57,20 @@ export function AppShellsScreen() {
                 <StatusBadge state="running" label="3 runs active" />
               </div>
             }
-            navigation={<Nav items={['Overview', 'Runs', 'Approvals', 'Evals', 'Settings']} current="Runs" />}
+            navigation={
+              <Nav items={['Overview', 'Runs', 'Approvals', 'Evals', 'Settings']} current="Runs" />
+            }
             main={
               <div className={s.shellMain}>
                 <div className={s.stats}>
                   <Stat variant="inset" label="Running" value="3" />
-                  <Stat variant="inset" label="Waiting on you" value="1" trend="down" delta="1 approval" />
+                  <Stat
+                    variant="inset"
+                    label="Waiting on you"
+                    value="1"
+                    trend="down"
+                    delta="1 approval"
+                  />
                   <Stat variant="inset" label="Finished today" value="12" />
                   <Stat variant="inset" label="Spend today" value="$4.12" note="Measured" />
                 </div>
@@ -62,7 +81,9 @@ export function AppShellsScreen() {
             inspector={
               <div className={s.shellMain}>
                 <strong>Run r1</strong>
-                <p className={s.note}>Refund the double-charged orders. Waiting for approval since 08:38.</p>
+                <p className={s.note}>
+                  Refund the double-charged orders. Waiting for approval since 08:38.
+                </p>
                 <Button size="sm">Open approval</Button>
               </div>
             }
@@ -71,7 +92,10 @@ export function AppShellsScreen() {
       </section>
       <section className={s.shellFrame} aria-labelledby="shell-chat">
         <h2 id="shell-chat">Chat shell</h2>
-        <p>Responsive navigation that collapses on wide screens and becomes a drawer on narrow ones, with the composer in the footer.</p>
+        <p>
+          Responsive navigation that collapses on wide screens and becomes a drawer on narrow ones,
+          with the composer in the footer.
+        </p>
         <div className={s.shellBox}>
           <WorkspaceShell
             label="Assistant"
@@ -86,12 +110,23 @@ export function AppShellsScreen() {
                 <span className={s.note}>Sonnet 5.5</span>
               </div>
             }
-            navigation={<Nav items={['Today', 'Refund batch', 'Winter catalogue', 'Help centre']} current="Refund batch" />}
+            navigation={
+              <Nav
+                items={['Today', 'Refund batch', 'Winter catalogue', 'Help centre']}
+                current="Refund batch"
+              />
+            }
             main={
               <div className={s.shellMain}>
                 <Message
                   variant="bubble"
-                  value={{ id: 'q', role: 'user', revision: 1, text: 'Which orders were charged twice on Saturday?', state: 'complete' }}
+                  value={{
+                    id: 'q',
+                    role: 'user',
+                    revision: 1,
+                    text: 'Which orders were charged twice on Saturday?',
+                    state: 'complete',
+                  }}
                 />
                 <Message
                   value={{
@@ -117,23 +152,29 @@ export function AppShellsScreen() {
       </section>
       <section className={s.shellFrame} aria-labelledby="shell-contained">
         <h2 id="shell-contained">Contained tool shell</h2>
-        <p>The compact variant for a tool embedded in a page: navigation and main only, no header, the page keeps the scroll.</p>
+        <p>
+          The compact variant for a tool embedded in a page: navigation and main only, no header,
+          the page keeps the scroll.
+        </p>
         <div className={`${s.shellBox} ${s.shellBoxAuto}`}>
           <WorkspaceShell
-              label="Glossary"
-              variant="contained"
-              mainAs="section"
-              navigation={<Nav items={['Terms', 'Pending review', 'History']} current="Terms" />}
-              main={
-                <div className={s.shellMain}>
-                  <strong>212 terms</strong>
-                  <p className={s.note}>Product names and their approved German translations. The translator checks each draft against this list.</p>
-                  <div>
-                    <StatusBadge state="succeeded" label="Checked 08:39" />
-                  </div>
+            label="Glossary"
+            variant="contained"
+            mainAs="section"
+            navigation={<Nav items={['Terms', 'Pending review', 'History']} current="Terms" />}
+            main={
+              <div className={s.shellMain}>
+                <strong>212 terms</strong>
+                <p className={s.note}>
+                  Product names and their approved German translations. The translator checks each
+                  draft against this list.
+                </p>
+                <div>
+                  <StatusBadge state="succeeded" label="Checked 08:39" />
                 </div>
-              }
-            />
+              </div>
+            }
+          />
         </div>
       </section>
     </div>

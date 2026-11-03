@@ -170,7 +170,9 @@ export function RunsSpecimen({
         submission={steering}
         onSubmit={(request) => {
           setSteering('submitting');
-          onNotice(`Note for run ${request.runId} version ${request.runVersion} sent; waiting for the server.`);
+          onNotice(
+            `Note for run ${request.runId} version ${request.runVersion} sent; waiting for the server.`,
+          );
           window.setTimeout(() => setSteering('acknowledged'), 900);
         }}
       />
@@ -178,10 +180,40 @@ export function RunsSpecimen({
   if (name === 'CostLedger') {
     const usd = (amount: number) => ({ amount, currency: 'USD' });
     const rows = [
-      { id: 'a', title: 'Archive inactive accounts', agent: 'Ops agent', model: 'Opus 5.5', tokens: { kind: 'measured' as const, value: 6200 }, cost: { kind: 'measured' as const, value: usd(0.31) } },
-      { id: 'b', title: 'Index the handbook', agent: 'Docs agent', model: 'Sonnet 5.5', tokens: { kind: 'measured' as const, value: 14800 }, cost: { kind: 'estimated' as const, value: usd(0.42), basis: 'token price list' } },
-      { id: 'c', title: 'Send renewal reminders', agent: 'Ops agent', model: 'Haiku 5.5', cost: { kind: 'unknown' as const, reason: 'provider offline' } },
-      { id: 'd', title: 'Weekly digest', agent: 'Docs agent', model: 'Haiku 5.5', tokens: { kind: 'measured' as const, value: 2100 }, cost: { kind: 'measured' as const, value: state === 'Mixed currencies' ? { amount: 0.02, currency: 'EUR' } : usd(0.02) } },
+      {
+        id: 'a',
+        title: 'Archive inactive accounts',
+        agent: 'Ops agent',
+        model: 'Opus 5.5',
+        tokens: { kind: 'measured' as const, value: 6200 },
+        cost: { kind: 'measured' as const, value: usd(0.31) },
+      },
+      {
+        id: 'b',
+        title: 'Index the handbook',
+        agent: 'Docs agent',
+        model: 'Sonnet 5.5',
+        tokens: { kind: 'measured' as const, value: 14800 },
+        cost: { kind: 'estimated' as const, value: usd(0.42), basis: 'token price list' },
+      },
+      {
+        id: 'c',
+        title: 'Send renewal reminders',
+        agent: 'Ops agent',
+        model: 'Haiku 5.5',
+        cost: { kind: 'unknown' as const, reason: 'provider offline' },
+      },
+      {
+        id: 'd',
+        title: 'Weekly digest',
+        agent: 'Docs agent',
+        model: 'Haiku 5.5',
+        tokens: { kind: 'measured' as const, value: 2100 },
+        cost: {
+          kind: 'measured' as const,
+          value: state === 'Mixed currencies' ? { amount: 0.02, currency: 'EUR' } : usd(0.02),
+        },
+      },
     ];
     return (
       <CostLedger
@@ -199,7 +231,11 @@ export function RunsSpecimen({
         id: 'm1',
         text: 'Prefers replies in British English.',
         scope: 'user',
-        source: { kind: 'conversation', label: 'Chat on 12 October', at: '2026-10-12T09:00:00.000Z' },
+        source: {
+          kind: 'conversation',
+          label: 'Chat on 12 October',
+          at: '2026-10-12T09:00:00.000Z',
+        },
         pinned: true,
         usedInContext: true,
       },
@@ -227,7 +263,10 @@ export function RunsSpecimen({
         onRequest={(request) => {
           setMemoryReceipts((previous) => ({
             ...previous,
-            [request.entryId]: { commandId: `${request.entryId}-${request.action}`, status: 'submitting' },
+            [request.entryId]: {
+              commandId: `${request.entryId}-${request.action}`,
+              status: 'submitting',
+            },
           }));
           onNotice(`${request.action} requested for ${request.entryId}; the server decides.`);
         }}

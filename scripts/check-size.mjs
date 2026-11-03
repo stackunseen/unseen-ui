@@ -42,8 +42,9 @@ if (!sheets.includes('core.css'))
 for (const name of sheets) {
   const gzip = gzipSync(await readFile(join(sheetDir, name))).length;
   console.log(JSON.stringify({ entryCss: name, gzipBytes: gzip }));
-  // core.css: 25 KiB since 2026-10-26 (24,730 measured), for the additions listed above.
-  if (gzip > (name === 'core.css' ? 25600 : 4096))
+  // core.css: 25 KiB since 2026-10-26 (24,730 measured), for the additions listed above; 25.25
+  // KiB since 2026-11-03 for Sparkline, BarList, Tracker and DonutChart (25,610 measured).
+  if (gzip > (name === 'core.css' ? 25856 : 4096))
     throw new Error(`${name} is over its CSS budget.`);
 }
 

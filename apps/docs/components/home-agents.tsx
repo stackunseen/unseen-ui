@@ -62,8 +62,8 @@ export function HomeAgents() {
           </li>
         </ul>
         <p className="home-connect-note">
-          The endpoint serves the same files as the site, so the agent never reads a stale page.
-          No key, no account.
+          The endpoint serves the same files as the site, so the agent never reads a stale page. No
+          key, no account.
         </p>
       </div>
       <HomeConnectCode className="home-connect-code" label="Agent setup" files={files} />

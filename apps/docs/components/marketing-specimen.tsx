@@ -75,9 +75,7 @@ export function MarketingSpecimen({
     content = (
       <MarketingIllustration
         variant={
-          presentation === 'integrations' ||
-          presentation === 'approval' ||
-          presentation === 'empty'
+          presentation === 'integrations' || presentation === 'approval' || presentation === 'empty'
             ? presentation
             : 'agents'
         }

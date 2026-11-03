@@ -33,7 +33,12 @@ describe('ContextWindowMeter', () => {
     expect(screen.getByRole('group')).toHaveAttribute('data-tone', 'neutral');
   });
   it('shows the reason when nothing was measured', () => {
-    render(<ContextWindowMeter variant="inline" value={{ kind: 'unknown', reason: 'the provider reports no usage' }} />);
+    render(
+      <ContextWindowMeter
+        variant="inline"
+        value={{ kind: 'unknown', reason: 'the provider reports no usage' }}
+      />,
+    );
     expect(screen.getByText(/Not measured: the provider reports no usage/)).toBeInTheDocument();
     expect(screen.queryByRole('img')).toBeNull();
   });
@@ -45,7 +50,11 @@ describe('MemoryPanel', () => {
       id: 'm1',
       text: 'Prefers replies in British English.',
       scope: 'user' as const,
-      source: { kind: 'conversation' as const, label: 'Chat on 12 October', at: '2026-10-12T09:00:00Z' },
+      source: {
+        kind: 'conversation' as const,
+        label: 'Chat on 12 October',
+        at: '2026-10-12T09:00:00Z',
+      },
       pinned: true,
       usedInContext: true,
     },
@@ -61,7 +70,12 @@ describe('MemoryPanel', () => {
     const onRequest = vi.fn();
     const onQueryChange = vi.fn();
     const { rerender } = render(
-      <MemoryPanel entries={entries} query="" onQueryChange={onQueryChange} onRequest={onRequest} />,
+      <MemoryPanel
+        entries={entries}
+        query=""
+        onQueryChange={onQueryChange}
+        onRequest={onRequest}
+      />,
     );
     expect(screen.getByText('2 saved, 1 used in this request')).toBeInTheDocument();
     expect(screen.getByText('Used just now')).toBeInTheDocument();

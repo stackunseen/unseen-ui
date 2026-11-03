@@ -25,11 +25,32 @@ interface General {
   retention: string;
   training: boolean;
 }
-const initial: General = { name: 'Larkspur Outdoors', region: 'eu', model: 'sonnet', retention: '30', training: false };
+const initial: General = {
+  name: 'Larkspur Outdoors',
+  region: 'eu',
+  model: 'sonnet',
+  retention: '30',
+  training: false,
+};
 const models = [
-  { id: 'opus', name: 'Opus 5.5', provider: 'Anthropic', description: 'Most capable; use for approvals and refunds.' },
-  { id: 'sonnet', name: 'Sonnet 5.5', provider: 'Anthropic', description: 'The default for support and translation.' },
-  { id: 'haiku', name: 'Haiku 5.5', provider: 'Anthropic', description: 'Fast and cheap; batch jobs.' },
+  {
+    id: 'opus',
+    name: 'Opus 5.5',
+    provider: 'Anthropic',
+    description: 'Most capable; use for approvals and refunds.',
+  },
+  {
+    id: 'sonnet',
+    name: 'Sonnet 5.5',
+    provider: 'Anthropic',
+    description: 'The default for support and translation.',
+  },
+  {
+    id: 'haiku',
+    name: 'Haiku 5.5',
+    provider: 'Anthropic',
+    description: 'Fast and cheap; batch jobs.',
+  },
 ];
 interface ApiKey {
   id: string;
@@ -40,9 +61,30 @@ interface ApiKey {
   state: 'succeeded' | 'idle';
 }
 const initialKeys: ApiKey[] = [
-  { id: 'k1', name: 'Production', prefix: 'lk_live_7f3a…', created: '2026-08-02', lastUsed: '2 minutes ago', state: 'succeeded' },
-  { id: 'k2', name: 'Staging', prefix: 'lk_test_c1d9…', created: '2026-09-15', lastUsed: 'Yesterday', state: 'succeeded' },
-  { id: 'k3', name: 'Old CI runner', prefix: 'lk_live_02b4…', created: '2026-03-20', lastUsed: 'Never', state: 'idle' },
+  {
+    id: 'k1',
+    name: 'Production',
+    prefix: 'lk_live_7f3a…',
+    created: '2026-08-02',
+    lastUsed: '2 minutes ago',
+    state: 'succeeded',
+  },
+  {
+    id: 'k2',
+    name: 'Staging',
+    prefix: 'lk_test_c1d9…',
+    created: '2026-09-15',
+    lastUsed: 'Yesterday',
+    state: 'succeeded',
+  },
+  {
+    id: 'k3',
+    name: 'Old CI runner',
+    prefix: 'lk_live_02b4…',
+    created: '2026-03-20',
+    lastUsed: 'Never',
+    state: 'idle',
+  },
 ];
 interface Invoice {
   id: string;
@@ -80,7 +122,9 @@ const invoiceColumns: readonly DataGridColumn<Invoice>[] = [
     cell: (row) => (
       <StatusBadge
         state={row.state}
-        label={row.state === 'succeeded' ? 'Paid' : row.state === 'pending' ? 'Open' : 'Payment failed'}
+        label={
+          row.state === 'succeeded' ? 'Paid' : row.state === 'pending' ? 'Open' : 'Payment failed'
+        }
       />
     ),
   },
@@ -116,7 +160,14 @@ export function SettingsBillingScreen() {
     window.setTimeout(() => {
       const id = `k${keys.length + 1}`;
       setKeys((previous) => [
-        { id, name: keyName.trim(), prefix: 'lk_live_9e21…', created: '2026-10-27', lastUsed: 'Never', state: 'idle' },
+        {
+          id,
+          name: keyName.trim(),
+          prefix: 'lk_live_9e21…',
+          created: '2026-10-27',
+          lastUsed: 'Never',
+          state: 'idle',
+        },
         ...previous,
       ]);
       setNewKey({ name: keyName.trim(), secret: 'lk_live_9e21sample0000000000000000000000' });
@@ -133,7 +184,10 @@ export function SettingsBillingScreen() {
       }}
     >
       <Field label="Workspace name">
-        <Input value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })} />
+        <Input
+          value={draft.name}
+          onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+        />
       </Field>
       <Field label="Data region" description="Where conversations and memories are stored.">
         <Select
@@ -145,7 +199,10 @@ export function SettingsBillingScreen() {
           ]}
         />
       </Field>
-      <Field label="Conversation retention" description="Older conversations are deleted, including their memories.">
+      <Field
+        label="Conversation retention"
+        description="Older conversations are deleted, including their memories."
+      >
         <Select
           value={draft.retention}
           onValueChange={(retention) => setDraft({ ...draft, retention })}
@@ -174,26 +231,45 @@ export function SettingsBillingScreen() {
   );
   const modelsTab = (
     <div className={s.form}>
-      <Field label="Default model" description="Agents can override it per run; the budget still applies.">
-        <ModelSelector models={models} value={draft.model} onValueChange={(model) => setDraft({ ...draft, model })} />
+      <Field
+        label="Default model"
+        description="Agents can override it per run; the budget still applies."
+      >
+        <ModelSelector
+          models={models}
+          value={draft.model}
+          onValueChange={(model) => setDraft({ ...draft, model })}
+        />
       </Field>
       <div className={s.meters}>
         <UsageMeter
           variant="detail"
           label="Monthly token budget"
-          value={{ kind: 'measured', value: { used: 41_200_000, limit: 60_000_000 }, at: '2026-10-27T08:00:00Z' }}
+          value={{
+            kind: 'measured',
+            value: { used: 41_200_000, limit: 60_000_000 },
+            at: '2026-10-27T08:00:00Z',
+          }}
         />
         <UsageMeter
           variant="detail"
           label="Monthly spend cap"
           unit="currency"
-          value={{ kind: 'measured', value: { used: 318.4, limit: 500 }, at: '2026-10-27T08:00:00Z' }}
+          value={{
+            kind: 'measured',
+            value: { used: 318.4, limit: 500 },
+            at: '2026-10-27T08:00:00Z',
+          }}
         />
         <UsageMeter
           variant="detail"
           label="Eval spend"
           unit="currency"
-          value={{ kind: 'estimated', value: { used: 28.9, limit: 100 }, basis: 'token price list' }}
+          value={{
+            kind: 'estimated',
+            value: { used: 28.9, limit: 100 },
+            basis: 'token price list',
+          }}
         />
       </div>
       <SettingsSaveCancel
@@ -213,7 +289,9 @@ export function SettingsBillingScreen() {
         <Button size="sm" onClick={() => setCreating(true)}>
           Create key
         </Button>
-        <span className={s.note}>A key is shown once, when it is created. Revoking takes effect within a minute.</span>
+        <span className={s.note}>
+          A key is shown once, when it is created. Revoking takes effect within a minute.
+        </span>
       </div>
       <DataGrid
         caption="API keys"
@@ -249,9 +327,7 @@ export function SettingsBillingScreen() {
         onOpenChange={(open) => !open && setNewKey(null)}
         title="Copy your new key"
         description="This is the only time it is shown."
-        footer={
-          <Button onClick={() => setNewKey(null)}>I have copied it</Button>
-        }
+        footer={<Button onClick={() => setNewKey(null)}>I have copied it</Button>}
       >
         {newKey && (
           <div className={s.keyRow}>
@@ -266,9 +342,25 @@ export function SettingsBillingScreen() {
     <div className={s.screen}>
       <div className={s.plans}>
         {[
-          { id: 'starter', name: 'Starter', price: '$0', lines: ['1 agent', '500k tokens a month', 'Community support'] },
-          { id: 'team', name: 'Team', price: '$249 / month', lines: ['Unlimited agents', '60M tokens a month', 'Approvals and audit log'], current: true },
-          { id: 'enterprise', name: 'Enterprise', price: 'Talk to us', lines: ['Dedicated region', 'SSO and SCIM', 'Custom retention'] },
+          {
+            id: 'starter',
+            name: 'Starter',
+            price: '$0',
+            lines: ['1 agent', '500k tokens a month', 'Community support'],
+          },
+          {
+            id: 'team',
+            name: 'Team',
+            price: '$249 / month',
+            lines: ['Unlimited agents', '60M tokens a month', 'Approvals and audit log'],
+            current: true,
+          },
+          {
+            id: 'enterprise',
+            name: 'Enterprise',
+            price: 'Talk to us',
+            lines: ['Dedicated region', 'SSO and SCIM', 'Custom retention'],
+          },
         ].map((plan) => (
           <div key={plan.id} className={s.plan} data-current={plan.current ? 'true' : undefined}>
             <strong>{plan.name}</strong>
@@ -284,7 +376,9 @@ export function SettingsBillingScreen() {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => setNotice(`Plan change to ${plan.name} requested; billing confirms by email.`)}
+                onClick={() =>
+                  setNotice(`Plan change to ${plan.name} requested; billing confirms by email.`)
+                }
               >
                 {plan.id === 'enterprise' ? 'Contact sales' : 'Switch'}
               </Button>
@@ -302,10 +396,19 @@ export function SettingsBillingScreen() {
         <UsageMeter
           variant="detail"
           label="Tokens this month"
-          value={{ kind: 'measured', value: { used: 41_200_000, limit: 60_000_000 }, at: '2026-10-27T08:00:00Z' }}
+          value={{
+            kind: 'measured',
+            value: { used: 41_200_000, limit: 60_000_000 },
+            at: '2026-10-27T08:00:00Z',
+          }}
         />
       </div>
-      <DataGrid caption="Invoices" columns={invoiceColumns} rows={invoices} getRowId={(row) => row.id} />
+      <DataGrid
+        caption="Invoices"
+        columns={invoiceColumns}
+        rows={invoices}
+        getRowId={(row) => row.id}
+      />
     </div>
   );
   return (

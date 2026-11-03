@@ -34,7 +34,6 @@
   gap: 8px;
 }
 
-
 .home-tasks {
   padding-block: 24px 32px;
   border-top: var(--ai-border-width, 1px) solid var(--ai-border);
@@ -98,9 +97,7 @@
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  
 
-  
   .home-tasks ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -109,7 +106,6 @@
   .home-tasks ul {
     grid-template-columns: 1fr;
   }
-  
 }
 .home-intro .web-eyebrow {
   margin-bottom: 16px;
@@ -383,14 +379,13 @@
     line-height: 1.55;
     margin-block: 18px;
   }
-  
+
   .home-intro-meta {
     display: grid;
     gap: 10px;
     font-size: 12px;
   }
 
-  
   .home-section-heading {
     display: grid;
     gap: 12px;
@@ -416,9 +411,6 @@
     order: -2;
   }
 
-  
-  
-  
   .home-start {
     grid-template-columns: 1fr;
     margin-top: 40px;
@@ -620,9 +612,6 @@
   .home-facts > div:nth-last-child(-n + 2) {
     border-bottom: 0;
   }
-  
-  
-  
 }
 @media (max-width: 560px) {
   .home-facts {
@@ -643,10 +632,10 @@
 .home-breadth {
   padding-block: 40px 8px;
 }
-.home-breadth [role=tablist] {
+.home-breadth [role='tablist'] {
   margin-bottom: 20px;
 }
-.home-tile[data-span=3] {
+.home-tile[data-span='3'] {
   grid-column: 1 / -1;
 }
 .home-tile-reset {
@@ -662,7 +651,7 @@
   margin: 0;
   min-width: 0;
 }
-.home-breadth .home-hero-demo [data-part=chat] {
+.home-breadth .home-hero-demo [data-part='chat'] {
   /* Tall enough for the question, the tool call and the approval with no scrolling inside. */
   --ai-chat-height: 600px;
   box-shadow: none;
@@ -688,7 +677,7 @@
   .home-breadth .home-hero-demo {
     max-width: 640px;
   }
-  .home-breadth .home-hero-demo [data-part=chat] {
+  .home-breadth .home-hero-demo [data-part='chat'] {
     --ai-chat-height: auto;
   }
 }
@@ -700,7 +689,7 @@
   .home-breadth {
     padding-top: 32px;
   }
-  .home-tile[data-span=3] {
+  .home-tile[data-span='3'] {
     grid-column: auto;
   }
   .home-hero-demo figcaption {

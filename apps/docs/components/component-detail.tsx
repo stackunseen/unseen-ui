@@ -623,7 +623,12 @@ export function ComponentDetail({
               value={componentPrompt(entry.name, pageMarkdown)}
               label="Copy prompt"
             />
-            <CopyButton size="sm" variant="ghost" value={pageMarkdown} label="Copy page as Markdown" />
+            <CopyButton
+              size="sm"
+              variant="ghost"
+              value={pageMarkdown}
+              label="Copy page as Markdown"
+            />
             <Button size="sm" variant="ghost" href={`/llms/${componentSlug(entry.name)}.md`}>
               Open the Markdown file
             </Button>

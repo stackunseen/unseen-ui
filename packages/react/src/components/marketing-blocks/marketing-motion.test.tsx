@@ -19,7 +19,9 @@ describe('marketing motion', () => {
   it('skips counting under reduced motion and renders the formatted value', () => {
     vi.stubGlobal('IntersectionObserver', undefined);
     vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('reduce') }));
-    render(<MarketingNumber value={1200} format={(count) => `${count.toLocaleString('en-US')} teams`} />);
+    render(
+      <MarketingNumber value={1200} format={(count) => `${count.toLocaleString('en-US')} teams`} />,
+    );
     expect(screen.getByText('1,200 teams')).toBeInTheDocument();
   });
   it('announces the final value while a count is in progress', () => {
@@ -36,6 +38,8 @@ describe('marketing motion', () => {
     act(() => frame?.(performance.now() + 200));
     const node = screen.getByText('500', { selector: '.uim-sr-only' });
     expect(node).toBeInTheDocument();
-    expect(screen.getByText(/^[0-9]+$/, { selector: '[aria-hidden]' })).not.toHaveTextContent('500');
+    expect(screen.getByText(/^[0-9]+$/, { selector: '[aria-hidden]' })).not.toHaveTextContent(
+      '500',
+    );
   });
 });

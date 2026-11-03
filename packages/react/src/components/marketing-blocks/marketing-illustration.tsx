@@ -2,17 +2,17 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 export type MarketingIllustrationName = 'agents' | 'integrations' | 'approval' | 'empty';
-export interface MarketingIllustrationProps extends Omit<ComponentPropsWithoutRef<'svg'>, 'children'> {
+export interface MarketingIllustrationProps extends Omit<
+  ComponentPropsWithoutRef<'svg'>,
+  'children'
+> {
   /** The scene: an agent team, integrations around a hub, an approval in flight, or an empty state. */
   variant?: MarketingIllustrationName;
   /** Read to assistive technology; omit for a purely decorative scene. */
   title?: string;
 }
 
-const scenes: Record<
-  MarketingIllustrationName,
-  { viewBox: string; render: () => ReactNode }
-> = {
+const scenes: Record<MarketingIllustrationName, { viewBox: string; render: () => ReactNode }> = {
   agents: {
     viewBox: '0 0 320 200',
     render: () => (
@@ -38,7 +38,13 @@ const scenes: Record<
     render: () => (
       <>
         <circle className="uim-ill-ring" cx="160" cy="100" r="68" />
-        <circle className="uim-ill-ring uim-ill-spin" cx="160" cy="100" r="44" strokeDasharray="6 10" />
+        <circle
+          className="uim-ill-ring uim-ill-spin"
+          cx="160"
+          cy="100"
+          r="44"
+          strokeDasharray="6 10"
+        />
         <rect className="uim-ill-fill" x="140" y="80" width="40" height="40" rx="12" />
         {[0, 60, 120, 180, 240, 300].map((angle) => {
           const rad = (angle * Math.PI) / 180;
@@ -47,7 +53,14 @@ const scenes: Record<
           return (
             <g key={angle}>
               <line className="uim-ill-edge" x1="160" y1="100" x2={cx} y2={cy} />
-              <rect className="uim-ill-line" x={cx - 12} y={cy - 12} width="24" height="24" rx="7" />
+              <rect
+                className="uim-ill-line"
+                x={cx - 12}
+                y={cy - 12}
+                width="24"
+                height="24"
+                rx="7"
+              />
             </g>
           );
         })}
@@ -64,7 +77,14 @@ const scenes: Record<
         <rect className="uim-ill-text" x="72" y="84" width="150" height="5" rx="2.5" />
         <rect className="uim-ill-soft" x="72" y="102" width="176" height="18" rx="6" />
         <rect className="uim-ill-line" x="150" y="130" width="46" height="18" rx="9" />
-        <rect className="uim-ill-fill uim-ill-pulse" x="202" y="130" width="46" height="18" rx="9" />
+        <rect
+          className="uim-ill-fill uim-ill-pulse"
+          x="202"
+          y="130"
+          width="46"
+          height="18"
+          rx="9"
+        />
         <path className="uim-ill-check" d="M218 139.5 L223 144 L232 134" />
       </>
     ),
@@ -73,7 +93,15 @@ const scenes: Record<
     viewBox: '0 0 320 200',
     render: () => (
       <>
-        <rect className="uim-ill-line" x="96" y="44" width="128" height="112" rx="14" strokeDasharray="8 8" />
+        <rect
+          className="uim-ill-line"
+          x="96"
+          y="44"
+          width="128"
+          height="112"
+          rx="14"
+          strokeDasharray="8 8"
+        />
         <circle className="uim-ill-soft" cx="160" cy="92" r="22" />
         <path className="uim-ill-edge" d="M150 92 h20 M160 82 v20" />
         <rect className="uim-ill-text" x="124" y="126" width="72" height="5" rx="2.5" />
