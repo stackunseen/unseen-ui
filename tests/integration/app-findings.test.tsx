@@ -16,7 +16,7 @@ import {
 } from '@stackunseen/ui';
 import { Chat } from '@stackunseen/ui/chat';
 
-// Issues found by building the Pro chat and coding-agent templates on the published API.
+// Issues found by building a chat app and a coding-agent app on the published API.
 
 const proposal: ApprovalProposal = {
   id: 'p1',
@@ -33,7 +33,7 @@ const proposal: ApprovalProposal = {
   status: 'pending',
 };
 
-describe('findings from the Pro templates', () => {
+describe('findings from building apps on the published API', () => {
   it('lets EmptyState take a title and description directly', () => {
     render(<EmptyState title="No tasks yet" description="Describe a task to start." />);
     expect(screen.getByRole('heading', { name: 'No tasks yet' })).toBeInTheDocument();
