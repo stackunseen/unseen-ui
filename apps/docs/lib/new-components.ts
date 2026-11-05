@@ -3,6 +3,8 @@
  * sidebar. Remove names once a release has shipped with them.
  */
 export const newComponents: ReadonlySet<string> = new Set([
+  'AttachmentTray',
+  'ShortcutHelp',
   'Sparkline',
   'BarList',
   'Tracker',

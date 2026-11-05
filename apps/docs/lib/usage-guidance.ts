@@ -398,6 +398,18 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'Picking files.',
     'FileDropzone',
   ),
+  AttachmentTray: g(
+    'Several files in the composer, each with its own progress, retry and remove.',
+    'One file with a large preview.',
+    'Attachment',
+    'PromptInput',
+  ),
+  ShortcutHelp: g(
+    'A list of the keyboard shortcuts this page actually handles.',
+    'A command menu for jumping to pages.',
+    'CommandPalette',
+    'Kbd',
+  ),
   FileDropzone: g(
     'Picking local files by drop or browse, with type, size and slot checks.',
     'Showing files already attached.',

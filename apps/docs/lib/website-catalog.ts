@@ -153,6 +153,21 @@ export const websiteCatalog: CatalogEntry[] = [
     code: '<Tooltip><Tooltip.Trigger asChild><Button variant="outline">Read-only preview</Button></Tooltip.Trigger><Tooltip.Content>Changes are kept in this local example.</Tooltip.Content></Tooltip>',
   }),
   entry({
+    name: 'ShortcutHelp',
+    group: 'Overlays',
+    aliases: ['Keyboard shortcuts', 'Shortcut sheet', 'Hotkeys'],
+    description: 'A sheet listing the keyboard shortcuts your app handles.',
+    states: ['Default', 'Grouped', 'Empty'],
+    contract:
+      'open · onOpenChange · shortcuts: { id, label, keys, group? }[] · title? · description? · useShortcutHelp(onOpen, enabled?)',
+    responsibility:
+      'Pass only shortcuts the page actually handles. The sheet does not listen for those keys. useShortcutHelp opens it on ? outside a text field; turn it off while the sheet is open.',
+    keyboard:
+      'Opening moves focus into the sheet. Tab stays inside; Escape or Close returns focus to the opener.',
+    relatedImports: ['Kbd', 'CommandPalette'],
+    code: '<ShortcutHelp open={open} onOpenChange={setOpen} shortcuts={[{ id: "send", label: "Send", keys: ["Enter"] }]} />',
+  }),
+  entry({
     name: 'AlertDialog',
     group: 'Overlays',
     aliases: ['Confirmation', 'Confirm dialog', 'Destructive action'],

@@ -1,12 +1,41 @@
 'use client';
 import { useState } from 'react';
-import { AlertDialog, Button, Field, Input, Popover, Tooltip } from '@stackunseen/ui';
+import { AlertDialog, Button, Field, Input, Popover, ShortcutHelp, Tooltip } from '@stackunseen/ui';
 import type { WebsiteSpecimenProps } from './website-specimen';
 
 export function WebsiteOverlaySpecimen({ name, state }: WebsiteSpecimenProps) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState('Component library');
   const [notice, setNotice] = useState('');
+  if (name === 'ShortcutHelp') {
+    const shortcuts =
+      state === 'Empty'
+        ? []
+        : state === 'Grouped'
+          ? [
+              { id: 'send', label: 'Send', keys: ['Enter'], group: 'Composer' },
+              { id: 'line', label: 'New line', keys: ['Shift', 'Enter'], group: 'Composer' },
+              { id: 'find', label: 'Search', keys: ['Ctrl', 'K'], group: 'Navigation' },
+            ]
+          : [
+              { id: 'send', label: 'Send', keys: ['Enter'] },
+              { id: 'line', label: 'New line', keys: ['Shift', 'Enter'] },
+              { id: 'find', label: 'Search', keys: ['Ctrl', 'K'] },
+            ];
+    return (
+      <>
+        <Button variant="outline" onClick={() => setOpen(true)}>
+          Keyboard shortcuts
+        </Button>
+        <ShortcutHelp open={open} onOpenChange={setOpen} shortcuts={shortcuts} />
+        <p role="status" className="generic-demo-status">
+          {open
+            ? 'Shortcut sheet open.'
+            : 'Open the sheet to read the shortcuts this page handles.'}
+        </p>
+      </>
+    );
+  }
   if (name === 'Tooltip')
     return (
       <>

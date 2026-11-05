@@ -240,6 +240,8 @@ export { FollowUps } from './components/follow-ups/follow-ups.js';
 export type { FollowUp, FollowUpsProps } from './components/follow-ups/follow-ups.js';
 export { Kbd } from './components/kbd/kbd.js';
 export type { KbdProps } from './components/kbd/kbd.js';
+export { ShortcutHelp, useShortcutHelp } from './components/shortcut-help/shortcut-help.js';
+export type { ShortcutHelpProps, ShortcutItem } from './components/shortcut-help/shortcut-help.js';
 export { TonePad } from './components/tone-pad/tone-pad.js';
 export type { TonePadProps, TonePadValue, TonePadAxes } from './components/tone-pad/tone-pad.js';
 export { Message, MessageActions } from './components/message/message.js';
@@ -250,6 +252,11 @@ export {
   AttachmentGroup,
   AttachmentPicker,
 } from './components/attachment/attachment.js';
+export { AttachmentTray } from './components/attachment/attachment-tray.js';
+export type {
+  AttachmentTrayProps,
+  AttachmentTrayItem,
+} from './components/attachment/attachment-tray.js';
 export type {
   AttachmentProps,
   AttachmentState,

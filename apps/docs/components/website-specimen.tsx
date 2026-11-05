@@ -65,7 +65,7 @@ export function WebsiteSpecimen(props: WebsiteSpecimenProps) {
     'TonePad',
   ].includes(name)
     ? FormSpecimen
-    : ['Popover', 'Tooltip', 'AlertDialog'].includes(name)
+    : ['Popover', 'Tooltip', 'AlertDialog', 'ShortcutHelp'].includes(name)
       ? OverlaySpecimen
       : ['DropdownMenu', 'ContextMenu', 'NavigationMenu'].includes(name)
         ? MenuSpecimen

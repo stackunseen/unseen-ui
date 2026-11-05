@@ -52,3 +52,13 @@
   font-size: var(--ai-font-size-caption, 12px);
   color: var(--ai-muted);
 }
+.plotFrame:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+.readout {
+  margin: 8px 0 0;
+}
+.plot [data-active='true'] :is(rect, circle, path) {
+  stroke-width: 3px;
+}

@@ -30,8 +30,9 @@ console.log(JSON.stringify(metrics, null, 2));
 // 28.5 KiB on 2026-10-26 for the dot figures (DotRing, DotBars, WeekStrip, HeatKeys), TonePad,
 // Kbd, FollowUps, the composer meta row, response progress, the numeric face and the waterfall
 // (28,367 bytes measured). Raised to 28.75 KiB on 2026-10-29 for Sparkline, BarList, Tracker and
-// DonutChart, which share the dot figures' frame (29,267 bytes measured).
-if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 29440)
+// DonutChart, which share the dot figures' frame (29,267 bytes measured). Raised by 64 bytes on
+// 2026-11-05 for the chart value readout, attachment tray and shortcut sheet (29,453 measured).
+if (metrics.statusGzipBytesExcludingReact > 8192 || metrics.baseCssGzipBytes > 29504)
   throw new Error('Initial bundle budget exceeded.');
 
 // Per-entry stylesheets (ADR 0028): core for the root entry, then what each other entry adds.

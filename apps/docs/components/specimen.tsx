@@ -65,6 +65,10 @@ const AttachmentComposer = dynamic(
   () => import('./attachment-specimen').then((m) => m.AttachmentComposer),
   { loading: ExampleLoading },
 );
+const AttachmentTraySpecimen = dynamic(
+  () => import('./attachment-specimen').then((m) => m.AttachmentTraySpecimen),
+  { loading: ExampleLoading },
+);
 const MCPAppSpecimen = dynamic(() => import('./mcp-app-specimen').then((m) => m.MCPAppSpecimen), {
   loading: ExampleLoading,
 });
@@ -457,6 +461,9 @@ export function Specimen({
       preview = (
         <AttachmentSpecimen state={variant} presentation={presentation} onNotice={setResult} />
       );
+      break;
+    case 'AttachmentTray':
+      preview = <AttachmentTraySpecimen state={variant} onNotice={setResult} />;
       break;
     case 'FileDropzone':
       preview = <FileDropzoneSpecimen key={variant} state={variant} onNotice={setResult} />;

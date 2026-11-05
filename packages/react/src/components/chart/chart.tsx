@@ -61,6 +61,31 @@ function pattern(id: string, index: number, color: string) {
 }
 const clip = (value: string, limit: number) =>
   value.length > limit ? `${value.slice(0, limit - 1)}…` : value;
+const readoutKeys = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']);
+function moveReadout(
+  current: { series: number; category: number } | null,
+  key: string,
+  seriesIndexes: readonly number[],
+  categoryCount: number,
+) {
+  const first = seriesIndexes[0];
+  if (first === undefined || categoryCount < 1 || !readoutKeys.has(key)) return null;
+  if (!current || !seriesIndexes.includes(current.series) || current.category >= categoryCount)
+    return { series: first, category: key === 'End' ? categoryCount - 1 : 0 };
+  const at = seriesIndexes.indexOf(current.series);
+  if (key === 'ArrowRight')
+    return { series: current.series, category: Math.min(categoryCount - 1, current.category + 1) };
+  if (key === 'ArrowLeft')
+    return { series: current.series, category: Math.max(0, current.category - 1) };
+  if (key === 'Home') return { series: current.series, category: 0 };
+  if (key === 'End') return { series: current.series, category: categoryCount - 1 };
+  if (key === 'ArrowDown')
+    return {
+      series: seriesIndexes[Math.min(seriesIndexes.length - 1, at + 1)]!,
+      category: current.category,
+    };
+  return { series: seriesIndexes[Math.max(0, at - 1)]!, category: current.category };
+}
 export function Chart({
   title,
   points,
@@ -82,6 +107,8 @@ export function Chart({
   // The plot is drawn at the width of its container, so it fills a card instead of scrolling
   // inside it. It scrolls only when the categories need more room than the container has.
   const [available, setAvailable] = useState<number | null>(null);
+  const [readout, setReadout] = useState<{ series: number; category: number } | null>(null);
+  const pointerReadout = useRef(false);
   const observer = useRef<ResizeObserver | null>(null);
   const measure = useCallback((node: HTMLDivElement | null) => {
     observer.current?.disconnect();
@@ -213,6 +240,30 @@ export function Chart({
   const legend =
     showLegend ??
     (series !== undefined || Boolean(onSeriesVisibilityChange) || hiddenSeries.length > 0);
+  const seriesIndexes = visible.map((item) => item.index);
+  const activeGroup = readout ? visible.find((item) => item.index === readout.series) : undefined;
+  const activePoint = activeGroup?.group.points[readout!.category];
+  const readoutText =
+    activeGroup && activePoint
+      ? activePoint.value === null
+        ? `${activePoint.label}: Not reported`
+        : visible.length === 1
+          ? `${activePoint.label}: ${formatted.get(activePoint.value)} ${measurement}`
+          : `${activeGroup.group.label}, ${activePoint.label}: ${formatted.get(activePoint.value)} ${measurement}`
+      : null;
+  const mark = (seriesIndex: number, categoryIndex: number) => ({
+    'data-point': `${seriesIndex}:${categoryIndex}`,
+    'data-active':
+      readout?.series === seriesIndex && readout.category === categoryIndex ? 'true' : undefined,
+    onMouseEnter: () => {
+      pointerReadout.current = true;
+      setReadout({ series: seriesIndex, category: categoryIndex });
+    },
+    onClick: () => {
+      pointerReadout.current = false;
+      setReadout({ series: seriesIndex, category: categoryIndex });
+    },
+  });
   return frame(
     <>
       <p className={s.muted}>
@@ -311,116 +362,150 @@ export function Chart({
         <p className={s.muted}>No numeric chart values reported.</p>
       ) : (
         <div
-          ref={measure}
-          className={c.scroll}
-          role="group"
-          aria-label={`${heading} chart`}
-          tabIndex={0}
+          onMouseLeave={() => {
+            if (!pointerReadout.current) return;
+            pointerReadout.current = false;
+            setReadout(null);
+          }}
         >
-          <svg
-            className={css.plot}
-            width={width}
-            viewBox={`0 0 ${width} 280`}
-            role="img"
-            aria-label={`${heading}. ${measurement}. ${visible.length} visible series. Equivalent values are in the data table.`}
+          <div
+            ref={measure}
+            className={`${c.scroll} ${css.plotFrame}`}
+            role="group"
+            aria-label={`${heading} chart`}
+            tabIndex={0}
+            onKeyDown={(event) => {
+              if (!readoutKeys.has(event.key)) return;
+              event.preventDefault();
+              const next = moveReadout(readout, event.key, seriesIndexes, model.categories.length);
+              if (
+                !next ||
+                (readout && next.series === readout.series && next.category === readout.category)
+              )
+                return;
+              pointerReadout.current = false;
+              setReadout(next);
+            }}
           >
-            <defs>
-              {visible.map(({ index }) => (
-                <g key={index}>{pattern(`${prefix}-plot-${index}`, index, colors[index]!)}</g>
-              ))}
-            </defs>
-            {ticks.map((value) => (
-              <g key={value}>
-                <line className={css.grid} x1={left} y1={y(value)} x2={right} y2={y(value)} />
-                <text x={left - 8} y={y(value) + 4} textAnchor="end">
-                  <title>{formatted.get(value)}</title>
-                  {clip(formatted.get(value)!, 11)}
-                </text>
-              </g>
-            ))}
-            {variant === 'area' &&
-              visible.map(({ group, index }) => (
-                <g key={group.id} data-series-area={group.id}>
-                  {chartRuns(group.points).map((run, n) => (
-                    <path
-                      key={n}
-                      d={`${linePath(run)} L${x(run.at(-1)!.index)},${y(0)} L${x(run[0]!.index)},${y(0)} Z`}
-                      fill={`url(#${prefix}-plot-${index})`}
-                      opacity={0.2}
-                    />
-                  ))}
+            <svg
+              className={css.plot}
+              width={width}
+              viewBox={`0 0 ${width} 280`}
+              role="img"
+              aria-label={`${heading}. ${measurement}. ${visible.length} visible series. Equivalent values are in the data table.`}
+            >
+              <defs>
+                {visible.map(({ index }) => (
+                  <g key={index}>{pattern(`${prefix}-plot-${index}`, index, colors[index]!)}</g>
+                ))}
+              </defs>
+              {ticks.map((value) => (
+                <g key={value}>
+                  <line className={css.grid} x1={left} y1={y(value)} x2={right} y2={y(value)} />
+                  <text x={left - 8} y={y(value) + 4} textAnchor="end">
+                    <title>{formatted.get(value)}</title>
+                    {clip(formatted.get(value)!, 11)}
+                  </text>
                 </g>
               ))}
-            <line className={css.baseline} x1={left} y1={y(0)} x2={right} y2={y(0)} />
-            {visible.map(({ group, index }, position) => (
-              <g key={group.id} data-series-id={group.id} data-encoding={cues[index]}>
-                {variant === 'bar'
-                  ? group.points.map((point, category) => {
-                      if (point.value === null) return null;
-                      const barWidth = Math.max(3, (slot - 12) / visible.length - 3);
-                      const barX =
-                        left + slot * category + 6 + position * ((slot - 12) / visible.length);
-                      return (
-                        <g key={model.key(point)} data-value={point.value}>
-                          <title>{`${group.label}, ${point.label}: ${formatted.get(point.value)} ${measurement}`}</title>
-                          {point.value === 0 ? (
-                            <line
-                              x1={barX}
-                              y1={y(0)}
-                              x2={barX + barWidth}
-                              y2={y(0)}
+              {variant === 'area' &&
+                visible.map(({ group, index }) => (
+                  <g key={group.id} data-series-area={group.id}>
+                    {chartRuns(group.points).map((run, n) => (
+                      <path
+                        key={n}
+                        d={`${linePath(run)} L${x(run.at(-1)!.index)},${y(0)} L${x(run[0]!.index)},${y(0)} Z`}
+                        fill={`url(#${prefix}-plot-${index})`}
+                        opacity={0.2}
+                      />
+                    ))}
+                  </g>
+                ))}
+              <line className={css.baseline} x1={left} y1={y(0)} x2={right} y2={y(0)} />
+              {visible.map(({ group, index }, position) => (
+                <g key={group.id} data-series-id={group.id} data-encoding={cues[index]}>
+                  {variant === 'bar'
+                    ? group.points.map((point, category) => {
+                        if (point.value === null) return null;
+                        const barWidth = Math.max(3, (slot - 12) / visible.length - 3);
+                        const barX =
+                          left + slot * category + 6 + position * ((slot - 12) / visible.length);
+                        return (
+                          <g
+                            key={model.key(point)}
+                            data-value={point.value}
+                            {...mark(index, category)}
+                          >
+                            <title>{`${group.label}, ${point.label}: ${formatted.get(point.value)} ${measurement}`}</title>
+                            {point.value === 0 ? (
+                              <line
+                                x1={barX}
+                                y1={y(0)}
+                                x2={barX + barWidth}
+                                y2={y(0)}
+                                stroke={colors[index]}
+                                strokeWidth={2}
+                              />
+                            ) : (
+                              <rect
+                                x={barX}
+                                y={Math.min(y(0), y(point.value))}
+                                width={barWidth}
+                                height={Math.abs(y(point.value) - y(0))}
+                                fill={`url(#${prefix}-plot-${index})`}
+                                stroke={colors[index]}
+                              />
+                            )}
+                          </g>
+                        );
+                      })
+                    : chartRuns(group.points).map((run, runIndex) => {
+                        const path = linePath(run);
+                        return (
+                          <g key={runIndex} data-run={runIndex}>
+                            <path
+                              data-line="true"
+                              d={path}
+                              fill="none"
                               stroke={colors[index]}
                               strokeWidth={2}
+                              strokeDasharray={dashes[index]}
                             />
-                          ) : (
-                            <rect
-                              x={barX}
-                              y={Math.min(y(0), y(point.value))}
-                              width={barWidth}
-                              height={Math.abs(y(point.value) - y(0))}
-                              fill={`url(#${prefix}-plot-${index})`}
-                              stroke={colors[index]}
-                            />
-                          )}
-                        </g>
-                      );
-                    })
-                  : chartRuns(group.points).map((run, runIndex) => {
-                      const path = linePath(run);
-                      return (
-                        <g key={runIndex} data-run={runIndex}>
-                          <path
-                            data-line="true"
-                            d={path}
-                            fill="none"
-                            stroke={colors[index]}
-                            strokeWidth={2}
-                            strokeDasharray={dashes[index]}
-                          />
-                          {run.map(({ point, index: category }) => (
-                            <g key={model.key(point)} data-value={point.value}>
-                              <title>{`${group.label}, ${point.label}: ${formatted.get(point.value)} ${measurement}`}</title>
-                              {marker(index, x(category), y(point.value), colors[index]!)}
-                            </g>
-                          ))}
-                        </g>
-                      );
-                    })}
-              </g>
-            ))}
-            {model.categories.map((point, index) => (
-              <text
-                key={model.key(point)}
-                x={x(index)}
-                y={210}
-                textAnchor="end"
-                transform={`rotate(-35 ${x(index)} 210)`}
-              >
-                <title>{point.label}</title>
-                {clip(point.label, 16)}
-              </text>
-            ))}
-          </svg>
+                            {run.map(({ point, index: category }) => (
+                              <g
+                                key={model.key(point)}
+                                data-value={point.value}
+                                {...mark(index, category)}
+                              >
+                                <title>{`${group.label}, ${point.label}: ${formatted.get(point.value)} ${measurement}`}</title>
+                                {marker(index, x(category), y(point.value), colors[index]!)}
+                              </g>
+                            ))}
+                          </g>
+                        );
+                      })}
+                </g>
+              ))}
+              {model.categories.map((point, index) => (
+                <text
+                  key={model.key(point)}
+                  x={x(index)}
+                  y={210}
+                  textAnchor="end"
+                  transform={`rotate(-35 ${x(index)} 210)`}
+                >
+                  <title>{point.label}</title>
+                  {clip(point.label, 16)}
+                </text>
+              ))}
+            </svg>
+            <span className={s.srOnly}>Arrow keys read one value at a time.</span>
+          </div>
+          {readoutText && (
+            <p className={css.readout} aria-live="polite" data-part="chart-readout">
+              {readoutText}
+            </p>
+          )}
         </div>
       )}
       {missing > 0 && (

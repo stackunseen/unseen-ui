@@ -4,6 +4,7 @@ import {
   Attachment,
   AttachmentGroup,
   AttachmentPicker,
+  AttachmentTray,
   FileDropzone,
   PromptInput,
   resolveVariant,
@@ -262,26 +263,23 @@ export function AttachmentComposer({ variant }: { variant: ComponentVariant<'Pro
         }
         attachments={
           files.length ? (
-            <AttachmentGroup label="Draft attachments">
-              <>
-                {files.map((item) => (
-                  <Attachment
-                    key={item.id}
-                    variant="compact"
-                    name={item.file.name}
-                    state="selected"
-                    sizeBytes={item.file.size}
-                    mediaType={item.file.type}
-                    detail="Local file · not uploaded"
-                    preview={item.preview}
-                    onRemove={() => {
-                      release(item);
-                      setFiles((previous) => previous.filter((value) => value.id !== item.id));
-                    }}
-                  />
-                ))}
-              </>
-            </AttachmentGroup>
+            <AttachmentTray
+              label="Draft attachments"
+              items={files.map((item) => ({
+                id: item.id,
+                name: item.file.name,
+                state: 'selected',
+                sizeBytes: item.file.size,
+                mediaType: item.file.type,
+                detail: 'Local file · not uploaded',
+                preview: item.preview,
+              }))}
+              onRemove={(id) => {
+                const item = files.find((value) => value.id === id);
+                if (item) release(item);
+                setFiles((previous) => previous.filter((value) => value.id !== id));
+              }}
+            />
           ) : undefined
         }
         onSubmit={(message) => {
@@ -301,6 +299,65 @@ export function AttachmentComposer({ variant }: { variant: ComponentVariant<'Pro
         an integration.
       </p>
     </div>
+  );
+}
+
+export function AttachmentTraySpecimen({
+  state,
+  onNotice,
+}: {
+  state: string;
+  onNotice: (text: string) => void;
+}) {
+  if (state === 'Empty')
+    return <p className="variant-note">The tray stays out of the way until a file is added.</p>;
+  const items =
+    state === 'Failed'
+      ? [
+          {
+            id: 'brief',
+            name: 'brief.pdf',
+            state: 'failed' as const,
+            detail: 'The connection dropped.',
+          },
+        ]
+      : state === 'Several files'
+        ? [
+            {
+              id: 'notes',
+              name: 'notes.csv',
+              state: 'uploading' as const,
+              mediaType: 'text/csv',
+              sizeBytes: 4000,
+              progress: { loaded: 1000, total: 4000 },
+            },
+            {
+              id: 'brief',
+              name: 'brief.pdf',
+              state: 'failed' as const,
+              detail: 'The connection dropped.',
+            },
+            { id: 'shot', name: 'chart.png', state: 'ready' as const, mediaType: 'image/png' },
+          ]
+        : [
+            {
+              id: 'notes',
+              name: 'notes.csv',
+              state: 'uploading' as const,
+              mediaType: 'text/csv',
+              sizeBytes: 4000,
+              progress: { loaded: 1000, total: 4000 },
+            },
+          ];
+  return (
+    <AttachmentTray
+      items={items}
+      onRetry={(id) => onNotice(`Retry requested for ${id}. The server starts a new upload.`)}
+      onRemove={(id) =>
+        onNotice(`Remove requested for ${id}. The row stays until the server drops it.`)
+      }
+      onOpen={(id) => onNotice(`Open requested for ${id}.`)}
+    />
   );
 }
 

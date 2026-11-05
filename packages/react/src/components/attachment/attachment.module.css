@@ -102,6 +102,13 @@
   color: var(--ai-danger, #991b1b);
   overflow-wrap: anywhere;
 }
+.tray ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .composerAttachments {
   flex: 1 0 100%;
   min-width: 0;

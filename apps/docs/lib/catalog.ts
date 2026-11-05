@@ -109,6 +109,8 @@ export type GenericComponent =
   | 'Sources'
   | 'ModelSelector'
   | 'FileDropzone'
+  | 'AttachmentTray'
+  | 'ShortcutHelp'
   | 'Snippet'
   | 'Commit'
   | 'EnvironmentVariables'
@@ -395,6 +397,21 @@ export const catalog: CatalogEntry[] = [
     responsibility:
       'Your server checks, uploads and stores the files, and confirms each change. The checks in the browser don’t look inside a file.',
     code: '<Attachment name="brief.pdf" state="ready" onRemove={remove} />',
+  },
+  {
+    name: 'AttachmentTray',
+    category: 'Conversation',
+    presentations: ['default'],
+    presentationProp: null,
+    aliases: ['File tray', 'Composer attachments', 'Upload list'],
+    description: 'The files in a composer, one row each, with measured progress, retry and remove.',
+    states: ['Uploading', 'Failed', 'Several files', 'Empty'],
+    contract:
+      'items: { id, name, state, mediaType?, sizeBytes?, progress?, detail?, access?, preview? }[] · onRemove?(id) · onRetry?(id) · onOpen?(id) · label?',
+    responsibility:
+      'Keep the list in your app. A click asks to retry, remove or open one file; the row stays until you drop it. An empty list renders nothing. At most 20 files are shown.',
+    keyboard: 'Tab reaches Retry, Remove and Open on each row. The list itself is not a tab stop.',
+    code: '<AttachmentTray items={files} onRemove={remove} onRetry={retry} />',
   },
   {
     name: 'FileDropzone',

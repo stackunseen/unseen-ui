@@ -1,0 +1,29 @@
+.list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 8px;
+  border-bottom: 1px solid var(--ai-border);
+}
+.heading {
+  margin: 16px 0 0;
+  color: var(--ai-muted);
+  font-size: var(--ai-font-size-meta, 13px);
+}
+.keys {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 4px;
+  white-space: nowrap;
+}
+.note {
+  margin: 8px 0 0;
+  color: var(--ai-muted);
+}

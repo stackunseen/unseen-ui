@@ -21,6 +21,7 @@ export const componentTasks: readonly ComponentTask[] = [
       'MessageActions',
       'Suggestions',
       'Attachment',
+      'AttachmentTray',
       'FileDropzone',
       'ModelSelector',
       'FeedbackCapture',
@@ -122,6 +123,7 @@ export const componentTasks: readonly ComponentTask[] = [
     description: 'Finding and moving between pages and sections.',
     components: [
       'CommandPalette',
+      'ShortcutHelp',
       'TableOfContents',
       'Breadcrumb',
       'Tabs',
