@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { DataTable } from '../data-table/data-table.js';
 import { Accordion } from '../accordion/accordion.js';
@@ -31,6 +32,8 @@ export interface ChartProps extends VariantProps<'Chart'> {
   hiddenSeries?: readonly string[];
   onSeriesVisibilityChange?: (hiddenIds: readonly string[]) => void;
   showLegend?: boolean;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 const colors = [
   'var(--ai-primary-text)',
@@ -95,14 +98,16 @@ export function Chart({
   asOf,
   state = 'ready',
   error,
-  locale = 'en-US',
+  locale: localeProp,
   numberFormat,
   formatValue,
   hiddenSeries = [],
   onSeriesVisibilityChange,
   showLegend,
   variant = 'bar',
+  className = '',
 }: ChartProps) {
+  const locale = useLocale(localeProp);
   const prefix = `chart-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   // The plot is drawn at the width of its container, so it fills a card instead of scrolling
   // inside it. It scrolls only when the categories need more room than the container has.
@@ -124,7 +129,12 @@ export function Chart({
   const measurement =
     typeof unit === 'string' && unit.trim() ? unit.slice(0, 200) : 'Unit not supplied';
   const frame = (content: ReactNode) => (
-    <div className={g.root} data-part="chart" data-variant={variant} data-state={state}>
+    <div
+      className={`${g.root} ${className}`}
+      data-part="chart"
+      data-variant={variant}
+      data-state={state}
+    >
       <strong>{heading}</strong>
       {content}
     </div>

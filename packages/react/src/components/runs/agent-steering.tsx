@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useState } from 'react';
 import type { FormEvent } from 'react';
 import type { Run, SubmissionState } from '@stackunseen/ui-core';
@@ -40,6 +41,8 @@ export interface AgentSteeringProps extends VariantProps<'AgentSteering'> {
   timeZone?: string;
   label?: string;
   placeholder?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const statusLabels: Record<SteeringNoteStatus, { label: string; state: string }> = {
@@ -68,11 +71,13 @@ export function AgentSteering({
   submission = 'idle',
   disabledReason,
   maxLength = 2000,
-  locale,
+  locale: localeProp,
   timeZone,
   label = 'Steer this run',
   placeholder = 'Tell the agent what to do differently from the next step on…',
+  className = '',
 }: AgentSteeringProps) {
+  const locale = useLocale(localeProp);
   const id = useId();
   const [text, setText] = useState('');
   const [sent, setSent] = useState<string | null>(null);
@@ -113,7 +118,7 @@ export function AgentSteering({
   );
   return (
     <section
-      className={variant === 'panel' ? `${s.panel} ${r.steering}` : r.steering}
+      className={`${variant === 'panel' ? `${s.panel} ${r.steering}` : r.steering} ${className}`}
       data-part="agent-steering"
       data-variant={variant}
       aria-labelledby={`${id}-title`}

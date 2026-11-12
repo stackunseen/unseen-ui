@@ -1,3 +1,4 @@
+import { useLocale } from '../../providers/locale/locale.js';
 import type { ComponentProps, ReactNode } from 'react';
 import { DataTable, swatches } from './shared.js';
 import css from './data-marks.module.css';
@@ -44,6 +45,7 @@ export function DonutChart({
   className = '',
   ...props
 }: DonutChartProps) {
+  const locale = useLocale();
   const clean = (n: number) => (Number.isFinite(n) && n > 0 ? n : 0);
   const total = data.reduce((sum, slice) => sum + clean(slice.value), 0);
   const share = (n: number) => (total > 0 ? (clean(n) / total) * 100 : 0);
@@ -108,7 +110,7 @@ export function DonutChart({
         columns={['Slice', unit ?? 'Value', 'Share']}
         rows={data.map((slice) => [
           slice.label,
-          clean(slice.value).toLocaleString('en-US'),
+          clean(slice.value).toLocaleString(locale),
           percent(slice.value),
         ])}
       />

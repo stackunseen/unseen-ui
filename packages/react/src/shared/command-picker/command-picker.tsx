@@ -54,6 +54,8 @@ export interface PickerProps<T extends CommandOption> {
   status?: 'ready' | 'loading' | 'error' | 'stale' | 'unknown' | 'denied';
   error?: string;
   disabled?: boolean;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function SearchPicker<T extends CommandOption>({
@@ -66,12 +68,13 @@ export function SearchPicker<T extends CommandOption>({
   disabled,
   variant = 'list',
   reference = false,
+  className = '',
 }: PickerProps<T> & { variant?: 'list' | 'cards' | 'compact'; reference?: boolean }) {
   const label = reference ? 'Find a reference' : 'Find a command';
   const available = status === 'ready' && !disabled;
   return (
     <div
-      className={s.root}
+      className={`${s.root} ${className}`}
       data-variant={variant}
       data-part={reference ? 'mention-picker' : 'slash-command-menu'}
     >

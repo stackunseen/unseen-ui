@@ -34,6 +34,8 @@ export interface ApprovalBatchProps extends VariantProps<'ApprovalBatch'> {
   /** The host clock, for expiry. */
   now?: string;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 /** Several same-scope proposals under one acknowledged decision, each one still opt-out-able. */
@@ -47,6 +49,7 @@ export function ApprovalBatch({
   receipt,
   now,
   label = 'Approve together',
+  className = '',
 }: ApprovalBatchProps) {
   const id = useId();
   const clock = now ? Date.parse(now) : Date.now();
@@ -97,7 +100,7 @@ export function ApprovalBatch({
   };
   return (
     <section
-      className={`${variant === 'card' ? s.panel : ''} ${g.root}`}
+      className={`${variant === 'card' ? s.panel : ''} ${g.root} ${className}`}
       data-part="approval-batch"
       data-variant={variant}
       aria-labelledby={`${id}-title`}

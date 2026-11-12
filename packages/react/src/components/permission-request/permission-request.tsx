@@ -17,6 +17,8 @@ export interface LegacyPermissionRequestProps extends VariantProps<'PermissionRe
   pending?: boolean;
   onDecision: (allow: boolean) => void;
   headingLevel?: 2 | 3 | 4 | 5 | 6;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export type PermissionRequestProps = LegacyPermissionRequestProps | ScopedPermissionRequestProps;
@@ -41,12 +43,17 @@ function LegacyPermissionRequest({
   pending = false,
   onDecision,
   headingLevel = 3,
+  className = '',
 }: LegacyPermissionRequestProps) {
   const completeScope =
     !!resource.trim() && scopes.length > 0 && scopes.every((scope) => !!scope.trim());
   const Heading = `h${headingLevel}` as const;
   return (
-    <Panel data-part="permission-request" data-variant={variant} className={own.permission}>
+    <Panel
+      data-part="permission-request"
+      data-variant={variant}
+      className={`${own.permission} ${className}`}
+    >
       <div className={s.row + ' ' + own.row}>
         <Heading className={`${s.title + ' ' + own.title} ${s.grow}`}>
           {resource.trim() ? `Connect to ${resource}` : 'Connection access request'}

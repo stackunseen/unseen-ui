@@ -40,6 +40,8 @@ export interface DryRunPreviewProps extends VariantProps<'DryRunPreview'> {
   /** True when the host has a newer plan version; decisions are blocked until it is shown. */
   stale?: boolean;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const kindLabels: Record<DryRunEffect['kind'], string> = {
@@ -61,6 +63,7 @@ export function DryRunPreview({
   receipt,
   stale = false,
   label,
+  className = '',
 }: DryRunPreviewProps) {
   const id = useId();
   const skipped = new Set(skippedIds);
@@ -78,7 +81,7 @@ export function DryRunPreview({
     onDecision({ planId: plan.id, version: plan.version, decision, skippedIds: [...skipped] });
   return (
     <section
-      className={`${variant === 'card' ? s.panel : ''} ${g.root}`}
+      className={`${variant === 'card' ? s.panel : ''} ${g.root} ${className}`}
       data-part="dry-run-preview"
       data-variant={variant}
       aria-labelledby={`${id}-title`}

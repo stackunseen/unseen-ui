@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId } from 'react';
 import type { ModelCapabilities, ModelSettings, ModelUsage } from '@stackunseen/ui-core';
 import {
@@ -28,8 +29,11 @@ export interface ModelControlsProps extends VariantProps<'ModelControls'> {
   error?: string;
   usage?: ModelUsage;
   onRefresh?: () => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 function UsageDetails({ value, modelId }: { value?: ModelUsage; modelId: string }) {
+  const locale = useLocale();
   if (!value) return <p className={s.muted}>Usage and cost have not been reported.</p>;
   const hasProvenance = !!value.source.trim() && validTimestamp(value.observedAt);
   const validCost =
@@ -40,7 +44,7 @@ function UsageDetails({ value, modelId }: { value?: ModelUsage; modelId: string 
     /^[A-Z]{3}$/.test(value.cost.currency) &&
     !!value.cost.basis.trim();
   const money = validCost
-    ? new Intl.NumberFormat('en-US', {
+    ? new Intl.NumberFormat(locale, {
         style: 'currency',
         currency: value.cost!.currency,
         maximumFractionDigits: 4,
@@ -58,7 +62,7 @@ function UsageDetails({ value, modelId }: { value?: ModelUsage; modelId: string 
           </span>
           <strong>
             {hasProvenance && validCount(value.inputTokens)
-              ? value.inputTokens.toLocaleString('en-US')
+              ? value.inputTokens.toLocaleString(locale)
               : 'Unknown'}
           </strong>
         </div>
@@ -68,7 +72,7 @@ function UsageDetails({ value, modelId }: { value?: ModelUsage; modelId: string 
           </span>
           <strong>
             {hasProvenance && validCount(value.outputTokens)
-              ? value.outputTokens.toLocaleString('en-US')
+              ? value.outputTokens.toLocaleString(locale)
               : 'Unknown'}
           </strong>
         </div>
@@ -97,6 +101,7 @@ export function ModelControls({
   error,
   usage,
   onRefresh,
+  className = '',
 }: ModelControlsProps) {
   const id = useId();
   const model = capabilities?.models.find((candidate) => candidate.id === value.modelId);
@@ -299,7 +304,7 @@ export function ModelControls({
     </fieldset>
   );
   return (
-    <Panel className={`${s.modelControls} ${local.root}`} data-variant={variant}>
+    <Panel className={`${s.modelControls} ${local.root} ${className}`} data-variant={variant}>
       <div className={s.row}>
         <strong className={s.grow}>Model controls</strong>
         {onRefresh && (

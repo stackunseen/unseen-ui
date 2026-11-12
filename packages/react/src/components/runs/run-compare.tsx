@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { CommandReceipt } from '@stackunseen/ui-core';
@@ -28,6 +29,8 @@ export interface RunCompareProps extends VariantProps<'RunCompare'> {
   artifacts?: ReactNode;
   locale?: string;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const outcomeLabels: Record<RunSummary['outcome'], string> = {
@@ -59,9 +62,11 @@ export function RunCompare({
   onlyDifferences,
   onOnlyDifferencesChange,
   artifacts,
-  locale,
+  locale: localeProp,
   label = 'Compare runs',
+  className = '',
 }: RunCompareProps) {
+  const locale = useLocale(localeProp);
   const id = useId();
   const [localOnly, setLocalOnly] = useState(false);
   const only = onlyDifferences ?? localOnly;
@@ -162,7 +167,7 @@ export function RunCompare({
   };
   return (
     <section
-      className={r.compare}
+      className={`${r.compare} ${className}`}
       data-part="run-compare"
       data-variant={variant}
       aria-labelledby={`${id}-title`}

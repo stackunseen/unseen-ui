@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { IconName } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -18,6 +19,8 @@ export interface ProvenanceBadgeProps extends VariantProps<'ProvenanceBadge'> {
   source?: string;
   manifest?: ProvenanceManifest;
   locale?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const origins: Record<ProvenanceOrigin, { label: string; icon?: IconName }> = {
@@ -32,9 +35,11 @@ export function ProvenanceBadge({
   origin,
   source,
   manifest,
-  locale = 'en-US',
+  locale: localeProp,
   variant = 'soft',
+  className = '',
 }: ProvenanceBadgeProps) {
+  const locale = useLocale(localeProp);
   const known = origins[origin];
   const signed = Boolean(manifest && manifest.verifiedBy === 'host' && manifest.issuer.trim());
   const label = known?.label ?? 'Unknown origin';
@@ -46,7 +51,7 @@ export function ProvenanceBadge({
       : undefined;
   return (
     <span
-      className={s.badge}
+      className={`${s.badge} ${className}`}
       data-part="provenance"
       data-variant={variant}
       data-origin={known ? origin : 'unknown'}

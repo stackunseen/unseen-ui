@@ -52,6 +52,8 @@ export interface CommandPaletteProps {
   /** Marks matches in labels; defaults to whole-word markMatches. false leaves labels plain. */
   highlight?: ((text: string, query: string) => ReactNode) | false;
   cancelLabel?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const DEFAULT_HINTS = (
@@ -133,6 +135,7 @@ export function CommandPalette({
   searchingLabel = 'Searching…',
   highlight = markMatches,
   cancelLabel = 'Cancel',
+  className = '',
 }: CommandPaletteProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = open ?? internalOpen;
@@ -325,7 +328,7 @@ export function CommandPalette({
         <ThemeSurface>
           <Dialog.Overlay className={s.overlay} />
           <Dialog.Content
-            className={s.dialog}
+            className={`${s.dialog} ${className}`}
             aria-describedby={undefined}
             data-part="command-palette"
             onCloseAutoFocus={(event) => {

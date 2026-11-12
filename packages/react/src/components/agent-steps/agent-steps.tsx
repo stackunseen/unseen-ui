@@ -21,6 +21,7 @@ export function AgentSteps({
   dependencies = false,
   selectedId,
   onSelect,
+  className = '',
 }: VariantProps<'AgentSteps'> & {
   steps: Step[];
   label?: string;
@@ -29,9 +30,9 @@ export function AgentSteps({
   /** With onSelect, step names become buttons that report the chosen step. */
   selectedId?: string;
   onSelect?: (id: string) => void;
-}) {
+} & { className?: string }) {
   return (
-    <ol className={s.steps} data-variant={variant} aria-label={label}>
+    <ol className={`${s.steps} ${className}`} data-variant={variant} aria-label={label}>
       {steps.length === 0 && <li className={s.muted}>No steps yet.</li>}
       {steps.map((step) => (
         <li

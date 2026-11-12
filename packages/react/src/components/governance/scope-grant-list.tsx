@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId } from 'react';
 import type { CommandReceipt, Measurement } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
@@ -41,6 +42,8 @@ export interface ScopeGrantListProps extends VariantProps<'ScopeGrant'> {
   timeZone?: string;
   label?: string;
   emptyMessage?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 function remaining(expiresAt: string | undefined, now: string | undefined) {
@@ -63,11 +66,13 @@ export function ScopeGrantList({
   onRevoke,
   receipts = [],
   now,
-  locale,
+  locale: localeProp,
   timeZone,
   label = 'Standing permissions',
   emptyMessage = 'No standing permissions.',
+  className = '',
 }: ScopeGrantListProps) {
+  const locale = useLocale(localeProp);
   const id = useId();
   const pending = new Set(
     receipts
@@ -76,7 +81,7 @@ export function ScopeGrantList({
   );
   return (
     <section
-      className={g.root}
+      className={`${g.root} ${className}`}
       data-part="scope-grants"
       data-variant={variant}
       aria-labelledby={`${id}-title`}

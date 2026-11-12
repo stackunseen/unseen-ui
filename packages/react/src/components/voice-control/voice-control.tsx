@@ -61,6 +61,8 @@ export interface VoiceControlProps extends VariantProps<'VoiceControl'> {
   deviceId?: string;
   onDeviceChange?: (id: string) => void;
   onRequestDeviceChange?: (request: VoiceDeviceRequest) => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 function Microphone(props: SVGProps<SVGSVGElement>) {
   return (
@@ -112,6 +114,7 @@ export function VoiceControl({
   onDeviceChange,
   onRequestDeviceChange,
   variant = 'panel',
+  className = '',
 }: VoiceControlProps) {
   const root = useRef<HTMLDivElement>(null),
     focused = useRef<HTMLElement | null>(null),
@@ -271,7 +274,7 @@ export function VoiceControl({
       data-part="voice-control"
       data-variant={variant}
       data-status={status}
-      className={css.root}
+      className={`${css.root} ${className}`}
       onFocusCapture={(e) => {
         focused.current = e.target as HTMLElement;
       }}

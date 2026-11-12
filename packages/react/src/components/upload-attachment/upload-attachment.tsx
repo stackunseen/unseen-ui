@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useLayoutEffect, useRef } from 'react';
 import {
   inspectUploadCheckpoint,
@@ -35,6 +36,8 @@ export interface UploadAttachmentProps extends VariantProps<'Attachment'> {
   onLookup?: (original: UploadCommand) => void;
   /** The host authorizes and opens this exact immutable resource. */
   onOpen?: (request: UploadOpenRequest) => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 /** Presentation and intent only. Lifecycle, committed bytes and receipts belong to the host. */
@@ -50,7 +53,9 @@ export function UploadAttachment({
   onRequest,
   onLookup,
   onOpen,
+  className = '',
 }: UploadAttachmentProps) {
+  const locale = useLocale();
   const checkpoint = inspectUploadCheckpoint(value);
   const context = inspectUploadContext(reference);
   const observedOperation = operation === undefined ? undefined : inspectUploadOperation(operation);
@@ -88,7 +93,7 @@ export function UploadAttachment({
   }
   return (
     <div
-      className={u.wrapper}
+      className={`${u.wrapper} ${className}`}
       ref={wrapper}
       tabIndex={-1}
       role="group"
@@ -219,7 +224,7 @@ export function UploadAttachment({
             <Attachment.Progress />
           )}
           <div className={u.status}>
-            <p>{`${stale ? 'Historical h' : 'H'}ost-confirmed received bytes: ${checkpoint.receivedBytes.toLocaleString('en-US')} of ${checkpoint.sizeBytes.toLocaleString('en-US')}.`}</p>
+            <p>{`${stale ? 'Historical h' : 'H'}ost-confirmed received bytes: ${checkpoint.receivedBytes.toLocaleString(locale)} of ${checkpoint.sizeBytes.toLocaleString(locale)}.`}</p>
             {checkpoint.state === 'uploading' && checkpoint.sizeBytes === 0 && (
               <p>Empty file. Waiting for final confirmation.</p>
             )}

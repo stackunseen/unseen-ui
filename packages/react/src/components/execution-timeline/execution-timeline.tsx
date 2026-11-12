@@ -125,15 +125,16 @@ export function ExecutionTimeline({
   filter = 'all',
   onFilterChange,
   detail = 'compact',
+  className = '',
 }: VariantProps<'ExecutionTimeline'> &
   DetailProps & {
     entries: TimelineEntry[];
     filter?: 'all' | 'failed';
     onFilterChange?: (value: 'all' | 'failed') => void;
-  }) {
+  } & { className?: string }) {
   const shown = filter === 'failed' ? entries.filter((e) => e.state === 'failed') : entries;
   return (
-    <div className={own.timeline} data-variant={variant} data-detail={detail}>
+    <div className={`${own.timeline} ${className}`} data-variant={variant} data-detail={detail}>
       {onFilterChange && (
         <label className={s.field + ' ' + own.field}>
           Show events

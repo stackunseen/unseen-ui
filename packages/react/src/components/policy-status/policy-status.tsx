@@ -17,6 +17,8 @@ export interface PolicyStatusProps extends VariantProps<'PolicyStatus'> {
   loading?: boolean;
   error?: string;
   onRefresh?: () => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function PolicyStatus({
@@ -26,6 +28,7 @@ export function PolicyStatus({
   loading = false,
   error,
   onRefresh,
+  className = '',
 }: PolicyStatusProps) {
   const assessments = checks.map(policyAssessment);
   const allPassed = checks.length > 0 && assessments.every((result) => result === 'pass');
@@ -105,7 +108,7 @@ export function PolicyStatus({
     );
   }
   return (
-    <Panel className={s.policyStatus} data-variant={variant}>
+    <Panel className={`${s.policyStatus} ${className}`} data-variant={variant}>
       <div className={s.row}>
         <strong className={s.grow}>
           <AIIcon name={allPassed && !error && !loading ? 'check' : 'info'} /> Policy checks

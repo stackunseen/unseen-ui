@@ -20,6 +20,8 @@ export interface ShortcutHelpProps {
   shortcuts: readonly ShortcutItem[];
   title?: string;
   description?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const LIMIT = 40;
@@ -77,6 +79,7 @@ export function ShortcutHelp({
   shortcuts,
   title = 'Keyboard shortcuts',
   description = 'Actions available from the keyboard.',
+  className = '',
 }: ShortcutHelpProps) {
   const valid = (Array.isArray(shortcuts) ? shortcuts : []).filter(usable);
   const shown = valid.slice(0, LIMIT);
@@ -90,6 +93,7 @@ export function ShortcutHelp({
   const named = groups.some((group) => group.name);
   return (
     <Modal
+      className={className}
       layout="sheet"
       open={open}
       onOpenChange={onOpenChange}

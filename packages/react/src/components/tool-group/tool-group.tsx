@@ -12,10 +12,12 @@ export function ToolGroup({
   tools: inputs,
   variant = 'stack',
   detail = 'compact',
-}: VariantProps<'ToolGroup'> & DetailProps & { tools: readonly (ToolCallData | ToolCallInput)[] }) {
+  className = '',
+}: VariantProps<'ToolGroup'> &
+  DetailProps & { tools: readonly (ToolCallData | ToolCallInput)[] } & { className?: string }) {
   const tools = inputs.map(toolCallFrom);
   return (
-    <div className={s.toolGroup} data-variant={variant} data-detail={detail}>
+    <div className={`${s.toolGroup} ${className}`} data-variant={variant} data-detail={detail}>
       {!tools.length ? (
         <p className={s.muted}>No tool calls reported.</p>
       ) : (

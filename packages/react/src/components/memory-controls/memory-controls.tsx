@@ -19,8 +19,15 @@ export interface MemoryControlsProps extends VariantProps<'MemoryControls'> {
   /** A host-owned window of up to 100 entries. Replace the window to inspect later memories. */
   items: readonly MemoryRecord[];
   onRequest: (item: MemoryRecord, action: 'correct' | 'delete') => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
-export function MemoryControls({ items, onRequest, variant = 'list' }: MemoryControlsProps) {
+export function MemoryControls({
+  items,
+  onRequest,
+  variant = 'list',
+  className = '',
+}: MemoryControlsProps) {
   const root = useRef<HTMLDivElement>(null);
   const focusedItem = useRef<string | undefined>(undefined);
   const visibleItems = items.slice(0, 100);
@@ -31,7 +38,7 @@ export function MemoryControls({ items, onRequest, variant = 'list' }: MemoryCon
   return (
     <div
       ref={root}
-      className={s.root}
+      className={`${s.root} ${className}`}
       data-part="memory-controls"
       data-variant={variant}
       role="group"

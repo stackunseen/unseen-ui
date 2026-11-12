@@ -7,8 +7,12 @@ export function ArtifactPreview({
   artifact,
   variant = 'document',
   tableLabel,
-}: VariantProps<'ArtifactPreview'> & { artifact: Artifact; tableLabel?: string }) {
-  if (artifact.kind === 'unsupported') return <p>Preview unavailable for this artifact type.</p>;
+  className = '',
+}: VariantProps<'ArtifactPreview'> & { artifact: Artifact; tableLabel?: string } & {
+  className?: string;
+}) {
+  if (artifact.kind === 'unsupported')
+    return <p className={className || undefined}>Preview unavailable for this artifact type.</p>;
   if (artifact.kind === 'table') {
     try {
       const data: unknown = JSON.parse(artifact.content);
@@ -62,7 +66,7 @@ export function ArtifactPreview({
     }
   }
   return (
-    <div className={s.artifactPreview} data-variant={variant}>
+    <div className={`${s.artifactPreview} ${className}`} data-variant={variant}>
       <p className={s.muted}>Version {artifact.version}</p>
       <pre className={s.document}>{artifact.content.slice(0, 20_000)}</pre>
       {artifact.content.length > 20_000 && <p className={s.muted}>Preview truncated.</p>}

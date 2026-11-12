@@ -55,6 +55,8 @@ export { MemoryControls } from './components/memory-controls/memory-controls.js'
 export { MemoryPanel } from './components/memory-panel/memory-panel.js';
 export type {
   MemoryPanelProps,
+  MemoryPanelLabels,
+  MemoryReceipt,
   MemoryEntry,
   MemoryScope,
   MemoryAction,
@@ -102,6 +104,7 @@ export type {
 } from './components/review-changes/review-changes.js';
 export type {
   ArtifactDiffProps,
+  ArtifactDiffLabels,
   ArtifactVersion,
 } from './components/artifact-diff/artifact-diff.js';
 export type { AuditTrailProps, AuditRecord } from './components/audit-trail/audit-trail.js';
@@ -211,6 +214,8 @@ export type { ModelControlsProps } from './components/model-controls/model-contr
 export type { LoadingIndicatorProps } from './components/loading-indicator/loading-indicator.js';
 export type { SkeletonProps } from './components/skeleton/skeleton.js';
 export { AITheme, ThemeSurface } from './providers/theme/theme-provider.js';
+export { AILocale, useLocale } from './providers/locale/locale.js';
+export type { AILocaleProps } from './providers/locale/locale.js';
 export type { AIThemeProps } from './providers/theme/theme-provider.js';
 export { Button } from './components/button/button.js';
 export { Tabs } from './components/tabs/tabs.js';

@@ -22,13 +22,21 @@ export interface TestResultsProps extends VariantProps<'TestResults'> {
   results: readonly TestResult[];
   onOpenFile?: (file: string) => void;
   loading?: boolean;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
-export function TestResults({ results, onOpenFile, loading, variant = 'list' }: TestResultsProps) {
+export function TestResults({
+  results,
+  onOpenFile,
+  loading,
+  variant = 'list',
+  className = '',
+}: TestResultsProps) {
   const id = useId();
   const passed = results.filter((result) => result.state === 'passed').length,
     failed = results.filter((result) => result.state === 'failed').length;
   return (
-    <div className={s.root} data-part="test-results" data-variant={variant}>
+    <div className={`${s.root} ${className}`} data-part="test-results" data-variant={variant}>
       <div className={s.header}>
         <strong>Test results</strong>
         <span className={s.muted}>

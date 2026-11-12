@@ -27,6 +27,8 @@ export interface AuditTrailProps extends VariantProps<'AuditTrail'> {
   onQueryChange: (query: string) => void;
   onLoadMore?: () => void;
   loading?: boolean;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function AuditTrail({
@@ -36,9 +38,10 @@ export function AuditTrail({
   onLoadMore,
   loading,
   variant = 'timeline',
+  className = '',
 }: AuditTrailProps) {
   return (
-    <div className={s.root} data-part="audit-trail" data-variant={variant}>
+    <div className={`${s.root} ${className}`} data-part="audit-trail" data-variant={variant}>
       <strong>Audit trail</strong>
       <Input
         className={s.search}

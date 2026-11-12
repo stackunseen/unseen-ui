@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Button, MemoryPanel, resolveVariant } from '@stackunseen/ui';
-import type { MemoryEntry } from '@stackunseen/ui';
+import type { MemoryEntry, MemoryReceipt } from '@stackunseen/ui';
 import {
   AgentLanes,
   AgentSteering,
@@ -134,11 +134,18 @@ export function RunsSpecimen({
           : 'idle',
   );
   const [memoryQuery, setMemoryQuery] = useState(state === 'Filtered' ? 'staging' : '');
-  const [memoryReceipts, setMemoryReceipts] = useState<Record<string, CommandReceipt>>(
+  const [memoryReceipts, setMemoryReceipts] = useState<Record<string, MemoryReceipt>>(
     state === 'Pending request'
       ? { m2: { commandId: 'c1', status: 'submitting' } }
       : state === 'Rejected request'
-        ? { m2: { commandId: 'c1', status: 'failed', message: 'a policy holds project memories' } }
+        ? {
+            m2: {
+              commandId: 'c1',
+              status: 'failed',
+              action: 'forget',
+              message: 'a policy holds project memories',
+            },
+          }
         : {},
   );
   if (name === 'AgentSteering')
@@ -256,7 +263,10 @@ export function RunsSpecimen({
     return (
       <MemoryPanel
         variant={resolveVariant('MemoryPanel', presentation)}
-        entries={state === 'Empty' ? [] : entries}
+        entries={state === 'Empty' || state === 'Loading' ? [] : entries}
+        status={state === 'Loading' ? 'loading' : state === 'Unavailable' ? 'unavailable' : 'ready'}
+        error={state === 'Unavailable' ? 'The sample memory service timed out.' : undefined}
+        onRetry={() => onNotice('Retry requested; the server decides.')}
         query={memoryQuery}
         onQueryChange={setMemoryQuery}
         receipts={memoryReceipts}
@@ -266,6 +276,7 @@ export function RunsSpecimen({
             [request.entryId]: {
               commandId: `${request.entryId}-${request.action}`,
               status: 'submitting',
+              action: request.action,
             },
           }));
           onNotice(`${request.action} requested for ${request.entryId}; the server decides.`);

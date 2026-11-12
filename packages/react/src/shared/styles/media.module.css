@@ -74,6 +74,11 @@ button.segment {
   background: var(--ai-surface-subtle, #f4f4f5);
   color: var(--ai-text, #18181b);
 }
+.segmentNote {
+  margin: 0;
+  padding: 6px 8px;
+  color: var(--ai-muted, #52525b);
+}
 .speaker {
   color: var(--ai-text, #18181b);
   font-weight: 600;

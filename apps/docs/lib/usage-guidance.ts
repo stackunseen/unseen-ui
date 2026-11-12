@@ -680,9 +680,9 @@ export const usageGuidance: Record<string, UsageGuidance> = {
     'SlashCommandMenu',
   ),
   MemoryControls: g(
-    'Reviewing and correcting what the assistant remembers.',
-    'Request context.',
-    'ContextInspector',
+    'Asking to correct or delete one saved memory, with the state of each request.',
+    'Browsing, filtering or pinning memories with where they came from.',
+    'MemoryPanel',
   ),
   MarketingReveal: g(
     'Easing a marketing section into view as the page scrolls.',

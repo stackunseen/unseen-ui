@@ -53,6 +53,8 @@ export interface ReviewChangesProps extends VariantProps<'ReviewChanges'> {
     ids: string[];
     decision: 'accept' | 'reject';
   }) => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function ReviewChanges(props: ReviewChangesProps) {
@@ -73,6 +75,7 @@ function LegacyReviewChanges({
   error,
   onDecision,
   variant = 'accordion',
+  className = '',
 }: ReviewChangesProps) {
   const submitted = useRef(new Set<string>());
   const oversized = changes.length > 50;
@@ -138,7 +141,7 @@ function LegacyReviewChanges({
     );
   }
   return (
-    <div className={s.root} data-part="review-changes" data-variant={variant}>
+    <div className={`${s.root} ${className}`} data-part="review-changes" data-variant={variant}>
       <div className={s.header}>
         <strong>Review changes</strong>
         <span role="status" className={s.tag}>

@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { Accordion } from '../accordion/accordion.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -24,6 +25,8 @@ export interface RunInspectorProps extends VariantProps<'RunInspector'>, DetailP
   spans: readonly RunSpan[];
   usage?: { tokens: number; source: string };
   onSelect?: (span: RunSpan) => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const badgeState: Record<RunSpan['state'], string> = {
@@ -41,7 +44,9 @@ export function RunInspector({
   onSelect,
   variant = 'accordion',
   detail = 'compact',
+  className = '',
 }: RunInspectorProps) {
+  const locale = useLocale();
   function body(span: RunSpan) {
     return (
       <div className={s.root}>
@@ -74,13 +79,18 @@ export function RunInspector({
     );
   }
   return (
-    <div className={s.root} data-part="run-inspector" data-variant={variant} data-detail={detail}>
+    <div
+      className={`${s.root} ${className}`}
+      data-part="run-inspector"
+      data-variant={variant}
+      data-detail={detail}
+    >
       <strong>
         Run <code>{runId}</code>
       </strong>
       <p className={s.muted}>
         {usage && Number.isSafeInteger(usage.tokens) && usage.tokens >= 0 && usage.source.trim()
-          ? `${usage.tokens.toLocaleString('en-US')} tokens · ${usage.source}`
+          ? `${usage.tokens.toLocaleString(locale)} tokens · ${usage.source}`
           : 'Usage not reported'}
       </p>
       {!spans.length ? (

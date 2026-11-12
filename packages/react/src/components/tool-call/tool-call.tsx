@@ -179,18 +179,26 @@ function ToolRoot({
   children,
   variant = 'card',
   detail = 'compact',
+  className = '',
 }: VariantProps<'ToolCall'> &
   DetailProps & {
     /** Host data, or the short form `{ name }` plus what is known. */
     value: ToolCallData | ToolCallInput;
     children?: ReactNode;
+    /** Added to the root element, after the component's own classes. */
+    className?: string;
   }) {
   const value = toolCallFrom(input);
   if (variant === 'row' && !children)
     return (
       <ToolContext.Provider value={value}>
         <ToolDetailContext.Provider value={detail}>
-          <div data-part="tool-call" data-variant="row" data-detail={detail} className={css.row}>
+          <div
+            data-part="tool-call"
+            data-variant="row"
+            data-detail={detail}
+            className={`${css.row} ${className}`}
+          >
             <ToolRow />
           </div>
         </ToolDetailContext.Provider>
@@ -203,7 +211,7 @@ function ToolRoot({
           data-part="tool-call"
           data-variant={variant}
           data-detail={detail}
-          className={s.toolCall}
+          className={`${s.toolCall} ${className}`}
         >
           {children ?? (
             <>

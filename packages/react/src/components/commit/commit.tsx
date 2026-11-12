@@ -3,6 +3,7 @@ import { ChevronDownIcon, CopyIcon } from '@radix-ui/react-icons';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 import { useDisclosure } from '../../shared/disclosure.js';
 import { useCopy } from '../../shared/copy.js';
+import type { CopyWords } from '../../shared/copy.js';
 import s from '../../shared/styles/devtools.module.css';
 import { stateLabel } from '../../shared/labels.js';
 
@@ -23,8 +24,23 @@ export interface CommitProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Replaces the built-in wording, for example to translate it. */
+  labels?: Partial<CommitLabels>;
   className?: string;
 }
+export interface CommitLabels extends CopyWords {
+  copyHash: string;
+  files: (count: number) => string;
+  /** A file's change as shown on its row. */
+  status: (status: CommitFile['status']) => string;
+}
+const defaultLabels: CommitLabels = {
+  copyHash: 'Copy commit hash',
+  files: (count) => `${count} file${count === 1 ? '' : 's'}`,
+  status: stateLabel,
+  copied: 'Copied',
+  copyFailed: 'Copy unavailable',
+};
 
 const statusTone = {
   added: 'success',
@@ -44,8 +60,10 @@ export function Commit({
   open,
   defaultOpen = false,
   onOpenChange,
+  labels,
   className = '',
 }: CommitProps) {
+  const text = { ...defaultLabels, ...labels };
   const Heading = `h${headingLevel}` as const;
   const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
   const { copy, message: copyMessage } = useCopy();
@@ -70,19 +88,19 @@ export function Commit({
           <button
             type="button"
             className={s.iconButton}
-            aria-label="Copy commit hash"
+            aria-label={text.copyHash}
             onClick={() => void copy(hash)}
           >
             <CopyIcon aria-hidden="true" />
           </button>
           {files.length > 0 && (
             <button className={s.iconButton} {...disclosure.triggerProps}>
-              {files.length} file{files.length === 1 ? '' : 's'}
+              {text.files(files.length)}
               <ChevronDownIcon aria-hidden="true" />
             </button>
           )}
           <span role="status" className={copyMessage(hash) ? s.meta : s.srOnly}>
-            {copyMessage(hash)}
+            {copyMessage(hash, text)}
           </span>
         </div>
       </div>
@@ -99,7 +117,7 @@ export function Commit({
                 <span className={`${s.mono} ${s.remove}`}>−{file.deletions}</span>
               )}
               <span className={s.badge} data-tone={statusTone[file.status]}>
-                {stateLabel(file.status)}
+                {text.status(file.status)}
               </span>
             </li>
           ))}

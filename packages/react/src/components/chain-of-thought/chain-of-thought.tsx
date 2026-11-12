@@ -22,8 +22,19 @@ export interface ChainOfThoughtProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Replaces the built-in wording, for example to translate it. */
+  labels?: Partial<ChainOfThoughtLabels>;
   className?: string;
 }
+export interface ChainOfThoughtLabels {
+  empty: string;
+  /** A step's state as screen readers hear it after the step label. */
+  state: (state: ChainOfThoughtStep['state']) => string;
+}
+const defaultLabels: ChainOfThoughtLabels = {
+  empty: 'No steps reported yet.',
+  state: (state) => state,
+};
 
 /**
  * Public, host-reported steps of an agent run or one task, with optional sources or files per
@@ -35,8 +46,10 @@ export function ChainOfThought({
   open,
   defaultOpen = true,
   onOpenChange,
+  labels,
   className = '',
 }: ChainOfThoughtProps) {
+  const text = { ...defaultLabels, ...labels };
   const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
   const active = steps.some((step) => step.state === 'active');
   return (
@@ -48,7 +61,7 @@ export function ChainOfThought({
       </button>
       <div {...disclosure.contentProps}>
         <ol className={`${s.list} ${s.stepList}`}>
-          {steps.length === 0 && <li className={s.meta}>No steps reported yet.</li>}
+          {steps.length === 0 && <li className={s.meta}>{text.empty}</li>}
           {steps.map((step) => (
             <li
               key={step.id}
@@ -62,7 +75,7 @@ export function ChainOfThought({
               </span>
               <span className={s.label}>
                 {step.state === 'active' ? <Shimmer>{step.label}</Shimmer> : step.label}
-                <span className={s.srOnly}> ({step.state})</span>
+                <span className={s.srOnly}> ({text.state(step.state)})</span>
               </span>
               {step.description && <span className={s.meta}>{step.description}</span>}
               {!!step.sources?.length && (

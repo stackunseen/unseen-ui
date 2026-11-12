@@ -15,6 +15,7 @@ export function ClarificationRequest({
   choices,
   state = 'pending',
   error,
+  className = '',
 }: VariantProps<'ClarificationRequest'> & {
   question: string;
   value: string;
@@ -23,7 +24,7 @@ export function ClarificationRequest({
   choices?: { value: string; label: string }[];
   state?: 'pending' | 'submitting' | 'resolved' | 'cancelled';
   error?: string;
-}) {
+} & { className?: string }) {
   const id = useId();
   const [attempted, setAttempted] = useState(false);
   const valid = value.trim().length > 0 && (!choices || choices.some((c) => c.value === value));
@@ -35,7 +36,11 @@ export function ClarificationRequest({
         : 'Enter an answer to continue.'
       : '');
   return (
-    <Panel data-part="clarification-request" data-variant={variant} className={s.clarification}>
+    <Panel
+      data-part="clarification-request"
+      data-variant={variant}
+      className={`${s.clarification} ${className}`}
+    >
       <form
         noValidate
         onSubmit={(e) => {

@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import type { Measurement } from '@stackunseen/ui-core';
 import { Progress } from '../progress/progress.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -22,6 +23,8 @@ export interface UsageMeterProps extends VariantProps<'UsageMeter'> {
   /** Fraction of the limit from which the meter reads as a warning. */
   warnAt?: number;
   locale?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 function amount(
@@ -52,9 +55,11 @@ export function UsageMeter({
   unit = 'tokens',
   currency = 'USD',
   warnAt = 0.8,
-  locale = 'en-US',
+  locale: localeProp,
   variant = 'inline',
+  className = '',
 }: UsageMeterProps) {
+  const locale = useLocale(localeProp);
   const usage = value.kind === 'unknown' ? undefined : value.value;
   const used = usage && Number.isFinite(usage.used) && usage.used >= 0 ? usage.used : undefined;
   const limit =
@@ -96,7 +101,7 @@ export function UsageMeter({
   } as const;
   if (variant === 'badge')
     return (
-      <span {...common} className={s.badge}>
+      <span {...common} className={`${s.badge} ${className}`}>
         <span>
           {label} · {percent !== undefined ? `${percent}%` : reading}
           {value.kind === 'estimated' ? ' (estimated)' : ''}
@@ -109,13 +114,13 @@ export function UsageMeter({
     );
   if (variant === 'inline')
     return (
-      <span {...common} className={s.muted}>
+      <span {...common} className={`${s.muted} ${className}`}>
         {label}: {reading}
         {percent !== undefined ? ` (${percent}%)` : ''} · {meta}
       </span>
     );
   return (
-    <div {...common} className={own.stack}>
+    <div {...common} className={`${own.stack} ${className}`}>
       <div className={s.row}>
         <strong>{label}</strong>
         <span className={s.muted}>

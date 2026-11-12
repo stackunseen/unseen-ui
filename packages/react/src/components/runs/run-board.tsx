@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useEffect, useId, useMemo, useState } from 'react';
 import type { KeyboardEvent, ReactNode } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
@@ -72,6 +73,8 @@ export interface RunBoardProps extends VariantProps<'RunBoard'> {
   emptyMessage?: string;
   /** Trusted extra content at the end of each card's title row, such as a DiffStat. */
   renderCardTrailing?: (card: RunCard) => ReactNode;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const groups: { id: RunBoardGroup; label: string; states: RunLifecycle[] }[] = [
@@ -128,13 +131,15 @@ export function RunBoard({
   receipts = [],
   staleAfterMs = 5 * 60_000,
   now,
-  locale,
+  locale: localeProp,
   timeZone,
   label = 'Runs',
   hideLabel = false,
   emptyMessage = 'No runs.',
   renderCardTrailing,
+  className = '',
 }: RunBoardProps) {
+  const locale = useLocale(localeProp);
   // Without a host time zone, times read in the viewer's own once the page runs; the first
   // render uses UTC so server and browser agree.
   const [viewerZone, setViewerZone] = useState<string>();
@@ -255,7 +260,7 @@ export function RunBoard({
   );
   return (
     <section
-      className={r.board}
+      className={`${r.board} ${className}`}
       data-part="run-board"
       data-variant={variant}
       aria-labelledby={`${id}-title`}

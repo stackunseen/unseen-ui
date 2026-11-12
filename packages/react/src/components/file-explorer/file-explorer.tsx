@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useLayoutEffect, useMemo, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { Accordion } from '../accordion/accordion.js';
@@ -46,6 +47,8 @@ export interface FileExplorerProps extends VariantProps<'FileExplorer'> {
     'ready' | 'loading' | 'denied' | 'unavailable' | 'error' | 'unknown' | 'stale' | 'refreshing';
   error?: string;
   title?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 const changeTone = { added: 'success', modified: 'warning', deleted: 'danger' } as const;
 
@@ -67,7 +70,9 @@ export function FileExplorer({
   error,
   title = 'Workspace files',
   variant = 'folders',
+  className = '',
 }: FileExplorerProps) {
+  const locale = useLocale();
   const prefix = `files-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`,
     root = useRef<HTMLDivElement>(null),
     focused = useRef<HTMLElement | null>(null);
@@ -89,7 +94,7 @@ export function FileExplorer({
   const frame = (children: ReactNode) => (
     <div
       ref={root}
-      className={`${s.root} ${s.panel} ${css.root}`}
+      className={`${s.root} ${s.panel} ${css.root} ${className}`}
       role="group"
       aria-label={heading}
       tabIndex={-1}
@@ -194,7 +199,7 @@ export function FileExplorer({
   function metadata(file: WorkspaceFile) {
     const parts = [
       file.version !== undefined && `Version: ${file.version}`,
-      file.sizeBytes !== undefined && `Size: ${file.sizeBytes.toLocaleString('en-US')} bytes`,
+      file.sizeBytes !== undefined && `Size: ${file.sizeBytes.toLocaleString(locale)} bytes`,
       file.modifiedAt !== undefined &&
         `Modified: ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }).format(file.modifiedAt)} UTC`,
     ].filter(Boolean);

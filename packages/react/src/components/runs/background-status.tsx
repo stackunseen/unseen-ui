@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { heartbeatState } from '@stackunseen/ui-core';
 import type { Measurement } from '@stackunseen/ui-core';
 import { AIIcon } from '../../providers/icons/icons.js';
@@ -19,6 +20,8 @@ export interface BackgroundStatusProps extends VariantProps<'BackgroundStatus'> 
   locale?: string;
   timeZone?: string;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 /** A small persistent indicator for runs still going while the person is elsewhere. */
@@ -30,10 +33,12 @@ export function BackgroundStatus({
   staleAfterMs = 5 * 60_000,
   now,
   onOpen,
-  locale,
+  locale: localeProp,
   timeZone,
   label = 'Background runs',
+  className = '',
 }: BackgroundStatusProps) {
+  const locale = useLocale(localeProp);
   const clock = now ?? (typeof window === 'undefined' ? undefined : new Date().toISOString());
   const runningCount = running.kind === 'unknown' ? undefined : running.value;
   const waitingCount = waiting.kind === 'unknown' ? undefined : waiting.value;
@@ -80,11 +85,11 @@ export function BackgroundStatus({
       </span>
     </>
   );
-  const className = r.status;
+  const rootClass = `${r.status} ${className}`;
   return onOpen ? (
     <button
       type="button"
-      className={className}
+      className={rootClass}
       data-part="background-status"
       data-variant={variant}
       data-tone={tone}
@@ -95,7 +100,7 @@ export function BackgroundStatus({
     </button>
   ) : (
     <div
-      className={className}
+      className={rootClass}
       data-part="background-status"
       data-variant={variant}
       data-tone={tone}

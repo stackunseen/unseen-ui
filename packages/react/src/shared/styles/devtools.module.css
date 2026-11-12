@@ -185,6 +185,30 @@
   color: var(--ai-muted, #52525b);
   text-align: center;
 }
+.noticeText {
+  margin: 0 0 12px;
+}
+/* The one action in a notice reads as a button, not as more muted text. */
+.notice .iconButton {
+  padding: 0 12px;
+  border: var(--ai-border-width, 1px) solid var(--ai-control-border, #71717a);
+  color: var(--ai-text, #18181b);
+  font-weight: 500;
+}
+.frameWrap {
+  position: relative;
+}
+/* Covers the blank frame until the page inside it reports that it loaded. */
+.frameStatus {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: var(--ai-surface, #fff);
+  color: var(--ai-muted, #52525b);
+  pointer-events: none;
+}
 .srOnly {
   position: absolute;
   width: 1px;

@@ -198,6 +198,8 @@
   padding-block: 5px;
   padding-inline: calc(14px + var(--toc-depth, 0) * 12px) 0;
   color: var(--ai-muted, #52525b);
+  /* Whole-pixel rows, so the measured line and its marker land on the pixel grid. */
+  line-height: 20px;
   text-decoration: none;
   overflow-wrap: anywhere;
 }

@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useState } from 'react';
 import type { ContextInspection, InspectedContextItem } from '@stackunseen/ui-core';
 import { validCount, validTimestamp } from '@stackunseen/ui-core';
@@ -44,12 +45,13 @@ function ContextState({ item, stale }: { item: InspectedContextItem; stale: bool
 }
 
 function TokenDetail({ item }: { item: InspectedContextItem }) {
+  const locale = useLocale();
   return (
     <span>
-      {validCount(item.includedTokens) ? item.includedTokens.toLocaleString('en-US') : 'Unknown'}{' '}
+      {validCount(item.includedTokens) ? item.includedTokens.toLocaleString(locale) : 'Unknown'}{' '}
       tokens
       {validCount(item.originalTokens)
-        ? ` / ${item.originalTokens.toLocaleString('en-US')} original`
+        ? ` / ${item.originalTokens.toLocaleString(locale)} original`
         : ''}
       {item.truncated ? ' · Truncated' : ''}
     </span>
@@ -61,6 +63,8 @@ export interface ContextInspectorProps extends VariantProps<'ContextInspector'> 
   loading?: boolean;
   error?: string;
   onRefresh?: () => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function ContextInspector({
@@ -69,7 +73,9 @@ export function ContextInspector({
   loading = false,
   error,
   onRefresh,
+  className = '',
 }: ContextInspectorProps) {
+  const locale = useLocale();
   const [filter, setFilter] = useState('all');
   const shown = value.items.filter(
     (item) =>
@@ -105,7 +111,7 @@ export function ContextInspector({
     );
   }
   return (
-    <Panel className={s.contextInspector} data-variant={variant}>
+    <Panel className={`${s.contextInspector} ${className}`} data-variant={variant}>
       <div className={s.row}>
         <strong className={s.grow}>Context inspection</strong>
         {onRefresh && (
@@ -146,7 +152,7 @@ export function ContextInspector({
               </span>
               <strong>
                 {count
-                  ? `${usage.used.toLocaleString('en-US')}${limit ? ` / ${usage.limit!.toLocaleString('en-US')}` : ''} tokens`
+                  ? `${usage.used.toLocaleString(locale)}${limit ? ` / ${usage.limit!.toLocaleString(locale)}` : ''} tokens`
                   : 'Unknown'}
               </strong>
             </div>
@@ -165,7 +171,7 @@ export function ContextInspector({
                       ? 'Estimated context usage'
                       : 'Reported context usage'
                 }
-                aria-valuetext={`${usage.used.toLocaleString('en-US')} of ${usage.limit!.toLocaleString('en-US')} tokens (${usage.kind === 'estimated' ? 'estimated' : 'reported'}${value.stale ? ', stale snapshot' : ''})`}
+                aria-valuetext={`${usage.used.toLocaleString(locale)} of ${usage.limit!.toLocaleString(locale)} tokens (${usage.kind === 'estimated' ? 'estimated' : 'reported'}${value.stale ? ', stale snapshot' : ''})`}
               />
             ) : (
               <p className={s.warning}>Reported context usage exceeds the supplied limit.</p>

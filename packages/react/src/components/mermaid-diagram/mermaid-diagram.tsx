@@ -16,6 +16,8 @@ export interface MermaidDiagramProps extends VariantProps<'MermaidDiagram'> {
   title?: string;
   description?: string;
   state?: 'complete' | 'streaming';
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 let renderQueue: Promise<unknown> = Promise.resolve();
 /** Render jobs are serialized because Mermaid uses shared configuration. */
@@ -114,6 +116,7 @@ export function MermaidDiagram({
   description,
   state = 'complete',
   variant = 'panel',
+  className = '',
 }: MermaidDiagramProps) {
   const host = useRef<HTMLDivElement>(null);
   const themeContext = useRendererTheme();
@@ -211,7 +214,12 @@ export function MermaidDiagram({
     </pre>
   );
   return (
-    <div ref={host} className={s.diagram} data-part="mermaid-diagram" data-variant={variant}>
+    <div
+      ref={host}
+      className={`${s.diagram} ${className}`}
+      data-part="mermaid-diagram"
+      data-variant={variant}
+    >
       <div className={s.header}>
         <strong>{title}</strong>
         <IconButton

@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import type { Measurement } from '@stackunseen/ui-core';
 import type { VariantProps } from '../../shared/variants.js';
 import { MeasuredText, formatMoney } from './shared.js';
@@ -28,6 +29,8 @@ export interface CostLedgerProps extends VariantProps<'CostLedger'> {
   onOpen?: (row: CostLedgerRow) => void;
   locale?: string;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 function sumMeasured(rows: readonly CostLedgerRow[], locale: string) {
@@ -63,9 +66,11 @@ export function CostLedger({
   total,
   period,
   onOpen,
-  locale = 'en-US',
+  locale: localeProp,
   label = 'Cost ledger',
+  className = '',
 }: CostLedgerProps) {
+  const locale = useLocale(localeProp);
   const sum = sumMeasured(rows, locale);
   // The total splits in two: the figure, which lines up under the Cost column, and the words
   // that say what it covers, which sit under the row label so the column stays narrow.
@@ -102,7 +107,7 @@ export function CostLedger({
   if (variant === 'compact')
     return (
       <section
-        className={r.ledger}
+        className={`${r.ledger} ${className}`}
         data-part="cost-ledger"
         data-variant={variant}
         aria-label={label}
@@ -123,7 +128,12 @@ export function CostLedger({
       </section>
     );
   return (
-    <section className={r.ledger} data-part="cost-ledger" data-variant={variant} aria-label={label}>
+    <section
+      className={`${r.ledger} ${className}`}
+      data-part="cost-ledger"
+      data-variant={variant}
+      aria-label={label}
+    >
       <table className={r.compareTable}>
         <caption className={s.srOnly}>
           {label}

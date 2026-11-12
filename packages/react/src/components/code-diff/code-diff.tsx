@@ -33,6 +33,8 @@ export interface CodeDiffProps extends VariantProps<'CodeDiff'> {
    * It spans both columns in the split view and stays in view when long lines scroll sideways.
    */
   annotate?: (line: CodeDiffLine) => ReactNode;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 export interface CodeDiffLine {
   readonly kind: 'context' | 'added' | 'removed';
@@ -61,6 +63,7 @@ export function CodeDiff({
   renderLine,
   annotate,
   error,
+  className = '',
 }: CodeDiffProps) {
   const identityValid =
     !sourceIdentities ||
@@ -288,7 +291,11 @@ export function CodeDiff({
     );
   }
   return (
-    <div className={`${s.root} ${s.panel}`} data-part="code-diff" data-variant={variant}>
+    <div
+      className={`${s.root} ${s.panel} ${className}`}
+      data-part="code-diff"
+      data-variant={variant}
+    >
       <div className={s.header}>
         <strong>{path}</strong>
         {rows && (

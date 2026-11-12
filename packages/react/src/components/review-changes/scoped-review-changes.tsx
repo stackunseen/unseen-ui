@@ -120,7 +120,7 @@ export function ScopedReviewChanges(props: ReviewChangesProps & { review: Review
       ref={root}
       tabIndex={-1}
       aria-busy={submission.status === 'pending' || review.lookup?.status === 'pending'}
-      className={s.root}
+      className={`${s.root} ${props.className ?? ''}`}
       data-part="review-changes"
       data-variant={variant}
       data-stage={review.policy.stage}

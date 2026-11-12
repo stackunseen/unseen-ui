@@ -19,6 +19,8 @@ export interface ArtifactPanelProps extends VariantProps<'ArtifactPanel'> {
   body?: ReactNode;
   /** Trusted host actions, kept outside the scrolling body and hidden on loading/error. */
   actions?: ReactNode;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function ArtifactPanel({
@@ -31,9 +33,11 @@ export function ArtifactPanel({
   trigger,
   body,
   actions,
+  className = '',
 }: ArtifactPanelProps) {
   return (
     <Modal
+      className={className}
       layout={variant}
       open={open}
       onOpenChange={onOpenChange}

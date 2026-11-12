@@ -10,13 +10,19 @@ export function EvidenceGroup({
   sources,
   claim,
   relationships,
+  className = '',
 }: VariantProps<'EvidenceGroup'> & {
   sources: Source[];
   claim: string;
   relationships?: Record<string, 'supports' | 'contradicts' | 'related'>;
-}) {
+} & { className?: string }) {
   return (
-    <div role="group" aria-label="Evidence" className={s.evidenceGroup} data-variant={variant}>
+    <div
+      role="group"
+      aria-label="Evidence"
+      className={`${s.evidenceGroup} ${className}`}
+      data-variant={variant}
+    >
       <p className={s.muted}>{claim}</p>
       {sources.length ? (
         variant === 'accordion' ? (

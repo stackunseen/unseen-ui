@@ -36,6 +36,8 @@ export interface BranchSwitcherProps extends VariantProps<'BranchSwitcher'>, Nav
   pagination?: ConversationPagination;
   onPageChange?: (index: number) => void;
   onRequestPage?: (request: ConversationPageRequest) => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function BranchSwitcher(props: BranchSwitcherProps) {
@@ -112,7 +114,7 @@ export function BranchSwitcher(props: BranchSwitcherProps) {
       tabIndex={-1}
       role="group"
       aria-label="Conversation branches"
-      className={s.root}
+      className={`${s.root} ${props.className ?? ''}`}
       data-part="branch-switcher"
       data-variant={variant}
       data-status={state.status}

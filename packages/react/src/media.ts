@@ -8,6 +8,7 @@ export type {
 export { VoiceSelector } from './components/voice-selector/voice-selector.js';
 export type {
   VoiceSelectorProps,
+  VoiceSelectorLabels,
   VoiceOption,
 } from './components/voice-selector/voice-selector.js';
 export { Persona } from './components/persona/persona.js';

@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import type { ReactNode } from 'react';
 import type { CommandReceipt, Measurement, Run } from '@stackunseen/ui-core';
 import { safeUrl } from '@stackunseen/ui-core';
@@ -37,6 +38,8 @@ export interface RunSummaryCardProps extends VariantProps<'RunSummaryCard'> {
   /** Host actions such as "Open run" or "Revert". */
   actions?: ReactNode;
   locale?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const outcomes: Record<RunOutcome, { state: string; label: string; text: string }> = {
@@ -74,8 +77,10 @@ export function RunSummaryCard({
   receipts = [],
   onOpenEffect,
   actions,
-  locale,
+  locale: localeProp,
+  className = '',
 }: RunSummaryCardProps) {
+  const locale = useLocale(localeProp);
   const outcome = outcomes[summary.outcome] ?? outcomes.unknown;
   const confirmed = new Set(
     receipts
@@ -84,7 +89,7 @@ export function RunSummaryCard({
   );
   return (
     <article
-      className={`${variant === 'card' ? s.panel : ''} ${r.summary}`}
+      className={`${variant === 'card' ? s.panel : ''} ${r.summary} ${className}`}
       data-part="run-summary"
       data-variant={variant}
       data-outcome={summary.outcome}

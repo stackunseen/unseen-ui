@@ -491,6 +491,8 @@ export interface AttachmentPickerProps extends FileSelectionLimits {
   onReject?: (rejections: AttachmentRejection[]) => void;
   disabled?: boolean;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 export function AttachmentPicker({
   onFilesSelected,
@@ -500,6 +502,7 @@ export function AttachmentPicker({
   remainingSlots = 10,
   disabled = false,
   label = 'Add files',
+  className = '',
 }: AttachmentPickerProps) {
   const input = useRef<HTMLInputElement>(null);
   const [notice, setNotice] = useState('');
@@ -508,7 +511,7 @@ export function AttachmentPicker({
   >([]);
   const locked = selectionLocked({ disabled, maxFileBytes, remainingSlots });
   return (
-    <div className={a.picker}>
+    <div className={`${a.picker} ${className}`}>
       <input
         ref={input}
         type="file"

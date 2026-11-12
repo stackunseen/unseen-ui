@@ -50,6 +50,8 @@ export interface TerminalOutputProps extends VariantProps<'TerminalOutput'> {
   onRequestClear?: (context: TerminalContext) => void;
   /** Trusted renderer composition; terminal output never supplies executable callbacks. */
   renderOutput?: (view: TerminalOutputRenderContext) => ReactNode;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 export function TerminalOutput({
   output,
@@ -68,6 +70,7 @@ export function TerminalOutput({
   onRequestClear,
   renderOutput,
   variant = 'console',
+  className = '',
 }: TerminalOutputProps) {
   const root = useRef<HTMLDivElement>(null),
     pre = useRef<HTMLPreElement>(null),
@@ -145,7 +148,7 @@ export function TerminalOutput({
       role="group"
       aria-label={`${label} panel`}
       tabIndex={-1}
-      className={`${s.root} ${s.panel} ${css.root}`}
+      className={`${s.root} ${s.panel} ${css.root} ${className}`}
       data-part="terminal-output"
       data-variant={variant}
       data-state={state}

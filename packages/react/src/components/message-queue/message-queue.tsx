@@ -42,6 +42,8 @@ export interface MessageQueueProps extends VariantProps<'MessageQueue'>, Navigat
   pagination?: ConversationPagination;
   onPageChange?: (index: number) => void;
   onRequestPage?: (request: ConversationPageRequest) => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function MessageQueue(props: MessageQueueProps) {
@@ -103,7 +105,7 @@ export function MessageQueue(props: MessageQueueProps) {
       role="group"
       aria-label="Queued messages"
       tabIndex={-1}
-      className={`${s.root} ${n.root}`}
+      className={`${s.root} ${n.root} ${props.className ?? ''}`}
       data-part="message-queue"
       data-variant={variant}
       data-status={state.status}

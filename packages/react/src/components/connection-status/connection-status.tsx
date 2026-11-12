@@ -18,6 +18,8 @@ export interface ConnectionStatusProps extends VariantProps<'ConnectionStatus'> 
   error?: string;
   onResume?: (cursor: RecoveryCursor) => void;
   onRefresh?: () => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function ConnectionStatus({
@@ -27,6 +29,7 @@ export function ConnectionStatus({
   error,
   onResume,
   onRefresh,
+  className = '',
 }: ConnectionStatusProps) {
   const incompatible = value.recovery === 'incompatible';
   const uncertainFreshness = value.freshness === 'stale' || value.freshness === 'unknown';
@@ -57,7 +60,11 @@ export function ConnectionStatus({
   const canRefresh = value.adapter.snapshot && !!onRefresh;
   const showRecovery = interrupted || submission !== 'idle';
   return (
-    <Panel className={own.connectionStatus} data-variant={variant} data-interrupted={interrupted}>
+    <Panel
+      className={`${own.connectionStatus} ${className}`}
+      data-variant={variant}
+      data-interrupted={interrupted}
+    >
       <div className={s.row}>
         <strong className={s.grow}>
           <AIIcon name={interrupted ? 'warning' : 'check'} /> {label}

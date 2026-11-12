@@ -29,6 +29,8 @@ export interface WorkflowGraphProps extends VariantProps<'WorkflowGraph'>, Detai
   state?:
     'ready' | 'streaming' | 'stale' | 'loading' | 'denied' | 'unavailable' | 'error' | 'unknown';
   error?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 /** Below this the diagram scrolls instead of shrinking further. */
 const minScale = 0.6;
@@ -41,6 +43,7 @@ export function WorkflowGraph({
   state = 'ready',
   error,
   detail = 'compact',
+  className = '',
   ...props
 }: WorkflowGraphProps) {
   const root = useRef<HTMLDivElement>(null),
@@ -60,7 +63,7 @@ export function WorkflowGraph({
       ref={root}
       role="group"
       tabIndex={-1}
-      className={`${g.root} ${css.root}`}
+      className={`${g.root} ${css.root} ${className}`}
       data-part="workflow-graph"
       data-variant={props.variant ?? 'graph'}
       data-state={state}

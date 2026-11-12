@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { MessageData, Source, ToolCallData } from '@stackunseen/ui-core';
@@ -124,6 +125,7 @@ function useHostSnapshot(host: ChatHost | undefined): ChatHostSnapshot {
  * Pass a host and it wires itself, or pass the controlled props and own every value yourself.
  */
 export function Chat(props: ChatProps) {
+  const locale = useLocale();
   const {
     variant = 'panel',
     title = 'Assistant',
@@ -427,7 +429,7 @@ export function Chat(props: ChatProps) {
           onMention={onMention}
           onMentionQueryChange={onMentionQueryChange}
           submitDisabled={draft.trim().length > maxPromptLength}
-          submitDisabledReason={`Keep the message under ${maxPromptLength.toLocaleString('en-US')} characters.`}
+          submitDisabledReason={`Keep the message under ${maxPromptLength.toLocaleString(locale)} characters.`}
         />
       </div>
     </section>

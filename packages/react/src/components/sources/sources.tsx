@@ -14,8 +14,21 @@ export interface SourcesProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Replaces the built-in wording, for example to translate it. */
+  labels?: Partial<SourcesLabels>;
   className?: string;
 }
+export interface SourcesLabels {
+  none: string;
+  count: (count: number) => string;
+  /** Shown under a source whose link is not a safe http(s) URL. */
+  linkUnavailable: string;
+}
+const defaultLabels: SourcesLabels = {
+  none: 'No sources reported',
+  count: (count) => `Used ${count} source${count === 1 ? '' : 's'}`,
+  linkUnavailable: 'Link unavailable',
+};
 
 /** "Used N sources" disclosure. Listing a source does not claim it supports the answer. */
 export function Sources({
@@ -23,15 +36,17 @@ export function Sources({
   open,
   defaultOpen = false,
   onOpenChange,
+  labels,
   className = '',
 }: SourcesProps) {
+  const text = { ...defaultLabels, ...labels };
   const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
   const count = sources.length;
   return (
     <div className={`${s.root} ${className}`} data-part="sources">
       <button className={s.trigger} {...disclosure.triggerProps} disabled={count === 0}>
         <GlobeIcon aria-hidden="true" />
-        {count === 0 ? 'No sources reported' : `Used ${count} source${count === 1 ? '' : 's'}`}
+        {count === 0 ? text.none : text.count(count)}
         {count > 0 && <ChevronDownIcon aria-hidden="true" className={s.chevron} />}
       </button>
       <ul className={`${s.list} ${s.content}`} {...disclosure.contentProps}>
@@ -47,7 +62,7 @@ export function Sources({
                 <span className={s.label}>{source.title}</span>
               )}
               {source.description && <div className={s.meta}>{source.description}</div>}
-              {!href && source.href && <div className={s.meta}>Link unavailable</div>}
+              {!href && source.href && <div className={s.meta}>{text.linkUnavailable}</div>}
             </li>
           );
         })}

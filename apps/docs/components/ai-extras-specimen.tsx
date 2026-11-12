@@ -192,11 +192,33 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
           steps={
             state === 'Without steps'
               ? []
-              : [
-                  { id: '1', label: 'Export account activity', done: true },
-                  { id: '2', label: 'Request owner approval' },
-                  { id: '3', label: 'Archive approved accounts' },
-                ]
+              : state === 'In progress'
+                ? [
+                    { id: '1', label: 'Export account activity', state: 'complete' },
+                    { id: '2', label: 'Request owner approval', state: 'active' },
+                    { id: '3', label: 'Archive approved accounts' },
+                  ]
+                : state === 'Failed step'
+                  ? [
+                      { id: '1', label: 'Export account activity', state: 'complete' },
+                      {
+                        id: '2',
+                        label: 'Request owner approval',
+                        state: 'failed',
+                        detail: 'The owner declined two of the three accounts.',
+                      },
+                      {
+                        id: '3',
+                        label: 'Archive approved accounts',
+                        state: 'skipped',
+                        detail: 'Not started because approval failed.',
+                      },
+                    ]
+                  : [
+                      { id: '1', label: 'Export account activity', done: true },
+                      { id: '2', label: 'Request owner approval' },
+                      { id: '3', label: 'Archive approved accounts' },
+                    ]
           }
           actions={
             <Button
@@ -372,6 +394,9 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
         <WebPreview
           url={state === 'Unsafe address' ? 'javascript:alert(1)' : 'https://example.com/'}
           title="Sample page preview"
+          status={state === 'Failed' ? 'failed' : state === 'Unavailable' ? 'unavailable' : 'ready'}
+          error={state === 'Failed' ? 'The sample server returned 502.' : undefined}
+          onReload={() => setNotice('Reload requested. The sample server decides the status.')}
         />
       );
       break;
@@ -388,8 +413,16 @@ export function AIExtrasSpecimen({ name, state = 'Default' }: { name: string; st
         <Transcription
           currentTime={time}
           onSeek={setTime}
+          follow
+          status={
+            state === 'Transcribing'
+              ? 'in-progress'
+              : state === 'Unavailable'
+                ? 'unavailable'
+                : 'complete'
+          }
           segments={
-            state === 'Empty'
+            state === 'Empty' || state === 'Unavailable'
               ? []
               : [
                   {

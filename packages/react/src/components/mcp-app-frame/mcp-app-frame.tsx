@@ -68,6 +68,8 @@ export interface MCPAppFrameProps extends VariantProps<'MCPAppFrame'> {
   onClose?: () => void;
   fallback?: ReactNode;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const requestCapability: Record<string, (caps: AppHostCapabilities) => boolean> = {
@@ -108,6 +110,7 @@ export function MCPAppFrame({
   onClose,
   fallback,
   label,
+  className = '',
 }: MCPAppFrameProps) {
   const id = useId();
   const frame = useRef<HTMLIFrameElement>(null);
@@ -243,7 +246,7 @@ export function MCPAppFrame({
             : undefined;
   return (
     <section
-      className={m.frame}
+      className={`${m.frame} ${className}`}
       data-part="mcp-app-frame"
       data-variant={variant}
       data-state={notice ? (state === 'ready' ? 'blocked' : state) : state}

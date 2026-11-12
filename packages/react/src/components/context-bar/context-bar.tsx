@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useLayoutEffect, useRef } from 'react';
 import type { ContextItem, ContextUsage } from '@stackunseen/ui-core';
 import { IconButton } from '../icon-button/icon-button.js';
@@ -13,11 +14,13 @@ export function ContextBar({
   items,
   usage,
   onRemove,
+  className = '',
 }: VariantProps<'ContextBar'> & {
   items: ContextItem[];
   usage?: ContextUsage;
   onRemove?: (id: string) => void;
-}) {
+} & { className?: string }) {
+  const locale = useLocale();
   const root = useRef<HTMLDivElement>(null),
     focused = useRef<HTMLElement | null>(null);
   useLayoutEffect(() => {
@@ -40,7 +43,7 @@ export function ContextBar({
       onFocusCapture={(event) => {
         focused.current = event.target as HTMLElement;
       }}
-      className={own.contextBar}
+      className={`${own.contextBar} ${className}`}
       data-variant={variant}
     >
       <ul className={s.list + ' ' + own.list} aria-label="Context items">
@@ -71,8 +74,8 @@ export function ContextBar({
               {usage.kind === 'estimated' ? 'Estimated context' : 'Context usage'}
             </span>
             <strong>
-              {usage.used.toLocaleString('en-US')}
-              {bounded ? ` / ${usage.limit!.toLocaleString('en-US')}` : ''} tokens
+              {usage.used.toLocaleString(locale)}
+              {bounded ? ` / ${usage.limit!.toLocaleString(locale)}` : ''} tokens
             </strong>
           </div>
           {bounded && (

@@ -912,9 +912,17 @@ export const catalog: CatalogEntry[] = [
     aliases: ['Memories', 'Saved memory', 'What it remembers'],
     description:
       'What the assistant remembers, with where each memory came from, how far it reaches and whether it was used just now.',
-    states: ['Default', 'Pending request', 'Rejected request', 'Filtered', 'Empty'],
+    states: [
+      'Default',
+      'Pending request',
+      'Rejected request',
+      'Filtered',
+      'Loading',
+      'Unavailable',
+      'Empty',
+    ],
     contract:
-      'entries: MemoryEntry[] · query · onQueryChange · onRequest({ entryId, action }) · receipts? · locale?',
+      'entries: MemoryEntry[] · query · onQueryChange · onRequest({ entryId, action }) · receipts? · status? · error? · onRetry? · locale? · labels?',
     responsibility:
       'Pin, unpin and forget ask your server; a row shows the pending receipt and changes only when the server’s entries change. Provenance is shown, never inferred.',
     code: '<MemoryPanel entries={entries} query={query} onQueryChange={setQuery} onRequest={request} />',

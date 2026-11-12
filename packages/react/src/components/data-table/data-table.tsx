@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useMemo } from 'react';
 import { Button } from '../button/button.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
@@ -63,7 +64,7 @@ export function DataTable({
   caption,
   sort,
   onSort,
-  locale = 'en-US',
+  locale: localeProp,
   formatCell,
   pagination,
   onPageChange,
@@ -72,6 +73,7 @@ export function DataTable({
   error,
   variant = 'table',
 }: DataTableProps) {
+  const locale = useLocale(localeProp);
   const shownColumns = columns.slice(0, 20);
   const shownRows = rows.slice(0, 100);
   const invalid =

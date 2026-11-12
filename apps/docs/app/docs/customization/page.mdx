@@ -44,6 +44,8 @@ Keep the labels on controls when you replace their icons. A picture alone doesn'
 
 ## Style a component
 
+Every component takes `className` and puts it on its root element, after its own classes. The only exceptions have no element of their own: the providers, `UnsavedGuard` and `ConversationMessageActions`.
+
 Start with the built-in variants and content slots. Use `className` and `style` for layout. Not every inner element has a public selector, so check the component's page before you style its internals.
 
 Check your palette in light and dark, and in disabled, focused and error states. A theme change can affect text, control borders and focus rings.
@@ -186,3 +188,28 @@ const theme = importTheme(
 `AITheme` emits scoped `--ai-canvas`, `--ai-surface`, `--ai-surface-subtle`, `--ai-text`, `--ai-muted`, `--ai-border` and `--ai-control-border` CSS variables. Use a resolved theme for overrides that should also follow portals. `themeToCSS(theme, 'brand', 'system')` targets `[data-ai-theme="brand"]` and switches palettes with the system color preference.
 
 `importTheme` re-measures the contrast of each color pair, but it doesn't reject a low-contrast palette. Check text at 4.5:1 and control borders and focus rings at 3:1, then look at your real screens. Status colors and their tinted backgrounds need their own checks.
+
+## Language and number formats
+
+Wrap your app in `AILocale` to format numbers, dates and money for one locale. A component's own `locale` prop still wins. Without either, components format as `en-US`.
+
+```tsx
+import { AILocale } from '@stackunseen/ui';
+
+<AILocale locale="de-DE">
+  <App />
+</AILocale>;
+```
+
+To change or translate a component's built-in wording, pass `labels`. You only pass the strings you want to replace.
+
+```tsx
+import { Sources } from '@stackunseen/ui/assistant';
+
+<Sources
+  sources={sources}
+  labels={{ none: 'Keine Quellen', count: (count) => `${count} Quellen verwendet` }}
+/>;
+```
+
+`labels` is available on ModelSelector, MemoryPanel, WebPreview, Plan, Sources, ChainOfThought, StackTrace, EnvironmentVariables, VoiceSelector, Commit, ArtifactDiff, Pagination, Calendar and DateRangePicker. Other components still use fixed English wording.

@@ -19,17 +19,18 @@ export function MCPToolList({
   tools,
   query,
   onQueryChange,
+  className = '',
 }: VariantProps<'MCPToolList'> & {
   tools: MCPTool[];
   query: string;
   onQueryChange: (query: string) => void;
-}) {
+} & { className?: string }) {
   const id = useId();
   const filtered = tools.filter((tool) =>
     `${tool.name} ${tool.description}`.toLowerCase().includes(query.toLowerCase()),
   );
   return (
-    <div className={own.mcpTools} data-variant={variant}>
+    <div className={`${own.mcpTools} ${className}`} data-variant={variant}>
       <label htmlFor={id} className={s.field + ' ' + own.field}>
         Filter tools
         <input

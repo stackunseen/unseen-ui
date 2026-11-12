@@ -47,6 +47,8 @@ export interface FeedbackCaptureProps extends VariantProps<'FeedbackCapture'> {
   receipt?: CommandReceipt;
   maxLength?: number;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const statusText: Record<SubmissionState, string> = {
@@ -69,6 +71,7 @@ export function FeedbackCapture({
   maxLength = 2000,
   label = 'Was this helpful?',
   variant = 'card',
+  className = '',
 }: FeedbackCaptureProps) {
   const id = useId();
   const locked = submission === 'submitting' || submission === 'acknowledged';
@@ -177,8 +180,12 @@ export function FeedbackCapture({
     'data-submission': submission,
   } as const;
   return variant === 'card' ? (
-    <Panel {...attributes}>{body}</Panel>
+    <Panel {...attributes} className={className}>
+      {body}
+    </Panel>
   ) : (
-    <div {...attributes}>{body}</div>
+    <div {...attributes} className={className || undefined}>
+      {body}
+    </div>
   );
 }

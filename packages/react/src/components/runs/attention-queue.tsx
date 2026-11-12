@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId } from 'react';
 import type { KeyboardEvent } from 'react';
 import type { ApprovalProposal, Measurement } from '@stackunseen/ui-core';
@@ -32,6 +33,8 @@ export interface AttentionQueueProps extends VariantProps<'AttentionQueue'> {
   timeZone?: string;
   label?: string;
   emptyMessage?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 function title(item: AttentionItem) {
@@ -60,11 +63,13 @@ export function AttentionQueue({
   count,
   onOpen,
   onDismiss,
-  locale,
+  locale: localeProp,
   timeZone,
   label = 'Needs your attention',
   emptyMessage = 'Nothing is waiting on you.',
+  className = '',
 }: AttentionQueueProps) {
+  const locale = useLocale(localeProp);
   const id = useId();
   function move(event: KeyboardEvent<HTMLUListElement>) {
     const target = event.target as HTMLElement;
@@ -87,7 +92,7 @@ export function AttentionQueue({
   }
   return (
     <section
-      className={r.queue}
+      className={`${r.queue} ${className}`}
       data-part="attention-queue"
       data-variant={variant}
       aria-labelledby={`${id}-title`}

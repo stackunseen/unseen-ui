@@ -11,13 +11,14 @@ export function SourceCard({
   variant = 'card',
   source,
   onOpen,
+  className = '',
 }: VariantProps<'SourceCard'> & {
   source: Source;
   onOpen?: (source: Source) => void;
-}) {
+} & { className?: string }) {
   const url = source.access === 'available' ? safeUrl(source.url) : undefined;
   return (
-    <Panel data-part="source" data-variant={variant} className={s.sourceCard}>
+    <Panel data-part="source" data-variant={variant} className={`${s.sourceCard} ${className}`}>
       <div className={s.row}>
         <span className={s.sourceIcon} aria-hidden="true">
           <AIIcon name="document" />

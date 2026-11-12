@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId } from 'react';
 import type { CSSProperties } from 'react';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -35,6 +36,8 @@ export interface AgentLanesProps {
   label?: string;
   locale?: string;
   timeZone?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 const LANE = 44;
@@ -55,9 +58,11 @@ export function AgentLanes({
   selectedId = null,
   onSelect,
   label = 'Agent lanes',
-  locale,
+  locale: localeProp,
   timeZone,
+  className = '',
 }: AgentLanesProps) {
+  const locale = useLocale(localeProp);
   const id = useId();
   const tasks = lanes.flatMap((lane, index) =>
     lane.tasks.map((task) => ({ ...task, lane: index, agent: lane.agent })),
@@ -93,7 +98,11 @@ export function AgentLanes({
     ];
   });
   return (
-    <section className={r.lanes} data-part="agent-lanes" aria-labelledby={`${id}-title`}>
+    <section
+      className={`${r.lanes} ${className}`}
+      data-part="agent-lanes"
+      aria-labelledby={`${id}-title`}
+    >
       <h2 id={`${id}-title`} className={r.boardTitle}>
         {label}
       </h2>

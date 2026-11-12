@@ -28,6 +28,8 @@ export interface ScopedAgentHandoffProps extends VariantProps<'AgentHandoff'> {
   /** Exact historical lookup, even when current context/access/ownership changed. */
   onReconcile?: (original: HandoffDecisionCommand) => void;
   reconciling?: boolean;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 export function ScopedAgentHandoff({
   value: input,
@@ -37,6 +39,7 @@ export function ScopedAgentHandoff({
   onReconcile,
   reconciling = false,
   variant = 'card',
+  className = '',
 }: ScopedAgentHandoffProps) {
   const value = inspectHandoffSnapshot(input);
   const submission = inspectHandoffSubmission(inputSubmission);
@@ -68,7 +71,7 @@ export function ScopedAgentHandoff({
   }
   return (
     <div
-      className={`${s.root} ${variant === 'card' ? s.surface : ''}`}
+      className={`${s.root} ${variant === 'card' ? s.surface : ''} ${className}`}
       data-part="agent-handoff"
       data-variant={variant}
     >

@@ -21,6 +21,8 @@ export interface AccessModeSelectorProps extends VariantProps<'AccessModeSelecto
   status: 'ready' | 'pending' | 'error' | 'stale';
   error?: string;
   onRequest: (request: { modeId: string; scope: string; version: string }) => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function AccessModeSelector({
@@ -32,6 +34,7 @@ export function AccessModeSelector({
   error,
   onRequest,
   variant = 'cards',
+  className = '',
 }: AccessModeSelectorProps) {
   const id = useId();
   const [draft, setDraft] = useState<{ modeId: string; scope: string; version: string }>();
@@ -43,7 +46,7 @@ export function AccessModeSelector({
   const locked = status === 'pending' || status === 'stale' || !scope.trim() || !version.trim();
   return (
     <div
-      className={`${s.root} ${variant === 'cards' ? s.surface : ''}`}
+      className={`${s.root} ${variant === 'cards' ? s.surface : ''} ${className}`}
       data-part="access-mode"
       data-variant={variant}
     >

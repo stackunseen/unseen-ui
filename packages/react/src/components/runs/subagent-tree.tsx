@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
@@ -40,6 +41,8 @@ export interface SubagentTreeProps extends VariantProps<'SubagentTree'> {
   now?: string;
   label?: string;
   locale?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 function countDescendants(node: RunNode): number {
@@ -86,8 +89,10 @@ export function SubagentTree({
   staleAfterMs = 5 * 60_000,
   now,
   label = 'Agent runs',
-  locale,
+  locale: localeProp,
+  className = '',
 }: SubagentTreeProps) {
+  const locale = useLocale(localeProp);
   const id = useId();
   const clock = now ?? (typeof window === 'undefined' ? undefined : new Date().toISOString());
   const [localExpanded, setLocalExpanded] = useState<string[]>(() => [root.run.id]);
@@ -296,7 +301,7 @@ export function SubagentTree({
   }
 
   return (
-    <section className={r.tree} data-part="subagent-tree" data-variant={variant}>
+    <section className={`${r.tree} ${className}`} data-part="subagent-tree" data-variant={variant}>
       <h2 id={`${id}-title`} className={r.boardTitle}>
         {label}
       </h2>

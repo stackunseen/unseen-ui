@@ -17,6 +17,7 @@ export function AgentCard({
   activity,
   selected = false,
   onSelect,
+  className = '',
 }: VariantProps<'AgentCard'> & {
   name: string;
   description: string;
@@ -24,9 +25,13 @@ export function AgentCard({
   activity?: string;
   selected?: boolean;
   onSelect?: () => void;
-}) {
+} & { className?: string }) {
   return (
-    <Panel className={own.agentCard} data-variant={variant} data-selected={selected}>
+    <Panel
+      className={`${own.agentCard} ${className}`}
+      data-variant={variant}
+      data-selected={selected}
+    >
       <div className={s.row + ' ' + own.row}>
         <SummaryHeading
           icon={

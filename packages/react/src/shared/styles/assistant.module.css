@@ -126,6 +126,10 @@
 .step[data-state='pending'] {
   color: var(--ai-muted, #52525b);
 }
+.step[data-state='skipped'] .dot {
+  border-color: transparent;
+  color: var(--ai-muted, #52525b);
+}
 .step > :not(.dot) {
   grid-column: 2;
 }

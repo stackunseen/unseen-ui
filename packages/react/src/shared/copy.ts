@@ -7,6 +7,12 @@ export interface CopyStatus {
   ok: boolean;
 }
 
+/** The two outcomes a copy control announces; pass translations through a component's labels. */
+export interface CopyWords {
+  copied: string;
+  copyFailed: string;
+}
+
 /** Copies text and reports the real outcome; it never claims success when the clipboard fails. */
 export function useCopy() {
   const [status, setStatus] = useState<CopyStatus | undefined>();
@@ -27,7 +33,11 @@ export function useCopy() {
     attempt.current += 1;
     setStatus(undefined);
   }, []);
-  const message = (key: string) =>
-    status?.key === key ? (status.ok ? 'Copied' : 'Copy unavailable') : undefined;
+  const message = (key: string, words: Partial<CopyWords> = {}) =>
+    status?.key === key
+      ? status.ok
+        ? (words.copied ?? 'Copied')
+        : (words.copyFailed ?? 'Copy unavailable')
+      : undefined;
   return { copy, message, status, reset };
 }

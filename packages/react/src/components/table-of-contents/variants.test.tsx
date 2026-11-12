@@ -1,7 +1,7 @@
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it } from 'vitest';
-import { TableOfContents } from './table-of-contents.js';
+import { TableOfContents, trackPath } from './table-of-contents.js';
 
 afterEach(() => {
   cleanup();
@@ -88,5 +88,24 @@ describe('TableOfContents variants', () => {
     await user.keyboard('{Escape}');
     expect(rail).toHaveAttribute('aria-expanded', 'false');
     expect(rail).toHaveFocus();
+  });
+});
+
+describe('trackPath', () => {
+  const rows = [
+    { top: 0, bottom: 30, x: 0.75 },
+    { top: 30, bottom: 60, x: 12.75 },
+    { top: 60, bottom: 90, x: 12.75 },
+    { top: 90, bottom: 120, x: 0.75 },
+  ];
+  it('slants across the top of the row that changes level', () => {
+    expect(trackPath(rows, 0, 3)).toBe(
+      'M 0.75 0 L 0.75 30 L 0.75 30 L 12.75 38 L 12.75 60 L 12.75 90 L 12.75 90 L 0.75 98 L 0.75 120',
+    );
+  });
+  it('starts a lit stretch below the slant and ends it on the row, with no part of a slant', () => {
+    expect(trackPath(rows, 1, 1)).toBe('M 12.75 38 L 12.75 60');
+    expect(trackPath(rows, 2, 2)).toBe('M 12.75 60 L 12.75 90');
+    expect(trackPath(rows, 3, 3)).toBe('M 0.75 98 L 0.75 120');
   });
 });

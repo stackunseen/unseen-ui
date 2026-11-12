@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import type { Measurement } from '@stackunseen/ui-core';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
@@ -22,6 +23,8 @@ export interface ContextWindowMeterProps extends VariantProps<'ContextWindowMete
   warnAt?: number;
   label?: string;
   locale?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 /**
@@ -34,8 +37,10 @@ export function ContextWindowMeter({
   value,
   warnAt = 0.8,
   label = 'Context window',
-  locale = 'en-US',
+  locale: localeProp,
+  className = '',
 }: ContextWindowMeterProps) {
+  const locale = useLocale(localeProp);
   const window = value.kind === 'unknown' ? undefined : value.value;
   const segments = (window?.segments ?? []).filter(
     (segment) => Number.isFinite(segment.tokens) && segment.tokens >= 0,
@@ -80,13 +85,13 @@ export function ContextWindowMeter({
   } as const;
   if (variant === 'inline')
     return (
-      <span {...common} className={s.muted}>
+      <span {...common} className={`${s.muted} ${className}`}>
         {label}: {reading} · {meta}
       </span>
     );
   const scale = limit ?? (used > 0 ? used : 1);
   return (
-    <div {...common} className={own.stack} role="group" aria-label={label}>
+    <div {...common} className={`${own.stack} ${className}`} role="group" aria-label={label}>
       <div className={s.row}>
         <strong>{label}</strong>
         <span className={s.muted}>{reading}</span>

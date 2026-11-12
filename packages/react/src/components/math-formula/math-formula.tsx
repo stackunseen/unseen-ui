@@ -7,8 +7,15 @@ import s from '../../shared/styles/rich-markdown.module.css';
 export interface MathFormulaProps extends VariantProps<'MathFormula'> {
   formula: string;
   label?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
-export function MathFormula({ formula, label, variant = 'block' }: MathFormulaProps) {
+export function MathFormula({
+  formula,
+  label,
+  variant = 'block',
+  className = '',
+}: MathFormulaProps) {
   const result = useMemo(() => {
     if (formula.length > 10000)
       return { error: 'Formula exceeds the 10,000-character preview limit.' };
@@ -30,7 +37,11 @@ export function MathFormula({ formula, label, variant = 'block' }: MathFormulaPr
   }, [formula, variant]);
   if (result.error)
     return (
-      <span className={s.formulaError} data-part="math-formula" data-variant={variant}>
+      <span
+        className={`${s.formulaError} ${className}`}
+        data-part="math-formula"
+        data-variant={variant}
+      >
         <span className={s.error} role="status">
           {result.error}
         </span>
@@ -44,7 +55,7 @@ export function MathFormula({ formula, label, variant = 'block' }: MathFormulaPr
     );
   return (
     <span
-      className={s.formula}
+      className={`${s.formula} ${className}`}
       data-part="math-formula"
       data-variant={variant}
       style={{ display: variant === 'inline' ? 'inline-block' : 'block' }}

@@ -101,6 +101,8 @@ export interface GeneratedUIProps extends VariantProps<'GeneratedUI'> {
    * contact an arbitrary server.
    */
   imageOrigins?: readonly string[];
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 function matches(snapshot: SurfaceIdentity, surface: GeneratedSurface) {
   return snapshot.surfaceId === surface.id && snapshot.version === surface.version;
@@ -179,6 +181,7 @@ export function GeneratedUI({
   problems,
   imageOrigins,
   variant = 'stack',
+  className = '',
 }: GeneratedUIProps) {
   const prefix = useId();
   const rootElement = useRef<HTMLDivElement>(null);
@@ -192,7 +195,7 @@ export function GeneratedUI({
     tabIndex: -1,
     role: 'group',
     'aria-label': 'Generated result',
-    className: `${g.root} ${css.root}`,
+    className: `${g.root} ${css.root} ${className}`,
     'data-part': 'generated-ui',
     'data-variant': variant,
     onFocusCapture: (event: FocusEvent<HTMLDivElement>) => {

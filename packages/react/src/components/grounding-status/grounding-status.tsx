@@ -8,7 +8,8 @@ import own from './grounding-status.module.css';
 export function GroundingStatus({
   value,
   variant = 'bar',
-}: VariantProps<'GroundingStatus'> & { value: Grounding }) {
+  className = '',
+}: VariantProps<'GroundingStatus'> & { value: Grounding } & { className?: string }) {
   const coverage =
     value.kind === 'coverage' &&
     Number.isFinite(value.total) &&
@@ -19,7 +20,7 @@ export function GroundingStatus({
       ? value.supported / value.total
       : undefined;
   return (
-    <Panel className={own.grounding} data-variant={variant}>
+    <Panel className={`${own.grounding} ${className}`} data-variant={variant}>
       <strong>{value.kind === 'coverage' ? 'Source coverage' : 'Grounding'}</strong>
       {value.kind === 'unknown' ? (
         <p className={s.muted}>Not measured</p>

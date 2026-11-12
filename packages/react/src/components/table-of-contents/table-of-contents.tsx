@@ -46,6 +46,35 @@ interface FlatItem {
 const pad = (index: number) => String(index + 1).padStart(2, '0');
 /** Horizontal step of the track per level, in pixels. */
 const STEP = 12;
+/** Height of the slant where the track changes level, at the top of the row that changes. */
+const SLANT = 8;
+/** The line's centre at depth 0: its 1.5px stroke then starts on a whole pixel. */
+const EDGE = 0.75;
+
+interface TrackRow {
+  top: number;
+  bottom: number;
+  x: number;
+}
+
+/**
+ * The line through rows `from` to `to`. A change of level slants across the top of the row
+ * that changes, so each row owns a whole piece of the line and a lit stretch starts and ends
+ * on a vertical run, never half way along a slant.
+ */
+export function trackPath(rows: readonly TrackRow[], from: number, to: number): string {
+  const first = rows[from]!;
+  const stepped = from > 0 && rows[from - 1]!.x !== first.x;
+  let path = `M ${first.x} ${first.top + (stepped ? SLANT : 0)}`;
+  for (let index = from; index <= to; index += 1) {
+    const row = rows[index]!;
+    const previous = rows[index - 1];
+    if (index > from && previous && previous.x !== row.x)
+      path += ` L ${previous.x} ${row.top} L ${row.x} ${row.top + SLANT}`;
+    path += ` L ${row.x} ${row.bottom}`;
+  }
+  return path;
+}
 
 function flatten(items: readonly TocItem[], depth = 0): FlatItem[] {
   return items.flatMap((item) => [{ item, depth }, ...flatten(item.items ?? [], depth + 1)]);
@@ -251,8 +280,7 @@ function activeTop(items: readonly TocItem[], active: string | null): number {
 interface Geometry {
   width: number;
   height: number;
-  path: string;
-  rows: { top: number; bottom: number; x: number }[];
+  rows: TrackRow[];
 }
 
 /** The track list, with an SVG line measured from the rendered rows. */
@@ -269,7 +297,6 @@ function Track({
 }) {
   const list = useRef<HTMLOListElement>(null);
   const [geometry, setGeometry] = useState<Geometry | null>(null);
-  const clipId = `toc-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
   const depths = flat.map(({ depth }) => depth).join(',');
   useEffect(() => {
     const element = list.current;
@@ -282,21 +309,12 @@ function Track({
         return {
           top: link.offsetTop,
           bottom: link.offsetTop + link.offsetHeight,
-          x: 1 + depth * STEP,
+          x: EDGE + depth * STEP,
         };
       });
-      // A vertical line per row; where the level changes, a short diagonal steps across.
-      let path = `M ${rows[0]!.x} ${rows[0]!.top}`;
-      rows.forEach((row, index) => {
-        const previous = rows[index - 1];
-        if (previous && previous.x !== row.x)
-          path += ` L ${previous.x} ${row.top - 4} L ${row.x} ${row.top + 4}`;
-        path += ` L ${row.x} ${row.bottom}`;
-      });
       setGeometry({
-        width: Math.max(...rows.map((row) => row.x)) + 2,
+        width: Math.ceil(Math.max(...rows.map((row) => row.x)) + 2),
         height: element.offsetHeight,
-        path,
         rows,
       });
     };
@@ -308,8 +326,13 @@ function Track({
   const litIndexes = flat
     .map(({ item }, index) => (lit.includes(item.id) ? index : -1))
     .filter((index) => index >= 0);
-  const first = geometry && litIndexes.length ? geometry.rows[litIndexes[0]!] : undefined;
-  const last = geometry && litIndexes.length ? geometry.rows[litIndexes.at(-1)!] : undefined;
+  // Rows are re-measured after a change of items; until then an index may be out of range.
+  const count = geometry?.rows.length ?? 0;
+  const from = litIndexes[0];
+  const to = litIndexes.at(-1);
+  const litRange =
+    geometry && from !== undefined && to !== undefined && to < count ? { from, to } : undefined;
+  const end = litRange && geometry ? geometry.rows[litRange.to]! : undefined;
   return (
     <div className={s.trackBody}>
       {geometry && (
@@ -320,18 +343,14 @@ function Track({
           aria-hidden="true"
           focusable="false"
         >
-          <defs>
-            <clipPath id={clipId}>
-              {first && last && (
-                <rect x="0" y={first.top} width={geometry.width} height={last.bottom - first.top} />
-              )}
-            </clipPath>
-          </defs>
-          <path d={geometry.path} className={s.trackBase} />
-          {first && last && (
+          <path d={trackPath(geometry.rows, 0, count - 1)} className={s.trackBase} />
+          {litRange && end && (
             <>
-              <path d={geometry.path} className={s.trackLit} clipPath={`url(#${clipId})`} />
-              <circle cx={last.x} cy={last.bottom - 1} r="2.5" className={s.trackDot} />
+              <path
+                d={trackPath(geometry.rows, litRange.from, litRange.to)}
+                className={s.trackLit}
+              />
+              <circle cx={end.x} cy={end.bottom - 2} r="2.5" className={s.trackDot} />
             </>
           )}
         </svg>

@@ -59,6 +59,8 @@ export interface AIFormProps extends VariantProps<'AIForm'> {
   errors?: Record<string, string>;
   receipt?: string | AIFormReceipt;
   title?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 interface Entry {
   key: string;
@@ -91,6 +93,7 @@ export function AIForm({
   receipt,
   title = 'Details',
   variant = 'stacked',
+  className = '',
 }: AIFormProps) {
   const prefix = useId();
   const form = useRef<HTMLFormElement>(null);
@@ -318,7 +321,7 @@ export function AIForm({
   return (
     <form
       ref={form}
-      className={g.root}
+      className={`${g.root} ${className}`}
       data-part="ai-form"
       data-variant={variant}
       noValidate

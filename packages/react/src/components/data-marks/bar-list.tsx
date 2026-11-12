@@ -1,3 +1,4 @@
+import { useLocale } from '../../providers/locale/locale.js';
 import type { ComponentProps, ReactNode } from 'react';
 import css from './data-marks.module.css';
 
@@ -27,6 +28,7 @@ export interface BarListProps extends Omit<ComponentProps<'div'>, 'children'> {
  * The bar repeats the printed value; it never stands in for it.
  */
 export function BarList({ label, items, max, headings, className = '', ...props }: BarListProps) {
+  const locale = useLocale();
   const clean = (value: number) => (Number.isFinite(value) && value > 0 ? value : 0);
   const top =
     max !== undefined && Number.isFinite(max) && max > 0
@@ -53,7 +55,7 @@ export function BarList({ label, items, max, headings, className = '', ...props 
               <span className={css.barListLabel}>{item.label}</span>
             </span>
             <span className={css.barListValue}>
-              {item.display ?? clean(item.value).toLocaleString('en-US')}
+              {item.display ?? clean(item.value).toLocaleString(locale)}
             </span>
           </li>
         ))}

@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { useEffect, useId, useLayoutEffect, useRef } from 'react';
 import type { ComponentProps, ReactNode, Ref } from 'react';
 import type { TextRange } from '@stackunseen/ui-core/editing';
@@ -110,6 +111,7 @@ export function PromptInput({
   className = '',
   ...props
 }: PromptInputProps) {
+  const locale = useLocale();
   const ceiling =
     limit !== undefined && Number.isFinite(limit) && limit > 0
       ? Math.min(HARD_LIMIT, Math.floor(limit))
@@ -144,7 +146,7 @@ export function PromptInput({
     : submitDisabled
       ? submitDisabledReason || 'Sending is unavailable. Review the current request.'
       : value.length > ceiling
-        ? `Message exceeds ${ceiling.toLocaleString('en-US')} characters. Shorten it before sending.`
+        ? `Message exceeds ${ceiling.toLocaleString(locale)} characters. Shorten it before sending.`
         : undefined;
   const ready =
     !disabled &&
@@ -209,7 +211,7 @@ export function PromptInput({
             data-over={value.length > ceiling || undefined}
             aria-hidden="true"
           >
-            {value.length.toLocaleString('en-US')} / {ceiling.toLocaleString('en-US')}
+            {value.length.toLocaleString(locale)} / {ceiling.toLocaleString(locale)}
           </span>
         )}
       </div>

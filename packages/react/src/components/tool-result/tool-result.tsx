@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import { createContext, useContext } from 'react';
 import type { ComponentType, ReactNode } from 'react';
 import type { Measurement } from '@stackunseen/ui-core';
@@ -71,6 +72,7 @@ export function ToolResult({
   onRetry,
   maxCharacters = 4000,
   label = 'Tool output preview',
+  className = '',
 }: VariantProps<'ToolResult'> & {
   text?: string;
   /** A structured result; a registered renderer shows it, otherwise it is printed as bounded text. */
@@ -82,7 +84,8 @@ export function ToolResult({
   maxCharacters?: number;
   /** Names the bounded, keyboard-scrollable preview when several tools are visible. */
   label?: string;
-}) {
+} & { className?: string }) {
+  const locale = useLocale();
   const registry = useToolResultRegistry();
   const limit = Math.max(
     1,
@@ -99,8 +102,8 @@ export function ToolResult({
     (received === undefined
       ? `Receiving; count ${partial.received.kind === 'unknown' ? 'unknown' : 'unavailable'}.`
       : expected === undefined
-        ? `${received.toLocaleString('en-US')} ${unit} received so far${partial.expected ? '; total unknown' : ''}.`
-        : `${received.toLocaleString('en-US')} of ${expected.toLocaleString('en-US')} ${unit} received.`);
+        ? `${received.toLocaleString(locale)} ${unit} received so far${partial.expected ? '; total unknown' : ''}.`
+        : `${received.toLocaleString(locale)} of ${expected.toLocaleString(locale)} ${unit} received.`);
   const preview = (
     <pre className={`${s.code} ${css.preview}`} tabIndex={0} role="group" aria-label={label}>
       {shown ? shown.slice(0, limit) : partial ? 'Waiting for output…' : 'No output returned.'}
@@ -113,7 +116,7 @@ export function ToolResult({
       data-renderer={key}
       data-partial={partial ? 'true' : undefined}
       aria-busy={partial ? true : undefined}
-      className={s.toolResult}
+      className={`${s.toolResult} ${className}`}
     >
       {partial && !error && (
         <div className={s.row} role="status">
@@ -139,8 +142,8 @@ export function ToolResult({
       )}
       {!Renderer && shown && shown.length > limit && (
         <p className={s.muted}>
-          Preview truncated at {limit.toLocaleString('en-US')} characters. The full output is kept
-          by the app.
+          Preview truncated at {limit.toLocaleString(locale)} characters. The full output is kept by
+          the app.
         </p>
       )}
       {error && onRetry && (

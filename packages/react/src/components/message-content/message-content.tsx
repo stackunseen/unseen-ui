@@ -40,6 +40,8 @@ export interface MessageContentProps {
   ) => ReactNode;
   /** Host view for a tool call. Return undefined to keep the default card. Keep it stable. */
   renderTool?: (tool: ToolCallData) => ReactNode | undefined;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 function unique<T extends { id: string }>(
   items: readonly T[] | undefined,
@@ -151,6 +153,7 @@ export function MessageContent({
   responseVariant = 'cursor',
   renderTextPart,
   renderTool,
+  className = '',
 }: MessageContentProps) {
   if (!value.parts)
     return (
@@ -159,6 +162,7 @@ export function MessageContent({
         state={value.state}
         error={value.error?.message}
         variant={responseVariant}
+        className={className}
       />
     );
   let citationNumber = 0;
@@ -196,7 +200,7 @@ export function MessageContent({
     );
   }
   return (
-    <div className={s.parts} data-part="message-content">
+    <div className={`${s.parts} ${className}`} data-part="message-content">
       {rows}
       {!value.parts.length && (
         <p className={s.unavailable}>

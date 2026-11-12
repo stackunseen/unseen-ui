@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '../../providers/locale/locale.js';
 import type { Measurement } from '@stackunseen/ui-core';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
@@ -13,6 +14,8 @@ export interface ConfidenceNoteProps extends VariantProps<'ConfidenceNote'> {
   method: string;
   at?: string;
   locale?: string;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 /** A calibration with its scope, method and date, or nothing. Never a bare number. */
@@ -21,9 +24,11 @@ export function ConfidenceNote({
   scope,
   method,
   at,
-  locale = 'en-US',
+  locale: localeProp,
   variant = 'note',
+  className = '',
 }: ConfidenceNoteProps) {
+  const locale = useLocale(localeProp);
   if (score.kind === 'unknown') return null;
   const percent =
     Number.isFinite(score.value) && score.value >= 0 && score.value <= 1
@@ -37,7 +42,7 @@ export function ConfidenceNote({
   const Tag = variant === 'inline' ? 'span' : 'p';
   return (
     <Tag
-      className={s.muted}
+      className={`${s.muted} ${className}`}
       data-part="confidence-note"
       data-variant={variant}
       data-kind={score.kind}

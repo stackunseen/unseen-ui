@@ -24,6 +24,8 @@ export interface HandoffRequest {
 export interface LegacyAgentHandoffProps extends VariantProps<'AgentHandoff'> {
   value: HandoffRequest;
   onDecision: (request: HandoffRequest, decision: 'accept' | 'decline') => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export type AgentHandoffProps = LegacyAgentHandoffProps | ScopedAgentHandoffProps;
@@ -40,10 +42,15 @@ export function AgentHandoff(props: AgentHandoffProps) {
   );
 }
 
-function LegacyAgentHandoff({ value, onDecision, variant = 'card' }: LegacyAgentHandoffProps) {
+function LegacyAgentHandoff({
+  value,
+  onDecision,
+  variant = 'card',
+  className = '',
+}: LegacyAgentHandoffProps) {
   return (
     <div
-      className={`${s.root} ${variant === 'card' ? s.surface : ''}`}
+      className={`${s.root} ${variant === 'card' ? s.surface : ''} ${className}`}
       data-part="agent-handoff"
       data-variant={variant}
     >

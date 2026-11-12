@@ -73,6 +73,8 @@ export interface ThreadListProps extends VariantProps<'ThreadList'>, NavigationS
   searchable?: boolean;
   /** Extra per-thread controls, such as a menu with Share or Move, after Rename and Archive. */
   rowActions?: (thread: ThreadSummary) => ReactNode;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export type ThreadDateGroup =
@@ -336,7 +338,7 @@ export function ThreadList(props: ThreadListProps) {
       tabIndex={-1}
       role="group"
       aria-label="Conversation navigation"
-      className={`${s.root} ${n.root}`}
+      className={`${s.root} ${n.root} ${props.className ?? ''}`}
       data-part="thread-list"
       data-variant={variant}
       data-status={state.status}

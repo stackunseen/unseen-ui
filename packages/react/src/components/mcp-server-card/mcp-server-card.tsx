@@ -23,6 +23,7 @@ export function MCPServerCard({
   onConnect,
   onDisconnect,
   pending = false,
+  className = '',
 }: VariantProps<'MCPServerCard'> & {
   name: string;
   status: 'connected' | 'disconnected' | 'auth-required' | 'unknown';
@@ -30,9 +31,9 @@ export function MCPServerCard({
   onConnect?: () => void;
   onDisconnect?: () => void;
   pending?: boolean;
-}) {
+} & { className?: string }) {
   return (
-    <Panel className={own.serverCard} data-variant={variant}>
+    <Panel className={`${own.serverCard} ${className}`} data-variant={variant}>
       <div className={s.row + ' ' + own.row}>
         <SummaryHeading
           icon={

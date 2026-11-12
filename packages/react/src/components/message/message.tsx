@@ -103,6 +103,7 @@ export function MessageActions({
   retryLabel = 'Retry',
   feedbackValue,
   children,
+  className = '',
 }: VariantProps<'MessageActions'> & {
   text: string;
   onRetry?: () => void;
@@ -116,7 +117,7 @@ export function MessageActions({
   feedbackValue?: 'helpful' | 'unhelpful';
   /** Extra actions such as Read aloud or Share, placed after the built-in ones. */
   children?: ReactNode;
-}) {
+} & { className?: string }) {
   const [feedback, setFeedback] = useState<{ text: string; message: string }>();
   const currentText = useRef(text),
     copyAttempt = useRef(0);
@@ -144,7 +145,7 @@ export function MessageActions({
       role="group"
       aria-label="Message actions"
       data-part="message-actions"
-      className={`${s.actions} ${own.messageActions}`}
+      className={`${s.actions} ${own.messageActions} ${className}`}
       data-variant={variant}
     >
       {iconActions ? (

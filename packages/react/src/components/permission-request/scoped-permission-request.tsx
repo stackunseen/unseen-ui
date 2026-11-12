@@ -32,6 +32,8 @@ export interface ScopedPermissionRequestProps extends VariantProps<'PermissionRe
   onReconcile?: (original: PermissionDecisionCommand) => void;
   reconciling?: boolean;
   headingLevel?: 2 | 3 | 4 | 5 | 6;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 export const permissionTone = {
   requested: 'warning',
@@ -51,6 +53,7 @@ export function ScopedPermissionRequest({
   reconciling = false,
   headingLevel = 3,
   variant = 'card',
+  className = '',
 }: ScopedPermissionRequestProps) {
   const value = inspectPermissionSnapshot(input);
   const submission = inspectPermissionSubmission(inputSubmission);
@@ -78,7 +81,11 @@ export function ScopedPermissionRequest({
       onDecision(current);
   }
   return (
-    <Panel data-part="permission-request" data-variant={variant} className={own.permission}>
+    <Panel
+      data-part="permission-request"
+      data-variant={variant}
+      className={`${own.permission} ${className}`}
+    >
       <div className={s.row + ' ' + own.row}>
         <Heading className={`${s.title + ' ' + own.title} ${s.grow}`}>
           {value ? `Connect to ${value.target.resource}` : 'Connection access request'}

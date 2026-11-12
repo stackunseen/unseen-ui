@@ -12,12 +12,22 @@ export type CitationReference = Pick<
   'sourceId' | 'version' | 'locator'
 >;
 
-export type CitationProps = VariantProps<'Citation'> & { number: number } & (
+export type CitationProps = VariantProps<'Citation'> & {
+  number: number;
+  /** Added to the citation button. */
+  className?: string;
+} & (
     | { source: Source; reference?: CitationReference }
     | { source?: Source; reference: CitationReference }
   );
 
-export function Citation({ source, reference, number, variant = 'chip' }: CitationProps) {
+export function Citation({
+  source,
+  reference,
+  number,
+  variant = 'chip',
+  className = '',
+}: CitationProps) {
   const [open, setOpen] = useState(false);
   const [openedReference, setOpenedReference] = useState<CitationReference>();
   const currentReference = reference ?? {
@@ -45,7 +55,7 @@ export function Citation({ source, reference, number, variant = 'chip' }: Citati
       trigger={
         <Button
           variant={variant === 'inline' ? 'ghost' : 'outline'}
-          className={own.citation}
+          className={`${own.citation} ${className}`}
           data-presentation={variant}
           aria-label={`Source ${number}: ${title}`}
         >

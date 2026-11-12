@@ -21,6 +21,8 @@ export interface ApprovalCardProps extends VariantProps<'ApprovalCard'> {
   error?: string;
   onDecision: (decision: 'approve' | 'reject', proposal: ApprovalProposal) => void;
   onReconcile?: () => void;
+  /** Added to the root element, after the component's own classes. */
+  className?: string;
 }
 
 export function ApprovalCard({
@@ -32,6 +34,7 @@ export function ApprovalCard({
   error,
   onDecision,
   onReconcile,
+  className = '',
 }: ApprovalCardProps) {
   const [clockExpired, setClockExpired] = useState(false);
   useEffect(() => {
@@ -75,7 +78,7 @@ export function ApprovalCard({
     superseded: 'Proposal changed',
   }[status];
   return (
-    <Panel data-part="approval" data-variant={variant} className={own.approval}>
+    <Panel data-part="approval" data-variant={variant} className={`${own.approval} ${className}`}>
       <div className={s.row}>
         <div className={own.approvalHeading}>
           <span className={own.reviewIcon} data-risk={proposal.risk} aria-hidden="true">

@@ -17,8 +17,18 @@ export interface VoiceSelectorProps {
   /** Asks the host to play a short sample. */
   onPreview?: (id: string) => void;
   label?: string;
+  /** Replaces the built-in wording, for example to translate it. */
+  labels?: Partial<VoiceSelectorLabels>;
   className?: string;
 }
+export interface VoiceSelectorLabels {
+  empty: string;
+  playSample: (voice: string) => string;
+}
+const defaultLabels: VoiceSelectorLabels = {
+  empty: 'No voices available.',
+  playSample: (voice) => `Play ${voice} sample`,
+};
 
 /** Choose a speech voice. The host plays samples and applies the choice. */
 export function VoiceSelector({
@@ -27,13 +37,15 @@ export function VoiceSelector({
   onValueChange,
   onPreview,
   label = 'Voice',
+  labels,
   className = '',
 }: VoiceSelectorProps) {
+  const text = { ...defaultLabels, ...labels };
   const id = useId();
   return (
     <fieldset className={`${s.root} ${s.voices} ${className}`} data-part="voice-selector">
       <legend>{label}</legend>
-      {voices.length === 0 && <p className={s.meta}>No voices available.</p>}
+      {voices.length === 0 && <p className={s.meta}>{text.empty}</p>}
       {voices.map((voice) => (
         <label key={voice.id} className={s.voice}>
           <input
@@ -54,7 +66,7 @@ export function VoiceSelector({
             <button
               type="button"
               className={s.iconButton}
-              aria-label={`Play ${voice.name} sample`}
+              aria-label={text.playSample(voice.name)}
               onClick={(event) => {
                 event.preventDefault();
                 onPreview(voice.id);

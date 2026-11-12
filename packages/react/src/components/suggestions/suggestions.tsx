@@ -11,18 +11,19 @@ export function Suggestions({
   onSelect,
   mode = 'fill',
   disabled = false,
+  className = '',
 }: VariantProps<'Suggestions'> & {
   items: string[];
   onSelect: (text: string, mode: 'fill' | 'send') => void;
   mode?: 'fill' | 'send';
   disabled?: boolean;
-}) {
+} & { className?: string }) {
   const prompts = items.filter((item) => item.trim().length > 0);
   if (!prompts.length) return null;
   const occurrences = new Map<string, number>();
   return (
     <div
-      className={`${s.actions} ${own.suggestions}`}
+      className={`${s.actions} ${own.suggestions} ${className}`}
       data-variant={variant}
       aria-label="Suggested prompts"
       role="group"
