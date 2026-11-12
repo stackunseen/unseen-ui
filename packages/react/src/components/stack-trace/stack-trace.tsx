@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { type ComponentProps, useState } from 'react';
 import { CopyIcon } from '@radix-ui/react-icons';
 import { useCopy } from '../../shared/copy.js';
 import type { CopyWords } from '../../shared/copy.js';
@@ -14,7 +14,7 @@ export interface StackFrame {
   /** Library or runtime frames, hidden by default. */
   internal?: boolean;
 }
-export interface StackTraceProps {
+export interface StackTraceProps extends ComponentProps<'section'> {
   name: string;
   message: string;
   frames: readonly StackFrame[];
@@ -54,6 +54,7 @@ export function StackTrace({
   headingLevel = 3,
   labels,
   className = '',
+  ...rest
 }: StackTraceProps) {
   const words = { ...defaultLabels, ...labels };
   const Heading = `h${headingLevel}` as const;
@@ -65,7 +66,7 @@ export function StackTrace({
     .map((frame) => `    at ${frame.fn ?? '<anonymous>'} (${location(frame)})`)
     .join('\n')}`;
   return (
-    <section className={`${s.root} ${className}`} data-part="stack-trace">
+    <section {...rest} className={`${s.root} ${className}`} data-part="stack-trace">
       <div className={s.header}>
         <Heading className={`${s.title} ${s.error}`}>
           <span className={s.mono}>{name}</span>

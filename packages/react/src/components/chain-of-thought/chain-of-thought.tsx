@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { CheckIcon, ChevronDownIcon, Cross2Icon, ListBulletIcon } from '@radix-ui/react-icons';
 import { Shimmer } from '../shimmer/shimmer.js';
 import { safeHttpUrl, useDisclosure } from '../../shared/disclosure.js';
@@ -16,7 +17,7 @@ export interface ChainOfThoughtStep {
   state: 'complete' | 'active' | 'pending' | 'failed';
   sources?: readonly ChainOfThoughtSource[];
 }
-export interface ChainOfThoughtProps {
+export interface ChainOfThoughtProps extends ComponentProps<'div'> {
   steps: readonly ChainOfThoughtStep[];
   title?: string;
   open?: boolean;
@@ -48,12 +49,13 @@ export function ChainOfThought({
   onOpenChange,
   labels,
   className = '',
+  ...rest
 }: ChainOfThoughtProps) {
   const text = { ...defaultLabels, ...labels };
   const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
   const active = steps.some((step) => step.state === 'active');
   return (
-    <div className={`${s.root} ${className}`} data-part="chain-of-thought">
+    <div {...rest} className={`${s.root} ${className}`} data-part="chain-of-thought">
       <button className={s.trigger} {...disclosure.triggerProps}>
         <ListBulletIcon aria-hidden="true" />
         {active ? <Shimmer>{title}</Shimmer> : title}

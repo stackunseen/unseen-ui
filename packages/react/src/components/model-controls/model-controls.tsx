@@ -1,6 +1,6 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
-import { useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 import type { ModelCapabilities, ModelSettings, ModelUsage } from '@stackunseen/ui-core';
 import {
   modelSettingsIssues,
@@ -19,7 +19,8 @@ import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import local from './model-controls.module.css';
 
-export interface ModelControlsProps extends VariantProps<'ModelControls'> {
+export interface ModelControlsProps
+  extends VariantProps<'ModelControls'>, ComponentProps<'section'> {
   capabilities?: ModelCapabilities;
   value: ModelSettings;
   onValueChange: (settings: ModelSettings) => void;
@@ -102,6 +103,7 @@ export function ModelControls({
   usage,
   onRefresh,
   className = '',
+  ...rest
 }: ModelControlsProps) {
   const id = useId();
   const model = capabilities?.models.find((candidate) => candidate.id === value.modelId);
@@ -304,7 +306,11 @@ export function ModelControls({
     </fieldset>
   );
   return (
-    <Panel className={`${s.modelControls} ${local.root} ${className}`} data-variant={variant}>
+    <Panel
+      {...rest}
+      className={`${s.modelControls} ${local.root} ${className}`}
+      data-variant={variant}
+    >
       <div className={s.row}>
         <strong className={s.grow}>Model controls</strong>
         {onRefresh && (

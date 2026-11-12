@@ -1,6 +1,6 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
-import { useState } from 'react';
+import { type ComponentProps, useState } from 'react';
 import type { ContextInspection, InspectedContextItem } from '@stackunseen/ui-core';
 import { validCount, validTimestamp } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
@@ -58,7 +58,8 @@ function TokenDetail({ item }: { item: InspectedContextItem }) {
   );
 }
 
-export interface ContextInspectorProps extends VariantProps<'ContextInspector'> {
+export interface ContextInspectorProps
+  extends VariantProps<'ContextInspector'>, ComponentProps<'section'> {
   value: ContextInspection;
   loading?: boolean;
   error?: string;
@@ -74,6 +75,7 @@ export function ContextInspector({
   error,
   onRefresh,
   className = '',
+  ...rest
 }: ContextInspectorProps) {
   const locale = useLocale();
   const [filter, setFilter] = useState('all');
@@ -111,7 +113,7 @@ export function ContextInspector({
     );
   }
   return (
-    <Panel className={`${s.contextInspector} ${className}`} data-variant={variant}>
+    <Panel {...rest} className={`${s.contextInspector} ${className}`} data-variant={variant}>
       <div className={s.row}>
         <strong className={s.grow}>Context inspection</strong>
         {onRefresh && (

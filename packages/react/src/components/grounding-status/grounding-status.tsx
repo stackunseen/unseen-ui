@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import type { Grounding } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -9,7 +10,11 @@ export function GroundingStatus({
   value,
   variant = 'bar',
   className = '',
-}: VariantProps<'GroundingStatus'> & { value: Grounding } & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'GroundingStatus'> & { value: Grounding } & { className?: string },
+  'section'
+>) {
   const coverage =
     value.kind === 'coverage' &&
     Number.isFinite(value.total) &&
@@ -20,7 +25,7 @@ export function GroundingStatus({
       ? value.supported / value.total
       : undefined;
   return (
-    <Panel className={`${own.grounding} ${className}`} data-variant={variant}>
+    <Panel {...rest} className={`${own.grounding} ${className}`} data-variant={variant}>
       <strong>{value.kind === 'coverage' ? 'Source coverage' : 'Grounding'}</strong>
       {value.kind === 'unknown' ? (
         <p className={s.muted}>Not measured</p>

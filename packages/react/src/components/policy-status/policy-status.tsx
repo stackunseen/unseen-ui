@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import type { PolicyCheck } from '@stackunseen/ui-core';
 import { policyAssessment } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
@@ -11,7 +12,7 @@ import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
-export interface PolicyStatusProps extends VariantProps<'PolicyStatus'> {
+export interface PolicyStatusProps extends VariantProps<'PolicyStatus'>, ComponentProps<'section'> {
   checks: readonly PolicyCheck[];
   classification?: string;
   loading?: boolean;
@@ -29,6 +30,7 @@ export function PolicyStatus({
   error,
   onRefresh,
   className = '',
+  ...rest
 }: PolicyStatusProps) {
   const assessments = checks.map(policyAssessment);
   const allPassed = checks.length > 0 && assessments.every((result) => result === 'pass');
@@ -108,7 +110,7 @@ export function PolicyStatus({
     );
   }
   return (
-    <Panel className={`${s.policyStatus} ${className}`} data-variant={variant}>
+    <Panel {...rest} className={`${s.policyStatus} ${className}`} data-variant={variant}>
       <div className={s.row}>
         <strong className={s.grow}>
           <AIIcon name={allPassed && !error && !loading ? 'check' : 'info'} /> Policy checks

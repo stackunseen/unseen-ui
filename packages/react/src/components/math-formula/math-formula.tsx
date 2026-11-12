@@ -1,10 +1,10 @@
 'use client';
-import { useMemo } from 'react';
+import { type ComponentProps, useMemo } from 'react';
 import katex from 'katex';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/rich-markdown.module.css';
 
-export interface MathFormulaProps extends VariantProps<'MathFormula'> {
+export interface MathFormulaProps extends VariantProps<'MathFormula'>, ComponentProps<'span'> {
   formula: string;
   label?: string;
   /** Added to the root element, after the component's own classes. */
@@ -15,6 +15,7 @@ export function MathFormula({
   label,
   variant = 'block',
   className = '',
+  ...rest
 }: MathFormulaProps) {
   const result = useMemo(() => {
     if (formula.length > 10000)
@@ -38,6 +39,7 @@ export function MathFormula({
   if (result.error)
     return (
       <span
+        {...rest}
         className={`${s.formulaError} ${className}`}
         data-part="math-formula"
         data-variant={variant}
@@ -55,10 +57,11 @@ export function MathFormula({
     );
   return (
     <span
+      {...rest}
       className={`${s.formula} ${className}`}
       data-part="math-formula"
       data-variant={variant}
-      style={{ display: variant === 'inline' ? 'inline-block' : 'block' }}
+      style={{ display: variant === 'inline' ? 'inline-block' : 'block', ...rest.style }}
       tabIndex={0}
       role="group"
       aria-label={label ?? 'Mathematical formula'}

@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { Button } from '../button/button.js';
 import type { VariantProps } from '../../shared/variants.js';
 import {
@@ -20,7 +21,8 @@ import a from '../../shared/styles/action-layout.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 import d from '../../shared/styles/styles.module.css';
 
-export interface ScopedAgentHandoffProps extends VariantProps<'AgentHandoff'> {
+export interface ScopedAgentHandoffProps
+  extends VariantProps<'AgentHandoff'>, ComponentProps<'div'> {
   value: HandoffSnapshot;
   commandId: string;
   submission: HandoffSubmission;
@@ -40,6 +42,7 @@ export function ScopedAgentHandoff({
   reconciling = false,
   variant = 'card',
   className = '',
+  ...rest
 }: ScopedAgentHandoffProps) {
   const value = inspectHandoffSnapshot(input);
   const submission = inspectHandoffSubmission(inputSubmission);
@@ -71,6 +74,7 @@ export function ScopedAgentHandoff({
   }
   return (
     <div
+      {...rest}
       className={`${s.root} ${variant === 'card' ? s.surface : ''} ${className}`}
       data-part="agent-handoff"
       data-variant={variant}

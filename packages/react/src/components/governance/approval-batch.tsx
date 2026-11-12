@@ -1,5 +1,5 @@
 'use client';
-import { useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 import type { ApprovalProposal, CommandReceipt, SubmissionState } from '@stackunseen/ui-core';
 import { validateApprovalDecision } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
@@ -22,7 +22,8 @@ export interface ApprovalBatchDecision {
   /** Exactly the proposals covered, by id, version and digest. */
   items: ApprovalBatchItem[];
 }
-export interface ApprovalBatchProps extends VariantProps<'ApprovalBatch'> {
+export interface ApprovalBatchProps
+  extends VariantProps<'ApprovalBatch'>, ComponentProps<'section'> {
   proposals: readonly ApprovalProposal[];
   /** Proposals the person pulled out of the batch; they stay listed but are not covered. */
   excludedIds: readonly string[];
@@ -50,6 +51,7 @@ export function ApprovalBatch({
   now,
   label = 'Approve together',
   className = '',
+  ...rest
 }: ApprovalBatchProps) {
   const id = useId();
   const clock = now ? Date.parse(now) : Date.now();
@@ -100,6 +102,7 @@ export function ApprovalBatch({
   };
   return (
     <section
+      {...rest}
       className={`${variant === 'card' ? s.panel : ''} ${g.root} ${className}`}
       data-part="approval-batch"
       data-variant={variant}

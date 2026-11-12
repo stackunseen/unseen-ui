@@ -486,7 +486,7 @@ export function AttachmentGroup({
   );
 }
 
-export interface AttachmentPickerProps extends FileSelectionLimits {
+export interface AttachmentPickerProps extends FileSelectionLimits, ComponentProps<'div'> {
   onFilesSelected: (files: File[]) => void;
   onReject?: (rejections: AttachmentRejection[]) => void;
   disabled?: boolean;
@@ -503,6 +503,7 @@ export function AttachmentPicker({
   disabled = false,
   label = 'Add files',
   className = '',
+  ...rest
 }: AttachmentPickerProps) {
   const input = useRef<HTMLInputElement>(null);
   const [notice, setNotice] = useState('');
@@ -511,7 +512,7 @@ export function AttachmentPicker({
   >([]);
   const locked = selectionLocked({ disabled, maxFileBytes, remainingSlots });
   return (
-    <div className={`${a.picker} ${className}`}>
+    <div {...rest} className={`${a.picker} ${className}`}>
       <input
         ref={input}
         type="file"

@@ -1,9 +1,9 @@
 'use client';
-import { useRef, useState } from 'react';
+import { type ComponentProps, useRef, useState } from 'react';
 import { PauseIcon, PlayIcon } from '@radix-ui/react-icons';
 import s from '../../shared/styles/media.module.css';
 
-export interface AudioPlayerProps {
+export interface AudioPlayerProps extends ComponentProps<'div'> {
   /** Host-supplied audio URL (http(s), blob: or data:audio). */
   src: string;
   /** Accessible name, for example the message or file it belongs to. */
@@ -24,7 +24,7 @@ function safeAudioSource(src: string) {
 }
 
 /** A compact player for generated or recorded audio. */
-export function AudioPlayer({ src, label, className = '' }: AudioPlayerProps) {
+export function AudioPlayer({ src, label, className = '', ...rest }: AudioPlayerProps) {
   const audio = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
@@ -34,6 +34,7 @@ export function AudioPlayer({ src, label, className = '' }: AudioPlayerProps) {
   const unavailable = !safe || error;
   return (
     <div
+      {...rest}
       className={`${s.root} ${s.player} ${className}`}
       data-part="audio-player"
       role="group"

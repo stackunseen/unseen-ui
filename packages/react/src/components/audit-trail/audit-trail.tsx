@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { Button } from '../button/button.js';
 import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -20,7 +21,7 @@ export interface AuditRecord {
   detail?: string;
 }
 
-export interface AuditTrailProps extends VariantProps<'AuditTrail'> {
+export interface AuditTrailProps extends VariantProps<'AuditTrail'>, ComponentProps<'div'> {
   /** A host-owned window of up to 200 records. onLoadMore should replace the window when it reaches this cap. */
   records: readonly AuditRecord[];
   query: string;
@@ -39,9 +40,15 @@ export function AuditTrail({
   loading,
   variant = 'timeline',
   className = '',
+  ...rest
 }: AuditTrailProps) {
   return (
-    <div className={`${s.root} ${className}`} data-part="audit-trail" data-variant={variant}>
+    <div
+      {...rest}
+      className={`${s.root} ${className}`}
+      data-part="audit-trail"
+      data-variant={variant}
+    >
       <strong>Audit trail</strong>
       <Input
         className={s.search}

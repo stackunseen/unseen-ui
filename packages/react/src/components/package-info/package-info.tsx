@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import s from '../../shared/styles/devtools.module.css';
 import { stateLabel } from '../../shared/labels.js';
 
@@ -5,7 +6,7 @@ export interface PackageDependency {
   name: string;
   version: string;
 }
-export interface PackageInfoProps {
+export interface PackageInfoProps extends ComponentProps<'section'> {
   name: string;
   currentVersion?: string;
   newVersion?: string;
@@ -34,10 +35,11 @@ export function PackageInfo({
   dependencies = [],
   headingLevel = 3,
   className = '',
+  ...rest
 }: PackageInfoProps) {
   const Heading = `h${headingLevel}` as const;
   return (
-    <section className={`${s.root} ${className}`} data-part="package-info">
+    <section {...rest} className={`${s.root} ${className}`} data-part="package-info">
       <div className={s.header}>
         <div className={s.grow}>
           <Heading className={`${s.title} ${s.mono}`}>{name}</Heading>

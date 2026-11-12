@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { Select } from '../select/select.js';
 import { CodeDiff } from '../code-diff/code-diff.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -12,7 +13,7 @@ export interface ArtifactVersion {
   access: 'available' | 'revoked';
 }
 
-export interface ArtifactDiffProps extends VariantProps<'ArtifactDiff'> {
+export interface ArtifactDiffProps extends VariantProps<'ArtifactDiff'>, ComponentProps<'div'> {
   path: string;
   versions: readonly ArtifactVersion[];
   beforeId: string;
@@ -53,13 +54,19 @@ export function ArtifactDiff({
   variant = 'unified',
   labels,
   className = '',
+  ...rest
 }: ArtifactDiffProps) {
   const text = { ...defaultLabels, ...labels };
   const before = versions.filter((version) => version.id === beforeId),
     after = versions.filter((version) => version.id === afterId);
   const options = versions.map((version) => ({ value: version.id, label: version.label }));
   return (
-    <div className={`${s.root} ${className}`} data-part="artifact-diff" data-variant={variant}>
+    <div
+      {...rest}
+      className={`${s.root} ${className}`}
+      data-part="artifact-diff"
+      data-variant={variant}
+    >
       <div className={s.options}>
         <label>
           {text.from}

@@ -1,5 +1,5 @@
 'use client';
-import { useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 import type { CommandReceipt, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Checkbox } from '../checkbox/checkbox.js';
@@ -30,7 +30,8 @@ export interface DryRunDecision {
   /** Effects the person asked the agent to leave out; the host re-plans. */
   skippedIds: string[];
 }
-export interface DryRunPreviewProps extends VariantProps<'DryRunPreview'> {
+export interface DryRunPreviewProps
+  extends VariantProps<'DryRunPreview'>, ComponentProps<'section'> {
   plan: DryRunPlan;
   skippedIds: readonly string[];
   onSkippedChange: (ids: string[]) => void;
@@ -64,6 +65,7 @@ export function DryRunPreview({
   stale = false,
   label,
   className = '',
+  ...rest
 }: DryRunPreviewProps) {
   const id = useId();
   const skipped = new Set(skippedIds);
@@ -81,6 +83,7 @@ export function DryRunPreview({
     onDecision({ planId: plan.id, version: plan.version, decision, skippedIds: [...skipped] });
   return (
     <section
+      {...rest}
       className={`${variant === 'card' ? s.panel : ''} ${g.root} ${className}`}
       data-part="dry-run-preview"
       data-variant={variant}

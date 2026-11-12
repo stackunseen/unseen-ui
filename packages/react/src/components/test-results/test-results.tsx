@@ -1,5 +1,5 @@
 'use client';
-import { useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 import { IconButton } from '../icon-button/icon-button.js';
 import { Accordion } from '../accordion/accordion.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
@@ -18,7 +18,8 @@ export interface TestResult {
   detail?: string;
   file?: string;
 }
-export interface TestResultsProps extends VariantProps<'TestResults'> {
+export interface TestResultsProps
+  extends VariantProps<'TestResults'>, Omit<ComponentProps<'div'>, 'results'> {
   results: readonly TestResult[];
   onOpenFile?: (file: string) => void;
   loading?: boolean;
@@ -31,12 +32,18 @@ export function TestResults({
   loading,
   variant = 'list',
   className = '',
+  ...rest
 }: TestResultsProps) {
   const id = useId();
   const passed = results.filter((result) => result.state === 'passed').length,
     failed = results.filter((result) => result.state === 'failed').length;
   return (
-    <div className={`${s.root} ${className}`} data-part="test-results" data-variant={variant}>
+    <div
+      {...rest}
+      className={`${s.root} ${className}`}
+      data-part="test-results"
+      data-variant={variant}
+    >
       <div className={s.header}>
         <strong>Test results</strong>
         <span className={s.muted}>

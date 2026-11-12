@@ -1,6 +1,6 @@
 'use client';
 import { useId } from 'react';
-import type { FormEvent } from 'react';
+import type { ComponentProps, FormEvent } from 'react';
 import type { CommandReceipt, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Checkbox } from '../checkbox/checkbox.js';
@@ -36,7 +36,8 @@ export const defaultFeedbackReasons: readonly FeedbackReason[] = [
   { id: 'style', label: 'Tone or formatting' },
 ];
 
-export interface FeedbackCaptureProps extends VariantProps<'FeedbackCapture'> {
+export interface FeedbackCaptureProps
+  extends VariantProps<'FeedbackCapture'>, Omit<ComponentProps<'section'>, 'onSubmit'> {
   target: FeedbackTarget;
   value: FeedbackDraft;
   onValueChange: (value: FeedbackDraft) => void;
@@ -72,6 +73,7 @@ export function FeedbackCapture({
   label = 'Was this helpful?',
   variant = 'card',
   className = '',
+  ...rest
 }: FeedbackCaptureProps) {
   const id = useId();
   const locked = submission === 'submitting' || submission === 'acknowledged';
@@ -180,11 +182,11 @@ export function FeedbackCapture({
     'data-submission': submission,
   } as const;
   return variant === 'card' ? (
-    <Panel {...attributes} className={className}>
+    <Panel {...rest} {...attributes} className={className}>
       {body}
     </Panel>
   ) : (
-    <div {...attributes} className={className || undefined}>
+    <div {...(rest as ComponentProps<'div'>)} {...attributes} className={className || undefined}>
       {body}
     </div>
   );

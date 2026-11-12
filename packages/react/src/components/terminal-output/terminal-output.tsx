@@ -1,6 +1,7 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import type { SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
@@ -33,7 +34,9 @@ export interface TerminalOutputRenderContext {
   jump: number;
   onFollowChange: (follow: boolean) => void;
 }
-export interface TerminalOutputProps extends VariantProps<'TerminalOutput'> {
+// The emulator names its own request callbacks onInput and onResize, so the root leaves those two out.
+export interface TerminalOutputProps
+  extends VariantProps<'TerminalOutput'>, Omit<ComponentProps<'div'>, 'onInput' | 'onResize'> {
   output: string;
   state: TerminalProcessState;
   title?: string;
@@ -71,10 +74,15 @@ export function TerminalOutput({
   renderOutput,
   variant = 'console',
   className = '',
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: TerminalOutputProps) {
   const root = useRef<HTMLDivElement>(null),
     pre = useRef<HTMLPreElement>(null),
     focused = useRef<HTMLElement | null>(null);
+  const rootRef = useMergedRef(root, ref);
   const [follow, setFollow] = useState(true),
     [jump, setJump] = useState(0);
   const live = state === 'running' || state === 'unknown';
@@ -144,7 +152,8 @@ export function TerminalOutput({
   const readyClear = interactive && (onRequestClear ? !!model?.context : !!onClear);
   return (
     <div
-      ref={root}
+      {...rest}
+      ref={rootRef}
       role="group"
       aria-label={`${label} panel`}
       tabIndex={-1}
@@ -154,9 +163,11 @@ export function TerminalOutput({
       data-state={state}
       data-status={status}
       onFocusCapture={(event) => {
+        onFocusCapture?.(event);
         focused.current = event.target as HTMLElement;
       }}
       onBlurCapture={(event) => {
+        onBlurCapture?.(event);
         if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node))
           focused.current = null;
       }}

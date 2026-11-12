@@ -1,7 +1,7 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useId } from 'react';
-import type { CSSProperties } from 'react';
+import type { ComponentProps, CSSProperties } from 'react';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import type { RunParty } from './shared.js';
 import { formatTime } from './shared.js';
@@ -25,7 +25,7 @@ export interface AgentLane {
   agent: RunParty;
   tasks: readonly LaneTask[];
 }
-export interface AgentLanesProps {
+export interface AgentLanesProps extends Omit<ComponentProps<'section'>, 'onSelect'> {
   lanes: readonly AgentLane[];
   /** The host clock; running tasks reach it. Defaults to the latest time present. */
   now?: string;
@@ -61,6 +61,7 @@ export function AgentLanes({
   locale: localeProp,
   timeZone,
   className = '',
+  ...rest
 }: AgentLanesProps) {
   const locale = useLocale(localeProp);
   const id = useId();
@@ -99,6 +100,7 @@ export function AgentLanes({
   });
   return (
     <section
+      {...rest}
       className={`${r.lanes} ${className}`}
       data-part="agent-lanes"
       aria-labelledby={`${id}-title`}

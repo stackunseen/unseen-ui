@@ -1,10 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { type ComponentProps, useState } from 'react';
 import { Button } from '../button/button.js';
 import { Progress } from '../progress/progress.js';
 import s from '../../shared/styles/media.module.css';
 
-export interface ImageProps {
+export interface ImageProps extends ComponentProps<'figure'> {
   /** Host-supplied image URL (http(s), blob:) or a base64 payload with mediaType. */
   src?: string;
   base64?: string;
@@ -53,6 +53,7 @@ export function Image({
   width,
   height,
   className = '',
+  ...rest
 }: ImageProps) {
   const [failed, setFailed] = useState(false);
   const resolved = resolve({ src, base64, mediaType });
@@ -65,6 +66,7 @@ export function Image({
   const pending = state === 'loading' || state === 'queued';
   return (
     <figure
+      {...rest}
       className={`${s.root} ${s.figure} ${className}`}
       data-part="image"
       data-state={state}

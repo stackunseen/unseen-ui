@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { messageFrom } from '@stackunseen/ui-core';
 import { useRef, useState } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
@@ -21,7 +22,10 @@ import s from '../../shared/styles/styles.module.css';
 import own from './message.module.css';
 
 export interface MessageProps
-  extends ComponentProps<'article'>, VariantProps<'Message'>, Omit<MessageContentProps, 'value'> {
+  extends
+    ComponentProps<'article'>,
+    VariantProps<'Message'>,
+    Omit<MessageContentProps, 'value' | keyof ComponentProps<'div'>> {
   /** Host data, or the short form `{ role, text }` for prototypes. */
   value: MessageData | MessageInput;
   /** Replaces only the response body; children remain after it for actions/attachments. */
@@ -104,20 +108,24 @@ export function MessageActions({
   feedbackValue,
   children,
   className = '',
-}: VariantProps<'MessageActions'> & {
-  text: string;
-  onRetry?: () => void;
-  onEdit?: () => void;
-  onFeedback?: (helpful: boolean) => void;
-  /** Host-owned action availability; callbacks remain intents. */
-  editAvailability?: { available: boolean; reason?: string };
-  retryAvailability?: { available: boolean; reason?: string };
-  retryLabel?: string;
-  /** The rating already recorded for this message; shows as a pressed button. */
-  feedbackValue?: 'helpful' | 'unhelpful';
-  /** Extra actions such as Read aloud or Share, placed after the built-in ones. */
-  children?: ReactNode;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'MessageActions'> & {
+    text: string;
+    onRetry?: () => void;
+    onEdit?: () => void;
+    onFeedback?: (helpful: boolean) => void;
+    /** Host-owned action availability; callbacks remain intents. */
+    editAvailability?: { available: boolean; reason?: string };
+    retryAvailability?: { available: boolean; reason?: string };
+    retryLabel?: string;
+    /** The rating already recorded for this message; shows as a pressed button. */
+    feedbackValue?: 'helpful' | 'unhelpful';
+    /** Extra actions such as Read aloud or Share, placed after the built-in ones. */
+    children?: ReactNode;
+  } & { className?: string },
+  'div'
+>) {
   const [feedback, setFeedback] = useState<{ text: string; message: string }>();
   const currentText = useRef(text),
     copyAttempt = useRef(0);
@@ -142,6 +150,7 @@ export function MessageActions({
   };
   return (
     <div
+      {...rest}
       role="group"
       aria-label="Message actions"
       data-part="message-actions"

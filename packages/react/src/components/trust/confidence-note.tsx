@@ -1,11 +1,13 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
+import type { ComponentProps } from 'react';
 import type { Measurement } from '@stackunseen/ui-core';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/styles.module.css';
 import { formatStamp, wholePercent } from './shared.js';
 
-export interface ConfidenceNoteProps extends VariantProps<'ConfidenceNote'> {
+export interface ConfidenceNoteProps
+  extends VariantProps<'ConfidenceNote'>, Omit<ComponentProps<'span'>, 'scope' | 'method'> {
   /** A host-supplied calibration in [0, 1]. Unknown or out-of-range renders nothing. */
   score: Measurement<number>;
   /** What the score is about, such as "of claims matched a source". */
@@ -27,6 +29,7 @@ export function ConfidenceNote({
   locale: localeProp,
   variant = 'note',
   className = '',
+  ...rest
 }: ConfidenceNoteProps) {
   const locale = useLocale(localeProp);
   if (score.kind === 'unknown') return null;
@@ -39,9 +42,10 @@ export function ConfidenceNote({
   const text = `${score.kind === 'estimated' ? 'About ' : ''}${percent}% ${scope.trim()} · ${method.trim()}${
     score.kind === 'estimated' ? ` (estimated from ${score.basis})` : ''
   }${stamp ? ` · ${formatStamp(stamp, locale)}` : ''}`;
-  const Tag = variant === 'inline' ? 'span' : 'p';
+  const Tag = (variant === 'inline' ? 'span' : 'p') as 'span';
   return (
     <Tag
+      {...rest}
       className={`${s.muted} ${className}`}
       data-part="confidence-note"
       data-variant={variant}

@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { toolCallFrom } from '@stackunseen/ui-core';
 import type { ToolCallData, ToolCallInput } from '@stackunseen/ui-core';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -13,11 +14,20 @@ export function ToolGroup({
   variant = 'stack',
   detail = 'compact',
   className = '',
-}: VariantProps<'ToolGroup'> &
-  DetailProps & { tools: readonly (ToolCallData | ToolCallInput)[] } & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'ToolGroup'> &
+    DetailProps & { tools: readonly (ToolCallData | ToolCallInput)[] } & { className?: string },
+  'div'
+>) {
   const tools = inputs.map(toolCallFrom);
   return (
-    <div className={`${s.toolGroup} ${className}`} data-variant={variant} data-detail={detail}>
+    <div
+      {...rest}
+      className={`${s.toolGroup} ${className}`}
+      data-variant={variant}
+      data-detail={detail}
+    >
       {!tools.length ? (
         <p className={s.muted}>No tool calls reported.</p>
       ) : (

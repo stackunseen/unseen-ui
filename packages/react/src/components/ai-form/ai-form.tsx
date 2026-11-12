@@ -1,4 +1,6 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
+import type { ComponentProps } from 'react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Button } from '../button/button.js';
 import { AIFormField } from './ai-form-field.js';
@@ -41,7 +43,8 @@ import s from '../../shared/styles/agent-controls.module.css';
 import g from '../../shared/styles/structured.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 
-export interface AIFormProps extends VariantProps<'AIForm'> {
+export interface AIFormProps
+  extends VariantProps<'AIForm'>, Omit<ComponentProps<'form'>, 'onSubmit'> {
   fields: readonly AIField[];
   values: FormValues;
   onValueChange: (values: FormValues) => void;
@@ -94,9 +97,12 @@ export function AIForm({
   title = 'Details',
   variant = 'stacked',
   className = '',
+  ref,
+  ...rest
 }: AIFormProps) {
   const prefix = useId();
   const form = useRef<HTMLFormElement>(null);
+  const rootRef = useMergedRef(form, ref);
   const [validation, setValidation] = useState<{ scope: string; issues: Record<string, Issue> }>();
   const focusRequest = useRef<{ scope: string; step: string; key?: string } | undefined>(undefined);
   const rowFocus = useRef<
@@ -320,7 +326,8 @@ export function AIForm({
       : 0;
   return (
     <form
-      ref={form}
+      {...rest}
+      ref={rootRef}
       className={`${g.root} ${className}`}
       data-part="ai-form"
       data-variant={variant}

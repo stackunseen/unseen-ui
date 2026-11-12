@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { useLocale } from '../../providers/locale/locale.js';
 import { IconButton } from '../icon-button/icon-button.js';
 import { Accordion } from '../accordion/accordion.js';
@@ -19,7 +20,8 @@ export interface RunSpan {
   summary?: string;
 }
 
-export interface RunInspectorProps extends VariantProps<'RunInspector'>, DetailProps {
+export interface RunInspectorProps
+  extends VariantProps<'RunInspector'>, DetailProps, Omit<ComponentProps<'div'>, 'onSelect'> {
   runId: string;
   /** A host-owned window of up to 200 spans. Replace the window to inspect later spans. */
   spans: readonly RunSpan[];
@@ -45,6 +47,7 @@ export function RunInspector({
   variant = 'accordion',
   detail = 'compact',
   className = '',
+  ...rest
 }: RunInspectorProps) {
   const locale = useLocale();
   function body(span: RunSpan) {
@@ -80,6 +83,7 @@ export function RunInspector({
   }
   return (
     <div
+      {...rest}
       className={`${s.root} ${className}`}
       data-part="run-inspector"
       data-variant={variant}

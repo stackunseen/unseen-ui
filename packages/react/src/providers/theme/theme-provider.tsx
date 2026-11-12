@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { createContext, useContext, useId, useMemo } from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import { updateTheme, defaultTheme, themeToCSS } from '../../theme.js';
@@ -78,13 +79,18 @@ export function useThemeScope() {
 export function ThemeSurface({
   children,
   className = '',
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+  ...rest
+}: WithRoot<
+  {
+    children: ReactNode;
+    className?: string;
+  },
+  'div'
+>) {
   const context = useContext(ThemeContext);
   return (
     <div
+      {...rest}
       className={`${styles.scope} ${className}`}
       data-ai-theme={context?.scope}
       data-appearance={context?.appearance}

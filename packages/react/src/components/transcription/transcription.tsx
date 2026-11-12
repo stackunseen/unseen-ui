@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { type ComponentProps, useEffect, useRef } from 'react';
 import { formatTime } from '../audio-player/audio-player.js';
 import s from '../../shared/styles/media.module.css';
 
@@ -11,7 +11,7 @@ export interface TranscriptSegment {
   text: string;
   speaker?: string;
 }
-export interface TranscriptionProps {
+export interface TranscriptionProps extends ComponentProps<'div'> {
   segments: readonly TranscriptSegment[];
   /** Current playback time in seconds; highlights the active segment. */
   currentTime?: number;
@@ -49,6 +49,7 @@ export function Transcription({
   inProgressLabel = 'Transcribing…',
   unavailableLabel = 'No transcript is available for this recording.',
   className = '',
+  ...rest
 }: TranscriptionProps) {
   const list = useRef<HTMLOListElement>(null);
   const activeId =
@@ -65,6 +66,7 @@ export function Transcription({
   const inProgress = status === 'in-progress';
   return (
     <div
+      {...rest}
       className={`${s.root} ${className}`}
       data-part="transcription"
       data-status={status}

@@ -1,6 +1,7 @@
 'use client';
 import { useId, useLayoutEffect, useRef } from 'react';
-import type { ReactNode, FocusEvent } from 'react';
+import type { ComponentProps, ReactNode, FocusEvent } from 'react';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
 import { AIForm } from '../ai-form/ai-form.js';
 import type { AIFormProps } from '../ai-form/ai-form.js';
 import type {
@@ -82,7 +83,7 @@ export type GeneratedFormRequest = NodeIdentity & { draftVersion?: string } & (
     | { type: 'array'; change: AIArrayChange }
     | { type: 'step'; step: string }
   );
-export interface GeneratedUIProps extends VariantProps<'GeneratedUI'> {
+export interface GeneratedUIProps extends VariantProps<'GeneratedUI'>, ComponentProps<'div'> {
   surface: unknown;
   state:
     'ready' | 'streaming' | 'pending' | 'stale' | 'loading' | 'denied' | 'unavailable' | 'error';
@@ -182,16 +183,22 @@ export function GeneratedUI({
   imageOrigins,
   variant = 'stack',
   className = '',
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: GeneratedUIProps) {
   const prefix = useId();
   const rootElement = useRef<HTMLDivElement>(null);
+  const rootRef = useMergedRef(rootElement, ref);
   const focused = useRef<HTMLElement | null>(null);
   useLayoutEffect(() => {
     if (focused.current && !focused.current.isConnected && document.activeElement === document.body)
       rootElement.current?.focus({ preventScroll: true });
   }, [input, state, forms, actionStates, actionPresentations]);
   const root = {
-    ref: rootElement,
+    ...rest,
+    ref: rootRef,
     tabIndex: -1,
     role: 'group',
     'aria-label': 'Generated result',
@@ -199,9 +206,11 @@ export function GeneratedUI({
     'data-part': 'generated-ui',
     'data-variant': variant,
     onFocusCapture: (event: FocusEvent<HTMLDivElement>) => {
+      onFocusCapture?.(event);
       focused.current = event.target as HTMLElement;
     },
     onBlurCapture: (event: FocusEvent<HTMLDivElement>) => {
+      onBlurCapture?.(event);
       if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node))
         focused.current = null;
     },

@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import type { RunLifecycle } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
 import { Button } from '../button/button.js';
@@ -18,16 +19,21 @@ export function AgentCard({
   selected = false,
   onSelect,
   className = '',
-}: VariantProps<'AgentCard'> & {
-  name: string;
-  description: string;
-  state: RunLifecycle | 'idle';
-  activity?: string;
-  selected?: boolean;
-  onSelect?: () => void;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'AgentCard'> & {
+    name: string;
+    description: string;
+    state: RunLifecycle | 'idle';
+    activity?: string;
+    selected?: boolean;
+    onSelect?: () => void;
+  } & { className?: string },
+  'section'
+>) {
   return (
     <Panel
+      {...rest}
       className={`${own.agentCard} ${className}`}
       data-variant={variant}
       data-selected={selected}

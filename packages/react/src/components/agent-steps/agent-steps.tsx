@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import type { Step } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -22,17 +23,21 @@ export function AgentSteps({
   selectedId,
   onSelect,
   className = '',
-}: VariantProps<'AgentSteps'> & {
-  steps: Step[];
-  label?: string;
-  /** Print each step's prerequisites ("After: …", or "Starting step"). */
-  dependencies?: boolean;
-  /** With onSelect, step names become buttons that report the chosen step. */
-  selectedId?: string;
-  onSelect?: (id: string) => void;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'AgentSteps'> & {
+    steps: Step[];
+    label?: string;
+    /** Print each step's prerequisites ("After: …", or "Starting step"). */
+    dependencies?: boolean;
+    /** With onSelect, step names become buttons that report the chosen step. */
+    selectedId?: string;
+    onSelect?: (id: string) => void;
+  } & { className?: string },
+  'ol'
+>) {
   return (
-    <ol className={`${s.steps} ${className}`} data-variant={variant} aria-label={label}>
+    <ol {...rest} className={`${s.steps} ${className}`} data-variant={variant} aria-label={label}>
       {steps.length === 0 && <li className={s.muted}>No steps yet.</li>}
       {steps.map((step) => (
         <li

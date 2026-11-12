@@ -1,5 +1,5 @@
 'use client';
-import type { ReactElement } from 'react';
+import type { ComponentProps, ReactElement } from 'react';
 import { Button } from '../button/button.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/agent-controls.module.css';
@@ -21,7 +21,8 @@ export interface HandoffRequest {
 }
 
 /** @deprecated Supply commandId/submission with a HandoffSnapshot for acknowledged provenance. */
-export interface LegacyAgentHandoffProps extends VariantProps<'AgentHandoff'> {
+export interface LegacyAgentHandoffProps
+  extends VariantProps<'AgentHandoff'>, ComponentProps<'div'> {
   value: HandoffRequest;
   onDecision: (request: HandoffRequest, decision: 'accept' | 'decline') => void;
   /** Added to the root element, after the component's own classes. */
@@ -47,9 +48,11 @@ function LegacyAgentHandoff({
   onDecision,
   variant = 'card',
   className = '',
+  ...rest
 }: LegacyAgentHandoffProps) {
   return (
     <div
+      {...rest}
       className={`${s.root} ${variant === 'card' ? s.surface : ''} ${className}`}
       data-part="agent-handoff"
       data-variant={variant}

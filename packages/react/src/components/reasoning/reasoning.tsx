@@ -1,11 +1,11 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { type ComponentProps, useEffect, useRef } from 'react';
 import { ChevronDownIcon, LightningBoltIcon } from '@radix-ui/react-icons';
 import { Shimmer } from '../shimmer/shimmer.js';
 import { useDisclosure } from '../../shared/disclosure.js';
 import s from '../../shared/styles/assistant.module.css';
 
-export interface ReasoningProps {
+export interface ReasoningProps extends ComponentProps<'div'> {
   /** Public reasoning summary supplied by the host. Never private chain-of-thought. */
   summary: string;
   /** "streaming" while the summary arrives; "complete" once the host finishes it. */
@@ -35,6 +35,7 @@ export function Reasoning({
   defaultOpen,
   onOpenChange,
   className = '',
+  ...rest
 }: ReasoningProps) {
   const disclosure = useDisclosure({
     open,
@@ -51,7 +52,7 @@ export function Reasoning({
   const label = reasoningLabel(state, durationMs);
   const paragraphs = summary.split(/\n{2,}/).filter((part) => part.trim());
   return (
-    <div className={`${s.root} ${className}`} data-part="reasoning" data-state={state}>
+    <div {...rest} className={`${s.root} ${className}`} data-part="reasoning" data-state={state}>
       <button className={s.trigger} {...disclosure.triggerProps}>
         <LightningBoltIcon aria-hidden="true" />
         {state === 'streaming' ? <Shimmer>{label}</Shimmer> : label}

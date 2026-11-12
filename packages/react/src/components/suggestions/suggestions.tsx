@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { Button } from '../button/button.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -12,17 +13,22 @@ export function Suggestions({
   mode = 'fill',
   disabled = false,
   className = '',
-}: VariantProps<'Suggestions'> & {
-  items: string[];
-  onSelect: (text: string, mode: 'fill' | 'send') => void;
-  mode?: 'fill' | 'send';
-  disabled?: boolean;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'Suggestions'> & {
+    items: string[];
+    onSelect: (text: string, mode: 'fill' | 'send') => void;
+    mode?: 'fill' | 'send';
+    disabled?: boolean;
+  } & { className?: string },
+  'div'
+>) {
   const prompts = items.filter((item) => item.trim().length > 0);
   if (!prompts.length) return null;
   const occurrences = new Map<string, number>();
   return (
     <div
+      {...rest}
       className={`${s.actions} ${own.suggestions} ${className}`}
       data-variant={variant}
       aria-label="Suggested prompts"

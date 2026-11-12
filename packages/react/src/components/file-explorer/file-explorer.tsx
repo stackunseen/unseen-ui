@@ -1,7 +1,8 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useLayoutEffect, useMemo, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { Accordion } from '../accordion/accordion.js';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
@@ -28,7 +29,8 @@ export type {
   WorkspaceFileSelection,
   FilePage,
 } from './file-model.js';
-export interface FileExplorerProps extends VariantProps<'FileExplorer'> {
+export interface FileExplorerProps
+  extends VariantProps<'FileExplorer'>, Omit<ComponentProps<'div'>, 'onSelect'> {
   files: readonly WorkspaceFile[];
   expandedPaths: readonly string[];
   onExpandedPathsChange?: (paths: string[]) => void;
@@ -71,11 +73,16 @@ export function FileExplorer({
   title = 'Workspace files',
   variant = 'folders',
   className = '',
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: FileExplorerProps) {
   const locale = useLocale();
   const prefix = `files-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`,
     root = useRef<HTMLDivElement>(null),
     focused = useRef<HTMLElement | null>(null);
+  const rootRef = useMergedRef(root, ref);
   const visible = ['ready', 'stale', 'refreshing'].includes(status);
   const model = useMemo(
     () => (visible ? inspectFiles(files, expandedPaths, context, pagination, query) : undefined),
@@ -93,7 +100,8 @@ export function FileExplorer({
     typeof title === 'string' && title.trim() ? title.slice(0, 200) : 'Workspace files';
   const frame = (children: ReactNode) => (
     <div
-      ref={root}
+      {...rest}
+      ref={rootRef}
       className={`${s.root} ${s.panel} ${css.root} ${className}`}
       role="group"
       aria-label={heading}
@@ -102,9 +110,11 @@ export function FileExplorer({
       data-variant={variant}
       data-state={status}
       onFocusCapture={(event) => {
+        onFocusCapture?.(event);
         focused.current = event.target as HTMLElement;
       }}
       onBlurCapture={(event) => {
+        onBlurCapture?.(event);
         if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node))
           focused.current = null;
       }}

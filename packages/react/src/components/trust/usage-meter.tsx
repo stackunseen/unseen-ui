@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { useLocale } from '../../providers/locale/locale.js';
 import type { Measurement } from '@stackunseen/ui-core';
 import { Progress } from '../progress/progress.js';
@@ -13,7 +14,8 @@ export interface Usage {
   /** The host's limit in the same unit. Without one the meter never shows a percentage. */
   limit?: number;
 }
-export interface UsageMeterProps extends VariantProps<'UsageMeter'> {
+export interface UsageMeterProps
+  extends VariantProps<'UsageMeter'>, Omit<ComponentProps<'div'>, 'unit'> {
   /** What is being measured, such as "Context" or "Cost". */
   label: string;
   value: Measurement<Usage>;
@@ -58,6 +60,7 @@ export function UsageMeter({
   locale: localeProp,
   variant = 'inline',
   className = '',
+  ...rest
 }: UsageMeterProps) {
   const locale = useLocale(localeProp);
   const usage = value.kind === 'unknown' ? undefined : value.value;
@@ -101,7 +104,7 @@ export function UsageMeter({
   } as const;
   if (variant === 'badge')
     return (
-      <span {...common} className={`${s.badge} ${className}`}>
+      <span {...(rest as ComponentProps<'span'>)} {...common} className={`${s.badge} ${className}`}>
         <span>
           {label} · {percent !== undefined ? `${percent}%` : reading}
           {value.kind === 'estimated' ? ' (estimated)' : ''}
@@ -114,13 +117,13 @@ export function UsageMeter({
     );
   if (variant === 'inline')
     return (
-      <span {...common} className={`${s.muted} ${className}`}>
+      <span {...(rest as ComponentProps<'span'>)} {...common} className={`${s.muted} ${className}`}>
         {label}: {reading}
         {percent !== undefined ? ` (${percent}%)` : ''} · {meta}
       </span>
     );
   return (
-    <div {...common} className={`${own.stack} ${className}`}>
+    <div {...rest} {...common} className={`${own.stack} ${className}`}>
       <div className={s.row}>
         <strong>{label}</strong>
         <span className={s.muted}>

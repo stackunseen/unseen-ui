@@ -1,6 +1,7 @@
 'use client';
 import { useContext } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
+import type { WithRoot } from '../../shared/with-root.js';
 import { toolCallFrom } from '@stackunseen/ui-core';
 import type { ToolCallData, ToolCallInput } from '@stackunseen/ui-core';
 import { Panel } from '../panel/panel.js';
@@ -180,20 +181,25 @@ function ToolRoot({
   variant = 'card',
   detail = 'compact',
   className = '',
-}: VariantProps<'ToolCall'> &
-  DetailProps & {
-    /** Host data, or the short form `{ name }` plus what is known. */
-    value: ToolCallData | ToolCallInput;
-    children?: ReactNode;
-    /** Added to the root element, after the component's own classes. */
-    className?: string;
-  }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'ToolCall'> &
+    DetailProps & {
+      /** Host data, or the short form `{ name }` plus what is known. */
+      value: ToolCallData | ToolCallInput;
+      children?: ReactNode;
+      /** Added to the root element, after the component's own classes. */
+      className?: string;
+    },
+  'section'
+>) {
   const value = toolCallFrom(input);
   if (variant === 'row' && !children)
     return (
       <ToolContext.Provider value={value}>
         <ToolDetailContext.Provider value={detail}>
           <div
+            {...(rest as ComponentProps<'div'>)}
             data-part="tool-call"
             data-variant="row"
             data-detail={detail}
@@ -208,6 +214,7 @@ function ToolRoot({
     <ToolContext.Provider value={value}>
       <ToolDetailContext.Provider value={detail}>
         <Panel
+          {...rest}
           data-part="tool-call"
           data-variant={variant}
           data-detail={detail}

@@ -1,6 +1,7 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import type { SVGProps } from 'react';
+import type { ComponentProps, SVGProps } from 'react';
 import type { ConnectionState, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { IconButton } from '../icon-button/icon-button.js';
@@ -38,7 +39,7 @@ export type {
   VoiceDeviceRequest,
   VoiceDevice,
 } from './voice-model.js';
-export interface VoiceControlProps extends VariantProps<'VoiceControl'> {
+export interface VoiceControlProps extends VariantProps<'VoiceControl'>, ComponentProps<'div'> {
   /** Distinguishes multiple voice controls and their disclosure landmarks. */
   label?: string;
   /** Legacy aggregate state. Advanced hosts supply capture instead. */
@@ -115,11 +116,16 @@ export function VoiceControl({
   onRequestDeviceChange,
   variant = 'panel',
   className = '',
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: VoiceControlProps) {
   const root = useRef<HTMLDivElement>(null),
     focused = useRef<HTMLElement | null>(null),
     attempt = useRef(0),
     mounted = useRef(true);
+  const rootRef = useMergedRef(root, ref);
   const [copied, setCopied] = useState<{ key: string; message: string; attempt: number }>();
   const visible = status === 'ready' || status === 'stale',
     advanced = capture !== undefined;
@@ -267,7 +273,8 @@ export function VoiceControl({
     ) : undefined;
   return (
     <div
-      ref={root}
+      {...rest}
+      ref={rootRef}
       role="group"
       aria-label={`${label} panel`}
       tabIndex={-1}
@@ -276,9 +283,11 @@ export function VoiceControl({
       data-status={status}
       className={`${css.root} ${className}`}
       onFocusCapture={(e) => {
+        onFocusCapture?.(e);
         focused.current = e.target as HTMLElement;
       }}
       onBlurCapture={(e) => {
+        onBlurCapture?.(e);
         if (e.relatedTarget && !e.currentTarget.contains(e.relatedTarget as Node))
           focused.current = null;
       }}

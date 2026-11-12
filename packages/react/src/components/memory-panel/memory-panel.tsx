@@ -1,6 +1,6 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
-import { useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 import type { CommandReceipt } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Input } from '../input/input.js';
@@ -33,7 +33,7 @@ export interface MemoryReceipt extends CommandReceipt {
 }
 /** Rows rendered at once; a longer list asks the person to filter. */
 const MAX_SHOWN = 200;
-export interface MemoryPanelProps extends VariantProps<'MemoryPanel'> {
+export interface MemoryPanelProps extends VariantProps<'MemoryPanel'>, ComponentProps<'section'> {
   entries: readonly MemoryEntry[];
   /** Controlled filter text; the host or the panel's own state owns it. */
   query: string;
@@ -151,6 +151,7 @@ export function MemoryPanel({
   label = 'Memory',
   labels,
   className = '',
+  ...rest
 }: MemoryPanelProps) {
   const locale = useLocale(localeProp);
   const id = useId();
@@ -185,6 +186,7 @@ export function MemoryPanel({
   const used = entries.filter((entry) => entry.usedInContext).length;
   return (
     <section
+      {...rest}
       className={`${variant === 'compact' ? own.compact : own.panel} ${className}`}
       data-part="memory-panel"
       data-variant={variant}

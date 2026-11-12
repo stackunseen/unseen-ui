@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { useId, useState } from 'react';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
@@ -16,15 +17,19 @@ export function ClarificationRequest({
   state = 'pending',
   error,
   className = '',
-}: VariantProps<'ClarificationRequest'> & {
-  question: string;
-  value: string;
-  onValueChange: (value: string) => void;
-  onSubmit: (value: string) => void;
-  choices?: { value: string; label: string }[];
-  state?: 'pending' | 'submitting' | 'resolved' | 'cancelled';
-  error?: string;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'ClarificationRequest'> & {
+    question: string;
+    value: string;
+    onValueChange: (value: string) => void;
+    onSubmit: (value: string) => void;
+    choices?: { value: string; label: string }[];
+    state?: 'pending' | 'submitting' | 'resolved' | 'cancelled';
+    error?: string;
+  } & { className?: string },
+  'section'
+>) {
   const id = useId();
   const [attempted, setAttempted] = useState(false);
   const valid = value.trim().length > 0 && (!choices || choices.some((c) => c.value === value));
@@ -37,6 +42,7 @@ export function ClarificationRequest({
       : '');
   return (
     <Panel
+      {...rest}
       data-part="clarification-request"
       data-variant={variant}
       className={`${s.clarification} ${className}`}

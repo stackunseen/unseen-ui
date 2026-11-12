@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useId, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { ChatBubbleIcon, Cross2Icon } from '@radix-ui/react-icons';
 import s from './chat-launcher.module.css';
 
-export interface ChatLauncherProps {
+export interface ChatLauncherProps extends ComponentProps<'div'> {
   /** Whether the chat panel is open. Controlled by the host. */
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -40,6 +40,7 @@ export function ChatLauncher({
   placement = 'bottom-end',
   unread = 0,
   className = '',
+  ...rest
 }: ChatLauncherProps) {
   const titleId = useId();
   const panel = useRef<HTMLDivElement>(null);
@@ -61,7 +62,12 @@ export function ChatLauncher({
   }, [open]);
   const count = Number.isFinite(unread) && unread > 0 ? Math.min(Math.round(unread), 99) : 0;
   return (
-    <div className={`${s.root} ${className}`} data-part="chat-launcher" data-placement={placement}>
+    <div
+      {...rest}
+      className={`${s.root} ${className}`}
+      data-part="chat-launcher"
+      data-placement={placement}
+    >
       <div
         ref={panel}
         role="dialog"

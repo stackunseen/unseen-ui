@@ -1,10 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { type ComponentProps, useState } from 'react';
 import { Button } from '../button/button.js';
 import { Progress } from '../progress/progress.js';
 import s from '../../shared/styles/media.module.css';
 
-export interface VideoProps {
+export interface VideoProps extends ComponentProps<'figure'> {
   /** Host-supplied video URL: http(s) or blob:. Other schemes are refused. */
   src?: string;
   /** A still frame (http(s), blob: or a PNG/JPEG/WebP data URL) shown before playback. */
@@ -59,6 +59,7 @@ export function Video({
   width,
   height,
   className = '',
+  ...rest
 }: VideoProps) {
   const [failed, setFailed] = useState(false);
   const resolved = safeVideo(src);
@@ -72,6 +73,7 @@ export function Video({
   const pending = state === 'loading' || state === 'queued';
   return (
     <figure
+      {...rest}
       className={`${s.root} ${s.figure} ${className}`}
       data-part="video"
       data-state={state}

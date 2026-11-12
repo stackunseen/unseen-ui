@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { diffLines } from 'diff';
 import { sameDocumentIdentity } from '@stackunseen/ui-core/editing';
 import type { DocumentIdentity } from '@stackunseen/ui-core/editing';
@@ -10,7 +10,7 @@ import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
 import type { VariantProps } from '../../shared/variants.js';
 import s from '../../shared/styles/coding.module.css';
 
-export interface CodeDiffProps extends VariantProps<'CodeDiff'> {
+export interface CodeDiffProps extends VariantProps<'CodeDiff'>, ComponentProps<'div'> {
   path: string;
   before: string;
   after: string;
@@ -64,6 +64,7 @@ export function CodeDiff({
   annotate,
   error,
   className = '',
+  ...rest
 }: CodeDiffProps) {
   const identityValid =
     !sourceIdentities ||
@@ -292,6 +293,7 @@ export function CodeDiff({
   }
   return (
     <div
+      {...rest}
       className={`${s.root} ${s.panel} ${className}`}
       data-part="code-diff"
       data-variant={variant}

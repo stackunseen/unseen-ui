@@ -1,4 +1,6 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
+import type { ComponentProps } from 'react';
 import { useLayoutEffect, useRef } from 'react';
 import { IconButton } from '../icon-button/icon-button.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -15,7 +17,7 @@ export interface MemoryRecord {
   state: 'available' | 'pending' | 'revoked' | 'error';
   error?: string;
 }
-export interface MemoryControlsProps extends VariantProps<'MemoryControls'> {
+export interface MemoryControlsProps extends VariantProps<'MemoryControls'>, ComponentProps<'div'> {
   /** A host-owned window of up to 100 entries. Replace the window to inspect later memories. */
   items: readonly MemoryRecord[];
   onRequest: (item: MemoryRecord, action: 'correct' | 'delete') => void;
@@ -27,8 +29,13 @@ export function MemoryControls({
   onRequest,
   variant = 'list',
   className = '',
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: MemoryControlsProps) {
   const root = useRef<HTMLDivElement>(null);
+  const rootRef = useMergedRef(root, ref);
   const focusedItem = useRef<string | undefined>(undefined);
   const visibleItems = items.slice(0, 100);
   useLayoutEffect(() => {
@@ -37,7 +44,8 @@ export function MemoryControls({
   });
   return (
     <div
-      ref={root}
+      {...rest}
+      ref={rootRef}
       className={`${s.root} ${className}`}
       data-part="memory-controls"
       data-variant={variant}
@@ -45,10 +53,12 @@ export function MemoryControls({
       aria-label="Saved memory"
       tabIndex={-1}
       onFocusCapture={(event) => {
+        onFocusCapture?.(event);
         const row = (event.target as HTMLElement).closest<HTMLElement>('[data-memory-id]');
         focusedItem.current = row?.dataset.memoryId;
       }}
       onBlurCapture={(event) => {
+        onBlurCapture?.(event);
         if (
           event.relatedTarget instanceof Node &&
           !event.currentTarget.contains(event.relatedTarget)

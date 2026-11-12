@@ -1,4 +1,6 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
+import type { ComponentProps } from 'react';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useLayoutEffect, useRef } from 'react';
 import {
@@ -23,7 +25,7 @@ import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
 import u from './upload-attachment.module.css';
 
-export interface UploadAttachmentProps extends VariantProps<'Attachment'> {
+export interface UploadAttachmentProps extends VariantProps<'Attachment'>, ComponentProps<'div'> {
   value: UploadCheckpoint;
   reference: UploadContext;
   operation?: UploadOperation;
@@ -54,6 +56,10 @@ export function UploadAttachment({
   onLookup,
   onOpen,
   className = '',
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: UploadAttachmentProps) {
   const locale = useLocale();
   const checkpoint = inspectUploadCheckpoint(value);
@@ -66,6 +72,7 @@ export function UploadAttachment({
     (!!context && sameUploadContext(observedOperation.command.context, context));
   const valid = matched && !invalidOperation && operationMatched;
   const wrapper = useRef<HTMLDivElement>(null);
+  const rootRef = useMergedRef(wrapper, ref);
   const focused = useRef<HTMLElement | undefined>(undefined);
   useLayoutEffect(() => {
     const target = focused.current;
@@ -93,8 +100,9 @@ export function UploadAttachment({
   }
   return (
     <div
+      {...rest}
       className={`${u.wrapper} ${className}`}
-      ref={wrapper}
+      ref={rootRef}
       tabIndex={-1}
       role="group"
       aria-label={
@@ -103,9 +111,11 @@ export function UploadAttachment({
       data-part="upload-attachment"
       data-variant={variant}
       onFocusCapture={(event) => {
+        onFocusCapture?.(event);
         focused.current = event.target;
       }}
       onBlurCapture={(event) => {
+        onBlurCapture?.(event);
         if (
           event.relatedTarget instanceof Node &&
           !event.currentTarget.contains(event.relatedTarget)

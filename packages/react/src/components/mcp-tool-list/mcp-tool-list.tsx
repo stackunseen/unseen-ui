@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { useId } from 'react';
 import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -20,17 +21,21 @@ export function MCPToolList({
   query,
   onQueryChange,
   className = '',
-}: VariantProps<'MCPToolList'> & {
-  tools: MCPTool[];
-  query: string;
-  onQueryChange: (query: string) => void;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'MCPToolList'> & {
+    tools: MCPTool[];
+    query: string;
+    onQueryChange: (query: string) => void;
+  } & { className?: string },
+  'div'
+>) {
   const id = useId();
   const filtered = tools.filter((tool) =>
     `${tool.name} ${tool.description}`.toLowerCase().includes(query.toLowerCase()),
   );
   return (
-    <div className={`${own.mcpTools} ${className}`} data-variant={variant}>
+    <div {...rest} className={`${own.mcpTools} ${className}`} data-variant={variant}>
       <label htmlFor={id} className={s.field + ' ' + own.field}>
         Filter tools
         <input

@@ -1,4 +1,6 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
+import type { WithRoot } from '../../shared/with-root.js';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useLayoutEffect, useRef } from 'react';
 import type { ContextItem, ContextUsage } from '@stackunseen/ui-core';
@@ -15,14 +17,21 @@ export function ContextBar({
   usage,
   onRemove,
   className = '',
-}: VariantProps<'ContextBar'> & {
-  items: ContextItem[];
-  usage?: ContextUsage;
-  onRemove?: (id: string) => void;
-} & { className?: string }) {
+  ref,
+  onFocusCapture,
+  ...rest
+}: WithRoot<
+  VariantProps<'ContextBar'> & {
+    items: ContextItem[];
+    usage?: ContextUsage;
+    onRemove?: (id: string) => void;
+  } & { className?: string },
+  'div'
+>) {
   const locale = useLocale();
   const root = useRef<HTMLDivElement>(null),
     focused = useRef<HTMLElement | null>(null);
+  const rootRef = useMergedRef(root, ref);
   useLayoutEffect(() => {
     if (focused.current && !focused.current.isConnected && document.activeElement === document.body)
       root.current?.focus({ preventScroll: true });
@@ -36,11 +45,13 @@ export function ContextBar({
     usage.used <= usage.limit;
   return (
     <div
-      ref={root}
+      {...rest}
+      ref={rootRef}
       role="group"
       aria-label="Request context"
       tabIndex={-1}
       onFocusCapture={(event) => {
+        onFocusCapture?.(event);
         focused.current = event.target as HTMLElement;
       }}
       className={`${own.contextBar} ${className}`}

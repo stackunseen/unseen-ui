@@ -1,7 +1,7 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useEffect, useId, useMemo, useState } from 'react';
-import type { KeyboardEvent, ReactNode } from 'react';
+import type { ComponentProps, KeyboardEvent, ReactNode } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
 import type { CommandReceipt, Measurement, Run, RunLifecycle } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
@@ -50,7 +50,8 @@ export interface RunBoardFilter {
   agentIds: readonly string[];
   query: string;
 }
-export interface RunBoardProps extends VariantProps<'RunBoard'> {
+export interface RunBoardProps
+  extends VariantProps<'RunBoard'>, Omit<ComponentProps<'section'>, 'onSelect'> {
   runs: readonly RunCard[];
   filter?: RunBoardFilter;
   onFilterChange?: (filter: RunBoardFilter) => void;
@@ -138,6 +139,7 @@ export function RunBoard({
   emptyMessage = 'No runs.',
   renderCardTrailing,
   className = '',
+  ...rest
 }: RunBoardProps) {
   const locale = useLocale(localeProp);
   // Without a host time zone, times read in the viewer's own once the page runs; the first
@@ -260,6 +262,7 @@ export function RunBoard({
   );
   return (
     <section
+      {...rest}
       className={`${r.board} ${className}`}
       data-part="run-board"
       data-variant={variant}

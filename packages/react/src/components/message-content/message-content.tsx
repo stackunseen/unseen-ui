@@ -1,6 +1,6 @@
 'use client';
 import { memo } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import type {
   MessageData,
   MessagePart,
@@ -27,7 +27,7 @@ export interface MessageAttachment {
     'name' | 'state' | 'access' | 'preview' | 'mediaType' | 'sizeBytes' | 'detail' | 'onOpen'
   >;
 }
-export interface MessageContentProps {
+export interface MessageContentProps extends Omit<ComponentProps<'div'>, 'children'> {
   value: MessageData;
   sources?: readonly Source[];
   tools?: readonly ToolCallData[];
@@ -154,10 +154,12 @@ export function MessageContent({
   renderTextPart,
   renderTool,
   className = '',
+  ...rest
 }: MessageContentProps) {
   if (!value.parts)
     return (
       <StreamingResponse
+        {...rest}
         text={value.text}
         state={value.state}
         error={value.error?.message}
@@ -200,7 +202,7 @@ export function MessageContent({
     );
   }
   return (
-    <div className={`${s.parts} ${className}`} data-part="message-content">
+    <div {...rest} className={`${s.parts} ${className}`} data-part="message-content">
       {rows}
       {!value.parts.length && (
         <p className={s.unavailable}>

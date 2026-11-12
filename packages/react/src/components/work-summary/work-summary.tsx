@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import type { Step } from '@stackunseen/ui-core';
 import { AgentSteps } from '../agent-steps/agent-steps.js';
@@ -10,7 +10,7 @@ import { AIIcon } from '../../providers/icons/icons.js';
 import { useDisclosure } from '../../shared/disclosure.js';
 import s from '../../shared/styles/assistant.module.css';
 
-export interface WorkSummaryProps {
+export interface WorkSummaryProps extends ComponentProps<'div'> {
   /** The public steps of one turn or run. */
   steps: Step[];
   /** "running" while the agent works; the others once it has ended. */
@@ -50,6 +50,7 @@ export function WorkSummary({
   defaultOpen,
   onOpenChange,
   className = '',
+  ...rest
 }: WorkSummaryProps) {
   const running = state === 'running';
   const disclosure = useDisclosure({ open, defaultOpen: defaultOpen ?? running, onOpenChange });
@@ -75,7 +76,7 @@ export function WorkSummary({
     />
   );
   return (
-    <div className={`${s.root} ${className}`} data-part="work-summary" data-state={state}>
+    <div {...rest} className={`${s.root} ${className}`} data-part="work-summary" data-state={state}>
       <button className={s.trigger} {...disclosure.triggerProps}>
         <AIIcon name={state === 'failed' ? 'warning' : 'tool'} size={15} />
         {running ? (

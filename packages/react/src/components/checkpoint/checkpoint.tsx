@@ -1,9 +1,10 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { BookmarkIcon } from '@radix-ui/react-icons';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 import s from '../../shared/styles/assistant.module.css';
 
-export interface CheckpointProps {
+export interface CheckpointProps extends ComponentProps<'div'> {
   label?: string;
   /** Host timestamp of the checkpoint. */
   createdAt?: string;
@@ -20,9 +21,11 @@ export function Checkpoint({
   onRestore,
   restoring = false,
   className = '',
+  ...rest
 }: CheckpointProps) {
   return (
     <div
+      {...rest}
       className={`${s.checkpoint} ${className}`}
       data-part="checkpoint"
       role="group"

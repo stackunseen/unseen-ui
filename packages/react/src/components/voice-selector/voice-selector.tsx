@@ -1,5 +1,5 @@
 'use client';
-import { useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 import { PlayIcon } from '@radix-ui/react-icons';
 import s from '../../shared/styles/media.module.css';
 
@@ -10,7 +10,7 @@ export interface VoiceOption {
   /** Host-reported reason this voice is unavailable. */
   disabledReason?: string;
 }
-export interface VoiceSelectorProps {
+export interface VoiceSelectorProps extends ComponentProps<'fieldset'> {
   voices: readonly VoiceOption[];
   value: string;
   onValueChange: (id: string) => void;
@@ -39,11 +39,12 @@ export function VoiceSelector({
   label = 'Voice',
   labels,
   className = '',
+  ...rest
 }: VoiceSelectorProps) {
   const text = { ...defaultLabels, ...labels };
   const id = useId();
   return (
-    <fieldset className={`${s.root} ${s.voices} ${className}`} data-part="voice-selector">
+    <fieldset {...rest} className={`${s.root} ${s.voices} ${className}`} data-part="voice-selector">
       <legend>{label}</legend>
       {voices.length === 0 && <p className={s.meta}>{text.empty}</p>}
       {voices.map((voice) => (

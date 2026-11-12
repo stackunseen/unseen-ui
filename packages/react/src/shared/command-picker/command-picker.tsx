@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { Command } from 'cmdk';
 import { AIIcon } from '../../providers/icons/icons.js';
 import { LoadingIndicator } from '../../components/loading-indicator/loading-indicator.js';
@@ -46,7 +47,10 @@ export function referenceUnavailableReason(item: ReferenceOption): string | unde
     return 'Reference range is invalid for this revision.';
 }
 
-export interface PickerProps<T extends CommandOption> {
+export interface PickerProps<T extends CommandOption> extends Omit<
+  ComponentProps<'div'>,
+  'onSelect'
+> {
   items: readonly T[];
   query: string;
   onQueryChange: (query: string) => void;
@@ -69,11 +73,13 @@ export function SearchPicker<T extends CommandOption>({
   variant = 'list',
   reference = false,
   className = '',
+  ...rest
 }: PickerProps<T> & { variant?: 'list' | 'cards' | 'compact'; reference?: boolean }) {
   const label = reference ? 'Find a reference' : 'Find a command';
   const available = status === 'ready' && !disabled;
   return (
     <div
+      {...rest}
       className={`${s.root} ${className}`}
       data-variant={variant}
       data-part={reference ? 'mention-picker' : 'slash-command-menu'}

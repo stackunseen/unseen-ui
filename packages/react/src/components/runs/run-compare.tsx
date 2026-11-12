@@ -1,7 +1,7 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import type { CommandReceipt } from '@stackunseen/ui-core';
 import { ExecutionTimeline } from '../execution-timeline/execution-timeline.js';
 import type { TimelineEntry } from '../execution-timeline/execution-timeline.js';
@@ -19,7 +19,7 @@ export interface RunCompareSide {
   timeline?: readonly TimelineEntry[];
   receipts?: readonly CommandReceipt[];
 }
-export interface RunCompareProps extends VariantProps<'RunCompare'> {
+export interface RunCompareProps extends VariantProps<'RunCompare'>, ComponentProps<'section'> {
   left: RunCompareSide;
   right: RunCompareSide;
   /** Hide rows that are the same on both sides. Controlled when supplied. */
@@ -65,6 +65,7 @@ export function RunCompare({
   locale: localeProp,
   label = 'Compare runs',
   className = '',
+  ...rest
 }: RunCompareProps) {
   const locale = useLocale(localeProp);
   const id = useId();
@@ -167,6 +168,7 @@ export function RunCompare({
   };
   return (
     <section
+      {...rest}
       className={`${r.compare} ${className}`}
       data-part="run-compare"
       data-variant={variant}

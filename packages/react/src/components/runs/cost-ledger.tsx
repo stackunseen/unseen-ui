@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { useLocale } from '../../providers/locale/locale.js';
 import type { Measurement } from '@stackunseen/ui-core';
 import type { VariantProps } from '../../shared/variants.js';
@@ -17,7 +18,7 @@ export interface CostLedgerRow {
   cost: Measurement<Money>;
   href?: string;
 }
-export interface CostLedgerProps extends VariantProps<'CostLedger'> {
+export interface CostLedgerProps extends VariantProps<'CostLedger'>, ComponentProps<'section'> {
   rows: readonly CostLedgerRow[];
   /**
    * The host's own total, when it has one from billing. Without it the ledger adds up only the
@@ -69,6 +70,7 @@ export function CostLedger({
   locale: localeProp,
   label = 'Cost ledger',
   className = '',
+  ...rest
 }: CostLedgerProps) {
   const locale = useLocale(localeProp);
   const sum = sumMeasured(rows, locale);
@@ -107,6 +109,7 @@ export function CostLedger({
   if (variant === 'compact')
     return (
       <section
+        {...rest}
         className={`${r.ledger} ${className}`}
         data-part="cost-ledger"
         data-variant={variant}
@@ -129,6 +132,7 @@ export function CostLedger({
     );
   return (
     <section
+      {...rest}
       className={`${r.ledger} ${className}`}
       data-part="cost-ledger"
       data-variant={variant}

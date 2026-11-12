@@ -1,5 +1,5 @@
 'use client';
-import { useId, useState } from 'react';
+import { type ComponentProps, useId, useState } from 'react';
 import { Button } from '../button/button.js';
 import { Select } from '../select/select.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -13,7 +13,8 @@ export interface AccessMode {
   disabledReason?: string;
 }
 
-export interface AccessModeSelectorProps extends VariantProps<'AccessModeSelector'> {
+export interface AccessModeSelectorProps
+  extends VariantProps<'AccessModeSelector'>, ComponentProps<'div'> {
   modes: readonly AccessMode[];
   value?: string;
   scope: string;
@@ -35,6 +36,7 @@ export function AccessModeSelector({
   onRequest,
   variant = 'cards',
   className = '',
+  ...rest
 }: AccessModeSelectorProps) {
   const id = useId();
   const [draft, setDraft] = useState<{ modeId: string; scope: string; version: string }>();
@@ -46,6 +48,7 @@ export function AccessModeSelector({
   const locked = status === 'pending' || status === 'stale' || !scope.trim() || !version.trim();
   return (
     <div
+      {...rest}
       className={`${s.root} ${variant === 'cards' ? s.surface : ''} ${className}`}
       data-part="access-mode"
       data-variant={variant}

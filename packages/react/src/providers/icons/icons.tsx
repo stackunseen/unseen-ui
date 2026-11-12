@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useMemo } from 'react';
-import type { ComponentType, ReactNode, SVGProps } from 'react';
+import type { ComponentProps, ComponentType, ReactNode, SVGProps } from 'react';
 import {
   ArrowTopRightIcon,
   ArrowUpIcon,
@@ -88,7 +88,7 @@ export function IconsProvider({ children, icons, size }: IconsProviderProps) {
   );
   return <IconContext.Provider value={value}>{children}</IconContext.Provider>;
 }
-export interface AIIconProps {
+export interface AIIconProps extends ComponentProps<'span'> {
   name: IconName;
   icon?: IconComponent | null;
   /** A local default for a role; provider overrides still take precedence. */
@@ -97,7 +97,7 @@ export interface AIIconProps {
   className?: string;
 }
 /** Decorative only: the containing control must retain its text or accessible name. */
-export function AIIcon({ name, icon, fallbackIcon, size, className = '' }: AIIconProps) {
+export function AIIcon({ name, icon, fallbackIcon, size, className = '', ...rest }: AIIconProps) {
   const context = useContext(IconContext);
   const Component =
     icon === undefined
@@ -108,7 +108,7 @@ export function AIIcon({ name, icon, fallbackIcon, size, className = '' }: AIIco
   if (!Component) return null;
   const dimension = size ?? context.size;
   return (
-    <span aria-hidden="true" className={`${s.icon} ${className}`} data-ai-icon={name}>
+    <span {...rest} aria-hidden="true" className={`${s.icon} ${className}`} data-ai-icon={name}>
       <Component width={dimension} height={dimension} aria-hidden="true" focusable="false" />
     </span>
   );

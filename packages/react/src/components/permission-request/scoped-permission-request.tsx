@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -22,7 +23,8 @@ import own from './permission-request.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
-export interface ScopedPermissionRequestProps extends VariantProps<'PermissionRequest'> {
+export interface ScopedPermissionRequestProps
+  extends VariantProps<'PermissionRequest'>, ComponentProps<'section'> {
   value: PermissionSnapshot;
   /** Host-allocated idempotency identity; retain it with the submitted command. */
   commandId: string;
@@ -54,6 +56,7 @@ export function ScopedPermissionRequest({
   headingLevel = 3,
   variant = 'card',
   className = '',
+  ...rest
 }: ScopedPermissionRequestProps) {
   const value = inspectPermissionSnapshot(input);
   const submission = inspectPermissionSubmission(inputSubmission);
@@ -82,6 +85,7 @@ export function ScopedPermissionRequest({
   }
   return (
     <Panel
+      {...rest}
       data-part="permission-request"
       data-variant={variant}
       className={`${own.permission} ${className}`}

@@ -1,6 +1,6 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import type { CommandReceipt, Measurement, Run } from '@stackunseen/ui-core';
 import { safeUrl } from '@stackunseen/ui-core';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -31,7 +31,8 @@ export interface RunSummary {
   duration?: Measurement<number>;
   cost?: Measurement<Money>;
 }
-export interface RunSummaryCardProps extends VariantProps<'RunSummaryCard'> {
+export interface RunSummaryCardProps
+  extends VariantProps<'RunSummaryCard'>, ComponentProps<'article'> {
   summary: RunSummary;
   receipts?: readonly CommandReceipt[];
   onOpenEffect?: (effect: RunEffect) => void;
@@ -79,6 +80,7 @@ export function RunSummaryCard({
   actions,
   locale: localeProp,
   className = '',
+  ...rest
 }: RunSummaryCardProps) {
   const locale = useLocale(localeProp);
   const outcome = outcomes[summary.outcome] ?? outcomes.unknown;
@@ -89,6 +91,7 @@ export function RunSummaryCard({
   );
   return (
     <article
+      {...rest}
       className={`${variant === 'card' ? s.panel : ''} ${r.summary} ${className}`}
       data-part="run-summary"
       data-variant={variant}

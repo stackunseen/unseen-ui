@@ -1,6 +1,7 @@
 'use client';
 import { useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { KeyboardEvent, ReactNode } from 'react';
+import type { ComponentProps, KeyboardEvent, ReactNode } from 'react';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
 import { Button } from '../button/button.js';
 import { Accordion } from '../accordion/accordion.js';
 import { LoadingIndicator } from '../loading-indicator/loading-indicator.js';
@@ -15,7 +16,8 @@ import c from '../../shared/styles/coding.module.css';
 import s from '../../shared/styles/agent-controls.module.css';
 
 export type { GraphNode, GraphEdge, GraphWaypoint, GraphSelection } from './workflow-model.js';
-export interface WorkflowGraphProps extends VariantProps<'WorkflowGraph'>, DetailProps {
+export interface WorkflowGraphProps
+  extends VariantProps<'WorkflowGraph'>, DetailProps, Omit<ComponentProps<'div'>, 'onSelect'> {
   nodes: readonly GraphNode[];
   edges: readonly GraphEdge[];
   /** Legacy controlled node selection; do not combine with selection. */
@@ -44,10 +46,20 @@ export function WorkflowGraph({
   error,
   detail = 'compact',
   className = '',
-  ...props
+  variant,
+  selectedId,
+  selection,
+  onSelect,
+  onEdgeSelect,
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: WorkflowGraphProps) {
+  const props = { variant, selectedId, selection, onSelect, onEdgeSelect };
   const root = useRef<HTMLDivElement>(null),
     focused = useRef<HTMLElement | null>(null);
+  const rootRef = useMergedRef(root, ref);
   const visible = ['ready', 'streaming', 'stale'].includes(state);
   const model = useMemo(
     () => (visible ? inspectWorkflow(nodes, edges) : undefined),
@@ -60,7 +72,8 @@ export function WorkflowGraph({
   const heading = typeof title === 'string' ? title.slice(0, 2000) : 'Agent workflow';
   const frame = (children: ReactNode) => (
     <div
-      ref={root}
+      {...rest}
+      ref={rootRef}
       role="group"
       tabIndex={-1}
       className={`${g.root} ${css.root} ${className}`}
@@ -70,9 +83,11 @@ export function WorkflowGraph({
       data-detail={detail}
       aria-label={heading}
       onFocusCapture={(event) => {
+        onFocusCapture?.(event);
         focused.current = event.target as HTMLElement;
       }}
       onBlurCapture={(event) => {
+        onBlurCapture?.(event);
         if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node))
           focused.current = null;
       }}

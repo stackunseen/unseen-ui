@@ -1,6 +1,6 @@
 'use client';
 import { useId, useRef } from 'react';
-import type { ComponentPropsWithoutRef, ReactNode, RefObject } from 'react';
+import type { ComponentProps, ComponentPropsWithoutRef, ReactNode, RefObject } from 'react';
 import { Button } from '../button/button.js';
 import { Field } from '../field/field.js';
 import { Input } from '../input/input.js';
@@ -155,7 +155,7 @@ export type SettingsSaveState =
   | { status: 'rejected'; message: string }
   | { status: 'unknown'; message: string };
 
-export interface SettingsSaveCancelProps {
+export interface SettingsSaveCancelProps extends ComponentProps<'div'> {
   dirty: boolean;
   state: SettingsSaveState;
   canSave?: boolean;
@@ -181,11 +181,13 @@ export function SettingsSaveCancel({
   onCancel,
   onReconcile,
   className = '',
+  ...rest
 }: SettingsSaveCancelProps) {
   const id = useId();
   const blocked = state.status === 'pending' || state.status === 'unknown';
   return (
     <div
+      {...rest}
       className={`${s.saveFooter} ${className}`}
       aria-busy={state.status === 'pending' || undefined}
     >

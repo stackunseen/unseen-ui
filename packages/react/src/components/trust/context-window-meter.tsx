@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { useLocale } from '../../providers/locale/locale.js';
 import type { Measurement } from '@stackunseen/ui-core';
 import type { VariantProps } from '../../shared/variants.js';
@@ -17,7 +18,8 @@ export interface ContextWindow {
   /** The model's window in tokens. Without it the meter shows amounts, never a percentage. */
   limit?: number;
 }
-export interface ContextWindowMeterProps extends VariantProps<'ContextWindowMeter'> {
+export interface ContextWindowMeterProps
+  extends VariantProps<'ContextWindowMeter'>, ComponentProps<'div'> {
   value: Measurement<ContextWindow>;
   /** Fraction of the limit from which the meter reads as a warning. */
   warnAt?: number;
@@ -39,6 +41,7 @@ export function ContextWindowMeter({
   label = 'Context window',
   locale: localeProp,
   className = '',
+  ...rest
 }: ContextWindowMeterProps) {
   const locale = useLocale(localeProp);
   const window = value.kind === 'unknown' ? undefined : value.value;
@@ -85,13 +88,19 @@ export function ContextWindowMeter({
   } as const;
   if (variant === 'inline')
     return (
-      <span {...common} className={`${s.muted} ${className}`}>
+      <span {...(rest as ComponentProps<'span'>)} {...common} className={`${s.muted} ${className}`}>
         {label}: {reading} · {meta}
       </span>
     );
   const scale = limit ?? (used > 0 ? used : 1);
   return (
-    <div {...common} className={`${own.stack} ${className}`} role="group" aria-label={label}>
+    <div
+      {...rest}
+      {...common}
+      className={`${own.stack} ${className}`}
+      role="group"
+      aria-label={label}
+    >
       <div className={s.row}>
         <strong>{label}</strong>
         <span className={s.muted}>{reading}</span>

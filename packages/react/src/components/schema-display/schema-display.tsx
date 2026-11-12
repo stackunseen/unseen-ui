@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import s from '../../shared/styles/devtools.module.css';
 
 export interface SchemaField {
@@ -10,7 +11,7 @@ export interface SchemaField {
 export interface SchemaParameter extends SchemaField {
   in: 'path' | 'query' | 'header' | 'cookie';
 }
-export interface SchemaDisplayProps {
+export interface SchemaDisplayProps extends ComponentProps<'section'> {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS';
   path: string;
   description?: string;
@@ -54,6 +55,7 @@ export function SchemaDisplay({
   responseBody = [],
   headingLevel = 3,
   className = '',
+  ...rest
 }: SchemaDisplayProps) {
   const Heading = `h${headingLevel}` as const;
   const Section = `h${Math.min(6, headingLevel + 1)}` as 'h3' | 'h4' | 'h5' | 'h6';
@@ -63,7 +65,7 @@ export function SchemaDisplay({
     ['Response', responseBody],
   ] as const;
   return (
-    <section className={`${s.root} ${className}`} data-part="schema-display">
+    <section {...rest} className={`${s.root} ${className}`} data-part="schema-display">
       <div className={s.header}>
         <Heading className={s.title}>
           <span className={s.method}>{method}</span>

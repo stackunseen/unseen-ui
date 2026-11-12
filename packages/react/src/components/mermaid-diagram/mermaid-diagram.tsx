@@ -1,4 +1,6 @@
 'use client';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
+import type { ComponentProps } from 'react';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import DOMPurify from 'dompurify';
 import { Button } from '../button/button.js';
@@ -11,7 +13,7 @@ import { useRendererTheme } from '../../providers/theme/theme-provider.js';
 import { defaultTheme } from '../../theme.js';
 import type { ThemeTokens } from '../../theme.js';
 
-export interface MermaidDiagramProps extends VariantProps<'MermaidDiagram'> {
+export interface MermaidDiagramProps extends VariantProps<'MermaidDiagram'>, ComponentProps<'div'> {
   code: string;
   title?: string;
   description?: string;
@@ -117,8 +119,11 @@ export function MermaidDiagram({
   state = 'complete',
   variant = 'panel',
   className = '',
+  ref,
+  ...rest
 }: MermaidDiagramProps) {
   const host = useRef<HTMLDivElement>(null);
+  const rootRef = useMergedRef(host, ref);
   const themeContext = useRendererTheme();
   const [darkSystem, setDarkSystem] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -215,7 +220,8 @@ export function MermaidDiagram({
   );
   return (
     <div
-      ref={host}
+      {...rest}
+      ref={rootRef}
       className={`${s.diagram} ${className}`}
       data-part="mermaid-diagram"
       data-variant={variant}

@@ -1,5 +1,5 @@
 'use client';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import {
   CheckIcon,
   ChevronDownIcon,
@@ -22,7 +22,7 @@ export interface PlanStep {
   /** A short host note under the step, such as why it failed or was skipped. */
   detail?: string;
 }
-export interface PlanProps {
+export interface PlanProps extends ComponentProps<'section'> {
   title: string;
   description?: string;
   steps?: readonly PlanStep[];
@@ -72,6 +72,7 @@ export function Plan({
   onOpenChange,
   labels,
   className = '',
+  ...rest
 }: PlanProps) {
   const text = { ...defaultLabels, ...labels };
   const Heading = `h${headingLevel}` as const;
@@ -85,6 +86,7 @@ export function Plan({
   };
   return (
     <section
+      {...rest}
       className={`${s.root} ${s.card} ${className}`}
       data-part="plan"
       aria-busy={streaming || undefined}

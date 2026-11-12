@@ -1,5 +1,5 @@
 'use client';
-import type { ReactElement } from 'react';
+import type { ComponentProps, ReactElement } from 'react';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -10,7 +10,8 @@ import { permissionTone, ScopedPermissionRequest } from './scoped-permission-req
 import type { ScopedPermissionRequestProps } from './scoped-permission-request.js';
 
 /** @deprecated Supply value, commandId and submission for exact scope and original receipts. */
-export interface LegacyPermissionRequestProps extends VariantProps<'PermissionRequest'> {
+export interface LegacyPermissionRequestProps
+  extends VariantProps<'PermissionRequest'>, ComponentProps<'section'> {
   resource: string;
   scopes: string[];
   status: 'requested' | 'granted' | 'denied' | 'revoked';
@@ -44,12 +45,14 @@ function LegacyPermissionRequest({
   onDecision,
   headingLevel = 3,
   className = '',
+  ...rest
 }: LegacyPermissionRequestProps) {
   const completeScope =
     !!resource.trim() && scopes.length > 0 && scopes.every((scope) => !!scope.trim());
   const Heading = `h${headingLevel}` as const;
   return (
     <Panel
+      {...rest}
       data-part="permission-request"
       data-variant={variant}
       className={`${own.permission} ${className}`}

@@ -19,7 +19,10 @@ export interface TerminalResizeRequest extends TerminalContext {
   columns: number;
   rows: number;
 }
-export interface TerminalEmulatorProps extends Omit<TerminalOutputProps, 'renderOutput'> {
+export interface TerminalEmulatorProps extends Omit<
+  TerminalOutputProps,
+  'renderOutput' | 'onInput' | 'onResize'
+> {
   onInput?: (request: TerminalInputRequest) => void;
   onResize?: (request: TerminalResizeRequest) => void;
   inputEnabled?: boolean;

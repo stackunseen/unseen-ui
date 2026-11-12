@@ -1,7 +1,7 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useRef, useState } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { ComponentProps, KeyboardEvent } from 'react';
 import { heartbeatState } from '@stackunseen/ui-core';
 import type { Run } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
@@ -27,7 +27,8 @@ export interface RunNode {
   /** This run's own cost. The tree adds the branch up and says when any part is estimated. */
   cost?: Measurement<Money>;
 }
-export interface SubagentTreeProps extends VariantProps<'SubagentTree'> {
+export interface SubagentTreeProps
+  extends VariantProps<'SubagentTree'>, Omit<ComponentProps<'section'>, 'onSelect'> {
   root: RunNode;
   selectedId?: string | null;
   onSelect?: (runId: string) => void;
@@ -91,6 +92,7 @@ export function SubagentTree({
   label = 'Agent runs',
   locale: localeProp,
   className = '',
+  ...rest
 }: SubagentTreeProps) {
   const locale = useLocale(localeProp);
   const id = useId();
@@ -301,7 +303,12 @@ export function SubagentTree({
   }
 
   return (
-    <section className={`${r.tree} ${className}`} data-part="subagent-tree" data-variant={variant}>
+    <section
+      {...rest}
+      className={`${r.tree} ${className}`}
+      data-part="subagent-tree"
+      data-variant={variant}
+    >
       <h2 id={`${id}-title`} className={r.boardTitle}>
         {label}
       </h2>

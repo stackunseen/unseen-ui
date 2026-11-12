@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import type { ConnectionInfo, RecoveryCursor, SubmissionState } from '@stackunseen/ui-core';
 import { validCount, validTimestamp } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
@@ -12,7 +13,8 @@ import own from './connection-status.module.css';
 import actions from '../../shared/styles/action-layout.module.css';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 
-export interface ConnectionStatusProps extends VariantProps<'ConnectionStatus'> {
+export interface ConnectionStatusProps
+  extends VariantProps<'ConnectionStatus'>, ComponentProps<'section'> {
   value: ConnectionInfo;
   submission?: SubmissionState;
   error?: string;
@@ -30,6 +32,7 @@ export function ConnectionStatus({
   onResume,
   onRefresh,
   className = '',
+  ...rest
 }: ConnectionStatusProps) {
   const incompatible = value.recovery === 'incompatible';
   const uncertainFreshness = value.freshness === 'stale' || value.freshness === 'unknown';
@@ -61,6 +64,7 @@ export function ConnectionStatus({
   const showRecovery = interrupted || submission !== 'idle';
   return (
     <Panel
+      {...rest}
       className={`${own.connectionStatus} ${className}`}
       data-variant={variant}
       data-interrupted={interrupted}

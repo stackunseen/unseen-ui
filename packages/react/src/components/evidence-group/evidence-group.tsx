@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import type { Source } from '@stackunseen/ui-core';
 import { Accordion } from '../accordion/accordion.js';
 import type { VariantProps } from '../../shared/variants.js';
@@ -11,13 +12,18 @@ export function EvidenceGroup({
   claim,
   relationships,
   className = '',
-}: VariantProps<'EvidenceGroup'> & {
-  sources: Source[];
-  claim: string;
-  relationships?: Record<string, 'supports' | 'contradicts' | 'related'>;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'EvidenceGroup'> & {
+    sources: Source[];
+    claim: string;
+    relationships?: Record<string, 'supports' | 'contradicts' | 'related'>;
+  } & { className?: string },
+  'div'
+>) {
   return (
     <div
+      {...rest}
       role="group"
       aria-label="Evidence"
       className={`${s.evidenceGroup} ${className}`}

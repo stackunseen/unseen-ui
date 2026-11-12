@@ -1,5 +1,5 @@
 'use client';
-import { Fragment, useEffect, useState } from 'react';
+import { type ComponentProps, Fragment, useEffect, useState } from 'react';
 import type { ApprovalProposal, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
@@ -13,7 +13,7 @@ import { ObservationTime } from '../../shared/observation-time/observation-time.
 import { useDisclosure } from '../../shared/disclosure.js';
 import { stateLabel } from '../../shared/labels.js';
 
-export interface ApprovalCardProps extends VariantProps<'ApprovalCard'> {
+export interface ApprovalCardProps extends VariantProps<'ApprovalCard'>, ComponentProps<'section'> {
   proposal: ApprovalProposal;
   submission: SubmissionState;
   stale?: boolean;
@@ -35,6 +35,7 @@ export function ApprovalCard({
   onDecision,
   onReconcile,
   className = '',
+  ...rest
 }: ApprovalCardProps) {
   const [clockExpired, setClockExpired] = useState(false);
   useEffect(() => {
@@ -78,7 +79,12 @@ export function ApprovalCard({
     superseded: 'Proposal changed',
   }[status];
   return (
-    <Panel data-part="approval" data-variant={variant} className={`${own.approval} ${className}`}>
+    <Panel
+      {...rest}
+      data-part="approval"
+      data-variant={variant}
+      className={`${own.approval} ${className}`}
+    >
       <div className={s.row}>
         <div className={own.approvalHeading}>
           <span className={own.reviewIcon} data-risk={proposal.risk} aria-hidden="true">

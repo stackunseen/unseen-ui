@@ -1,5 +1,5 @@
 'use client';
-import { useRef } from 'react';
+import { type ComponentProps, useRef } from 'react';
 import { Button } from '../button/button.js';
 import { Accordion } from '../accordion/accordion.js';
 import { CodeDiff } from '../code-diff/code-diff.js';
@@ -37,7 +37,7 @@ export interface ProposedChange {
   hunks?: readonly ProposedHunk[];
 }
 
-export interface ReviewChangesProps extends VariantProps<'ReviewChanges'> {
+export interface ReviewChangesProps extends VariantProps<'ReviewChanges'>, ComponentProps<'div'> {
   changes: readonly ProposedChange[];
   baseVersion: string;
   proposalVersion: string;
@@ -58,10 +58,11 @@ export interface ReviewChangesProps extends VariantProps<'ReviewChanges'> {
 }
 
 export function ReviewChanges(props: ReviewChangesProps) {
-  return props.review ? (
-    <ScopedReviewChanges {...props} review={props.review} />
+  const { review, ...legacy } = props;
+  return review ? (
+    <ScopedReviewChanges {...props} review={review} />
   ) : (
-    <LegacyReviewChanges {...props} />
+    <LegacyReviewChanges {...legacy} />
   );
 }
 
@@ -76,6 +77,7 @@ function LegacyReviewChanges({
   onDecision,
   variant = 'accordion',
   className = '',
+  ...rest
 }: ReviewChangesProps) {
   const submitted = useRef(new Set<string>());
   const oversized = changes.length > 50;
@@ -141,7 +143,12 @@ function LegacyReviewChanges({
     );
   }
   return (
-    <div className={`${s.root} ${className}`} data-part="review-changes" data-variant={variant}>
+    <div
+      {...rest}
+      className={`${s.root} ${className}`}
+      data-part="review-changes"
+      data-variant={variant}
+    >
       <div className={s.header}>
         <strong>Review changes</strong>
         <span role="status" className={s.tag}>

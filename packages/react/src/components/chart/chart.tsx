@@ -1,6 +1,14 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
-import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import {
+  type ComponentProps,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { DataTable } from '../data-table/data-table.js';
 import { Accordion } from '../accordion/accordion.js';
 import { Button } from '../button/button.js';
@@ -14,7 +22,7 @@ import g from '../../shared/styles/structured.module.css';
 import css from './chart.module.css';
 
 export type { ChartPoint, ChartDatum, ChartSeries } from './chart-model.js';
-export interface ChartProps extends VariantProps<'Chart'> {
+export interface ChartProps extends VariantProps<'Chart'>, ComponentProps<'div'> {
   title: string;
   /** Supply points OR aligned series. Null samples in series are explicitly unreported. */
   points?: readonly ChartPoint[];
@@ -106,6 +114,7 @@ export function Chart({
   showLegend,
   variant = 'bar',
   className = '',
+  ...rest
 }: ChartProps) {
   const locale = useLocale(localeProp);
   const prefix = `chart-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
@@ -130,6 +139,7 @@ export function Chart({
     typeof unit === 'string' && unit.trim() ? unit.slice(0, 200) : 'Unit not supplied';
   const frame = (content: ReactNode) => (
     <div
+      {...rest}
       className={`${g.root} ${className}`}
       data-part="chart"
       data-variant={variant}

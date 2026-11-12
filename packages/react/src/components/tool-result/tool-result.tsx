@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { useLocale } from '../../providers/locale/locale.js';
 import { createContext, useContext } from 'react';
 import type { ComponentType, ReactNode } from 'react';
@@ -73,18 +74,22 @@ export function ToolResult({
   maxCharacters = 4000,
   label = 'Tool output preview',
   className = '',
-}: VariantProps<'ToolResult'> & {
-  text?: string;
-  /** A structured result; a registered renderer shows it, otherwise it is printed as bounded text. */
-  result?: ToolResultData;
-  /** Present while the tool is still returning output. */
-  partial?: ToolResultPartial;
-  error?: string;
-  onRetry?: () => void;
-  maxCharacters?: number;
-  /** Names the bounded, keyboard-scrollable preview when several tools are visible. */
-  label?: string;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'ToolResult'> & {
+    text?: string;
+    /** A structured result; a registered renderer shows it, otherwise it is printed as bounded text. */
+    result?: ToolResultData;
+    /** Present while the tool is still returning output. */
+    partial?: ToolResultPartial;
+    error?: string;
+    onRetry?: () => void;
+    maxCharacters?: number;
+    /** Names the bounded, keyboard-scrollable preview when several tools are visible. */
+    label?: string;
+  } & { className?: string },
+  'div'
+>) {
   const locale = useLocale();
   const registry = useToolResultRegistry();
   const limit = Math.max(
@@ -111,6 +116,7 @@ export function ToolResult({
   );
   return (
     <div
+      {...rest}
       data-part="tool-result"
       data-variant={variant}
       data-renderer={key}

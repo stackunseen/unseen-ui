@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { useLocale } from '../../providers/locale/locale.js';
 import { AIIcon } from '../../providers/icons/icons.js';
 import type { IconName } from '../../providers/icons/icons.js';
@@ -13,7 +14,8 @@ export interface ProvenanceManifest {
   verifiedBy: 'host';
   at: string;
 }
-export interface ProvenanceBadgeProps extends VariantProps<'ProvenanceBadge'> {
+export interface ProvenanceBadgeProps
+  extends VariantProps<'ProvenanceBadge'>, ComponentProps<'span'> {
   origin: ProvenanceOrigin;
   /** The model, tool, person or source behind the content. */
   source?: string;
@@ -38,6 +40,7 @@ export function ProvenanceBadge({
   locale: localeProp,
   variant = 'soft',
   className = '',
+  ...rest
 }: ProvenanceBadgeProps) {
   const locale = useLocale(localeProp);
   const known = origins[origin];
@@ -51,6 +54,7 @@ export function ProvenanceBadge({
       : undefined;
   return (
     <span
+      {...rest}
       className={`${s.badge} ${className}`}
       data-part="provenance"
       data-variant={variant}

@@ -1,8 +1,8 @@
-import type { CSSProperties } from 'react';
+import type { ComponentProps, CSSProperties } from 'react';
 import s from '../../shared/styles/media.module.css';
 
 export type PersonaState = 'idle' | 'listening' | 'thinking' | 'speaking' | 'asleep';
-export interface PersonaProps {
+export interface PersonaProps extends ComponentProps<'div'> {
   /** Host-reported voice agent state. */
   state: PersonaState;
   /** Agent name, used in the accessible description. */
@@ -28,13 +28,16 @@ export function Persona({
   size = 64,
   showLabel = true,
   className = '',
+  style,
+  ...rest
 }: PersonaProps) {
   return (
     <div
+      {...rest}
       className={`${s.root} ${s.persona} ${className}`}
       data-part="persona"
       data-state={state}
-      style={{ '--ai-persona-size': `${size}px` } as CSSProperties}
+      style={{ ...style, '--ai-persona-size': `${size}px` } as CSSProperties}
     >
       <span className={s.orb} aria-hidden="true" />
       <span role="status" className={showLabel ? s.meta : s.srOnly}>

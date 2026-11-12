@@ -1,6 +1,6 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
-import { useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 import type { CommandReceipt, Measurement } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { ChipGroup } from '../chip/chip.js';
@@ -31,7 +31,7 @@ export interface ScopeGrantRevokeRequest {
   grantId: string;
   version: number;
 }
-export interface ScopeGrantListProps extends VariantProps<'ScopeGrant'> {
+export interface ScopeGrantListProps extends VariantProps<'ScopeGrant'>, ComponentProps<'section'> {
   grants: readonly ScopeGrant[];
   onRevoke?: (request: ScopeGrantRevokeRequest) => void;
   /** Receipts keyed by grant id; a submitting receipt shows the grant as revoking. */
@@ -71,6 +71,7 @@ export function ScopeGrantList({
   label = 'Standing permissions',
   emptyMessage = 'No standing permissions.',
   className = '',
+  ...rest
 }: ScopeGrantListProps) {
   const locale = useLocale(localeProp);
   const id = useId();
@@ -81,6 +82,7 @@ export function ScopeGrantList({
   );
   return (
     <section
+      {...rest}
       className={`${g.root} ${className}`}
       data-part="scope-grants"
       data-variant={variant}

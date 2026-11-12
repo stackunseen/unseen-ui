@@ -6,7 +6,7 @@
     "state": "state is a lifecycle: streaming, running, complete, failed. status is whether host data is there: ready, loading, denied, unavailable, error, stale.",
     "labels": "States render as words (\"Connected\", \"Needs review\"), never as the raw value.",
     "progress": "loading is data on its way; pending is a request waiting for the host; busy is an action of this component in progress.",
-    "styling": "Style through --ai-* variables, className on the root and data-part hooks; generated class names are not an API.",
+    "styling": "Style through --ai-* variables, className on the root and data-part hooks; generated class names are not an API. The root also takes its element's other attributes and ref; the component's own attributes win on a clash.",
     "hosts": "A clicked button is a request: components show the host's answer, never an assumed outcome."
   },
   "exceptions": [

@@ -1,7 +1,7 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useId, useState } from 'react';
-import type { FormEvent } from 'react';
+import type { ComponentProps, FormEvent } from 'react';
 import type { Run, SubmissionState } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -27,7 +27,8 @@ export interface SteeringRequest {
   runVersion: number;
   text: string;
 }
-export interface AgentSteeringProps extends VariantProps<'AgentSteering'> {
+export interface AgentSteeringProps
+  extends VariantProps<'AgentSteering'>, Omit<ComponentProps<'section'>, 'onSubmit'> {
   run: Run;
   /** Notes the host holds for this run, newest last. */
   notes: readonly SteeringNote[];
@@ -76,6 +77,7 @@ export function AgentSteering({
   label = 'Steer this run',
   placeholder = 'Tell the agent what to do differently from the next step on…',
   className = '',
+  ...rest
 }: AgentSteeringProps) {
   const locale = useLocale(localeProp);
   const id = useId();
@@ -118,6 +120,7 @@ export function AgentSteering({
   );
   return (
     <section
+      {...rest}
       className={`${variant === 'panel' ? `${s.panel} ${r.steering}` : r.steering} ${className}`}
       data-part="agent-steering"
       data-variant={variant}

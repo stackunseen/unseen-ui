@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { type ComponentProps, useState } from 'react';
 import { CopyIcon, EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { useCopy } from '../../shared/copy.js';
 import type { CopyWords } from '../../shared/copy.js';
@@ -14,7 +14,7 @@ export interface EnvironmentVariable {
   value?: string;
   secret?: boolean;
 }
-export interface EnvironmentVariablesProps {
+export interface EnvironmentVariablesProps extends ComponentProps<'section'> {
   variables: readonly EnvironmentVariable[];
   title?: string;
   headingLevel?: 2 | 3 | 4 | 5 | 6;
@@ -49,6 +49,7 @@ export function EnvironmentVariables({
   headingLevel = 3,
   labels,
   className = '',
+  ...rest
 }: EnvironmentVariablesProps) {
   const text = { ...defaultLabels, ...labels };
   const Heading = `h${headingLevel}` as const;
@@ -62,7 +63,7 @@ export function EnvironmentVariables({
       return next;
     });
   return (
-    <section className={`${s.root} ${className}`} data-part="environment-variables">
+    <section {...rest} className={`${s.root} ${className}`} data-part="environment-variables">
       <div className={s.header}>
         <Heading className={s.title}>{title}</Heading>
         <span className={s.meta}>{text.count(variables.length)}</span>

@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { ChevronDownIcon, CopyIcon } from '@radix-ui/react-icons';
 import { ObservationTime } from '../../shared/observation-time/observation-time.js';
 import { useDisclosure } from '../../shared/disclosure.js';
@@ -13,7 +14,7 @@ export interface CommitFile {
   additions?: number;
   deletions?: number;
 }
-export interface CommitProps {
+export interface CommitProps extends ComponentProps<'section'> {
   hash: string;
   message: string;
   author?: string;
@@ -62,6 +63,7 @@ export function Commit({
   onOpenChange,
   labels,
   className = '',
+  ...rest
 }: CommitProps) {
   const text = { ...defaultLabels, ...labels };
   const Heading = `h${headingLevel}` as const;
@@ -69,7 +71,7 @@ export function Commit({
   const { copy, message: copyMessage } = useCopy();
   const [subject, ...body] = message.split('\n');
   return (
-    <section className={`${s.root} ${className}`} data-part="commit">
+    <section {...rest} className={`${s.root} ${className}`} data-part="commit">
       <div className={s.header}>
         <div className={s.grow}>
           <Heading className={s.title}>{subject}</Heading>

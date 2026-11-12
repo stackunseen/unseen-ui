@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import { Button } from '../button/button.js';
 import { Panel } from '../panel/panel.js';
 import { AIIcon } from '../../providers/icons/icons.js';
@@ -24,16 +25,20 @@ export function MCPServerCard({
   onDisconnect,
   pending = false,
   className = '',
-}: VariantProps<'MCPServerCard'> & {
-  name: string;
-  status: 'connected' | 'disconnected' | 'auth-required' | 'unknown';
-  toolCount?: number;
-  onConnect?: () => void;
-  onDisconnect?: () => void;
-  pending?: boolean;
-} & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'MCPServerCard'> & {
+    name: string;
+    status: 'connected' | 'disconnected' | 'auth-required' | 'unknown';
+    toolCount?: number;
+    onConnect?: () => void;
+    onDisconnect?: () => void;
+    pending?: boolean;
+  } & { className?: string },
+  'section'
+>) {
   return (
-    <Panel className={`${own.serverCard} ${className}`} data-variant={variant}>
+    <Panel {...rest} className={`${own.serverCard} ${className}`} data-variant={variant}>
       <div className={s.row + ' ' + own.row}>
         <SummaryHeading
           icon={

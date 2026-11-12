@@ -1,10 +1,10 @@
 'use client';
-import { useEffect, useId, useState } from 'react';
+import { type ComponentProps, useEffect, useId, useState } from 'react';
 import { ExternalLinkIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { safeHttpUrl } from '../../shared/disclosure.js';
 import s from '../../shared/styles/devtools.module.css';
 
-export interface WebPreviewProps {
+export interface WebPreviewProps extends ComponentProps<'section'> {
   /** The host-supplied page to preview. Only http(s) URLs load. */
   url: string;
   title?: string;
@@ -61,6 +61,7 @@ export function WebPreview({
   onReload,
   labels,
   className = '',
+  ...rest
 }: WebPreviewProps) {
   const text = { ...defaultLabels, ...labels };
   const [draft, setDraft] = useState(url);
@@ -82,6 +83,7 @@ export function WebPreview({
   };
   return (
     <section
+      {...rest}
       className={`${s.root} ${className}`}
       data-part="web-preview"
       data-status={safe ? status : 'blocked'}

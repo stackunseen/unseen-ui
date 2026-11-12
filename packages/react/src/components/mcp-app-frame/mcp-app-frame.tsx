@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import {
   appMethods,
   appPermissionPolicy,
@@ -41,7 +41,8 @@ export interface MCPAppReply {
   error(code: number, message: string): void;
 }
 export type MCPAppFrameState = 'loading' | 'ready' | 'blocked' | 'failed' | 'closed';
-export interface MCPAppFrameProps extends VariantProps<'MCPAppFrame'> {
+export interface MCPAppFrameProps
+  extends VariantProps<'MCPAppFrame'>, Omit<ComponentProps<'section'>, 'resource'> {
   server: { id: string; name: string };
   /** The fetched resource, or null while the host is still fetching it. */
   resource: MCPAppResource | null;
@@ -111,6 +112,7 @@ export function MCPAppFrame({
   fallback,
   label,
   className = '',
+  ...rest
 }: MCPAppFrameProps) {
   const id = useId();
   const frame = useRef<HTMLIFrameElement>(null);
@@ -246,6 +248,7 @@ export function MCPAppFrame({
             : undefined;
   return (
     <section
+      {...rest}
       className={`${m.frame} ${className}`}
       data-part="mcp-app-frame"
       data-variant={variant}

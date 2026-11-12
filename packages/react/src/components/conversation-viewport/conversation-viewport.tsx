@@ -1,6 +1,7 @@
 'use client';
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import type { ComponentProps, CSSProperties, ReactNode } from 'react';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
 import type { Range } from '@tanstack/react-virtual';
 import { conversationContextKey, sameConversationContext } from '@stackunseen/ui-core';
@@ -26,7 +27,7 @@ import { AIIcon } from '../../providers/icons/icons.js';
 import s from './conversation-viewport.module.css';
 
 export type ConversationViewportVariant = 'thread' | 'bubble' | 'compact';
-export interface ConversationViewportProps {
+export interface ConversationViewportProps extends ComponentProps<'section'> {
   value: ConversationHistory;
   availability?: NavigationAvailability;
   variant?: ConversationViewportVariant;
@@ -113,7 +114,16 @@ function Reader({
   onRestoreResult,
   messageProps,
   renderActions,
-}: Omit<ConversationViewportProps, 'value' | 'style' | 'className'> & {
+}: Pick<
+  ConversationViewportProps,
+  | 'empty'
+  | 'onRequestPage'
+  | 'onPositionChange'
+  | 'restore'
+  | 'onRestoreResult'
+  | 'messageProps'
+  | 'renderActions'
+> & {
   history: ConversationHistory;
   availability: NavigationAvailability;
   mode: 'virtual' | 'reading';
@@ -444,10 +454,30 @@ export function ConversationViewport({
   label = 'Conversation',
   className = '',
   style,
-  ...props
+  empty,
+  onRequestPage,
+  onPositionChange,
+  restore,
+  onRestoreResult,
+  messageProps,
+  renderActions,
+  ref,
+  onFocusCapture,
+  onBlurCapture,
+  ...rest
 }: ConversationViewportProps) {
+  const props = {
+    empty,
+    onRequestPage,
+    onPositionChange,
+    restore,
+    onRestoreResult,
+    messageProps,
+    renderActions,
+  };
   const root = useRef<HTMLElement>(null),
     ownedFocus = useRef(false);
+  const rootRef = useMergedRef(root, ref);
   const visible = ['ready', 'stale'].includes(availability);
   const history = visible ? inspectConversationHistory(value) : undefined;
   const valid =
@@ -475,7 +505,8 @@ export function ConversationViewport({
                 : 'Full reading mode works with up to 200 loaded messages.';
   return (
     <section
-      ref={root}
+      {...rest}
+      ref={rootRef}
       role="region"
       aria-label={label}
       tabIndex={-1}
@@ -483,10 +514,12 @@ export function ConversationViewport({
       style={style}
       data-variant={variant}
       data-availability={availability}
-      onFocusCapture={() => {
+      onFocusCapture={(event) => {
+        onFocusCapture?.(event);
         ownedFocus.current = true;
       }}
       onBlurCapture={(event) => {
+        onBlurCapture?.(event);
         if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node))
           ownedFocus.current = false;
       }}

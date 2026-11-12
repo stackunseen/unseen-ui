@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useId, useRef } from 'react';
-import type { RefObject } from 'react';
+import type { ComponentProps, RefObject } from 'react';
 import type { DocumentSnapshot } from '@stackunseen/ui-core/editing';
 import { Button } from '../button/button.js';
 import { Textarea } from '../textarea/textarea.js';
@@ -22,7 +22,7 @@ import {
 import { ConversationActionStatus } from './action-status.js';
 import s from './conversation-flow.module.css';
 
-export interface MessageEditFormProps {
+export interface MessageEditFormProps extends Omit<ComponentProps<'form'>, 'target'> {
   target: ConversationMessageTarget;
   current: ConversationMessageSnapshot;
   draft: DocumentSnapshot;
@@ -52,6 +52,9 @@ export function MessageEditForm({
   autoFocus = true,
   disabledReason,
   className = '',
+  onSubmit,
+  onKeyDown,
+  ...rest
 }: MessageEditFormProps) {
   const id = useId(),
     input = useRef<HTMLTextAreaElement>(null),
@@ -90,14 +93,17 @@ export function MessageEditForm({
   }
   return (
     <form
+      {...rest}
       className={`${s.editor} ${className}`}
       data-part="message-edit-form"
       aria-label="Edit message"
       onSubmit={(event) => {
+        onSubmit?.(event);
         event.preventDefault();
         submit();
       }}
       onKeyDown={(event) => {
+        onKeyDown?.(event);
         if (event.key === 'Escape' && !event.nativeEvent.isComposing && event.keyCode !== 229) {
           event.preventDefault();
           event.stopPropagation();

@@ -1,4 +1,5 @@
 'use client';
+import type { ComponentProps } from 'react';
 import { ChevronDownIcon, GlobeIcon } from '@radix-ui/react-icons';
 import { safeHttpUrl, useDisclosure } from '../../shared/disclosure.js';
 import s from '../../shared/styles/assistant.module.css';
@@ -9,7 +10,7 @@ export interface SourceLink {
   href?: string;
   description?: string;
 }
-export interface SourcesProps {
+export interface SourcesProps extends ComponentProps<'div'> {
   sources: readonly SourceLink[];
   open?: boolean;
   defaultOpen?: boolean;
@@ -38,12 +39,13 @@ export function Sources({
   onOpenChange,
   labels,
   className = '',
+  ...rest
 }: SourcesProps) {
   const text = { ...defaultLabels, ...labels };
   const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
   const count = sources.length;
   return (
-    <div className={`${s.root} ${className}`} data-part="sources">
+    <div {...rest} className={`${s.root} ${className}`} data-part="sources">
       <button className={s.trigger} {...disclosure.triggerProps} disabled={count === 0}>
         <GlobeIcon aria-hidden="true" />
         {count === 0 ? text.none : text.count(count)}

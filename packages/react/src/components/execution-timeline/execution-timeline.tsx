@@ -1,4 +1,5 @@
 'use client';
+import type { WithRoot } from '../../shared/with-root.js';
 import type React from 'react';
 import { StatusBadge } from '../status-badge/status-badge.js';
 import { Select } from '../select/select.js';
@@ -126,15 +127,24 @@ export function ExecutionTimeline({
   onFilterChange,
   detail = 'compact',
   className = '',
-}: VariantProps<'ExecutionTimeline'> &
-  DetailProps & {
-    entries: TimelineEntry[];
-    filter?: 'all' | 'failed';
-    onFilterChange?: (value: 'all' | 'failed') => void;
-  } & { className?: string }) {
+  ...rest
+}: WithRoot<
+  VariantProps<'ExecutionTimeline'> &
+    DetailProps & {
+      entries: TimelineEntry[];
+      filter?: 'all' | 'failed';
+      onFilterChange?: (value: 'all' | 'failed') => void;
+    } & { className?: string },
+  'div'
+>) {
   const shown = filter === 'failed' ? entries.filter((e) => e.state === 'failed') : entries;
   return (
-    <div className={`${own.timeline} ${className}`} data-variant={variant} data-detail={detail}>
+    <div
+      {...rest}
+      className={`${own.timeline} ${className}`}
+      data-variant={variant}
+      data-detail={detail}
+    >
       {onFilterChange && (
         <label className={s.field + ' ' + own.field}>
           Show events

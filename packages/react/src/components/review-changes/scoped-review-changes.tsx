@@ -1,5 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import type { ComponentProps } from 'react';
+import { useMergedRef } from '../../shared/use-merged-ref.js';
 import { Accordion } from '../accordion/accordion.js';
 import { Button } from '../button/button.js';
 import { ReviewFile } from './review-file.js';
@@ -17,6 +19,21 @@ import type { ReviewChangesContract, ReviewCommand } from './review-contract.js'
 import s from '../../shared/styles/agent-controls.module.css';
 import a from '../../shared/styles/action-layout.module.css';
 
+const ownProps = new Set([
+  'review',
+  'changes',
+  'baseVersion',
+  'proposalVersion',
+  'selectedIds',
+  'onSelectionChange',
+  'state',
+  'error',
+  'onDecision',
+  'variant',
+  'className',
+  'ref',
+]);
+
 export function ScopedReviewChanges(props: ReviewChangesProps & { review: ReviewChangesContract }) {
   const {
     review,
@@ -32,6 +49,10 @@ export function ScopedReviewChanges(props: ReviewChangesProps & { review: Review
   const awaitingProposal = useRef<string | undefined>(undefined);
   const lookups = useRef(new Set<string>());
   const root = useRef<HTMLDivElement>(null);
+  const rootRef = useMergedRef(root, props.ref);
+  const rest = Object.fromEntries(
+    Object.entries(props).filter(([name]) => !ownProps.has(name)),
+  ) as ComponentProps<'div'>;
   const previousStatus = useRef(review.submission.status);
   useEffect(() => {
     if (
@@ -117,7 +138,8 @@ export function ScopedReviewChanges(props: ReviewChangesProps & { review: Review
       : { ...review, submission: { status: 'idle' as const } };
   return (
     <div
-      ref={root}
+      {...rest}
+      ref={rootRef}
       tabIndex={-1}
       aria-busy={submission.status === 'pending' || review.lookup?.status === 'pending'}
       className={`${s.root} ${props.className ?? ''}`}

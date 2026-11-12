@@ -1,7 +1,7 @@
 'use client';
 import { useLocale } from '../../providers/locale/locale.js';
 import { useId } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { ComponentProps, KeyboardEvent } from 'react';
 import type { ApprovalProposal, Measurement } from '@stackunseen/ui-core';
 import { Button } from '../button/button.js';
 import { StatusBadge } from '../status-badge/status-badge.js';
@@ -23,7 +23,8 @@ export type AttentionItem =
       at: string;
       retryable: boolean;
     };
-export interface AttentionQueueProps extends VariantProps<'AttentionQueue'> {
+export interface AttentionQueueProps
+  extends VariantProps<'AttentionQueue'>, ComponentProps<'section'> {
   items: readonly AttentionItem[];
   /** Host-supplied total; the list may be a page of it. Unknown shows "Count unavailable". */
   count?: Measurement<number>;
@@ -68,6 +69,7 @@ export function AttentionQueue({
   label = 'Needs your attention',
   emptyMessage = 'Nothing is waiting on you.',
   className = '',
+  ...rest
 }: AttentionQueueProps) {
   const locale = useLocale(localeProp);
   const id = useId();
@@ -92,6 +94,7 @@ export function AttentionQueue({
   }
   return (
     <section
+      {...rest}
       className={`${r.queue} ${className}`}
       data-part="attention-queue"
       data-variant={variant}

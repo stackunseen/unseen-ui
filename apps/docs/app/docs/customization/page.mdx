@@ -46,6 +46,8 @@ Keep the labels on controls when you replace their icons. A picture alone doesn'
 
 Every component takes `className` and puts it on its root element, after its own classes. The only exceptions have no element of their own: the providers, `UnsavedGuard` and `ConversationMessageActions`.
 
+The root also takes the other attributes of its element, such as `id`, `style`, `data-*`, `aria-*` and event handlers, and a `ref`. Attributes a component sets itself, such as its `role` or `data-part`, win over yours, and a focus handler you pass runs before the component's own. Fourteen components take `className` only: the overlays (`Modal`, `ArtifactPanel`, `ShortcutHelp`, `CommandPalette`, `Citation`, `ModelSelector`), `OrgSwitcher`, `Chat`, `CodeEditor`, `ArtifactEditor`, `BranchSwitcher`, `MessageQueue`, `ThreadList` and `BackgroundStatus`.
+
 Start with the built-in variants and content slots. Use `className` and `style` for layout. Not every inner element has a public selector, so check the component's page before you style its internals.
 
 Check your palette in light and dark, and in disabled, focused and error states. A theme change can affect text, control borders and focus rings.
