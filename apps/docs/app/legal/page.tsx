@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { DocsFrame } from '../../components/docs-frame';
-import { repositoryUrl } from '../../components/github-link';
+import { repositoryUrl } from '../../lib/repository';
 import { pageMetadata } from '../../lib/site-seo';
 export const metadata = pageMetadata(
   'Licence, privacy and contact',
